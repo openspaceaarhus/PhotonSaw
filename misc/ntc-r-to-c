@@ -1,0 +1,38 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my $B50 = 3936;
+
+sub t2c {
+    my ($r) = @_;
+    return 1/(1/(25+273.15) + 1/3930 * log($r/5000))-273.15;
+}
+
+sub hz2gs {
+    my ($hz) = @_;
+
+    return $hz * (4500/60)/11.56;
+}
+
+sub sample2power {
+    my ($r0, $r1, $hz) = @_;
+    
+    my $t0 = t2c($r0);
+    my $t1 = t2c($r1);
+    my $g = hz2gs($hz);
+    
+    return (int(10*$g * ($t0-$t1) * 4.185)/10, 
+    	    int(10*$t0)/10, int(10*$t1)/10, int(10*$g)/10);
+}
+
+my @d = (
+   [5000, 5220, 10.4],
+   [4790, 5000, 10.57],
+   [3690, 3870, 10.4],
+);
+
+for my $s (@d) {
+    my ($power, $t1, $t0, $flow) = sample2power(@$s);
+    print "$power Watt (flow: $flow G/s, T0: $t0 C, T1: $t1 C)\n";
+}
