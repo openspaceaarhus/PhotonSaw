@@ -1,4 +1,4 @@
-update=2011-10-21T23:42:25 CEST
+update=2011-10-23T11:52:48 CEST
 version=1
 last_client=eeschema
 [cvpcb]
@@ -146,3 +146,4 @@ LibName32=libs/mounting
 LibName33=libs/23k256
 LibName34=libs/tps78233
 LibName35=libs/drv8811
+LibName36=libs/mcu-nxp

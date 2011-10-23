@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-10-22T21:04:28 CEST
+EESchema Schematic File Version 2  date 2011-10-23T23:11:03 CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -33,12 +33,13 @@ LIBS:mounting
 LIBS:23k256
 LIBS:tps78233
 LIBS:drv8811
+LIBS:mcu-nxp
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
-Sheet 1 5
+Sheet 1 6
 Title ""
-Date "22 oct 2011"
+Date "23 oct 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -46,546 +47,535 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Notes 1150 3475 0    50   ~ 0
-FTDI serial
-NoConn ~ 1225 4000
-NoConn ~ 1225 3900
-NoConn ~ 1225 3600
+Connection ~ 8150 6775
 Wire Wire Line
-	1100 3700 1225 3700
+	8150 6900 8150 5600
+Connection ~ 6900 5900
 Wire Wire Line
-	1100 4225 1100 4100
+	6900 6275 6900 5900
+Connection ~ 6375 6100
 Wire Wire Line
-	1100 4100 1225 4100
+	6050 6100 7175 6100
 Wire Wire Line
-	6350 2775 6550 2775
+	7175 5900 6050 5900
+Connection ~ 6725 5700
 Wire Wire Line
-	6550 2475 6350 2475
+	6050 5700 7175 5700
 Wire Wire Line
-	6350 1350 6550 1350
+	6375 6100 6375 5500
 Wire Wire Line
-	6350 1650 6550 1650
+	6725 5700 6725 5500
+Connection ~ 8150 5000
 Wire Wire Line
-	6350 3475 6550 3475
+	8150 4925 8150 5500
+Connection ~ 6550 5000
+Connection ~ 8150 6100
 Wire Wire Line
-	2725 5775 2675 5775
+	7975 6100 8150 6100
+Connection ~ 8150 5900
 Wire Wire Line
-	2125 5925 2175 5925
+	7975 5900 8150 5900
+Connection ~ 8150 5700
 Wire Wire Line
-	2125 5625 2175 5625
+	7975 5700 8150 5700
+Connection ~ 8150 6300
 Wire Wire Line
-	1225 5675 1275 5675
+	8150 6200 7975 6200
 Wire Wire Line
-	1575 4850 1250 4850
+	8150 6400 7975 6400
 Wire Wire Line
-	2200 5100 2200 4950
+	4700 5550 4825 5550
 Wire Wire Line
-	2200 4950 1825 4950
+	4700 5750 4825 5750
 Wire Wire Line
-	2200 4600 2200 4750
+	4700 5950 4825 5950
 Wire Wire Line
-	2200 4750 1825 4750
+	4775 7275 4775 7375
 Wire Wire Line
-	4600 3900 4450 3900
+	5700 7275 5700 7375
+Connection ~ 6325 6750
 Wire Wire Line
-	4600 3700 4450 3700
+	6325 6875 6325 6650
+Connection ~ 5450 6550
 Wire Wire Line
-	4600 3500 4450 3500
+	5450 6875 5450 6450
 Wire Wire Line
-	4600 3300 4450 3300
+	5450 6550 4700 6550
 Wire Wire Line
-	4450 3000 4600 3000
+	5725 6750 4700 6750
 Wire Wire Line
-	4600 2800 4450 2800
+	4700 6650 4850 6650
+Connection ~ 3800 7375
 Wire Wire Line
-	4600 2600 4450 2600
+	3800 7475 3800 7375
 Wire Wire Line
-	4600 2400 4450 2400
+	3150 7300 3150 7375
+Connection ~ 3150 7375
+Connection ~ 3250 7375
 Wire Wire Line
-	4450 2100 4600 2100
+	3250 7375 3250 7300
+Connection ~ 3450 7375
+Connection ~ 3650 7375
 Wire Wire Line
-	4450 1900 4600 1900
+	3650 7300 3650 7375
 Wire Wire Line
-	4450 1700 4600 1700
-Connection ~ 3200 1300
+	3850 7300 3850 7375
 Wire Wire Line
-	3200 1200 3200 1400
+	3650 7375 3150 7375
+Connection ~ 2800 7375
 Wire Wire Line
-	2550 1800 2550 1300
+	2900 7375 2200 7375
 Wire Wire Line
-	1450 2900 1450 3000
+	2900 7375 2900 7300
+Connection ~ 2600 7375
 Wire Wire Line
-	2050 2500 2050 2200
+	2700 7375 2700 7300
 Wire Wire Line
-	1450 2400 2550 2400
+	2500 7375 2500 7300
+Connection ~ 2300 7375
 Wire Wire Line
-	2550 3400 2350 3400
+	2300 7300 2300 7375
 Wire Wire Line
-	3100 4300 3100 4350
+	10000 2375 10200 2375
 Wire Wire Line
-	3100 4350 3300 4350
+	10200 2075 10000 2075
 Wire Wire Line
-	3200 4300 3200 4450
+	10000 950  10200 950 
 Wire Wire Line
-	3300 4350 3300 4300
-Connection ~ 3200 4350
+	10000 1250 10200 1250
 Wire Wire Line
-	2450 2650 2450 2750
+	10000 3075 10200 3075
 Wire Wire Line
-	2450 3250 2450 3550
-Connection ~ 2450 3400
+	10200 3225 10000 3225
 Wire Wire Line
-	2450 3950 2450 4100
+	10200 2925 10000 2925
 Wire Wire Line
-	2050 2200 2550 2200
+	10200 1100 10000 1100
 Wire Wire Line
-	1450 2200 1450 2500
-Connection ~ 1450 2400
+	10000 2225 10200 2225
 Wire Wire Line
-	2050 2900 2050 3000
-Connection ~ 2050 2200
+	10000 1925 10200 1925
 Wire Wire Line
-	3100 1400 3100 1300
-Connection ~ 3100 1300
+	10000 3375 10200 3375
 Wire Wire Line
-	3300 1400 3300 1300
+	10000 1400 10200 1400
 Wire Wire Line
-	3300 1300 2550 1300
+	2550 7375 2550 7525
 Wire Wire Line
-	4600 1800 4450 1800
+	2200 7375 2200 7300
 Wire Wire Line
-	4600 2000 4450 2000
+	2400 7300 2400 7375
+Connection ~ 2400 7375
+Connection ~ 2500 7375
 Wire Wire Line
-	4450 2200 4600 2200
+	2600 7375 2600 7300
+Connection ~ 2550 7375
 Wire Wire Line
-	4450 2500 4600 2500
+	2800 7375 2800 7300
+Connection ~ 2700 7375
 Wire Wire Line
-	4450 2700 4600 2700
+	3750 7300 3750 7375
 Wire Wire Line
-	4450 2900 4600 2900
+	3550 7300 3550 7375
+Connection ~ 3550 7375
 Wire Wire Line
-	4450 3100 4600 3100
+	3350 7300 3350 7375
+Connection ~ 3350 7375
 Wire Wire Line
-	4450 3400 4600 3400
+	3450 7300 3450 7375
 Wire Wire Line
-	4450 3600 4600 3600
+	3750 7375 3850 7375
 Wire Wire Line
-	4450 3800 4600 3800
+	3400 7475 3400 7375
+Connection ~ 3400 7375
 Wire Wire Line
-	4450 4000 4600 4000
+	4100 7300 4100 7450
 Wire Wire Line
-	2200 4850 1825 4850
+	6325 6650 5350 6650
 Wire Wire Line
-	1250 4950 1575 4950
+	4700 6450 4850 6450
 Wire Wire Line
-	1250 4750 1575 4750
+	4775 6875 4775 6450
+Connection ~ 4775 6450
 Wire Wire Line
-	1275 5875 1225 5875
+	5700 6875 5700 6750
+Connection ~ 5700 6750
 Wire Wire Line
-	1675 5350 1675 5375
+	6325 7275 6325 7375
 Wire Wire Line
-	1675 6175 1675 6225
+	5450 7275 5450 7375
 Wire Wire Line
-	2175 5775 2125 5775
+	4825 6250 4700 6250
 Wire Wire Line
-	2725 5625 2675 5625
+	4825 5850 4700 5850
 Wire Wire Line
-	2675 5925 2725 5925
+	4825 5650 4700 5650
 Wire Wire Line
-	6550 3625 6350 3625
+	4825 5450 4700 5450
 Wire Wire Line
-	6550 3325 6350 3325
+	8150 6300 7975 6300
+Connection ~ 8150 6400
 Wire Wire Line
-	6550 1500 6350 1500
+	8150 5600 7975 5600
+Connection ~ 8150 6200
 Wire Wire Line
-	6350 2625 6550 2625
+	7975 5800 8150 5800
+Connection ~ 8150 5800
 Wire Wire Line
-	6350 2325 6550 2325
+	7975 6000 8150 6000
+Connection ~ 8150 6000
 Wire Wire Line
-	6350 3775 6550 3775
+	8150 5500 7975 5500
 Wire Wire Line
-	6350 1800 6550 1800
+	8150 5000 6375 5000
+Connection ~ 6725 5000
 Wire Wire Line
-	1225 3800 1100 3800
+	7175 5500 7175 5000
+Connection ~ 7175 5000
+Wire Wire Line
+	6900 5600 6900 5500
+Wire Wire Line
+	6550 5800 6550 5500
+Wire Wire Line
+	6050 5600 7175 5600
+Connection ~ 6900 5600
+Wire Wire Line
+	6050 5800 7175 5800
+Connection ~ 6550 5800
+Wire Wire Line
+	7175 6000 6050 6000
+Wire Wire Line
+	6050 6200 7175 6200
+Wire Wire Line
+	6725 6275 6725 6000
+Connection ~ 6725 6000
+Wire Wire Line
+	8150 6775 6725 6775
+Connection ~ 6900 6775
 $Comp
-L GND #PWR1
-U 1 1 4EA297C6
-P 1100 4225
-F 0 "#PWR1" H 1100 4225 30  0001 C CNN
-F 1 "GND" H 1100 4155 30  0001 C CNN
-	1    1100 4225
+L R R?
+U 1 1 4EA468B0
+P 6725 6525
+F 0 "R?" V 6805 6525 50  0000 C CNN
+F 1 "R" V 6725 6525 50  0000 C CNN
+	1    6725 6525
 	1    0    0    -1  
 $EndComp
-Text GLabel 1100 3800 0    50   Input ~ 0
-RXD
-Text GLabel 1100 3700 0    50   Input ~ 0
-TXD
 $Comp
-L CONN_6 P1
-U 1 1 4EA29785
-P 1575 3850
-F 0 "P1" V 1525 3850 60  0000 C CNN
-F 1 "CONN_6" V 1625 3850 60  0000 C CNN
-	1    1575 3850
+L R R?
+U 1 1 4EA468A6
+P 6900 6525
+F 0 "R?" V 6980 6525 50  0000 C CNN
+F 1 "R" V 6900 6525 50  0000 C CNN
+	1    6900 6525
 	1    0    0    -1  
 $EndComp
+$Comp
+L R R?
+U 1 1 4EA46801
+P 6375 5250
+F 0 "R?" V 6455 5250 50  0000 C CNN
+F 1 "10k" V 6375 5250 50  0000 C CNN
+	1    6375 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EA467FA
+P 6550 5250
+F 0 "R?" V 6630 5250 50  0000 C CNN
+F 1 "10k" V 6550 5250 50  0000 C CNN
+	1    6550 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EA467F5
+P 6725 5250
+F 0 "R?" V 6805 5250 50  0000 C CNN
+F 1 "10k" V 6725 5250 50  0000 C CNN
+	1    6725 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EA467E7
+P 6900 5250
+F 0 "R?" V 6980 5250 50  0000 C CNN
+F 1 "10k" V 6900 5250 50  0000 C CNN
+	1    6900 5250
+	1    0    0    -1  
+$EndComp
+Text GLabel 6050 6200 0    50   Input ~ 0
+~RESET
+Text GLabel 6050 6100 0    50   Input ~ 0
+TDO
+Text GLabel 6050 6000 0    50   Input ~ 0
+RTCK
+Text GLabel 6050 5900 0    50   Input ~ 0
+TCK
+Text GLabel 6050 5800 0    50   Input ~ 0
+TMS
+Text GLabel 6050 5700 0    50   Input ~ 0
+TDI
+Text GLabel 6050 5600 0    50   Input ~ 0
+~TRST
+$Comp
+L +3.3V #PWR?
+U 1 1 4EA46529
+P 8150 4925
+F 0 "#PWR?" H 8150 4885 30  0001 C CNN
+F 1 "+3.3V" H 8150 5035 30  0000 C CNN
+	1    8150 4925
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EA464E3
+P 8150 6900
+F 0 "#PWR?" H 8150 6900 30  0001 C CNN
+F 1 "GND" H 8150 6830 30  0001 C CNN
+	1    8150 6900
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_10X2 P?
+U 1 1 4EA464D4
+P 7575 5950
+F 0 "P?" H 7575 6500 60  0000 C CNN
+F 1 "JTAG" V 7575 5850 50  0000 C CNN
+	1    7575 5950
+	1    0    0    -1  
+$EndComp
+Text GLabel 4825 6250 2    50   Input ~ 0
+~RESET
+Text GLabel 4825 5950 2    50   Input ~ 0
+RTCK
+Text GLabel 4825 5850 2    50   Input ~ 0
+TCK
+Text GLabel 4825 5750 2    50   Input ~ 0
+~TRST
+Text GLabel 4825 5650 2    50   Input ~ 0
+TMS
+Text GLabel 4825 5550 2    50   Input ~ 0
+TDI
+Text GLabel 4825 5450 2    50   Input ~ 0
+TDO
+$Comp
+L GND #PWR?
+U 1 1 4EA3EE94
+P 6325 7375
+F 0 "#PWR?" H 6325 7375 30  0001 C CNN
+F 1 "GND" H 6325 7305 30  0001 C CNN
+	1    6325 7375
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EA3EE90
+P 5700 7375
+F 0 "#PWR?" H 5700 7375 30  0001 C CNN
+F 1 "GND" H 5700 7305 30  0001 C CNN
+	1    5700 7375
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EA3EE8C
+P 5450 7375
+F 0 "#PWR?" H 5450 7375 30  0001 C CNN
+F 1 "GND" H 5450 7305 30  0001 C CNN
+	1    5450 7375
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EA3EE86
+P 4775 7375
+F 0 "#PWR?" H 4775 7375 30  0001 C CNN
+F 1 "GND" H 4775 7305 30  0001 C CNN
+	1    4775 7375
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EA3EE6C
+P 6325 7075
+F 0 "C?" H 6375 7175 50  0000 L CNN
+F 1 "5pF" H 6375 6975 50  0000 L CNN
+	1    6325 7075
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EA3EE66
+P 5700 7075
+F 0 "C?" H 5750 7175 50  0000 L CNN
+F 1 "5pF" H 5750 6975 50  0000 L CNN
+	1    5700 7075
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EA3EE5C
+P 5450 7075
+F 0 "C?" H 5500 7175 50  0000 L CNN
+F 1 "15pF" H 5500 6975 50  0000 L CNN
+	1    5450 7075
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EA3EE55
+P 4775 7075
+F 0 "C?" H 4825 7175 50  0000 L CNN
+F 1 "18pF" H 4825 6975 50  0000 L CNN
+	1    4775 7075
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EA3EE02
+P 5100 6650
+F 0 "R?" V 5180 6650 50  0000 C CNN
+F 1 "100k" V 5100 6650 50  0000 C CNN
+	1    5100 6650
+	0    1    1    0   
+$EndComp
+$Comp
+L CRYSTAL X?
+U 1 1 4EA3EDBB
+P 5150 6450
+F 0 "X?" H 5225 6625 60  0000 C CNN
+F 1 "12MHz" H 5425 6525 60  0000 C CNN
+	1    5150 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L CRYSTAL X?
+U 1 1 4EA3EDAF
+P 6025 6750
+F 0 "X?" H 6025 6900 60  0000 C CNN
+F 1 "32768Hz" H 6025 6600 60  0000 C CNN
+	1    6025 6750
+	1    0    0    -1  
+$EndComp
+$Comp
+L +BATT #PWR?
+U 1 1 4EA3ED82
+P 4100 7450
+F 0 "#PWR?" H 4100 7400 20  0001 C CNN
+F 1 "+BATT" H 4100 7550 30  0000 C CNN
+	1    4100 7450
+	-1   0    0    1   
+$EndComp
+$Comp
+L +3.3VADC #PWR?
+U 1 1 4EA3EA65
+P 3800 7475
+F 0 "#PWR?" H 3800 7595 20  0001 C CNN
+F 1 "+3.3VADC" H 3800 7565 30  0000 C CNN
+	1    3800 7475
+	-1   0    0    1   
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 4EA3EA51
+P 3400 7475
+F 0 "#PWR?" H 3400 7435 30  0001 C CNN
+F 1 "+3.3V" H 3400 7585 30  0000 C CNN
+	1    3400 7475
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EA3E721
+P 2550 7525
+F 0 "#PWR?" H 2550 7525 30  0001 C CNN
+F 1 "GND" H 2550 7455 30  0001 C CNN
+	1    2550 7525
+	1    0    0    -1  
+$EndComp
+$Comp
+L LPC1769FBD100 U?
+U 1 1 4EA3E54B
+P 3150 4900
+F 0 "U?" H 1850 7500 60  0000 C CNN
+F 1 "LPC1769FBD100" H 2150 7400 60  0000 C CNN
+	1    3150 4900
+	1    0    0    -1  
+$EndComp
+$Sheet
+S 8250 750  975  1675
+U 4EA3E488
+F0 "watchdog" 60
+F1 "watchdog.sch" 60
+$EndSheet
 $Comp
 L CONN_5 P2
 U 1 1 4EA29595
-P 4900 5075
-F 0 "P2" V 4850 5075 50  0000 C CNN
-F 1 "CONN_5" V 4950 5075 50  0000 C CNN
-	1    4900 5075
+P 8925 3250
+F 0 "P2" V 8875 3250 50  0000 C CNN
+F 1 "CONN_5" V 8975 3250 50  0000 C CNN
+	1    8925 3250
 	1    0    0    -1  
 $EndComp
-Text GLabel 6350 3775 0    50   Input ~ 0
+Text GLabel 10000 3375 0    50   Input ~ 0
 PD7
-Text GLabel 6350 2775 0    50   Input ~ 0
+Text GLabel 10000 2375 0    50   Input ~ 0
 PD6
-Text GLabel 6350 1800 0    50   Input ~ 0
+Text GLabel 10000 1400 0    50   Input ~ 0
 PD5
-Text Notes 4825 4025 0    50   ~ 0
-Limit Z
-Text Notes 4825 1925 0    50   ~ 0
-STOP
-Text Notes 4825 3925 0    50   ~ 0
-Limit Y
-Text Notes 4825 3825 0    50   ~ 0
-Limit X
-Text Notes 4825 3725 0    50   ~ 0
-LASER - ~Fire
-Text Notes 4825 3625 0    50   ~ 0
-LASER - PWM
-Text Notes 4825 3525 0    50   ~ 0
-RAM ~CS
-Text Notes 4825 2925 0    50   ~ 0
-Motor Z - STEP
-Text Notes 4825 2825 0    50   ~ 0
-Motor Z - DIR
-Text Notes 4825 2725 0    50   ~ 0
-Motor Y - STEP
-Text Notes 4825 2625 0    50   ~ 0
-Motor Y - DIR
-Text Notes 4825 2525 0    50   ~ 0
-Motor X - STEP
-Text Notes 4825 2425 0    50   ~ 0
-Motor X - DIR
-Text Notes 4825 1725 0    50   ~ 0
-Enable motor drivers
-Text GLabel 6350 3325 0    50   Input ~ 0
+Text GLabel 10000 2925 0    50   Input ~ 0
 PB0
-Text GLabel 6350 2325 0    50   Input ~ 0
+Text GLabel 10000 1925 0    50   Input ~ 0
 PB0
-Text GLabel 6350 1350 0    50   Input ~ 0
+Text GLabel 10000 950  0    50   Input ~ 0
 PB0
-Text GLabel 6350 3625 0    50   Input ~ 0
+Text GLabel 10000 3225 0    50   Input ~ 0
 PC5
-Text GLabel 6350 3475 0    50   Input ~ 0
+Text GLabel 10000 3075 0    50   Input ~ 0
 PC4
-Text GLabel 6350 2625 0    50   Input ~ 0
+Text GLabel 10000 2225 0    50   Input ~ 0
 PC3
-Text GLabel 6350 2475 0    50   Input ~ 0
+Text GLabel 10000 2075 0    50   Input ~ 0
 PC2
-Text GLabel 6350 1650 0    50   Input ~ 0
+Text GLabel 10000 1250 0    50   Input ~ 0
 PC1
-Text GLabel 6350 1500 0    50   Input ~ 0
+Text GLabel 10000 1100 0    50   Input ~ 0
 PC0
 $Sheet
-S 6550 3150 700  825 
+S 10200 2750 700  825 
 U 4EA1F56E
 F0 "driver-Z" 60
 F1 "driver.sch" 60
-F2 "DIR" I L 6550 3475 60 
-F3 "STEP" I L 6550 3625 60 
-F4 "~ENABLE" I L 6550 3325 60 
-F5 "Limit" I L 6550 3775 60 
+F2 "DIR" I L 10200 3075 60 
+F3 "STEP" I L 10200 3225 60 
+F4 "~ENABLE" I L 10200 2925 60 
+F5 "Limit" I L 10200 3375 60 
 $EndSheet
 $Sheet
-S 6550 2150 700  800 
+S 10200 1750 700  800 
 U 4EA1D353
 F0 "driver-Y" 60
 F1 "driver.sch" 60
-F2 "DIR" I L 6550 2475 60 
-F3 "STEP" I L 6550 2625 60 
-F4 "~ENABLE" I L 6550 2325 60 
-F5 "Limit" I L 6550 2775 60 
+F2 "DIR" I L 10200 2075 60 
+F3 "STEP" I L 10200 2225 60 
+F4 "~ENABLE" I L 10200 1925 60 
+F5 "Limit" I L 10200 2375 60 
 $EndSheet
 $Sheet
-S 6550 1175 700  775 
+S 10200 775  700  775 
 U 4EA1D331
 F0 "driver-X" 60
 F1 "driver.sch" 60
-F2 "DIR" I L 6550 1650 60 
-F3 "STEP" I L 6550 1500 60 
-F4 "~ENABLE" I L 6550 1350 60 
-F5 "Limit" I L 6550 1800 60 
+F2 "DIR" I L 10200 1250 60 
+F3 "STEP" I L 10200 1100 60 
+F4 "~ENABLE" I L 10200 950 60 
+F5 "Limit" I L 10200 1400 60 
 $EndSheet
-$Comp
-L R R3
-U 1 1 4EA1C995
-P 2425 5925
-F 0 "R3" V 2505 5925 50  0000 C CNN
-F 1 "200R" V 2425 5925 50  0000 C CNN
-	1    2425 5925
-	0    1    1    0   
-$EndComp
-$Comp
-L R R2
-U 1 1 4EA1C98F
-P 2425 5775
-F 0 "R2" V 2505 5775 50  0000 C CNN
-F 1 "200R" V 2425 5775 50  0000 C CNN
-	1    2425 5775
-	0    1    1    0   
-$EndComp
-$Comp
-L R R1
-U 1 1 4EA1C97E
-P 2425 5625
-F 0 "R1" V 2505 5625 50  0000 C CNN
-F 1 "200R" V 2425 5625 50  0000 C CNN
-	1    2425 5625
-	0    -1   -1   0   
-$EndComp
-$Comp
-L GND #PWR5
-U 1 1 4EA1C962
-P 1675 6225
-F 0 "#PWR5" H 1675 6225 30  0001 C CNN
-F 1 "GND" H 1675 6155 30  0001 C CNN
-	1    1675 6225
-	1    0    0    -1  
-$EndComp
-$Comp
-L +3.3V #PWR2
-U 1 1 4EA1C8DE
-P 1225 5675
-F 0 "#PWR2" H 1225 5635 30  0001 C CNN
-F 1 "+3.3V" H 1225 5785 30  0000 C CNN
-	1    1225 5675
-	0    -1   -1   0   
-$EndComp
-$Comp
-L +3.3V #PWR4
-U 1 1 4EA1C8CD
-P 1675 5350
-F 0 "#PWR4" H 1675 5310 30  0001 C CNN
-F 1 "+3.3V" H 1675 5460 30  0000 C CNN
-	1    1675 5350
-	1    0    0    -1  
-$EndComp
-Text GLabel 1225 5875 0    50   Input ~ 0
-PD2
-Text GLabel 2725 5925 2    50   Input ~ 0
-MOSI
-Text GLabel 2725 5775 2    50   Input ~ 0
-MISO
-Text GLabel 2725 5625 2    50   Input ~ 0
-SCK
-$Comp
-L 23K256 IC1
-U 1 1 4EA1C521
-P 1675 5775
-F 0 "IC1" H 1675 5875 60  0000 C CNN
-F 1 "23K256" H 1675 5775 60  0000 C CNN
-	1    1675 5775
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR8
-U 1 1 4EA1C108
-P 2200 5100
-F 0 "#PWR8" H 2200 5100 30  0001 C CNN
-F 1 "GND" H 2200 5030 30  0001 C CNN
-	1    2200 5100
-	1    0    0    -1  
-$EndComp
-$Comp
-L +5V #PWR7
-U 1 1 4EA1C100
-P 2200 4600
-F 0 "#PWR7" H 2200 4690 20  0001 C CNN
-F 1 "+5V" H 2200 4690 30  0000 C CNN
-	1    2200 4600
-	1    0    0    -1  
-$EndComp
-Text GLabel 1250 4950 0    50   Input ~ 0
-~Reset
-Text GLabel 1250 4850 0    50   Input ~ 0
-SCK
-Text GLabel 1250 4750 0    50   Input ~ 0
-MISO
-Text GLabel 2200 4850 2    50   Input ~ 0
-MOSI
-$Comp
-L AVR-ISP-6 CON1
-U 1 1 4EA1C0B8
-P 1700 4850
-F 0 "CON1" H 1620 5090 50  0000 C CNN
-F 1 "AVR-ISP-6" H 1460 4620 50  0000 L BNN
-F 2 "AVR-ISP-6" V 1180 4890 50  0001 C CNN
-	1    1700 4850
-	1    0    0    -1  
-$EndComp
-Text GLabel 4600 4000 2    50   Input ~ 0
-PD7
-Text GLabel 4600 3900 2    50   Input ~ 0
-PD6
-Text GLabel 4600 3800 2    50   Input ~ 0
-PD5
-Text GLabel 4600 3700 2    50   Input ~ 0
-PD4
-Text GLabel 4600 3600 2    50   Input ~ 0
-PD3
-Text GLabel 4600 3500 2    50   Input ~ 0
-PD2
-Text GLabel 4600 2200 2    50   Input ~ 0
-SCK
-Text GLabel 4600 2100 2    50   Input ~ 0
-MISO
-Text GLabel 4600 2000 2    50   Input ~ 0
-MOSI
-Text GLabel 4600 1900 2    50   Input ~ 0
-PB2
-Text GLabel 4600 1800 2    50   Input ~ 0
-PB1
-Text GLabel 4600 1700 2    50   Input ~ 0
-PB0
-Text GLabel 4600 3100 2    50   Input ~ 0
-ADC7
-Text GLabel 4600 3000 2    50   Input ~ 0
-ADC6
-Text GLabel 4600 2900 2    50   Input ~ 0
-PC5
-Text GLabel 4600 2800 2    50   Input ~ 0
-PC4
-Text GLabel 4600 2700 2    50   Input ~ 0
-PC3
-Text GLabel 4600 2600 2    50   Input ~ 0
-PC2
-Text GLabel 4600 2500 2    50   Input ~ 0
-PC1
-Text GLabel 4600 2400 2    50   Input ~ 0
-PC0
-Text GLabel 4600 3400 2    50   Input ~ 0
-TXD
-Text GLabel 4600 3300 2    50   Input ~ 0
-RXD
-$Comp
-L GND #PWR6
-U 1 1 4EA1B8D4
-P 2050 3000
-F 0 "#PWR6" H 2050 3000 30  0001 C CNN
-F 1 "GND" H 2050 2930 30  0001 C CNN
-	1    2050 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR3
-U 1 1 4EA1B8D0
-P 1450 3000
-F 0 "#PWR3" H 1450 3000 30  0001 C CNN
-F 1 "GND" H 1450 2930 30  0001 C CNN
-	1    1450 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C2
-U 1 1 4EA1B8C4
-P 2050 2700
-F 0 "C2" H 2100 2800 50  0000 L CNN
-F 1 "15pF" H 2100 2600 50  0000 L CNN
-	1    2050 2700
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C1
-U 1 1 4EA1B8BB
-P 1450 2700
-F 0 "C1" H 1500 2800 50  0000 L CNN
-F 1 "15pF" H 1500 2600 50  0000 L CNN
-	1    1450 2700
-	1    0    0    -1  
-$EndComp
-$Comp
-L CRYSTAL X1
-U 1 1 4EA1B8A7
-P 1750 2200
-F 0 "X1" H 1750 2350 60  0000 C CNN
-F 1 "20MHz" H 1750 2050 60  0000 C CNN
-	1    1750 2200
-	1    0    0    -1  
-$EndComp
-Text Label 2450 3400 3    60   ~ 0
-~reset
-Text GLabel 2350 3400 0    60   Input ~ 0
-~Reset
-$Comp
-L +5V #PWR9
-U 1 1 4EA1B75C
-P 2450 2650
-F 0 "#PWR9" H 2450 2740 20  0001 C CNN
-F 1 "+5V" H 2450 2740 30  0000 C CNN
-	1    2450 2650
-	1    0    0    -1  
-$EndComp
-$Comp
-L R R4
-U 1 1 4EA1B741
-P 2450 3000
-F 0 "R4" V 2530 3000 50  0000 C CNN
-F 1 "10k" V 2450 3000 50  0000 C CNN
-	1    2450 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR10
-U 1 1 4EA1B73A
-P 2450 4100
-F 0 "#PWR10" H 2450 4100 30  0001 C CNN
-F 1 "GND" H 2450 4030 30  0001 C CNN
-	1    2450 4100
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C3
-U 1 1 4EA1B731
-P 2450 3750
-F 0 "C3" H 2500 3850 50  0000 L CNN
-F 1 "100nF" H 2500 3650 50  0000 L CNN
-	1    2450 3750
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR12
-U 1 1 4EA1B63A
-P 3200 4450
-F 0 "#PWR12" H 3200 4450 30  0001 C CNN
-F 1 "GND" H 3200 4380 30  0001 C CNN
-	1    3200 4450
-	1    0    0    -1  
-$EndComp
-$Comp
-L +5V #PWR11
-U 1 1 4EA1AD2E
-P 3200 1200
-F 0 "#PWR11" H 3200 1290 20  0001 C CNN
-F 1 "+5V" H 3200 1290 30  0000 C CNN
-	1    3200 1200
-	1    0    0    -1  
-$EndComp
-$Comp
-L ATMEGA328-A IC2
-U 1 1 4EA1AD10
-P 3450 2800
-F 0 "IC2" H 2750 4050 50  0000 L BNN
-F 1 "ATMEGA328-A" H 3700 1400 50  0000 L BNN
-F 2 "TQFP32" H 2900 1450 50  0001 C CNN
-	1    3450 2800
-	1    0    0    -1  
-$EndComp
 $Sheet
-S 6300 5375 950  725 
+S 7000 750  950  725 
 U 4EA1A825
 F0 "Power Supply" 60
 F1 "psu.sch" 60
