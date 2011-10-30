@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-10-23T23:11:03 CEST
+EESchema Schematic File Version 2  date 2011-10-30T14:11:45 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -34,12 +34,13 @@ LIBS:23k256
 LIBS:tps78233
 LIBS:drv8811
 LIBS:mcu-nxp
+LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
-Sheet 2 6
+Sheet 2 7
 Title ""
-Date "23 oct 2011"
+Date "30 oct 2011"
 Rev ""
 Comp ""
 Comment1 ""
