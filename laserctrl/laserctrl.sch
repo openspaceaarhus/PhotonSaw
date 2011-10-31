@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-10-30T14:11:45 CET
+EESchema Schematic File Version 2  date 2011-10-31T20:32:47 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,9 +38,9 @@ LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
-Sheet 1 7
+Sheet 1 8
 Title ""
-Date "30 oct 2011"
+Date "31 oct 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -48,6 +48,36 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Text Notes 5100 4600 0    50   ~ 0
+~Watchdog Fire
+Text Notes 5100 4400 0    50   ~ 0
+LASER Ready
+Text Notes 5100 4100 0    50   ~ 0
+E-stop
+Text Notes 5100 3800 0    50   ~ 0
+Fire
+Wire Wire Line
+	4800 4550 4700 4550
+Wire Wire Line
+	8050 3500 8150 3500
+Wire Wire Line
+	8050 3200 8150 3200
+Wire Wire Line
+	4700 4050 4800 4050
+Wire Wire Line
+	8050 3050 8150 3050
+Wire Wire Line
+	10100 2750 10200 2750
+Wire Wire Line
+	10100 5400 10200 5400
+Wire Wire Line
+	4800 4250 4700 4250
+Wire Wire Line
+	4800 3950 4700 3950
+Wire Wire Line
+	4700 3650 4800 3650
+Wire Wire Line
+	1500 2950 1400 2950
 Connection ~ 7650 7000
 Wire Wire Line
 	7650 6950 7650 7000
@@ -248,6 +278,93 @@ Connection ~ 7500 6150
 Wire Wire Line
 	7500 6950 7500 7000
 Connection ~ 7500 7000
+Wire Wire Line
+	1400 2850 1500 2850
+Wire Wire Line
+	1400 6450 1500 6450
+Wire Wire Line
+	4700 3850 4800 3850
+Wire Wire Line
+	4700 4150 4800 4150
+Wire Wire Line
+	4700 4450 4800 4450
+Wire Wire Line
+	10200 4100 10100 4100
+Wire Wire Line
+	10100 1400 10200 1400
+Wire Wire Line
+	4800 4350 4700 4350
+Wire Wire Line
+	4700 3750 4800 3750
+Wire Wire Line
+	8150 3350 8050 3350
+Wire Wire Line
+	8150 2900 8050 2900
+Text GLabel 4800 4550 2    50   Input ~ 0
+P1.27
+Text GLabel 8050 3500 0    50   Input ~ 0
+P1.27
+Text GLabel 8050 3350 0    50   Input ~ 0
+P1.25
+Text GLabel 8050 3200 0    50   Input ~ 0
+P1.22
+Text GLabel 8050 2900 0    50   Input ~ 0
+P1.19
+Text GLabel 4800 4350 2    50   Input ~ 0
+P1.25
+Text GLabel 4800 4050 2    50   Input ~ 0
+P1.22
+Text GLabel 4800 3750 2    50   Input ~ 0
+P1.19
+$Sheet
+S 8150 2750 950  900 
+U 4EAEE920
+F0 "LASER Interface" 60
+F1 "laser.sch" 60
+F2 "~Watchdog Fire" I L 8150 3500 60 
+F3 "Fire" I L 8150 2900 60 
+F4 "E-stop" O L 8150 3200 60 
+F5 "LASER Ready" O L 8150 3350 60 
+F6 "Modulation" I L 8150 3050 60 
+$EndSheet
+Text GLabel 8050 3050 0    50   Input ~ 0
+PWM5
+Text GLabel 10100 5400 0    50   Input ~ 0
+PWM4
+Text GLabel 10100 4100 0    50   Input ~ 0
+PWM3
+Text GLabel 10100 2750 0    50   Input ~ 0
+PWM2
+Text GLabel 10100 1400 0    50   Input ~ 0
+PWM1
+Text Notes 5100 4300 0    50   ~ 0
+LASER PWM
+Text Notes 5100 4200 0    50   ~ 0
+A Current
+Text Notes 5100 4000 0    50   ~ 0
+Z Current
+Text Notes 5100 3900 0    50   ~ 0
+Y Current
+Text Notes 5100 3700 0    50   ~ 0
+X Current 
+Text GLabel 4800 4450 2    50   Input ~ 0
+PWM6
+Text GLabel 4800 4250 2    50   Input ~ 0
+PWM5
+Text GLabel 4800 4150 2    50   Input ~ 0
+PWM4
+Text GLabel 4800 3950 2    50   Input ~ 0
+PWM3
+Text GLabel 4800 3850 2    50   Input ~ 0
+PWM2
+Text GLabel 4800 3650 2    50   Input ~ 0
+PWM1
+Text GLabel 1400 6450 0    50   Input ~ 0
+~ISP
+Text GLabel 1400 2950 0    50   Input ~ 0
+RXD0
+Text GLabel 1400 2850 0    50   Input ~ 0
+TXD0
 $Comp
 L C C?
 U 1 1 4EAD4B80
@@ -286,9 +403,9 @@ S 10200 4800 700  1100
 U 4EAD3DC6
 F0 "driver-A" 60
 F1 "driver.sch" 60
-F2 "Max-Limit" I L 10200 5550 60 
+F2 "Max-Limit" O L 10200 5550 60 
 F3 "Current" I L 10200 5400 60 
-F4 "Min-Limit" I L 10200 5700 60 
+F4 "Min-Limit" O L 10200 5700 60 
 F5 "DIR" I L 10200 5100 60 
 F6 "STEP" I L 10200 5250 60 
 F7 "~ENABLE" I L 10200 4950 60 
@@ -301,9 +418,9 @@ F1 "driver.sch" 60
 F2 "DIR" I L 10200 2450 60 
 F3 "STEP" I L 10200 2600 60 
 F4 "~ENABLE" I L 10200 2300 60 
-F5 "Max-Limit" I L 10200 2900 60 
+F5 "Max-Limit" O L 10200 2900 60 
 F6 "Current" I L 10200 2750 60 
-F7 "Min-Limit" I L 10200 3050 60 
+F7 "Min-Limit" O L 10200 3050 60 
 $EndSheet
 $Comp
 L R R?
@@ -555,15 +672,6 @@ U 4EA3E488
 F0 "watchdog" 60
 F1 "watchdog.sch" 60
 $EndSheet
-$Comp
-L CONN_5 P2
-U 1 1 4EA29595
-P 6950 1050
-F 0 "P2" V 6900 1050 50  0000 C CNN
-F 1 "CONN_5" V 7000 1050 50  0000 C CNN
-	1    6950 1050
-	1    0    0    -1  
-$EndComp
 $Sheet
 S 10200 3500 700  1100
 U 4EA1F56E
@@ -572,9 +680,9 @@ F1 "driver.sch" 60
 F2 "DIR" I L 10200 3800 60 
 F3 "STEP" I L 10200 3950 60 
 F4 "~ENABLE" I L 10200 3650 60 
-F5 "Max-Limit" I L 10200 4250 60 
+F5 "Max-Limit" O L 10200 4250 60 
 F6 "Current" I L 10200 4100 60 
-F7 "Min-Limit" I L 10200 4400 60 
+F7 "Min-Limit" O L 10200 4400 60 
 $EndSheet
 $Sheet
 S 10200 775  700  1125
@@ -584,9 +692,9 @@ F1 "driver.sch" 60
 F2 "DIR" I L 10200 1250 60 
 F3 "STEP" I L 10200 1100 60 
 F4 "~ENABLE" I L 10200 950 60 
-F5 "Max-Limit" I L 10200 1550 60 
+F5 "Max-Limit" O L 10200 1550 60 
 F6 "Current" I L 10200 1400 60 
-F7 "Min-Limit" I L 10200 1700 60 
+F7 "Min-Limit" O L 10200 1700 60 
 $EndSheet
 $Sheet
 S 9950 6250 950  725 

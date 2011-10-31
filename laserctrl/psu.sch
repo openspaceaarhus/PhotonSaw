@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-10-30T14:11:45 CET
+EESchema Schematic File Version 2  date 2011-10-31T20:32:47 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,9 +38,9 @@ LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
-Sheet 6 7
+Sheet 6 8
 Title ""
-Date "30 oct 2011"
+Date "31 oct 2011"
 Rev ""
 Comp ""
 Comment1 ""

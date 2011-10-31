@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-10-30T14:11:45 CET
+EESchema Schematic File Version 2  date 2011-10-31T20:32:47 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -38,9 +38,9 @@ LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
-Sheet 5 7
+Sheet 7 8
 Title ""
-Date "30 oct 2011"
+Date "31 oct 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -288,7 +288,7 @@ F 1 "LED" H 3700 6750 50  0000 C CNN
 	1    3700 6850
 	0    1    1    0   
 $EndComp
-Text HLabel 3400 7150 0    50   Input ~ 0
+Text HLabel 3400 7150 0    50   Output ~ 0
 Max-Limit
 $Comp
 L +3.3V #PWR?
@@ -400,7 +400,7 @@ F 1 "10k" V 2100 4750 50  0000 C CNN
 	1    2100 4750
 	-1   0    0    1   
 $EndComp
-Text HLabel 1550 7100 0    50   Input ~ 0
+Text HLabel 1550 7100 0    50   Output ~ 0
 Min-Limit
 $Comp
 L LED D5
