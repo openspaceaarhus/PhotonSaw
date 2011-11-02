@@ -1,4 +1,4 @@
-update=2011-10-23T11:52:48 CEST
+update=2011-11-02T19:33:27 CET
 version=1
 last_client=eeschema
 [cvpcb]
@@ -147,3 +147,4 @@ LibName33=libs/23k256
 LibName34=libs/tps78233
 LibName35=libs/drv8811
 LibName36=libs/mcu-nxp
+LibName37=libs/opto-transistor-4p2
