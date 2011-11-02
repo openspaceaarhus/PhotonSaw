@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-10-31T20:32:47 CET
+EESchema Schematic File Version 2  date 2011-11-03T00:14:20 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -34,13 +34,15 @@ LIBS:23k256
 LIBS:tps78233
 LIBS:drv8811
 LIBS:mcu-nxp
+LIBS:opto-transistor-4p2
 LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
+encoding utf-8
 Sheet 1 8
 Title ""
-Date "31 oct 2011"
+Date "2 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -48,18 +50,10 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Notes 5100 4600 0    50   ~ 0
-~Watchdog Fire
-Text Notes 5100 4400 0    50   ~ 0
-LASER Ready
-Text Notes 5100 4100 0    50   ~ 0
-E-stop
-Text Notes 5100 3800 0    50   ~ 0
-Fire
-Wire Wire Line
-	4800 4550 4700 4550
 Wire Wire Line
 	8050 3500 8150 3500
+Wire Wire Line
+	4800 4550 4700 4550
 Wire Wire Line
 	8050 3200 8150 3200
 Wire Wire Line
@@ -300,6 +294,14 @@ Wire Wire Line
 	8150 3350 8050 3350
 Wire Wire Line
 	8150 2900 8050 2900
+Text Notes 5100 4600 0    50   ~ 0
+Watchdog Ready
+Text Notes 5100 4400 0    50   ~ 0
+LASER Ready
+Text Notes 5100 4100 0    50   ~ 0
+E-stop
+Text Notes 5100 3800 0    50   ~ 0
+Fire
 Text GLabel 4800 4550 2    50   Input ~ 0
 P1.27
 Text GLabel 8050 3500 0    50   Input ~ 0
@@ -317,15 +319,16 @@ P1.22
 Text GLabel 4800 3750 2    50   Input ~ 0
 P1.19
 $Sheet
-S 8150 2750 950  900 
+S 8150 2750 950  1050
 U 4EAEE920
 F0 "LASER Interface" 60
 F1 "laser.sch" 60
-F2 "~Watchdog Fire" I L 8150 3500 60 
-F3 "Fire" I L 8150 2900 60 
-F4 "E-stop" O L 8150 3200 60 
-F5 "LASER Ready" O L 8150 3350 60 
-F6 "Modulation" I L 8150 3050 60 
+F2 "Fire" I L 8150 2900 60 
+F3 "E-stop" O L 8150 3200 60 
+F4 "LASER Ready" O L 8150 3350 60 
+F5 "Modulation" I L 8150 3050 60 
+F6 "Watchdog Fire" I L 8150 3650 60 
+F7 "Watchdog ready" O L 8150 3500 60 
 $EndSheet
 Text GLabel 8050 3050 0    50   Input ~ 0
 PWM5
