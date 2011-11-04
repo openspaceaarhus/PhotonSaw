@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-03T00:14:20 CET
+EESchema Schematic File Version 2  date 2011-11-04T21:23:22 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -42,7 +42,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 7 8
 Title ""
-Date "2 nov 2011"
+Date "4 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -50,26 +50,121 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L GND #PWR?
+U 1 1 4EB44970
+P 4250 7600
+F 0 "#PWR?" H 4250 7600 30  0001 C CNN
+F 1 "GND" H 4250 7530 30  0001 C CNN
+	1    4250 7600
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_2 P?
+U 1 1 4EB4496F
+P 5050 7250
+F 0 "P?" V 5000 7250 40  0000 C CNN
+F 1 "CONN_2" V 5100 7250 40  0000 C CNN
+	1    5050 7250
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB4496E
+P 4250 6300
+F 0 "R?" V 4330 6300 50  0000 C CNN
+F 1 "1k" V 4250 6300 50  0000 C CNN
+	1    4250 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB4496D
+P 4050 6300
+F 0 "R?" V 4130 6300 50  0000 C CNN
+F 1 "330" V 4050 6300 50  0000 C CNN
+	1    4050 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED D?
+U 1 1 4EB4496C
+P 4050 6850
+F 0 "D?" H 4050 6950 50  0000 C CNN
+F 1 "LED" H 4050 6750 50  0000 C CNN
+	1    4050 6850
+	0    1    1    0   
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 4EB4496B
+P 4450 5950
+F 0 "#PWR?" H 4450 5910 30  0001 C CNN
+F 1 "+3.3V" H 4450 6060 30  0000 C CNN
+	1    4450 5950
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB4496A
+P 4450 6350
+F 0 "D?" H 4550 6300 40  0000 C CNN
+F 1 "DIODE" H 4450 6250 40  0000 C CNN
+	1    4450 6350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB44969
+P 4450 7250
+F 0 "D?" H 4150 7250 40  0000 C CNN
+F 1 "DIODE" H 4450 7100 40  0000 C CNN
+	1    4450 7250
+	1    0    0    -1  
+$EndComp
+Connection ~ 4250 7350
+Wire Wire Line
+	4250 7250 4250 7600
+Connection ~ 4250 6000
+Wire Wire Line
+	4250 6050 4250 6000
+Wire Wire Line
+	4050 6000 4450 6000
+Connection ~ 4450 7150
+Wire Wire Line
+	4450 6550 4450 7150
+Wire Wire Line
+	4700 7150 3750 7150
+Wire Wire Line
+	4050 6550 4050 6650
+Connection ~ 4050 7150
+Wire Wire Line
+	4050 7150 4050 7050
+Wire Wire Line
+	4250 6550 4250 7150
+Connection ~ 4250 7150
+Wire Wire Line
+	4250 7350 4700 7350
+Wire Wire Line
+	4050 6050 4050 6000
+Wire Wire Line
+	4450 5950 4450 6150
+Connection ~ 4450 6000
+Wire Wire Line
+	4650 7250 4650 7150
+Connection ~ 4650 7150
+Connection ~ 2450 7150
+Wire Wire Line
+	2450 7250 2450 7150
+Connection ~ 2250 6000
+Wire Wire Line
+	2250 5950 2250 6150
+Wire Wire Line
+	1850 6050 1850 6000
+Wire Wire Line
+	2050 7350 2500 7350
 Wire Wire Line
 	5350 1700 5350 1850
-Wire Wire Line
-	3900 5950 3900 6050
-Wire Wire Line
-	3700 6550 3700 6650
-Connection ~ 3700 7150
-Wire Wire Line
-	4050 7150 3400 7150
-Wire Wire Line
-	3700 7150 3700 7050
-Wire Wire Line
-	3900 6550 3900 7150
-Connection ~ 3900 7150
-Wire Wire Line
-	3700 6050 3700 5950
-Wire Wire Line
-	3900 7600 3900 7350
-Wire Wire Line
-	3900 7350 4050 7350
 Wire Wire Line
 	2700 4000 2750 4000
 Connection ~ 3350 4000
@@ -89,17 +184,11 @@ Connection ~ 5550 5450
 Connection ~ 5250 5450
 Wire Wire Line
 	6050 5450 3600 5450
+Connection ~ 2050 7150
 Wire Wire Line
-	2200 7300 2050 7300
+	2050 6550 2050 7150
 Wire Wire Line
-	2050 7300 2050 7550
-Wire Wire Line
-	1850 6000 1850 5900
-Connection ~ 2050 7100
-Wire Wire Line
-	2050 6500 2050 7100
-Wire Wire Line
-	1850 7100 1850 7000
+	1850 7150 1850 7050
 Wire Wire Line
 	3650 3400 1650 3400
 Wire Wire Line
@@ -211,13 +300,9 @@ Wire Wire Line
 	1400 3300 1400 4000
 Wire Wire Line
 	3650 3600 1650 3600
+Connection ~ 1850 7150
 Wire Wire Line
-	2200 7100 1550 7100
-Connection ~ 1850 7100
-Wire Wire Line
-	1850 6500 1850 6600
-Wire Wire Line
-	2050 5900 2050 6000
+	1850 6550 1850 6650
 Wire Wire Line
 	4050 4750 4050 5450
 Connection ~ 4050 5450
@@ -245,71 +330,39 @@ Wire Wire Line
 	5350 1150 5150 1150
 Wire Wire Line
 	5150 1150 5150 1850
+Wire Wire Line
+	2500 7150 1550 7150
+Wire Wire Line
+	2250 6550 2250 7150
+Connection ~ 2250 7150
+Wire Wire Line
+	1850 6000 2250 6000
+Wire Wire Line
+	2050 6050 2050 6000
+Connection ~ 2050 6000
+Wire Wire Line
+	2050 7250 2050 7600
+Connection ~ 2050 7350
 $Comp
-L GND #PWR?
-U 1 1 4EAD2CF1
-P 3900 7600
-F 0 "#PWR?" H 3900 7600 30  0001 C CNN
-F 1 "GND" H 3900 7530 30  0001 C CNN
-	1    3900 7600
+L DIODE D?
+U 1 1 4EB4493E
+P 2250 7250
+F 0 "D?" H 1950 7250 40  0000 C CNN
+F 1 "DIODE" H 2250 7100 40  0000 C CNN
+	1    2250 7250
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_2 P?
-U 1 1 4EAD2CF0
-P 4400 7250
-F 0 "P?" V 4350 7250 40  0000 C CNN
-F 1 "CONN_2" V 4450 7250 40  0000 C CNN
-	1    4400 7250
-	1    0    0    -1  
+L DIODE D?
+U 1 1 4EB448E5
+P 2250 6350
+F 0 "D?" H 2350 6300 40  0000 C CNN
+F 1 "DIODE" H 2250 6250 40  0000 C CNN
+	1    2250 6350
+	0    -1   -1   0   
 $EndComp
-$Comp
-L R R?
-U 1 1 4EAD2CEF
-P 3900 6300
-F 0 "R?" V 3980 6300 50  0000 C CNN
-F 1 "1k" V 3900 6300 50  0000 C CNN
-	1    3900 6300
-	1    0    0    -1  
-$EndComp
-$Comp
-L R R?
-U 1 1 4EAD2CEE
-P 3700 6300
-F 0 "R?" V 3780 6300 50  0000 C CNN
-F 1 "330" V 3700 6300 50  0000 C CNN
-	1    3700 6300
-	1    0    0    -1  
-$EndComp
-$Comp
-L LED D?
-U 1 1 4EAD2CED
-P 3700 6850
-F 0 "D?" H 3700 6950 50  0000 C CNN
-F 1 "LED" H 3700 6750 50  0000 C CNN
-	1    3700 6850
-	0    1    1    0   
-$EndComp
-Text HLabel 3400 7150 0    50   Output ~ 0
+Text HLabel 3750 7150 0    50   Output ~ 0
 Max-Limit
-$Comp
-L +3.3V #PWR?
-U 1 1 4EAD2CEC
-P 3900 5950
-F 0 "#PWR?" H 3900 5910 30  0001 C CNN
-F 1 "+3.3V" H 3900 6060 30  0000 C CNN
-	1    3900 5950
-	1    0    0    -1  
-$EndComp
-$Comp
-L +3.3V #PWR?
-U 1 1 4EAD2CEB
-P 3700 5950
-F 0 "#PWR?" H 3700 5910 30  0001 C CNN
-F 1 "+3.3V" H 3700 6060 30  0000 C CNN
-	1    3700 5950
-	1    0    0    -1  
-$EndComp
 $Comp
 L +3.3V #PWR?
 U 1 1 4EAD2C72
@@ -330,20 +383,11 @@ F 1 "+3.3V" H 1900 3260 30  0000 C CNN
 $EndComp
 $Comp
 L +3.3V #PWR?
-U 1 1 4EAD2C67
-P 1850 5900
-F 0 "#PWR?" H 1850 5860 30  0001 C CNN
-F 1 "+3.3V" H 1850 6010 30  0000 C CNN
-	1    1850 5900
-	1    0    0    -1  
-$EndComp
-$Comp
-L +3.3V #PWR?
 U 1 1 4EAD2C61
-P 2050 5900
-F 0 "#PWR?" H 2050 5860 30  0001 C CNN
-F 1 "+3.3V" H 2050 6010 30  0000 C CNN
-	1    2050 5900
+P 2250 5950
+F 0 "#PWR?" H 2250 5910 30  0001 C CNN
+F 1 "+3.3V" H 2250 6060 30  0000 C CNN
+	1    2250 5950
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -402,71 +446,71 @@ F 1 "10k" V 2100 4750 50  0000 C CNN
 	1    2100 4750
 	-1   0    0    1   
 $EndComp
-Text HLabel 1550 7100 0    50   Output ~ 0
+Text HLabel 1550 7150 0    50   Output ~ 0
 Min-Limit
 $Comp
 L LED D5
 U 1 1 4EA29348
-P 1850 6800
+P 1850 6850
 AR Path="/4EA1F594/4EA29348" Ref="D5"  Part="1" 
 AR Path="/4EA1F56E/4EA29348" Ref="D4"  Part="1" 
 AR Path="/4EA1D353/4EA29348" Ref="D3"  Part="1" 
 AR Path="/4EA1D331/4EA29348" Ref="D2"  Part="1" 
-F 0 "D2" H 1850 6900 50  0000 C CNN
-F 1 "LED" H 1850 6700 50  0000 C CNN
-	1    1850 6800
+F 0 "D2" H 1850 6950 50  0000 C CNN
+F 1 "LED" H 1850 6750 50  0000 C CNN
+	1    1850 6850
 	0    1    1    0   
 $EndComp
 $Comp
 L R R26
 U 1 1 4EA29337
-P 1850 6250
+P 1850 6300
 AR Path="/4EA1F594/4EA29337" Ref="R26"  Part="1" 
 AR Path="/4EA1F56E/4EA29337" Ref="R20"  Part="1" 
 AR Path="/4EA1D353/4EA29337" Ref="R14"  Part="1" 
 AR Path="/4EA1D331/4EA29337" Ref="R8"  Part="1" 
-F 0 "R8" V 1930 6250 50  0000 C CNN
-F 1 "330" V 1850 6250 50  0000 C CNN
-	1    1850 6250
+F 0 "R8" V 1930 6300 50  0000 C CNN
+F 1 "330" V 1850 6300 50  0000 C CNN
+	1    1850 6300
 	1    0    0    -1  
 $EndComp
 $Comp
 L R R27
 U 1 1 4EA2931D
-P 2050 6250
+P 2050 6300
 AR Path="/4EA1F594/4EA2931D" Ref="R27"  Part="1" 
 AR Path="/4EA1F56E/4EA2931D" Ref="R21"  Part="1" 
 AR Path="/4EA1D353/4EA2931D" Ref="R15"  Part="1" 
 AR Path="/4EA1D331/4EA2931D" Ref="R9"  Part="1" 
-F 0 "R9" V 2130 6250 50  0000 C CNN
-F 1 "1k" V 2050 6250 50  0000 C CNN
-	1    2050 6250
+F 0 "R9" V 2130 6300 50  0000 C CNN
+F 1 "1k" V 2050 6300 50  0000 C CNN
+	1    2050 6300
 	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_2 P9
 U 1 1 4EA29315
-P 2550 7200
+P 2850 7250
 AR Path="/4EA1F594/4EA29315" Ref="P9"  Part="1" 
 AR Path="/4EA1F56E/4EA29315" Ref="P7"  Part="1" 
 AR Path="/4EA1D353/4EA29315" Ref="P5"  Part="1" 
 AR Path="/4EA1D331/4EA29315" Ref="P3"  Part="1" 
-F 0 "P3" V 2500 7200 40  0000 C CNN
-F 1 "CONN_2" V 2600 7200 40  0000 C CNN
-	1    2550 7200
+F 0 "P3" V 2800 7250 40  0000 C CNN
+F 1 "CONN_2" V 2900 7250 40  0000 C CNN
+	1    2850 7250
 	1    0    0    -1  
 $EndComp
 $Comp
 L GND #PWR69
 U 1 1 4EA29310
-P 2050 7550
+P 2050 7600
 AR Path="/4EA1F594/4EA29310" Ref="#PWR69"  Part="1" 
 AR Path="/4EA1F56E/4EA29310" Ref="#PWR58"  Part="1" 
 AR Path="/4EA1D353/4EA29310" Ref="#PWR47"  Part="1" 
 AR Path="/4EA1D331/4EA29310" Ref="#PWR36"  Part="1" 
-F 0 "#PWR36" H 2050 7550 30  0001 C CNN
-F 1 "GND" H 2050 7480 30  0001 C CNN
-	1    2050 7550
+F 0 "#PWR36" H 2050 7600 30  0001 C CNN
+F 1 "GND" H 2050 7530 30  0001 C CNN
+	1    2050 7600
 	1    0    0    -1  
 $EndComp
 $Comp
