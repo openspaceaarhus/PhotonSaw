@@ -4,7 +4,7 @@ use warnings;
 
 my $B50 = 3936;
 
-sub t2c {
+sub r2c {
     my ($r) = @_;
     return 1/(1/(25+273.15) + 1/3930 * log($r/5000))-273.15;
 }
@@ -18,8 +18,8 @@ sub hz2gs {
 sub sample2power {
     my ($r0, $r1, $hz) = @_;
     
-    my $t0 = t2c($r0);
-    my $t1 = t2c($r1);
+    my $t0 = r2c($r0);
+    my $t1 = r2c($r1);
     my $g = hz2gs($hz);
     
     return (int(10*$g * ($t0-$t1) * 4.185)/10, 
@@ -35,4 +35,22 @@ my @d = (
 for my $s (@d) {
     my ($power, $t1, $t0, $flow) = sample2power(@$s);
     print "$power Watt (flow: $flow G/s, T0: $t0 C, T1: $t1 C)\n";
+}
+
+
+my $R = 2000;
+my $U = 24;
+for my $r (250, 500, 1000, 2000, 2500, 3000, 3690, 4790, 5000, 5220, 6000, 7000, 8000, 9000, 15000, 16000, 17000, 19500) {
+    my $c = r2c($r);
+    
+    my $v = $U*$r/($r+$R);
+    my $i = 1000*$U/($r+$R);
+    my $p = $i*$v;
+
+    #my $r2 = (5*$R)/$v-$R;
+    my $r2 = -$v*$R/($v-$U); 
+    
+    my $v2 = $v * 18/(18+100);
+
+    print "$r:$r r2:$r2 v:$v i:$i p:$p c:$c v2:$v2\n";
 }

@@ -1,0 +1,510 @@
+EESchema Schematic File Version 2  date 2011-11-05T15:41:06 CET
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:mounting
+LIBS:23k256
+LIBS:tps78233
+LIBS:drv8811
+LIBS:mcu-nxp
+LIBS:opto-transistor-4p2
+LIBS:laserctrl-cache
+EELAYER 25  0
+EELAYER END
+$Descr A4 11700 8267
+encoding utf-8
+Sheet 2 9
+Title ""
+Date "5 nov 2011"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+Text Notes 3100 4700 0    50   ~ 0
+Self-heating NTC\nplaced in air flow
+Text Notes 2650 3850 0    50   ~ 0
+10mA\nconstant current
+Wire Wire Line
+	2000 4050 2000 4100
+Wire Wire Line
+	2000 4100 2250 4100
+Wire Wire Line
+	2550 3850 2300 3850
+Wire Wire Line
+	2550 3200 2550 3300
+Wire Wire Line
+	2550 5000 1300 5000
+Wire Wire Line
+	1950 4400 1200 4400
+Wire Wire Line
+	1300 3700 1300 3850
+Connection ~ 1300 4400
+Wire Wire Line
+	2550 4600 2550 4300
+Connection ~ 1550 4400
+Wire Wire Line
+	1550 4500 1550 4400
+Wire Wire Line
+	1550 5000 1550 4900
+Connection ~ 2550 4400
+Wire Wire Line
+	2550 4800 2550 5100
+Connection ~ 2550 5000
+Wire Wire Line
+	1300 5000 1300 4900
+Connection ~ 1550 5000
+Wire Wire Line
+	1300 4250 1300 4500
+Wire Wire Line
+	5000 1650 5000 1900
+Connection ~ 5250 2400
+Wire Wire Line
+	5500 2400 5000 2400
+Wire Wire Line
+	5000 2400 5000 2300
+Connection ~ 5500 2400
+Wire Wire Line
+	5500 2200 5500 2500
+Connection ~ 5500 1800
+Wire Wire Line
+	5500 1800 4900 1800
+Wire Wire Line
+	5250 2400 5250 2300
+Wire Wire Line
+	5250 1900 5250 1800
+Connection ~ 5250 1800
+Wire Wire Line
+	5500 2000 5500 1700
+Wire Wire Line
+	5500 1100 5500 1200
+Connection ~ 5000 1800
+Wire Wire Line
+	5000 1100 5000 1250
+Wire Wire Line
+	3200 1100 3200 1250
+Connection ~ 3200 1800
+Wire Wire Line
+	3700 1100 3700 1200
+Wire Wire Line
+	3700 2000 3700 1700
+Connection ~ 3450 1800
+Wire Wire Line
+	3450 1900 3450 1800
+Wire Wire Line
+	3450 2400 3450 2300
+Wire Wire Line
+	3700 1800 3100 1800
+Connection ~ 3700 1800
+Wire Wire Line
+	3700 2200 3700 2500
+Connection ~ 3700 2400
+Wire Wire Line
+	3200 2300 3200 2400
+Wire Wire Line
+	3200 2400 3700 2400
+Connection ~ 3450 2400
+Wire Wire Line
+	3200 1650 3200 1900
+Wire Wire Line
+	1600 1650 1600 1900
+Connection ~ 1850 2400
+Wire Wire Line
+	2100 2400 1600 2400
+Wire Wire Line
+	1600 2400 1600 2300
+Connection ~ 2100 2400
+Wire Wire Line
+	2100 2200 2100 2500
+Connection ~ 2100 1800
+Wire Wire Line
+	2100 1800 1500 1800
+Wire Wire Line
+	1850 2400 1850 2300
+Wire Wire Line
+	1850 1900 1850 1800
+Connection ~ 1850 1800
+Wire Wire Line
+	2100 2000 2100 1700
+Wire Wire Line
+	2100 1100 2100 1200
+Connection ~ 1600 1800
+Wire Wire Line
+	1600 1100 1600 1250
+Wire Wire Line
+	2550 4400 2450 4400
+Wire Wire Line
+	1800 4450 1800 4400
+Connection ~ 1800 4400
+Wire Wire Line
+	1800 4950 1800 5000
+Connection ~ 1800 5000
+Wire Wire Line
+	2550 3300 2000 3300
+Wire Wire Line
+	2000 3300 2000 3650
+Wire Wire Line
+	2550 3900 2550 3800
+Connection ~ 2550 3850
+$Comp
+L +24V #PWR?
+U 1 1 4EB542F9
+P 2550 3200
+F 0 "#PWR?" H 2550 3150 20  0001 C CNN
+F 1 "+24V" H 2550 3300 30  0000 C CNN
+	1    2550 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB542D5
+P 2550 3550
+F 0 "R?" V 2630 3550 50  0000 C CNN
+F 1 "68R" V 2550 3550 50  0000 C CNN
+	1    2550 3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L PNP Q?
+U 1 1 4EB542BA
+P 2100 3850
+F 0 "Q?" H 2100 3700 60  0000 R CNN
+F 1 "BC807" V 2350 3850 60  0000 R CNN
+	1    2100 3850
+	-1   0    0    1   
+$EndComp
+$Comp
+L PNP Q?
+U 1 1 4EB542A8
+P 2450 4100
+F 0 "Q?" H 2450 3950 60  0000 R CNN
+F 1 "BC807" H 2450 4250 60  0000 R CNN
+	1    2450 4100
+	1    0    0    1   
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB528F0
+P 2200 4400
+F 0 "R?" V 2280 4400 50  0000 C CNN
+F 1 "100k" V 2200 4400 50  0000 C CNN
+	1    2200 4400
+	0    1    1    0   
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB528C5
+P 1800 4700
+F 0 "R?" V 1880 4700 50  0000 C CNN
+F 1 "15k" V 1800 4700 50  0000 C CNN
+	1    1800 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EB5260C
+P 1550 4700
+F 0 "C?" H 1450 4800 50  0000 L CNN
+F 1 "100nF" H 1500 4350 50  0000 L CNN
+	1    1550 4700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L AGND #PWR?
+U 1 1 4EB5260B
+P 2550 5100
+F 0 "#PWR?" H 2550 5100 40  0001 C CNN
+F 1 "AGND" H 2550 5030 50  0000 C CNN
+	1    2550 5100
+	-1   0    0    -1  
+$EndComp
+Text HLabel 1200 4400 0    50   Output ~ 0
+airflow
+$Comp
+L CONN_2 P?
+U 1 1 4EB5260A
+P 2900 4700
+F 0 "P?" V 2850 4700 40  0000 C CNN
+F 1 "CONN_2" V 2950 4700 40  0000 C CNN
+	1    2900 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB52608
+P 1300 4050
+F 0 "D?" H 1300 4150 40  0000 C CNN
+F 1 "DIODE" H 1300 3950 40  0000 C CNN
+	1    1300 4050
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB52607
+P 1300 4700
+F 0 "D?" H 1300 4800 40  0000 C CNN
+F 1 "DIODE" H 1300 4600 40  0000 C CNN
+	1    1300 4700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L +3.3VADC #PWR?
+U 1 1 4EB52606
+P 1300 3700
+F 0 "#PWR?" H 1300 3820 20  0001 C CNN
+F 1 "+3.3VADC" H 1300 3790 30  0000 C CNN
+	1    1300 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3VADC #PWR?
+U 1 1 4EB52599
+P 5000 1100
+F 0 "#PWR?" H 5000 1220 20  0001 C CNN
+F 1 "+3.3VADC" H 5000 1190 30  0000 C CNN
+	1    5000 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB52598
+P 5000 2100
+F 0 "D?" H 5000 2200 40  0000 C CNN
+F 1 "DIODE" H 5000 2000 40  0000 C CNN
+	1    5000 2100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB52597
+P 5000 1450
+F 0 "D?" H 5000 1550 40  0000 C CNN
+F 1 "DIODE" H 5000 1350 40  0000 C CNN
+	1    5000 1450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 4EB52596
+P 5500 1100
+F 0 "#PWR?" H 5500 1190 20  0001 C CNN
+F 1 "+5V" H 5500 1190 30  0000 C CNN
+	1    5500 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_2 P?
+U 1 1 4EB52595
+P 5850 2100
+F 0 "P?" V 5800 2100 40  0000 C CNN
+F 1 "CONN_2" V 5900 2100 40  0000 C CNN
+	1    5850 2100
+	1    0    0    -1  
+$EndComp
+Text HLabel 4900 1800 0    50   Output ~ 0
+laser-out
+$Comp
+L AGND #PWR?
+U 1 1 4EB52594
+P 5500 2500
+F 0 "#PWR?" H 5500 2500 40  0001 C CNN
+F 1 "AGND" H 5500 2430 50  0000 C CNN
+	1    5500 2500
+	-1   0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EB52593
+P 5250 2100
+F 0 "C?" H 5150 2200 50  0000 L CNN
+F 1 "100nF" H 5200 1750 50  0000 L CNN
+	1    5250 2100
+	-1   0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB52592
+P 5500 1450
+F 0 "R?" V 5580 1450 50  0000 C CNN
+F 1 "10k" V 5500 1450 50  0000 C CNN
+	1    5500 1450
+	-1   0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB52540
+P 3700 1450
+F 0 "R?" V 3780 1450 50  0000 C CNN
+F 1 "10k" V 3700 1450 50  0000 C CNN
+	1    3700 1450
+	-1   0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EB5253F
+P 3450 2100
+F 0 "C?" H 3350 2200 50  0000 L CNN
+F 1 "100nF" H 3400 1750 50  0000 L CNN
+	1    3450 2100
+	-1   0    0    -1  
+$EndComp
+$Comp
+L AGND #PWR?
+U 1 1 4EB5253E
+P 3700 2500
+F 0 "#PWR?" H 3700 2500 40  0001 C CNN
+F 1 "AGND" H 3700 2430 50  0000 C CNN
+	1    3700 2500
+	-1   0    0    -1  
+$EndComp
+Text HLabel 3100 1800 0    50   Output ~ 0
+laser-in
+$Comp
+L CONN_2 P?
+U 1 1 4EB5253D
+P 4050 2100
+F 0 "P?" V 4000 2100 40  0000 C CNN
+F 1 "CONN_2" V 4100 2100 40  0000 C CNN
+	1    4050 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 4EB5253C
+P 3700 1100
+F 0 "#PWR?" H 3700 1190 20  0001 C CNN
+F 1 "+5V" H 3700 1190 30  0000 C CNN
+	1    3700 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB5253B
+P 3200 1450
+F 0 "D?" H 3200 1550 40  0000 C CNN
+F 1 "DIODE" H 3200 1350 40  0000 C CNN
+	1    3200 1450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB5253A
+P 3200 2100
+F 0 "D?" H 3200 2200 40  0000 C CNN
+F 1 "DIODE" H 3200 2000 40  0000 C CNN
+	1    3200 2100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L +3.3VADC #PWR?
+U 1 1 4EB52539
+P 3200 1100
+F 0 "#PWR?" H 3200 1220 20  0001 C CNN
+F 1 "+3.3VADC" H 3200 1190 30  0000 C CNN
+	1    3200 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3VADC #PWR?
+U 1 1 4EB52427
+P 1600 1100
+F 0 "#PWR?" H 1600 1220 20  0001 C CNN
+F 1 "+3.3VADC" H 1600 1190 30  0000 C CNN
+	1    1600 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB52405
+P 1600 2100
+F 0 "D?" H 1600 2200 40  0000 C CNN
+F 1 "DIODE" H 1600 2000 40  0000 C CNN
+	1    1600 2100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EB523F4
+P 1600 1450
+F 0 "D?" H 1600 1550 40  0000 C CNN
+F 1 "DIODE" H 1600 1350 40  0000 C CNN
+	1    1600 1450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L +5V #PWR?
+U 1 1 4EB523C5
+P 2100 1100
+F 0 "#PWR?" H 2100 1190 20  0001 C CNN
+F 1 "+5V" H 2100 1190 30  0000 C CNN
+	1    2100 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_2 P?
+U 1 1 4EB523A3
+P 2450 2100
+F 0 "P?" V 2400 2100 40  0000 C CNN
+F 1 "CONN_2" V 2500 2100 40  0000 C CNN
+	1    2450 2100
+	1    0    0    -1  
+$EndComp
+Text HLabel 1500 1800 0    50   Output ~ 0
+Internal
+$Comp
+L AGND #PWR?
+U 1 1 4EB472F1
+P 2100 2500
+F 0 "#PWR?" H 2100 2500 40  0001 C CNN
+F 1 "AGND" H 2100 2430 50  0000 C CNN
+	1    2100 2500
+	-1   0    0    -1  
+$EndComp
+$Comp
+L C C?
+U 1 1 4EB46A9D
+P 1850 2100
+F 0 "C?" H 1750 2200 50  0000 L CNN
+F 1 "100nF" H 1800 1750 50  0000 L CNN
+	1    1850 2100
+	-1   0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB46A84
+P 2100 1450
+F 0 "R?" V 2180 1450 50  0000 C CNN
+F 1 "10k" V 2100 1450 50  0000 C CNN
+	1    2100 1450
+	-1   0    0    -1  
+$EndComp
+$EndSCHEMATC
