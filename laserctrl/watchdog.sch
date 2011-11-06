@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-06T20:55:52 CET
+EESchema Schematic File Version 2  date 2011-11-06T22:48:15 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -40,7 +40,7 @@ EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 5 11
+Sheet 8 11
 Title ""
 Date "6 nov 2011"
 Rev ""
@@ -50,66 +50,100 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Text HLabel 8250 3700 0    50   Output ~ 0
+Enable Motors
+Text HLabel 8250 3600 0    50   Output ~ 0
+Enable LASER
+Text HLabel 8250 3300 0    50   Input ~ 0
+Amin
+Text HLabel 8250 3400 0    50   Input ~ 0
+Amax
+Text HLabel 8250 3200 0    50   Input ~ 0
+Zmax
+Text HLabel 8250 3100 0    50   Input ~ 0
+Zmin
+Text HLabel 8250 3000 0    50   Input ~ 0
+Ymax
+Text HLabel 8250 2900 0    50   Input ~ 0
+Ymin
+Text HLabel 8250 2700 0    50   Input ~ 0
+Xmin
+Text HLabel 8250 2800 0    50   Input ~ 0
+Xmax
+Text HLabel 8250 2100 0    50   Input ~ 0
+FIRE
+Text HLabel 8250 2600 0    50   Input ~ 0
+Astep
+Text HLabel 8250 2500 0    50   Input ~ 0
+Zstep
+Text HLabel 8250 2400 0    50   Input ~ 0
+Ystep
+Text HLabel 8250 2300 0    50   Input ~ 0
+Xstep
+Text HLabel 8250 1900 0    50   Input ~ 0
+RXD
+Text HLabel 8250 1800 0    50   Output ~ 0
+TXD
 $Comp
-L ATMEGA328-A IC?
-U 1 1 4EA3E4C7
-P 4675 3250
-F 0 "IC?" H 3975 4500 50  0000 L BNN
-F 1 "ATMEGA328-A" H 4925 1850 50  0000 L BNN
-F 2 "TQFP32" H 4125 1900 50  0001 C CNN
-	1    4675 3250
+L ATMEGA328-A IC3
+U 1 1 4EB6F270
+P 5250 3300
+F 0 "IC3" H 4550 4550 50  0000 L BNN
+F 1 "ATMEGA328-A" H 5500 1900 50  0000 L BNN
+F 2 "TQFP32" H 4700 1950 50  0001 C CNN
+	1    5250 3300
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR?
+L +5V #PWR86
 U 1 1 4EA3E4C6
 P 4425 1650
-F 0 "#PWR?" H 4425 1740 20  0001 C CNN
+F 0 "#PWR86" H 4425 1740 20  0001 C CNN
 F 1 "+5V" H 4425 1740 30  0000 C CNN
 	1    4425 1650
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND #PWR91
 U 1 1 4EA3E4C5
 P 4425 4900
-F 0 "#PWR?" H 4425 4900 30  0001 C CNN
+F 0 "#PWR91" H 4425 4900 30  0001 C CNN
 F 1 "GND" H 4425 4830 30  0001 C CNN
 	1    4425 4900
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C C43
 U 1 1 4EA3E4C4
 P 3675 4200
-F 0 "C?" H 3725 4300 50  0000 L CNN
+F 0 "C43" H 3725 4300 50  0000 L CNN
 F 1 "100nF" H 3725 4100 50  0000 L CNN
 	1    3675 4200
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND #PWR90
 U 1 1 4EA3E4C3
 P 3675 4550
-F 0 "#PWR?" H 3675 4550 30  0001 C CNN
+F 0 "#PWR90" H 3675 4550 30  0001 C CNN
 F 1 "GND" H 3675 4480 30  0001 C CNN
 	1    3675 4550
 	1    0    0    -1  
 $EndComp
 $Comp
-L R R?
+L R R63
 U 1 1 4EA3E4C2
 P 3675 3450
-F 0 "R?" V 3755 3450 50  0000 C CNN
+F 0 "R63" V 3755 3450 50  0000 C CNN
 F 1 "10k" V 3675 3450 50  0000 C CNN
 	1    3675 3450
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR?
+L +5V #PWR87
 U 1 1 4EA3E4C1
 P 3675 3100
-F 0 "#PWR?" H 3675 3190 20  0001 C CNN
+F 0 "#PWR87" H 3675 3190 20  0001 C CNN
 F 1 "+5V" H 3675 3190 30  0000 C CNN
 	1    3675 3100
 	1    0    0    -1  
@@ -119,55 +153,55 @@ Text GLabel 3575 3850 0    60   Input ~ 0
 Text Label 3675 3850 3    60   ~ 0
 ~reset
 $Comp
-L CRYSTAL X?
+L CRYSTAL X3
 U 1 1 4EA3E4C0
 P 2975 2650
-F 0 "X?" H 2975 2800 60  0000 C CNN
+F 0 "X3" H 2975 2800 60  0000 C CNN
 F 1 "10MHz" H 2975 2500 60  0000 C CNN
 	1    2975 2650
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C C41
 U 1 1 4EA3E4BF
 P 2675 3150
-F 0 "C?" H 2725 3250 50  0000 L CNN
+F 0 "C41" H 2725 3250 50  0000 L CNN
 F 1 "15pF" H 2725 3050 50  0000 L CNN
 	1    2675 3150
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C?
+L C C42
 U 1 1 4EA3E4BE
 P 3275 3150
-F 0 "C?" H 3325 3250 50  0000 L CNN
+F 0 "C42" H 3325 3250 50  0000 L CNN
 F 1 "15pF" H 3325 3050 50  0000 L CNN
 	1    3275 3150
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND #PWR88
 U 1 1 4EA3E4BD
 P 2675 3450
-F 0 "#PWR?" H 2675 3450 30  0001 C CNN
+F 0 "#PWR88" H 2675 3450 30  0001 C CNN
 F 1 "GND" H 2675 3380 30  0001 C CNN
 	1    2675 3450
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND #PWR89
 U 1 1 4EA3E4BC
 P 3275 3450
-F 0 "#PWR?" H 3275 3450 30  0001 C CNN
+F 0 "#PWR89" H 3275 3450 30  0001 C CNN
 F 1 "GND" H 3275 3380 30  0001 C CNN
 	1    3275 3450
 	1    0    0    -1  
 $EndComp
 $Comp
-L AVR-ISP-6 CON?
+L AVR-ISP-6 CON1
 U 1 1 4EA3E4BB
 P 3350 5650
-F 0 "CON?" H 3270 5890 50  0000 C CNN
+F 0 "CON1" H 3270 5890 50  0000 C CNN
 F 1 "AVR-ISP-6" H 3110 5420 50  0000 L BNN
 F 2 "AVR-ISP-6" V 2830 5690 50  0001 C CNN
 	1    3350 5650
@@ -182,19 +216,19 @@ SCK
 Text GLabel 2900 5750 0    50   Input ~ 0
 ~Reset
 $Comp
-L +5V #PWR?
+L +5V #PWR92
 U 1 1 4EA3E4BA
 P 3850 5400
-F 0 "#PWR?" H 3850 5490 20  0001 C CNN
+F 0 "#PWR92" H 3850 5490 20  0001 C CNN
 F 1 "+5V" H 3850 5490 30  0000 C CNN
 	1    3850 5400
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L GND #PWR93
 U 1 1 4EA3E4B9
 P 3850 5900
-F 0 "#PWR?" H 3850 5900 30  0001 C CNN
+F 0 "#PWR93" H 3850 5900 30  0001 C CNN
 F 1 "GND" H 3850 5830 30  0001 C CNN
 	1    3850 5900
 	1    0    0    -1  

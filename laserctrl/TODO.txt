@@ -1,0 +1,4 @@
+* Complete watchdog
+* Add Assist Air open-collector output (for off-board 24V relay)
+* Add Exchaust open-collector output (for off-board 24V relay)
+

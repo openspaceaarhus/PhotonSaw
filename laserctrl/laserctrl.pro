@@ -1,4 +1,4 @@
-update=2011-11-02T19:33:27 CET
+update=2011-11-06T21:47:12 CET
 version=1
 last_client=eeschema
 [cvpcb]
@@ -81,7 +81,7 @@ LibName10=dip_sockets
 version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=libs
 NetFmt=1
 HPGLSpd=20
 HPGLDm=15
