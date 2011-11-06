@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-05T15:41:06 CET
+EESchema Schematic File Version 2  date 2011-11-06T20:55:52 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -40,9 +40,9 @@ EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 9 9
+Sheet 11 11
 Title ""
-Date "5 nov 2011"
+Date "6 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -50,20 +50,21 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-$Comp
-L +5V #PWR?
-U 1 1 4EB54A98
-P 4150 4100
-F 0 "#PWR?" H 4150 4190 20  0001 C CNN
-F 1 "+5V" H 4150 4190 30  0000 C CNN
-	1    4150 4100
-	1    0    0    -1  
-$EndComp
+Text HLabel 5800 6100 2    50   Output ~ 0
+Supply-sense
+Connection ~ 5550 6100
+Wire Wire Line
+	5800 6100 5300 6100
+Connection ~ 5300 6100
+Wire Wire Line
+	5550 6100 5550 6250
+Wire Wire Line
+	5300 6000 5300 6200
 Connection ~ 3950 4150
 Wire Wire Line
-	4150 4150 4150 4100
+	4150 4100 4150 4150
 Wire Wire Line
-	3800 4150 4150 4150
+	4150 4150 3800 4150
 Connection ~ 3400 4650
 Wire Wire Line
 	3400 4450 3400 4650
@@ -215,6 +216,71 @@ Wire Wire Line
 Connection ~ 2950 4150
 Wire Wire Line
 	3950 4150 3950 4200
+Wire Wire Line
+	5300 5350 5300 5500
+Wire Wire Line
+	5300 6700 5300 6850
+Wire Wire Line
+	5550 6650 5550 6750
+Wire Wire Line
+	5550 6750 5300 6750
+Connection ~ 5300 6750
+$Comp
+L C C?
+U 1 1 4EB6CE2C
+P 5550 6450
+F 0 "C?" H 5600 6550 50  0000 L CNN
+F 1 "100nF" H 5600 6350 50  0000 L CNN
+	1    5550 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L +24V #PWR?
+U 1 1 4EB6CE24
+P 5300 5350
+F 0 "#PWR?" H 5300 5300 20  0001 C CNN
+F 1 "+24V" H 5300 5450 30  0000 C CNN
+	1    5300 5350
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EB6CE1F
+P 5300 6850
+F 0 "#PWR?" H 5300 6850 30  0001 C CNN
+F 1 "GND" H 5300 6780 30  0001 C CNN
+	1    5300 6850
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB6CE1B
+P 5300 6450
+F 0 "R?" V 5380 6450 50  0000 C CNN
+F 1 "10k" V 5300 6450 50  0000 C CNN
+	1    5300 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EB6CE16
+P 5300 5750
+F 0 "R?" V 5380 5750 50  0000 C CNN
+F 1 "82k" V 5300 5750 50  0000 C CNN
+	1    5300 5750
+	1    0    0    -1  
+$EndComp
+Text Notes 2500 4850 0    50   ~ 0
+Note: The +5V supply is only used for NTCs\nit needs to supply only a few mA of current
+$Comp
+L +5V #PWR?
+U 1 1 4EB54A98
+P 4150 4100
+F 0 "#PWR?" H 4150 4190 20  0001 C CNN
+F 1 "+5V" H 4150 4190 30  0000 C CNN
+	1    4150 4100
+	1    0    0    -1  
+$EndComp
 $Comp
 L CAPAPOL C?
 U 1 1 4EB54A69

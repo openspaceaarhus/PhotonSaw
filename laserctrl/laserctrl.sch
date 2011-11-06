@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-05T15:41:06 CET
+EESchema Schematic File Version 2  date 2011-11-06T20:55:52 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -40,9 +40,9 @@ EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 1 9
+Sheet 1 11
 Title ""
-Date "5 nov 2011"
+Date "6 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -50,6 +50,74 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Wire Wire Line
+	5500 900  5600 900 
+Wire Wire Line
+	3550 1100 3650 1100
+Wire Wire Line
+	3550 900  3650 900 
+Wire Wire Line
+	4500 1300 4400 1300
+Wire Wire Line
+	3550 1400 3650 1400
+Wire Wire Line
+	4400 1000 4500 1000
+Wire Wire Line
+	4400 800  4500 800 
+Wire Wire Line
+	1500 3750 1400 3750
+Wire Wire Line
+	10200 950  10100 950 
+Wire Wire Line
+	10200 1250 10100 1250
+Wire Wire Line
+	10200 1700 10100 1700
+Wire Wire Line
+	10200 2450 10100 2450
+Wire Wire Line
+	10200 2900 10100 2900
+Wire Wire Line
+	10100 3650 10200 3650
+Wire Wire Line
+	10100 3950 10200 3950
+Wire Wire Line
+	10100 4400 10200 4400
+Wire Wire Line
+	10200 5100 10100 5100
+Wire Wire Line
+	10200 5700 10100 5700
+Wire Wire Line
+	1500 3950 1400 3950
+Wire Wire Line
+	1500 5150 1400 5150
+Wire Wire Line
+	1500 4550 1400 4550
+Wire Wire Line
+	1500 4350 1400 4350
+Wire Wire Line
+	1500 4150 1400 4150
+Wire Wire Line
+	1400 6550 1500 6550
+Wire Wire Line
+	1400 6250 1500 6250
+Wire Wire Line
+	1400 6050 1500 6050
+Wire Wire Line
+	1400 5850 1500 5850
+Wire Wire Line
+	1400 5650 1500 5650
+Wire Wire Line
+	1400 5450 1500 5450
+Wire Wire Line
+	1500 3350 1400 3350
+Wire Wire Line
+	1400 3550 1500 3550
+Wire Wire Line
+	1400 2650 1500 2650
+Wire Wire Line
+	1400 4750 1500 4750
+Wire Wire Line
+	1400 4950 1500 4950
 Wire Wire Line
 	4100 7300 4100 7450
 Connection ~ 3800 7350
@@ -157,11 +225,11 @@ Connection ~ 8900 5950
 Connection ~ 8900 6350
 Connection ~ 8900 6550
 Wire Wire Line
-	4825 5450 4700 5450
+	4825 5550 4700 5550
 Wire Wire Line
-	4825 5650 4700 5650
+	4825 5750 4700 5750
 Wire Wire Line
-	4825 5850 4700 5850
+	4825 5950 4700 5950
 Wire Wire Line
 	4825 6250 4700 6250
 Wire Wire Line
@@ -195,11 +263,11 @@ Wire Wire Line
 Wire Wire Line
 	4775 7275 4775 7375
 Wire Wire Line
-	4700 5950 4825 5950
+	4700 6050 4825 6050
 Wire Wire Line
-	4700 5750 4825 5750
+	4700 5850 4825 5850
 Wire Wire Line
-	4700 5550 4825 5550
+	4700 5650 4825 5650
 Connection ~ 8900 6450
 Connection ~ 8900 5850
 Connection ~ 8900 6050
@@ -296,6 +364,279 @@ Wire Wire Line
 Wire Wire Line
 	3400 7450 3400 7350
 Connection ~ 3400 7350
+Wire Wire Line
+	4700 4950 4800 4950
+Wire Wire Line
+	1500 4850 1400 4850
+Wire Wire Line
+	1500 4650 1400 4650
+Wire Wire Line
+	1800 900  1700 900 
+Wire Wire Line
+	1800 1200 1700 1200
+Wire Wire Line
+	1700 1350 1800 1350
+Wire Wire Line
+	1700 1050 1800 1050
+Wire Wire Line
+	1500 2750 1400 2750
+Wire Wire Line
+	1400 3450 1500 3450
+Wire Wire Line
+	1400 3250 1500 3250
+Wire Wire Line
+	1500 5550 1400 5550
+Wire Wire Line
+	1500 5750 1400 5750
+Wire Wire Line
+	1500 5950 1400 5950
+Wire Wire Line
+	1500 6150 1400 6150
+Wire Wire Line
+	1500 6350 1400 6350
+Wire Wire Line
+	1500 6650 1400 6650
+Wire Wire Line
+	1400 4050 1500 4050
+Wire Wire Line
+	1400 4250 1500 4250
+Wire Wire Line
+	1400 4450 1500 4450
+Wire Wire Line
+	1400 5050 1500 5050
+Wire Wire Line
+	1400 3850 1500 3850
+Wire Wire Line
+	10100 5550 10200 5550
+Wire Wire Line
+	10100 5250 10200 5250
+Wire Wire Line
+	10100 4950 10200 4950
+Wire Wire Line
+	10200 4250 10100 4250
+Wire Wire Line
+	10200 3800 10100 3800
+Wire Wire Line
+	10100 3050 10200 3050
+Wire Wire Line
+	10100 2600 10200 2600
+Wire Wire Line
+	10100 2300 10200 2300
+Wire Wire Line
+	10100 1550 10200 1550
+Wire Wire Line
+	10100 1100 10200 1100
+Wire Wire Line
+	1400 3650 1500 3650
+Wire Wire Line
+	10100 6250 10200 6250
+Wire Wire Line
+	4500 900  4400 900 
+Wire Wire Line
+	3550 1300 3650 1300
+Wire Wire Line
+	4400 1400 4500 1400
+Wire Wire Line
+	3650 800  3550 800 
+Wire Wire Line
+	3650 1000 3550 1000
+Wire Wire Line
+	5600 800  5500 800 
+Text Notes 5050 5000 0    50   ~ 0
+Supply voltage sense (10.8696 %)
+Text GLabel 10100 6250 0    50   Input ~ 0
+AD5
+Text GLabel 3550 1300 0    50   Input ~ 0
+~RESET
+Text Notes 1050 3550 1    50   ~ 0
+SD card\n
+Text Notes 700  3700 0    50   ~ 0
+Chiller\nserial port
+Text Notes 700  2900 0    50   ~ 0
+ISP+debug\nserial port
+Text Notes 700  2700 0    50   ~ 0
+Watchdog\nserial port
+Text GLabel 5500 800  0    50   Input ~ 0
+TXD2
+Text GLabel 5500 900  0    50   Input ~ 0
+RXD2
+$Sheet
+S 5600 700  1000 700 
+U 4EB5C5C3
+F0 "Chiller Interface" 60
+F1 "chiller-if.sch" 60
+F2 "RXD" O L 5600 900 60 
+F3 "TXD" I L 5600 800 60 
+$EndSheet
+Text GLabel 1400 3750 0    50   Input ~ 0
+RXD2
+Text GLabel 1400 3650 0    50   Input ~ 0
+TXD2
+Text GLabel 8050 900  0    50   Input ~ 0
+RXD3
+Text GLabel 8050 800  0    50   Input ~ 0
+TXD3
+Text GLabel 3550 900  0    50   Input ~ 0
+SCK1
+Text GLabel 3550 1000 0    50   Input ~ 0
+MISO1
+Text GLabel 3550 1100 0    50   Input ~ 0
+MOSI1
+Text GLabel 3550 800  0    50   Input ~ 0
+SD_CS
+Text GLabel 3550 1400 0    50   Input ~ 0
+~ISP
+Text GLabel 4500 1300 2    50   Input ~ 0
+TXD0
+Text GLabel 4500 1400 2    50   Input ~ 0
+RXD0
+Text GLabel 4500 1000 2    50   Input ~ 0
+USB-
+Text GLabel 4500 900  2    50   Input ~ 0
+USB+
+Text GLabel 4500 800  2    50   Input ~ 0
+USB_VBUS
+$Sheet
+S 3650 700  750  750 
+U 4EB5C316
+F0 "SD card + ISP + USB" 60
+F1 "sd-isp.sch" 60
+F2 "USB_VBUS" I R 4400 800 60 
+F3 "USB-" I R 4400 1000 60 
+F4 "USB+" I R 4400 900 60 
+F5 "RXD" O R 4400 1400 60 
+F6 "TXD" I R 4400 1300 60 
+F7 "~ISP" O L 3650 1400 60 
+F8 "~RESET" O L 3650 1300 60 
+F9 "SCK" I L 3650 900 60 
+F10 "MISO" I L 3650 1000 60 
+F11 "MOSI" I L 3650 1100 60 
+F12 "CS" I L 3650 800 60 
+$EndSheet
+Text GLabel 10100 5550 0    50   Input ~ 0
+P2.11
+Text GLabel 10100 5700 0    50   Input ~ 0
+P2.12
+Text GLabel 10100 5250 0    50   Input ~ 0
+P2.0
+Text GLabel 10100 5100 0    50   Input ~ 0
+P2.1
+Text GLabel 10100 4950 0    50   Input ~ 0
+P2.2
+Text GLabel 10100 4400 0    50   Input ~ 0
+P2.3
+Text GLabel 10100 4250 0    50   Input ~ 0
+P2.4
+Text GLabel 10100 3950 0    50   Input ~ 0
+P2.5
+Text GLabel 10100 3800 0    50   Input ~ 0
+P2.6
+Text GLabel 10100 3650 0    50   Input ~ 0
+P2.7
+Text GLabel 10100 3050 0    50   Input ~ 0
+P2.8
+Text GLabel 10100 2900 0    50   Input ~ 0
+P2.9
+Text GLabel 10100 950  0    50   Input ~ 0
+P0.22
+Text GLabel 10100 1100 0    50   Input ~ 0
+P0.21
+Text GLabel 10100 1250 0    50   Input ~ 0
+P0.20
+Text GLabel 10100 1550 0    50   Input ~ 0
+P0.19
+Text GLabel 10100 1700 0    50   Input ~ 0
+P0.18
+Text GLabel 10100 2300 0    50   Input ~ 0
+P0.17
+Text GLabel 10100 2600 0    50   Input ~ 0
+P0.16
+Text GLabel 10100 2450 0    50   Input ~ 0
+P0.15
+Text GLabel 1400 3850 0    50   Input ~ 0
+P0.15
+Text GLabel 1400 3950 0    50   Input ~ 0
+P0.16
+Text GLabel 1400 4050 0    50   Input ~ 0
+P0.17
+Text GLabel 1400 4150 0    50   Input ~ 0
+P0.18
+Text GLabel 1400 4250 0    50   Input ~ 0
+P0.19
+Text GLabel 1400 4350 0    50   Input ~ 0
+P0.20
+Text GLabel 1400 4450 0    50   Input ~ 0
+P0.21
+Text GLabel 1400 4550 0    50   Input ~ 0
+P0.22
+Text GLabel 1400 5050 0    50   Input ~ 0
+P0.27
+Text GLabel 1400 5150 0    50   Input ~ 0
+P0.28
+Text GLabel 1400 6650 0    50   Input ~ 0
+P2.12
+Text GLabel 1400 6550 0    50   Input ~ 0
+P2.11
+Text GLabel 1400 6350 0    50   Input ~ 0
+P2.9
+Text GLabel 1400 6250 0    50   Input ~ 0
+P2.8
+Text GLabel 1400 6150 0    50   Input ~ 0
+P2.7
+Text GLabel 1400 6050 0    50   Input ~ 0
+P2.6
+Text GLabel 1400 5950 0    50   Input ~ 0
+P2.5
+Text GLabel 1400 5850 0    50   Input ~ 0
+P2.4
+Text GLabel 1400 5750 0    50   Input ~ 0
+P2.3
+Text GLabel 1400 5650 0    50   Input ~ 0
+P2.2
+Text GLabel 1400 5550 0    50   Input ~ 0
+P2.1
+Text GLabel 1400 5450 0    50   Input ~ 0
+P2.0
+Text Notes 5200 5850 1    50   ~ 0
+JTAG
+Text GLabel 1400 3250 0    50   Input ~ 0
+SD_CS
+Text GLabel 1400 3550 0    50   Input ~ 0
+MOSI1
+Text GLabel 1400 3450 0    50   Input ~ 0
+MISO1
+Text GLabel 1400 3350 0    50   Input ~ 0
+SCK1
+Text GLabel 1400 2650 0    50   Input ~ 0
+TXD3
+Text GLabel 1400 2750 0    50   Input ~ 0
+RXD3
+Text Notes 700  5000 0    50   ~ 0
+Internal temp
+Text Notes 700  4900 0    50   ~ 0
+laser-in
+Text Notes 700  4800 0    50   ~ 0
+laser-out
+Text Notes 700  4700 0    50   ~ 0
+Airflow
+Text GLabel 1700 900  0    50   Input ~ 0
+AD0
+Text GLabel 1700 1050 0    50   Input ~ 0
+AD1
+Text GLabel 1700 1200 0    50   Input ~ 0
+AD2
+Text GLabel 1700 1350 0    50   Input ~ 0
+AD3
+Text GLabel 1400 4950 0    50   Input ~ 0
+AD3
+Text GLabel 1400 4850 0    50   Input ~ 0
+AD2
+Text GLabel 1400 4750 0    50   Input ~ 0
+AD1
+Text GLabel 1400 4650 0    50   Input ~ 0
+AD0
+Text GLabel 4800 4950 2    50   Input ~ 0
+AD5
 $Comp
 L AGND #PWR?
 U 1 1 4EB471B3
@@ -315,14 +656,14 @@ F 1 "GND" H 2550 7380 30  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Sheet
-S 2600 800  1250 650 
+S 1800 800  1250 650 
 U 4EB45CE6
 F0 "Temperature sensors" 60
 F1 "temp-sensors.sch" 60
-F2 "airflow" O L 2600 900 60 
-F3 "laser-out" O L 2600 1050 60 
-F4 "laser-in" O L 2600 1200 60 
-F5 "Internal" O L 2600 1350 60 
+F2 "airflow" O L 1800 900 60 
+F3 "laser-out" O L 1800 1050 60 
+F4 "laser-in" O L 1800 1200 60 
+F5 "Internal" O L 1800 1350 60 
 $EndSheet
 Text Notes 5100 4600 0    50   ~ 0
 Watchdog Ready
@@ -403,7 +744,7 @@ L C C?
 U 1 1 4EAD4B80
 P 7050 6650
 F 0 "C?" H 7100 6750 50  0000 L CNN
-F 1 "100nF" H 7100 6550 50  0000 L CNN
+F 1 "10nF" H 7100 6550 50  0000 L CNN
 	1    7050 6650
 	1    0    0    -1  
 $EndComp
@@ -543,17 +884,17 @@ F 1 "JTAG" V 8350 6000 50  0000 C CNN
 $EndComp
 Text GLabel 4825 6250 2    50   Input ~ 0
 ~RESET
-Text GLabel 4825 5950 2    50   Input ~ 0
+Text GLabel 4825 6050 2    50   Input ~ 0
 RTCK
-Text GLabel 4825 5850 2    50   Input ~ 0
+Text GLabel 4825 5950 2    50   Input ~ 0
 TCK
-Text GLabel 4825 5750 2    50   Input ~ 0
+Text GLabel 4825 5850 2    50   Input ~ 0
 ~TRST
-Text GLabel 4825 5650 2    50   Input ~ 0
+Text GLabel 4825 5750 2    50   Input ~ 0
 TMS
-Text GLabel 4825 5550 2    50   Input ~ 0
+Text GLabel 4825 5650 2    50   Input ~ 0
 TDI
-Text GLabel 4825 5450 2    50   Input ~ 0
+Text GLabel 4825 5550 2    50   Input ~ 0
 TDO
 $Comp
 L GND #PWR?
@@ -721,9 +1062,10 @@ F6 "Current" I L 10200 1400 60
 F7 "Min-Limit" O L 10200 1700 60 
 $EndSheet
 $Sheet
-S 9950 6250 950  725 
+S 10200 6150 780  400 
 U 4EA1A825
 F0 "Power Supply" 60
 F1 "psu.sch" 60
+F2 "Supply-sense" O L 10200 6250 60 
 $EndSheet
 $EndSCHEMATC

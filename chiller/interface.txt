@@ -1,0 +1,81 @@
+The connection to the main board is done via a 5x2 pin header and 10 wire ribbon cable, the pinout is:
+
+1  TXD (Main transmit, chiller RX)
+2  +3.3V
+3  RXD (Main receive, chiller TX)
+4  GND (for low-power logic)
+
+5,6,7  GND (for unregulated high-power)
+8,9,10 +24V unregulated
+
+
+See main schematic / Chiller interface.
+
+
+Serial interface:
+The serial interface runs at 3.3V level and 9600 baud.
+
+
+Default state:
+  The chiller should start up in regulation with default values.
+
+*Command structure*
+Each command is terminated with a newline
+Replies to commands should be "ok\n".
+  
+
+*Commands*
+
+power=on
+  Turn on the regulation loops
+
+power=off
+  Turn off the regulation loops and power down all pumps and the compressor.
+
+store-max=18
+  Set maximum temperature in the cold-storage tank to 18 degrees celcius.
+  This is the temperature that the compressor must start at.
+  The default value at power-up is 18 degrees.
+
+store-min=2
+  Set maximum temperature in the cold-storage tank to 2 degrees celcius.
+  This is the temperature that the compressor must stop at.
+  The default value at power-up is 2 degrees
+
+buffer-set=25
+  Set the desired temperature for the circulation buffer, the pump moving water
+  from the cold-storage tank to the buffer tank must be modulated to keep the
+  temperature at this constant level.
+  The default value at power-up is 25 degrees
+  
+post-run=30
+  Set the time the fan and charging pump must run after the compressor has stopped.
+  The default value at power-up is 30 seconds
+
+status
+  Output all settings, sensor values and actuator states, one per line, ending with a blank line, like this:
+
+ok
+power:on
+store-max:17
+store-min:5
+buffer-set:20
+post-run:60
+storage:14.2
+buffer:24.5
+cooling-pwm:60
+compressor:on
+fan:on
+
+
+*regulation*
+
+If power=off, then all outputs should be off, otherwise the following regulation should happen:
+
+The compressor should start when the cold buffer tank reaches store-max and stop when it reaches store-min.
+
+The charging pump and the radiator fan should run while the compressor does + the number of post-run seconds configured.
+
+The cooling pump should be PWM modulated between 0 and 100 percent (calculated by PID) to keep the circulation buffer at the buffer-set temperature.
+
+The circulation pump should always run full speed if power=on
