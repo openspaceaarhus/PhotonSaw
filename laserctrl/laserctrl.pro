@@ -1,16 +1,6 @@
-update=2011-11-07T21:22:49 CET
+update=2011-11-07T22:46:17 CET
 version=1
-last_client=eeschema
-[cvpcb]
-version=1
-NetITyp=0
-NetIExt=.net
-PkgIExt=.pkg
-NetDir=
-LibDir=
-NetType=0
-[cvpcb/libraries]
-EquName1=devcms
+last_client=cvpcb
 [pcbnew]
 version=1
 PadDrlX=320
@@ -66,7 +56,6 @@ MaxLnkS=3
 ShowRat=0
 ShowMRa=1
 [pcbnew/libraries]
-LibDir=
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -77,6 +66,12 @@ LibName7=display
 LibName8=valves
 LibName9=led
 LibName10=dip_sockets
+LibName11=libs/w_smd_diode
+LibName12=libs/w_smd_cap
+LibName13=libs/diode
+LibName14=libs/SOT23-bec
+LibName15=libs/3mm-hole
+LibDir=
 [general]
 version=1
 [eeschema]
@@ -148,3 +143,8 @@ LibName34=libs/mcu-nxp
 LibName35=libs/opto-transistor-4p2
 LibName36=atmega328p-a
 LibName37=atmel
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
