@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-07T20:42:45 CET
+EESchema Schematic File Version 2  date 2011-11-07T21:51:12 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -26,7 +26,6 @@ LIBS:display
 LIBS:cypress
 LIBS:siliconi
 LIBS:opto
-LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:mounting
@@ -35,7 +34,8 @@ LIBS:tps78233
 LIBS:drv8811
 LIBS:mcu-nxp
 LIBS:opto-transistor-4p2
-LIBS:laserctrl-cache
+LIBS:atmega328p-a
+LIBS:atmel
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
