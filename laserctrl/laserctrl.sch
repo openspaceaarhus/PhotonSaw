@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-06T22:48:15 CET
+EESchema Schematic File Version 2  date 2011-11-07T20:42:45 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -40,9 +40,9 @@ EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 1 11
+Sheet 1 12
 Title ""
-Date "6 nov 2011"
+Date "7 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -50,6 +50,14 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Text Notes 5100 4800 0    50   ~ 0
+Exhaust
+Text Notes 5100 4700 0    50   ~ 0
+Assist Air
+Wire Wire Line
+	5600 2000 5450 2000
+Wire Wire Line
+	4700 4650 4800 4650
 Wire Wire Line
 	9100 1500 9000 1500
 Wire Wire Line
@@ -486,6 +494,26 @@ Wire Wire Line
 	9000 1200 9100 1200
 Wire Wire Line
 	9000 1400 9100 1400
+Wire Wire Line
+	4800 4750 4700 4750
+Wire Wire Line
+	5450 2200 5600 2200
+Text GLabel 5450 2000 0    50   Input ~ 0
+P1.28
+Text GLabel 5450 2200 0    50   Input ~ 0
+P1.29
+Text GLabel 4800 4750 2    50   Input ~ 0
+P1.29
+Text GLabel 4800 4650 2    50   Input ~ 0
+P1.28
+$Sheet
+S 5600 1850 1000 650 
+U 4EB82FA9
+F0 "Relay outputs" 60
+F1 "relays.sch" 60
+F2 "Assist Air" I L 5600 2000 60 
+F3 "Exhaust" I L 5600 2200 60 
+$EndSheet
 Text GLabel 9100 1500 2    50   Input ~ 0
 P2.12
 Text GLabel 9100 1400 2    50   Input ~ 0
