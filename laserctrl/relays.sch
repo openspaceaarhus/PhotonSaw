@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-07T23:14:52 CET
+EESchema Schematic File Version 2  date 2011-11-08T22:27:11 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -36,13 +36,15 @@ LIBS:mcu-nxp
 LIBS:opto-transistor-4p2
 LIBS:atmega328p-a
 LIBS:atmel
+LIBS:microsd
+LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 12
 Title ""
-Date "7 nov 2011"
+Date "8 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -69,10 +71,10 @@ F 1 "BC817" H 3050 3800 50  0000 R CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR012
+L GND #PWR15
 U 1 1 4EB83232
 P 3150 3900
-F 0 "#PWR012" H 3150 3900 30  0001 C CNN
+F 0 "#PWR15" H 3150 3900 30  0001 C CNN
 F 1 "GND" H 3150 3830 30  0001 C CNN
 	1    3150 3900
 	1    0    0    -1  
@@ -96,10 +98,10 @@ F 1 "DIODE" H 3150 3050 40  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L +24V #PWR013
+L +24V #PWR14
 U 1 1 4EB8322F
 P 3150 2850
-F 0 "#PWR013" H 3150 2800 20  0001 C CNN
+F 0 "#PWR14" H 3150 2800 20  0001 C CNN
 F 1 "+24V" H 3150 2950 30  0000 C CNN
 	1    3150 2850
 	1    0    0    -1  
@@ -145,10 +147,10 @@ Connection ~ 3150 1450
 Text HLabel 2150 2200 0    50   Input ~ 0
 Exhaust
 $Comp
-L +24V #PWR014
+L +24V #PWR12
 U 1 1 4EB83187
 P 3150 1400
-F 0 "#PWR014" H 3150 1350 20  0001 C CNN
+F 0 "#PWR12" H 3150 1350 20  0001 C CNN
 F 1 "+24V" H 3150 1500 30  0000 C CNN
 	1    3150 1400
 	1    0    0    -1  
@@ -172,10 +174,10 @@ F 1 "Exhaust" V 3800 1850 40  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR015
+L GND #PWR13
 U 1 1 4EB830F3
 P 3150 2450
-F 0 "#PWR015" H 3150 2450 30  0001 C CNN
+F 0 "#PWR13" H 3150 2450 30  0001 C CNN
 F 1 "GND" H 3150 2380 30  0001 C CNN
 	1    3150 2450
 	1    0    0    -1  

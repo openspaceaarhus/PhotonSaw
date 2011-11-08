@@ -1,6 +1,6 @@
-update=2011-11-07T22:46:17 CET
+update=2011-11-08T21:58:24 CET
 version=1
-last_client=cvpcb
+last_client=eeschema
 [pcbnew]
 version=1
 PadDrlX=320
@@ -74,6 +74,11 @@ LibName15=libs/3mm-hole
 LibDir=
 [general]
 version=1
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
 [eeschema]
 version=1
 LibDir=libs
@@ -143,8 +148,4 @@ LibName34=libs/mcu-nxp
 LibName35=libs/opto-transistor-4p2
 LibName36=atmega328p-a
 LibName37=atmel
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
+LibName38=microsd

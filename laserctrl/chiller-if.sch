@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-07T23:14:52 CET
+EESchema Schematic File Version 2  date 2011-11-08T22:27:11 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -36,13 +36,15 @@ LIBS:mcu-nxp
 LIBS:opto-transistor-4p2
 LIBS:atmega328p-a
 LIBS:atmel
+LIBS:microsd
+LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 3 12
 Title ""
-Date "7 nov 2011"
+Date "8 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -93,19 +95,19 @@ Wire Wire Line
 	2900 2100 2950 2100
 Connection ~ 2950 2100
 $Comp
-L +24V #PWR016
+L +24V #PWR19
 U 1 1 4EB6DCEF
 P 1900 2200
-F 0 "#PWR016" H 1900 2150 20  0001 C CNN
+F 0 "#PWR19" H 1900 2150 20  0001 C CNN
 F 1 "+24V" H 1900 2300 30  0000 C CNN
 	1    1900 2200
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR017
+L GND #PWR18
 U 1 1 4EB6DCC0
 P 1900 1950
-F 0 "#PWR017" H 1900 1950 30  0001 C CNN
+F 0 "#PWR18" H 1900 1950 30  0001 C CNN
 F 1 "GND" H 1900 1880 30  0001 C CNN
 	1    1900 1950
 	1    0    0    -1  
@@ -115,19 +117,19 @@ RXD
 Text HLabel 1800 1700 0    50   Input ~ 0
 TXD
 $Comp
-L +3.3V #PWR018
+L +3.3V #PWR16
 U 1 1 4EB6DB66
 P 3100 1650
-F 0 "#PWR018" H 3100 1610 30  0001 C CNN
+F 0 "#PWR16" H 3100 1610 30  0001 C CNN
 F 1 "+3.3V" H 3100 1760 30  0000 C CNN
 	1    3100 1650
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR019
+L GND #PWR17
 U 1 1 4EB6DB2E
 P 3100 1850
-F 0 "#PWR019" H 3100 1850 30  0001 C CNN
+F 0 "#PWR17" H 3100 1850 30  0001 C CNN
 F 1 "GND" H 3100 1780 30  0001 C CNN
 	1    3100 1850
 	1    0    0    -1  
