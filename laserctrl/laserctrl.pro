@@ -1,4 +1,4 @@
-update=2011-11-09T19:35:13 CET
+update=2011-11-09T21:10:47 CET
 version=1
 last_client=eeschema
 [pcbnew]
@@ -150,3 +150,4 @@ LibName36=atmega328p-a
 LibName37=atmel
 LibName38=microsd
 LibName39=jumper3
+LibName40=diode2
