@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-08T22:27:11 CET
+EESchema Schematic File Version 2  date 2011-11-09T19:37:00 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -37,14 +37,14 @@ LIBS:opto-transistor-4p2
 LIBS:atmega328p-a
 LIBS:atmel
 LIBS:microsd
-LIBS:laserctrl-cache
+LIBS:jumper3
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 4 12
+Sheet 2 10
 Title ""
-Date "8 nov 2011"
+Date "9 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -52,6 +52,245 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L CONN_5X2 P?
+U 1 1 4EBAC056
+P 9100 5100
+F 0 "P?" H 9100 5400 60  0000 C CNN
+F 1 "Chiller" V 9100 5100 50  0000 C CNN
+	1    9100 5100
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EBAC055
+P 9700 5050
+F 0 "#PWR?" H 9700 5050 30  0001 C CNN
+F 1 "GND" H 9700 4980 30  0001 C CNN
+	1    9700 5050
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR?
+U 1 1 4EBAC054
+P 9700 4850
+F 0 "#PWR?" H 9700 4810 30  0001 C CNN
+F 1 "+3.3V" H 9700 4960 30  0000 C CNN
+	1    9700 4850
+	1    0    0    -1  
+$EndComp
+Text HLabel 8400 4900 0    50   Input ~ 0
+TXDC
+Text HLabel 8400 5000 0    50   Output ~ 0
+RXDC
+$Comp
+L GND #PWR?
+U 1 1 4EBAC053
+P 8500 5150
+F 0 "#PWR?" H 8500 5150 30  0001 C CNN
+F 1 "GND" H 8500 5080 30  0001 C CNN
+	1    8500 5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L +24V #PWR?
+U 1 1 4EBAC052
+P 8500 5400
+F 0 "#PWR?" H 8500 5350 20  0001 C CNN
+F 1 "+24V" H 8500 5500 30  0000 C CNN
+	1    8500 5400
+	1    0    0    -1  
+$EndComp
+Connection ~ 9550 5300
+Wire Wire Line
+	9500 5300 9550 5300
+Connection ~ 8650 5100
+Wire Wire Line
+	8650 5200 8650 5100
+Wire Wire Line
+	8700 5200 8650 5200
+Connection ~ 9550 5000
+Wire Wire Line
+	9550 5100 9550 5000
+Wire Wire Line
+	9500 5100 9550 5100
+Wire Wire Line
+	8400 5000 8700 5000
+Wire Wire Line
+	9700 4900 9700 4850
+Wire Wire Line
+	9500 4900 9700 4900
+Wire Wire Line
+	8700 4900 8400 4900
+Wire Wire Line
+	9500 5000 9700 5000
+Wire Wire Line
+	9700 5000 9700 5050
+Wire Wire Line
+	8500 5100 8500 5150
+Wire Wire Line
+	8700 5100 8500 5100
+Wire Wire Line
+	8650 5300 8700 5300
+Wire Wire Line
+	8650 5400 8650 5300
+Wire Wire Line
+	9550 5400 9550 5200
+Wire Wire Line
+	9550 5200 9500 5200
+Wire Wire Line
+	9550 5400 8500 5400
+Connection ~ 8650 5400
+Text Notes 8400 5600 0    50   ~ 0
+Note: wire 4 sits on the 3.3V logic ground,\n5,6,7 sits on unregulated 24V ground.
+$Comp
+L R R?
+U 1 1 4EBAC03A
+P 8950 1750
+F 0 "R?" V 9030 1750 50  0000 C CNN
+F 1 "3k3" V 8950 1750 50  0000 C CNN
+	1    8950 1750
+	0    1    1    0   
+$EndComp
+$Comp
+L NPN Q?
+U 1 1 4EBAC039
+P 9500 1750
+F 0 "Q?" H 9500 1600 50  0000 R CNN
+F 1 "BC817" H 9500 1900 50  0000 R CNN
+	1    9500 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EBAC038
+P 9600 2000
+F 0 "#PWR?" H 9600 2000 30  0001 C CNN
+F 1 "GND" H 9600 1930 30  0001 C CNN
+	1    9600 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_2 P?
+U 1 1 4EBAC037
+P 10200 1400
+F 0 "P?" V 10150 1400 40  0000 C CNN
+F 1 "Exhaust" V 10250 1400 40  0000 C CNN
+	1    10200 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EBAC036
+P 9600 1250
+F 0 "D?" H 9600 1350 40  0000 C CNN
+F 1 "DIODE" H 9600 1150 40  0000 C CNN
+	1    9600 1250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L +24V #PWR?
+U 1 1 4EBAC035
+P 9600 950
+F 0 "#PWR?" H 9600 900 20  0001 C CNN
+F 1 "+24V" H 9600 1050 30  0000 C CNN
+	1    9600 950 
+	1    0    0    -1  
+$EndComp
+Text HLabel 8600 1750 0    50   Input ~ 0
+Exhaust
+Connection ~ 9600 1000
+Wire Wire Line
+	9850 1000 9600 1000
+Wire Wire Line
+	9850 1300 9850 1000
+Wire Wire Line
+	9300 1750 9200 1750
+Wire Wire Line
+	9600 1450 9600 1550
+Wire Wire Line
+	9600 950  9600 1050
+Wire Wire Line
+	9600 1950 9600 2000
+Wire Wire Line
+	9850 1500 9600 1500
+Connection ~ 9600 1500
+Wire Wire Line
+	8600 1750 8700 1750
+Wire Wire Line
+	8600 3200 8700 3200
+Connection ~ 9600 2950
+Wire Wire Line
+	9850 2950 9600 2950
+Wire Wire Line
+	9600 3400 9600 3450
+Wire Wire Line
+	9600 2400 9600 2500
+Wire Wire Line
+	9600 2900 9600 3000
+Wire Wire Line
+	9300 3200 9200 3200
+Wire Wire Line
+	9850 2450 9850 2750
+Wire Wire Line
+	9600 2450 9850 2450
+Connection ~ 9600 2450
+Text HLabel 8600 3200 0    50   Input ~ 0
+Assist Air
+$Comp
+L +24V #PWR?
+U 1 1 4EBAC034
+P 9600 2400
+F 0 "#PWR?" H 9600 2350 20  0001 C CNN
+F 1 "+24V" H 9600 2500 30  0000 C CNN
+	1    9600 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EBAC033
+P 9600 2700
+F 0 "D?" H 9600 2800 40  0000 C CNN
+F 1 "DIODE" H 9600 2600 40  0000 C CNN
+	1    9600 2700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L CONN_2 P?
+U 1 1 4EBAC032
+P 10200 2850
+F 0 "P?" V 10150 2850 40  0000 C CNN
+F 1 "Assist Air" V 10250 2850 40  0000 C CNN
+	1    10200 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR?
+U 1 1 4EBAC031
+P 9600 3450
+F 0 "#PWR?" H 9600 3450 30  0001 C CNN
+F 1 "GND" H 9600 3380 30  0001 C CNN
+	1    9600 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L NPN Q?
+U 1 1 4EBAC030
+P 9500 3200
+F 0 "Q?" H 9500 3050 50  0000 R CNN
+F 1 "BC817" H 9500 3350 50  0000 R CNN
+	1    9500 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R?
+U 1 1 4EBAC02F
+P 8950 3200
+F 0 "R?" V 9030 3200 50  0000 C CNN
+F 1 "3k3" V 8950 3200 50  0000 C CNN
+	1    8950 3200
+	0    1    1    0   
+$EndComp
 Wire Wire Line
 	2950 4750 2800 4750
 Wire Wire Line

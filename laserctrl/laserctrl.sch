@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-08T22:27:11 CET
+EESchema Schematic File Version 2  date 2011-11-09T19:37:00 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -37,14 +37,14 @@ LIBS:opto-transistor-4p2
 LIBS:atmega328p-a
 LIBS:atmel
 LIBS:microsd
-LIBS:laserctrl-cache
+LIBS:jumper3
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 1 12
+Sheet 1 10
 Title ""
-Date "8 nov 2011"
+Date "9 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -52,12 +52,10 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Notes 5100 4800 0    50   ~ 0
-Exhaust
-Text Notes 5100 4700 0    50   ~ 0
-Assist Air
 Wire Wire Line
-	5600 2000 5450 2000
+	6800 1600 6700 1600
+Wire Wire Line
+	5850 1900 5950 1900
 Wire Wire Line
 	4700 4650 4800 4650
 Wire Wire Line
@@ -83,19 +81,17 @@ Wire Wire Line
 Wire Wire Line
 	10200 4550 10100 4550
 Wire Wire Line
-	5500 900  5600 900 
+	5850 1100 5950 1100
 Wire Wire Line
-	3550 1100 3650 1100
+	5850 900  5950 900 
 Wire Wire Line
-	3550 900  3650 900 
+	6800 1300 6700 1300
 Wire Wire Line
-	4500 1300 4400 1300
+	5850 1400 5950 1400
 Wire Wire Line
-	3550 1400 3650 1400
+	6700 1000 6800 1000
 Wire Wire Line
-	4400 1000 4500 1000
-Wire Wire Line
-	4400 800  4500 800 
+	6700 800  6800 800 
 Wire Wire Line
 	1500 3750 1400 3750
 Wire Wire Line
@@ -463,17 +459,15 @@ Wire Wire Line
 Wire Wire Line
 	10100 6250 10200 6250
 Wire Wire Line
-	4500 900  4400 900 
+	6800 900  6700 900 
 Wire Wire Line
-	3550 1300 3650 1300
+	5850 1300 5950 1300
 Wire Wire Line
-	4400 1400 4500 1400
+	6700 1400 6800 1400
 Wire Wire Line
-	3650 800  3550 800 
+	5950 800  5850 800 
 Wire Wire Line
-	3650 1000 3550 1000
-Wire Wire Line
-	5600 800  5500 800 
+	5950 1000 5850 1000
 Wire Wire Line
 	10200 5850 10100 5850
 Wire Wire Line
@@ -499,23 +493,21 @@ Wire Wire Line
 Wire Wire Line
 	4800 4750 4700 4750
 Wire Wire Line
-	5450 2200 5600 2200
-Text GLabel 5450 2000 0    50   Input ~ 0
+	5850 1800 5950 1800
+Wire Wire Line
+	6700 1700 6800 1700
+Text Notes 5100 4800 0    50   ~ 0
+Exhaust
+Text Notes 5100 4700 0    50   ~ 0
+Assist Air
+Text GLabel 6800 1600 2    50   Input ~ 0
 P1.28
-Text GLabel 5450 2200 0    50   Input ~ 0
+Text GLabel 6800 1700 2    50   Input ~ 0
 P1.29
 Text GLabel 4800 4750 2    50   Input ~ 0
 P1.29
 Text GLabel 4800 4650 2    50   Input ~ 0
 P1.28
-$Sheet
-S 5600 1850 1000 650 
-U 4EB82FA9
-F0 "Relay outputs" 60
-F1 "relays.sch" 60
-F2 "Assist Air" I L 5600 2000 60 
-F3 "Exhaust" I L 5600 2200 60 
-$EndSheet
 Text GLabel 9100 1500 2    50   Input ~ 0
 P2.12
 Text GLabel 9100 1400 2    50   Input ~ 0
@@ -560,7 +552,7 @@ Text Notes 5050 5000 0    50   ~ 0
 Supply voltage sense (10.8696 %)
 Text GLabel 10100 6250 0    50   Input ~ 0
 AD5
-Text GLabel 3550 1300 0    50   Input ~ 0
+Text GLabel 5850 1300 0    50   Input ~ 0
 ~RESET
 Text Notes 1050 3550 1    50   ~ 0
 SD card\n
@@ -570,18 +562,10 @@ Text Notes 700  2900 0    50   ~ 0
 ISP+debug\nserial port
 Text Notes 700  2700 0    50   ~ 0
 Watchdog\nserial port
-Text GLabel 5500 800  0    50   Input ~ 0
+Text GLabel 5850 1800 0    50   Input ~ 0
 TXD2
-Text GLabel 5500 900  0    50   Input ~ 0
+Text GLabel 5850 1900 0    50   Input ~ 0
 RXD2
-$Sheet
-S 5600 700  1000 700 
-U 4EB5C5C3
-F0 "Chiller Interface" 60
-F1 "chiller-if.sch" 60
-F2 "RXD" O L 5600 900 60 
-F3 "TXD" I L 5600 800 60 
-$EndSheet
 Text GLabel 1400 3750 0    50   Input ~ 0
 RXD2
 Text GLabel 1400 3650 0    50   Input ~ 0
@@ -590,42 +574,46 @@ Text GLabel 8050 900  0    50   Input ~ 0
 RXD3
 Text GLabel 8050 800  0    50   Input ~ 0
 TXD3
-Text GLabel 3550 900  0    50   Input ~ 0
+Text GLabel 5850 900  0    50   Input ~ 0
 SCK1
-Text GLabel 3550 1000 0    50   Input ~ 0
+Text GLabel 5850 1000 0    50   Input ~ 0
 MISO1
-Text GLabel 3550 1100 0    50   Input ~ 0
+Text GLabel 5850 1100 0    50   Input ~ 0
 MOSI1
-Text GLabel 3550 800  0    50   Input ~ 0
+Text GLabel 5850 800  0    50   Input ~ 0
 SD_CS
-Text GLabel 3550 1400 0    50   Input ~ 0
+Text GLabel 5850 1400 0    50   Input ~ 0
 ~ISP
-Text GLabel 4500 1300 2    50   Input ~ 0
+Text GLabel 6800 1300 2    50   Input ~ 0
 TXD0
-Text GLabel 4500 1400 2    50   Input ~ 0
+Text GLabel 6800 1400 2    50   Input ~ 0
 RXD0
-Text GLabel 4500 1000 2    50   Input ~ 0
+Text GLabel 6800 1000 2    50   Input ~ 0
 USB-
-Text GLabel 4500 900  2    50   Input ~ 0
+Text GLabel 6800 900  2    50   Input ~ 0
 USB+
-Text GLabel 4500 800  2    50   Input ~ 0
+Text GLabel 6800 800  2    50   Input ~ 0
 USB_VBUS
 $Sheet
-S 3650 700  750  750 
+S 5950 700  750  1350
 U 4EB5C316
 F0 "SD card + ISP + USB" 60
 F1 "sd-isp.sch" 60
-F2 "USB_VBUS" I R 4400 800 60 
-F3 "USB-" I R 4400 1000 60 
-F4 "USB+" I R 4400 900 60 
-F5 "RXD" O R 4400 1400 60 
-F6 "TXD" I R 4400 1300 60 
-F7 "~ISP" O L 3650 1400 60 
-F8 "~RESET" O L 3650 1300 60 
-F9 "SCK" I L 3650 900 60 
-F10 "MISO" I L 3650 1000 60 
-F11 "MOSI" I L 3650 1100 60 
-F12 "CS" I L 3650 800 60 
+F2 "USB_VBUS" I R 6700 800 60 
+F3 "USB-" I R 6700 1000 60 
+F4 "USB+" I R 6700 900 60 
+F5 "RXD" O R 6700 1400 60 
+F6 "TXD" I R 6700 1300 60 
+F7 "~ISP" O L 5950 1400 60 
+F8 "~RESET" O L 5950 1300 60 
+F9 "SCK" I L 5950 900 60 
+F10 "MISO" I L 5950 1000 60 
+F11 "MOSI" I L 5950 1100 60 
+F12 "CS" I L 5950 800 60 
+F13 "Exhaust" I R 6700 1600 60 
+F14 "Assist Air" I R 6700 1700 60 
+F15 "TXDC" I L 5950 1800 60 
+F16 "RXDC" O L 5950 1900 60 
 $EndSheet
 Text GLabel 10100 5550 0    50   Input ~ 0
 P2.11

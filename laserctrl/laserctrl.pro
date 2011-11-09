@@ -1,4 +1,4 @@
-update=2011-11-08T21:58:24 CET
+update=2011-11-09T19:35:13 CET
 version=1
 last_client=eeschema
 [pcbnew]
@@ -149,3 +149,4 @@ LibName35=libs/opto-transistor-4p2
 LibName36=atmega328p-a
 LibName37=atmel
 LibName38=microsd
+LibName39=jumper3

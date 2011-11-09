@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-08T22:27:11 CET
+EESchema Schematic File Version 2  date 2011-11-09T19:37:00 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -37,14 +37,14 @@ LIBS:opto-transistor-4p2
 LIBS:atmega328p-a
 LIBS:atmel
 LIBS:microsd
-LIBS:laserctrl-cache
+LIBS:jumper3
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 12 12
+Sheet 10 10
 Title ""
-Date "8 nov 2011"
+Date "9 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -52,8 +52,10 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text HLabel 5800 6100 2    50   Output ~ 0
-Supply-sense
+Wire Wire Line
+	7050 3000 4250 3000
+Wire Wire Line
+	6050 4950 6050 4750
 Connection ~ 5550 6100
 Wire Wire Line
 	5800 6100 5300 6100
@@ -99,16 +101,12 @@ Wire Wire Line
 	5800 4750 5800 4650
 Connection ~ 5800 4150
 Wire Wire Line
-	6050 4150 5550 4150
+	5550 4150 6050 4150
 Wire Wire Line
 	4850 4150 4700 4150
 Wire Wire Line
 	4700 4150 4700 3950
-Connection ~ 6800 3000
 Connection ~ 6550 2600
-Connection ~ 6800 2600
-Wire Wire Line
-	4950 2600 7300 2600
 Wire Wire Line
 	3500 7100 3500 6900
 Wire Wire Line
@@ -164,8 +162,6 @@ Wire Wire Line
 Connection ~ 5350 2600
 Connection ~ 5050 3000
 Connection ~ 5350 3000
-Connection ~ 6300 3000
-Connection ~ 6300 2600
 Connection ~ 5850 2600
 Wire Wire Line
 	1900 6900 1900 7100
@@ -175,16 +171,9 @@ Wire Wire Line
 	3900 6900 3900 7100
 Wire Wire Line
 	5850 2200 5850 2600
-Connection ~ 7050 2600
 Connection ~ 6550 3000
 Wire Wire Line
-	7300 3000 4250 3000
-Connection ~ 7050 3000
-Wire Wire Line
 	5800 4150 5800 4250
-Wire Wire Line
-	6050 3950 6050 4250
-Connection ~ 6050 4150
 Wire Wire Line
 	7750 4100 8150 4100
 Wire Wire Line
@@ -200,9 +189,6 @@ Wire Wire Line
 	7300 4750 7300 4600
 Wire Wire Line
 	7300 4600 7200 4600
-Wire Wire Line
-	6050 4950 6050 4650
-Connection ~ 6050 4750
 Wire Wire Line
 	2350 4650 3950 4650
 Wire Wire Line
@@ -227,6 +213,12 @@ Wire Wire Line
 Wire Wire Line
 	5550 6750 5300 6750
 Connection ~ 5300 6750
+Wire Wire Line
+	6050 4150 6050 3950
+Wire Wire Line
+	7050 2600 4950 2600
+Text HLabel 5800 6100 2    50   Output ~ 0
+Supply-sense
 $Comp
 L C C91
 U 1 1 4EB6CE2C
@@ -272,7 +264,7 @@ F 1 "82k" V 5300 5750 50  0000 C CNN
 	1    5300 5750
 	1    0    0    -1  
 $EndComp
-Text Notes 2500 4850 0    50   ~ 0
+Text Notes 2400 3850 0    50   ~ 0
 Note: The +5V supply is only used for NTCs\nit needs to supply only a few mA of current
 $Comp
 L +5V #PWR137
@@ -288,7 +280,7 @@ L CAPAPOL C86
 U 1 1 4EB54A69
 P 2950 4400
 F 0 "C86" H 3000 4500 50  0000 L CNN
-F 1 "220uF" H 3000 4300 50  0000 L CNN
+F 1 "1.5mF/35V" H 2800 3950 50  0000 L CNN
 	1    2950 4400
 	1    0    0    -1  
 $EndComp
@@ -297,7 +289,7 @@ L CAPAPOL C85
 U 1 1 4EB549F2
 P 2650 4400
 F 0 "C85" H 2700 4500 50  0000 L CNN
-F 1 "220uF" H 2700 4300 50  0000 L CNN
+F 1 "1.5mF/35V" H 2500 4050 50  0000 L CNN
 	1    2650 4400
 	1    0    0    -1  
 $EndComp
@@ -306,7 +298,7 @@ L C C87
 U 1 1 4EB5493E
 P 3950 4400
 F 0 "C87" H 4000 4500 50  0000 L CNN
-F 1 "10uF" H 4000 4300 50  0000 L CNN
+F 1 "22uF/6.3" H 4000 4300 50  0000 L CNN
 	1    3950 4400
 	1    0    0    -1  
 $EndComp
@@ -315,7 +307,7 @@ L C C84
 U 1 1 4EB5492E
 P 2350 4400
 F 0 "C84" H 2400 4500 50  0000 L CNN
-F 1 "10uF" H 2400 4300 50  0000 L CNN
+F 1 "10uF/35V" H 1950 4300 50  0000 L CNN
 	1    2350 4400
 	1    0    0    -1  
 $EndComp
@@ -482,39 +474,12 @@ F 1 "100nF" H 5550 4350 50  0000 L CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C90
-U 1 1 4EA3E94B
-P 6050 4450
-F 0 "C90" H 6100 4550 50  0000 L CNN
-F 1 "10nF" H 6100 4350 50  0000 L CNN
-	1    6050 4450
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C82
-U 1 1 4EA3E691
-P 7300 2800
-F 0 "C82" H 7350 2900 50  0000 L CNN
-F 1 "10nF" H 7250 2550 50  0000 L CNN
-	1    7300 2800
-	1    0    0    -1  
-$EndComp
-$Comp
 L C C81
 U 1 1 4EA3E68B
 P 7050 2800
 F 0 "C81" H 7100 2900 50  0000 L CNN
 F 1 "100nF" H 7000 2550 50  0000 L CNN
 	1    7050 2800
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C80
-U 1 1 4EA3E686
-P 6800 2800
-F 0 "C80" H 6850 2900 50  0000 L CNN
-F 1 "10nF" H 6750 2550 50  0000 L CNN
-	1    6800 2800
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -693,15 +658,6 @@ F 1 "100nF" H 6500 2550 50  0000 L CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C78
-U 1 1 4D04D38C
-P 6300 2800
-F 0 "C78" H 6350 2900 50  0000 L CNN
-F 1 "10nF" H 6250 2550 50  0000 L CNN
-	1    6300 2800
-	1    0    0    -1  
-$EndComp
-$Comp
 L C C77
 U 1 1 4D04D33D
 P 6050 2800
@@ -715,7 +671,7 @@ L C C76
 U 1 1 4D04D22A
 P 5350 2800
 F 0 "C76" H 5400 2900 50  0000 L CNN
-F 1 "10uF" H 5400 2700 50  0000 L CNN
+F 1 "22uF/6.3V" H 5400 2700 50  0000 L CNN
 	1    5350 2800
 	1    0    0    -1  
 $EndComp
@@ -724,7 +680,7 @@ L CAPAPOL C75
 U 1 1 4D04D0AE
 P 5050 2800
 F 0 "C75" H 5100 2900 50  0000 L CNN
-F 1 "220uF" H 5100 2700 50  0000 L CNN
+F 1 "1mF/10V" H 4900 2500 50  0000 L CNN
 	1    5050 2800
 	1    0    0    -1  
 $EndComp

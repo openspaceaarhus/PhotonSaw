@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-08T22:27:11 CET
+EESchema Schematic File Version 2  date 2011-11-09T19:37:00 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -37,14 +37,14 @@ LIBS:opto-transistor-4p2
 LIBS:atmega328p-a
 LIBS:atmel
 LIBS:microsd
-LIBS:laserctrl-cache
+LIBS:jumper3
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 5 12
+Sheet 3 10
 Title ""
-Date "8 nov 2011"
+Date "9 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
