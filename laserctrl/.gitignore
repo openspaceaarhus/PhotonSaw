@@ -3,3 +3,4 @@ laserctrl-cache.lib
 *.ps
 *.pdf
 *~
+$*

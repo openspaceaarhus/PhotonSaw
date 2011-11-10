@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-09T22:36:32 CET
+EESchema Schematic File Version 2  date 2011-11-10T19:54:24 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -46,7 +46,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 10
 Title ""
-Date "9 nov 2011"
+Date "10 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -54,30 +54,16 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Connection ~ 9600 2950
 Wire Wire Line
-	9600 3000 9600 2950
+	9850 2950 9600 2950
 Wire Wire Line
-	9850 2600 10050 2600
+	9600 2450 9600 2550
+Connection ~ 9600 1050
 Wire Wire Line
-	9850 3400 9600 3400
+	9600 1100 9600 1000
 Wire Wire Line
-	9850 3400 9850 3250
-Wire Wire Line
-	9600 2950 10050 2950
-Connection ~ 9850 2950
-Wire Wire Line
-	9850 2650 9850 2550
-Connection ~ 9850 2600
-Connection ~ 9850 1150
-Wire Wire Line
-	9850 1200 9850 1100
-Connection ~ 9850 1500
-Wire Wire Line
-	10050 1500 9600 1500
-Wire Wire Line
-	9850 1800 9850 1950
-Wire Wire Line
-	9850 1950 9600 1950
+	9600 2950 9600 3000
 Wire Wire Line
 	1500 4750 1650 4750
 Wire Wire Line
@@ -157,7 +143,7 @@ Wire Wire Line
 Wire Wire Line
 	9300 3200 9200 3200
 Wire Wire Line
-	9600 3400 9600 3450
+	9600 3450 9600 3400
 Wire Wire Line
 	8600 3200 8700 3200
 Wire Wire Line
@@ -207,39 +193,45 @@ Wire Wire Line
 	9500 5300 9550 5300
 Connection ~ 9550 5300
 Wire Wire Line
-	9600 1500 9600 1550
+	9600 1550 9600 1500
 Wire Wire Line
-	10050 1300 10050 1150
+	9850 1300 9850 1050
 Wire Wire Line
-	10050 1150 9850 1150
+	9850 1050 9600 1050
 Wire Wire Line
-	10050 2600 10050 2750
+	9600 1500 9850 1500
+Connection ~ 9600 1500
+Wire Wire Line
+	9600 2500 9850 2500
+Wire Wire Line
+	9850 2500 9850 2750
+Connection ~ 9600 2500
+$Comp
+L DIODE D?
+U 1 1 4EBC1A1B
+P 9600 2750
+F 0 "D?" H 9600 2850 40  0000 C CNN
+F 1 "DO-213AA" H 9600 2650 40  0000 C CNN
+	1    9600 2750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L DIODE D?
+U 1 1 4EBC19B2
+P 9600 1300
+F 0 "D?" H 9600 1400 40  0000 C CNN
+F 1 "DO-213AA" H 9600 1200 40  0000 C CNN
+	1    9600 1300
+	0    -1   -1   0   
+$EndComp
 $Comp
 L +24V #PWR012
 U 1 1 4EBAE1E7
-P 9850 2550
-F 0 "#PWR012" H 9850 2500 20  0001 C CNN
-F 1 "+24V" H 9850 2650 30  0000 C CNN
-	1    9850 2550
+P 9600 2450
+F 0 "#PWR012" H 9600 2400 20  0001 C CNN
+F 1 "+24V" H 9600 2550 30  0000 C CNN
+	1    9600 2450
 	1    0    0    -1  
-$EndComp
-$Comp
-L DIODE2 D2
-U 1 1 4EBAE1E6
-P 9850 2950
-F 0 "D2" H 9700 3100 60  0000 C CNN
-F 1 "BAT 54S" H 9600 3200 60  0000 C CNN
-	1    9850 2950
-	-1   0    0    1   
-$EndComp
-$Comp
-L DIODE2 D1
-U 1 1 4EBAE16D
-P 9850 1500
-F 0 "D1" H 9700 1650 60  0000 C CNN
-F 1 "BAT 54S" H 9600 1750 60  0000 C CNN
-	1    9850 1500
-	-1   0    0    1   
 $EndComp
 $Comp
 L CONN_5X2 P4
@@ -322,19 +314,19 @@ $EndComp
 $Comp
 L CONN_2 P2
 U 1 1 4EBAC037
-P 10400 1400
-F 0 "P2" V 10350 1400 40  0000 C CNN
-F 1 "Exhaust" V 10450 1400 40  0000 C CNN
-	1    10400 1400
+P 10200 1400
+F 0 "P2" V 10150 1400 40  0000 C CNN
+F 1 "Exhaust" V 10250 1400 40  0000 C CNN
+	1    10200 1400
 	1    0    0    -1  
 $EndComp
 $Comp
 L +24V #PWR018
 U 1 1 4EBAC035
-P 9850 1100
-F 0 "#PWR018" H 9850 1050 20  0001 C CNN
-F 1 "+24V" H 9850 1200 30  0000 C CNN
-	1    9850 1100
+P 9600 1000
+F 0 "#PWR018" H 9600 950 20  0001 C CNN
+F 1 "+24V" H 9600 1100 30  0000 C CNN
+	1    9600 1000
 	1    0    0    -1  
 $EndComp
 Text HLabel 8600 1750 0    50   Input ~ 0
@@ -344,10 +336,10 @@ Assist Air
 $Comp
 L CONN_2 P3
 U 1 1 4EBAC032
-P 10400 2850
-F 0 "P3" V 10350 2850 40  0000 C CNN
-F 1 "Assist Air" V 10450 2850 40  0000 C CNN
-	1    10400 2850
+P 10200 2850
+F 0 "P3" V 10150 2850 40  0000 C CNN
+F 1 "Assist Air" V 10250 2850 40  0000 C CNN
+	1    10200 2850
 	1    0    0    -1  
 $EndComp
 $Comp

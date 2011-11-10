@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-09T22:28:08 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-10T23:37:57 CET
 
 BeginCmp
 TimeStamp = /4EAD4B80;
@@ -123,7 +123,7 @@ BeginCmp
 TimeStamp = /4EAD3DC6/4EB45B01;
 Reference = C18;
 ValeurCmp = 10uF/35V;
-IdModule  = SM0805;
+IdModule  = SM1206;
 EndCmp
 
 BeginCmp
@@ -221,7 +221,7 @@ BeginCmp
 TimeStamp = /4EA1D353/4EB45B01;
 Reference = C32;
 ValeurCmp = 10uF/35V;
-IdModule  = SM0805;
+IdModule  = SM1206;
 EndCmp
 
 BeginCmp
@@ -347,7 +347,7 @@ BeginCmp
 TimeStamp = /4EA1F56E/4EB45B01;
 Reference = C52;
 ValeurCmp = 10uF/35V;
-IdModule  = SM0805;
+IdModule  = SM1206;
 EndCmp
 
 BeginCmp
@@ -431,7 +431,7 @@ BeginCmp
 TimeStamp = /4EA1D331/4EB45B01;
 Reference = C66;
 ValeurCmp = 10uF/35V;
-IdModule  = SM0805;
+IdModule  = SM1206;
 EndCmp
 
 BeginCmp
@@ -529,7 +529,7 @@ BeginCmp
 TimeStamp = /4EA1A825/4EB5492E;
 Reference = C84;
 ValeurCmp = 10uF/35V;
-IdModule  = SM0805;
+IdModule  = SM1206;
 EndCmp
 
 BeginCmp
@@ -582,17 +582,17 @@ IdModule  = pin_array_3x2;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB5C316/4EBAE16D;
+TimeStamp = /4EB5C316/4EBC19B2;
 Reference = D1;
-ValeurCmp = BAT_54S;
-IdModule  = diode-SOT23;
+ValeurCmp = DO-213AA;
+IdModule  = diode-MINIMELF;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB5C316/4EBAE1E6;
+TimeStamp = /4EB5C316/4EBC1A1B;
 Reference = D2;
-ValeurCmp = BAT_54S;
-IdModule  = diode-SOT23;
+ValeurCmp = DO-213AA;
+IdModule  = diode-MINIMELF;
 EndCmp
 
 BeginCmp
@@ -661,7 +661,7 @@ EndCmp
 BeginCmp
 TimeStamp = /4EAEE920/4EB43A5B;
 Reference = D12;
-ValeurCmp = DIODE;
+ValeurCmp = LS_914B;
 IdModule  = diode-MINIMELF;
 EndCmp
 
@@ -703,7 +703,7 @@ EndCmp
 BeginCmp
 TimeStamp = /4EAEE920/4EB1CCF4;
 Reference = D18;
-ValeurCmp = DIODE;
+ValeurCmp = LS_914B;
 IdModule  = diode-MINIMELF;
 EndCmp
 
@@ -808,14 +808,14 @@ EndCmp
 BeginCmp
 TimeStamp = /4EA1A825/4EA3EF38;
 Reference = D44;
-ValeurCmp = DIODE;
+ValeurCmp = LS_914B;
 IdModule  = diode-MINIMELF;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA1A825/4EA3EF40;
 Reference = D45;
-ValeurCmp = DIODE;
+ValeurCmp = LS_914B;
 IdModule  = diode-MINIMELF;
 EndCmp
 
@@ -893,14 +893,14 @@ BeginCmp
 TimeStamp = /4EAD3DC6/4EA1E74B;
 Reference = IC1;
 ValeurCmp = DRV8811;
-IdModule  = ;
+IdModule  = ssop28-pp;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA1D353/4EA1E74B;
 Reference = IC2;
 ValeurCmp = DRV8811;
-IdModule  = ;
+IdModule  = ssop28-pp;
 EndCmp
 
 BeginCmp
@@ -914,14 +914,14 @@ BeginCmp
 TimeStamp = /4EA1F56E/4EA1E74B;
 Reference = IC4;
 ValeurCmp = DRV8811;
-IdModule  = ;
+IdModule  = ssop28-pp;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA1D331/4EA1E74B;
 Reference = IC5;
 ValeurCmp = DRV8811;
-IdModule  = ;
+IdModule  = ssop28-pp;
 EndCmp
 
 BeginCmp
@@ -935,7 +935,7 @@ BeginCmp
 TimeStamp = /4EB5C316/4EB997F7;
 Reference = J2;
 ValeurCmp = MICROSD;
-IdModule  = ;
+IdModule  = microSD;
 EndCmp
 
 BeginCmp

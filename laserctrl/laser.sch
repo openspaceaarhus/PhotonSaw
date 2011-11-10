@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-09T22:36:32 CET
+EESchema Schematic File Version 2  date 2011-11-10T19:54:24 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -46,7 +46,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 4 10
 Title ""
-Date "9 nov 2011"
+Date "10 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -57,23 +57,41 @@ $EndDescr
 Wire Wire Line
 	6100 5000 6100 5100
 Wire Wire Line
-	5000 4700 7350 4700
+	5000 4700 6100 4700
+Wire Wire Line
+	6100 4700 6550 4700
+Wire Wire Line
+	6550 4700 7350 4700
 Connection ~ 5700 3900
 Wire Wire Line
-	8150 3900 5000 3900
+	8150 3900 5700 3900
+Wire Wire Line
+	5700 3900 5200 3900
+Wire Wire Line
+	5200 3900 5000 3900
 Connection ~ 5700 3600
 Wire Wire Line
-	6550 3600 5000 3600
-Connection ~ 5200 2650
+	6550 3600 5700 3600
 Wire Wire Line
-	5000 2650 5600 2650
+	5700 3600 5000 3600
+Connection ~ 5700 2650
 Wire Wire Line
-	5000 2950 8150 2950
+	5000 2650 5700 2650
+Wire Wire Line
+	5700 2650 5850 2650
+Wire Wire Line
+	5000 2950 5700 2950
+Wire Wire Line
+	5700 2950 7850 2950
+Wire Wire Line
+	7850 2950 8150 2950
 Wire Wire Line
 	5750 1400 6550 1400
 Connection ~ 2800 5700
 Wire Wire Line
-	2650 5700 2950 5700
+	2650 5700 2800 5700
+Wire Wire Line
+	2800 5700 2950 5700
 Wire Wire Line
 	1700 5650 1700 5700
 Wire Wire Line
@@ -117,7 +135,11 @@ Wire Wire Line
 	2450 3900 2800 3900
 Connection ~ 1850 3700
 Wire Wire Line
-	1350 2650 3750 2650
+	1350 2650 2800 2650
+Wire Wire Line
+	2800 2650 3600 2650
+Wire Wire Line
+	3600 2650 3750 2650
 Wire Wire Line
 	2900 2000 2800 2000
 Wire Wire Line
@@ -125,7 +147,9 @@ Wire Wire Line
 Wire Wire Line
 	3300 2750 3300 2950
 Wire Wire Line
-	1450 6500 1450 6350
+	1450 6500 1450 6400
+Wire Wire Line
+	1450 6400 1450 6350
 Connection ~ 1450 5900
 Wire Wire Line
 	1450 5950 1450 5900
@@ -137,7 +161,7 @@ Wire Wire Line
 	7850 2950 7850 3700
 Connection ~ 6550 2650
 Wire Wire Line
-	6100 2650 6550 2650
+	6350 2650 6550 2650
 Connection ~ 5200 3900
 Connection ~ 6550 4700
 Wire Wire Line
@@ -147,7 +171,9 @@ Wire Wire Line
 Wire Wire Line
 	7350 3600 8150 3600
 Wire Wire Line
-	7850 3800 8150 3800
+	7850 3800 8000 3800
+Wire Wire Line
+	8000 3800 8150 3800
 Wire Wire Line
 	3650 3600 3750 3600
 Wire Wire Line
@@ -185,7 +211,13 @@ Wire Wire Line
 Wire Wire Line
 	7850 3700 8150 3700
 Wire Wire Line
-	6550 1400 6550 4100
+	6550 1400 6550 2650
+Wire Wire Line
+	6550 2650 6550 3600
+Wire Wire Line
+	6550 3600 6550 4000
+Wire Wire Line
+	6550 4000 6550 4100
 Connection ~ 6550 4000
 Connection ~ 6550 3600
 Connection ~ 7850 2950
@@ -204,7 +236,9 @@ Wire Wire Line
 Wire Wire Line
 	3800 1700 1350 1700
 Wire Wire Line
-	1950 3700 1350 3700
+	1950 3700 1850 3700
+Wire Wire Line
+	1850 3700 1350 3700
 Wire Wire Line
 	1850 3700 1850 3900
 Wire Wire Line
@@ -231,37 +265,53 @@ Wire Wire Line
 Wire Wire Line
 	2950 5000 3750 5000
 Wire Wire Line
-	1950 4800 1350 4800
+	1950 4800 1850 4800
+Wire Wire Line
+	1850 4800 1350 4800
 Wire Wire Line
 	1700 4550 1700 4600
 Wire Wire Line
-	2950 4600 2650 4600
+	2950 4600 2800 4600
+Wire Wire Line
+	2800 4600 2650 4600
 Connection ~ 2800 4600
 Wire Wire Line
-	1350 5900 1950 5900
+	1350 5900 1450 5900
+Wire Wire Line
+	1450 5900 1850 5900
+Wire Wire Line
+	1850 5900 1950 5900
 Connection ~ 5650 1700
 Wire Wire Line
 	5050 1700 5650 1700
 Wire Wire Line
-	5650 1550 5650 1800
+	5650 1550 5650 1700
+Wire Wire Line
+	5650 1700 5650 1800
 Connection ~ 5150 1400
 Wire Wire Line
-	5250 1400 5050 1400
+	5250 1400 5150 1400
+Wire Wire Line
+	5150 1400 5050 1400
 Wire Wire Line
 	5250 1550 5150 1550
 Wire Wire Line
 	5150 1550 5150 1400
 Wire Wire Line
-	5200 3350 5200 3250
-Connection ~ 5200 2950
+	5700 3350 5700 3250
+Connection ~ 5700 2950
 Wire Wire Line
-	5700 4200 5700 4400
+	5700 4200 5700 4250
+Wire Wire Line
+	5700 4250 5700 4400
 Connection ~ 5700 4250
 Connection ~ 6100 4700
 Wire Wire Line
 	6100 4400 6100 4000
 Wire Wire Line
-	6100 4000 8150 4000
+	6100 4000 6550 4000
+Wire Wire Line
+	6550 4000 8150 4000
 $Comp
 L GND #PWR042
 U 1 1 4EBADF3F
@@ -292,19 +342,19 @@ $EndComp
 $Comp
 L GND #PWR043
 U 1 1 4EBADE5B
-P 5200 3350
-F 0 "#PWR043" H 5200 3350 30  0001 C CNN
-F 1 "GND" H 5200 3280 30  0001 C CNN
-	1    5200 3350
+P 5700 3350
+F 0 "#PWR043" H 5700 3350 30  0001 C CNN
+F 1 "GND" H 5700 3280 30  0001 C CNN
+	1    5700 3350
 	1    0    0    -1  
 $EndComp
 $Comp
 L DIODE2 D7
 U 1 1 4EBADE4A
-P 5200 2950
-F 0 "D7" H 5350 3050 60  0000 C CNN
-F 1 "BAT 54S" H 5450 3150 60  0000 C CNN
-	1    5200 2950
+P 5700 2950
+F 0 "D7" H 5850 3050 60  0000 C CNN
+F 1 "BAT 54S" H 5950 3150 60  0000 C CNN
+	1    5700 2950
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -622,10 +672,10 @@ $EndComp
 $Comp
 L R R27
 U 1 1 4EB1C921
-P 5850 2650
-F 0 "R27" V 5930 2650 50  0000 C CNN
-F 1 "200R" V 5850 2650 50  0000 C CNN
-	1    5850 2650
+P 6100 2650
+F 0 "R27" V 6180 2650 50  0000 C CNN
+F 1 "200R" V 6100 2650 50  0000 C CNN
+	1    6100 2650
 	0    1    1    0   
 $EndComp
 $Comp
