@@ -1,1 +1,6 @@
-* Complete watchdog
+* Add inputs for voltage (0-40000 V) and current (0-50 mA) monitoring of the tube.
+  ... perhaps as another separate helperboard on serial, like the chiller controller?
+
+
+  
+  
