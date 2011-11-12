@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-12T10:32:41 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-12T18:55:55 CET
 
 BeginCmp
 TimeStamp = /4EAD4B80;
@@ -274,6 +274,13 @@ IdModule  = SM0603;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EB45CE6/4EBE3D76;
+Reference = C40;
+ValeurCmp = 10nF;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EA3E488/4EA3E4C4;
 Reference = C41;
 ValeurCmp = 100nF;
@@ -536,7 +543,7 @@ BeginCmp
 TimeStamp = /4EA1A825/4EB549F2;
 Reference = C85;
 ValeurCmp = 1.5mF/35V;
-IdModule  = c_elec_6.3x5.8;
+IdModule  = c_elec_16x16;
 EndCmp
 
 BeginCmp
@@ -578,14 +585,14 @@ BeginCmp
 TimeStamp = /4EB5C316/4EBC19B2;
 Reference = D1;
 ValeurCmp = DO-213AA;
-IdModule  = diode-MINIMELF;
+IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EB5C316/4EBC1A1B;
 Reference = D2;
 ValeurCmp = DO-213AA;
-IdModule  = diode-MINIMELF;
+IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
@@ -655,7 +662,7 @@ BeginCmp
 TimeStamp = /4EAEE920/4EB43A5B;
 Reference = D12;
 ValeurCmp = LS_914B;
-IdModule  = diode-MINIMELF;
+IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
@@ -697,7 +704,7 @@ BeginCmp
 TimeStamp = /4EAEE920/4EB1CCF4;
 Reference = D18;
 ValeurCmp = LS_914B;
-IdModule  = diode-MINIMELF;
+IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
@@ -778,6 +785,20 @@ IdModule  = diode-SOT23;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EB45CE6/4EBE3D7A;
+Reference = D30;
+ValeurCmp = LED;
+IdModule  = LED-0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB45CE6/4EBE3D7C;
+Reference = D31;
+ValeurCmp = BAT_54S;
+IdModule  = diode-SOT23;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EA1F56E/4EB45A37;
 Reference = D33;
 ValeurCmp = LED;
@@ -802,14 +823,14 @@ BeginCmp
 TimeStamp = /4EA1A825/4EA3EF38;
 Reference = D44;
 ValeurCmp = LS_914B;
-IdModule  = diode-MINIMELF;
+IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA1A825/4EA3EF40;
 Reference = D45;
 ValeurCmp = LS_914B;
-IdModule  = diode-MINIMELF;
+IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
@@ -1167,6 +1188,13 @@ TimeStamp = /4EBD70C4;
 Reference = P25;
 ValeurCmp = jtag;
 IdModule  = pin_array_8x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB45CE6/4EBE3D7D;
+Reference = P26;
+ValeurCmp = waterflow;
+IdModule  = PIN_ARRAY_2X1;
 EndCmp
 
 BeginCmp
@@ -1828,6 +1856,13 @@ IdModule  = SM0805;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EB45CE6/4EBE3D79;
+Reference = R87;
+ValeurCmp = 330;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EA1A825/4D04CE98;
 Reference = R88;
 ValeurCmp = 0.22R;
@@ -1859,6 +1894,20 @@ BeginCmp
 TimeStamp = /4EA1A825/4EB6CE1B;
 Reference = R92;
 ValeurCmp = 10k;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB45CE6/4EBE3D78;
+Reference = R93;
+ValeurCmp = 1k;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB45CE6/4EBE9D37;
+Reference = R94;
+ValeurCmp = 10R;
 IdModule  = SM0805;
 EndCmp
 
