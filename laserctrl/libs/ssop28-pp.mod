@@ -1,19 +1,19 @@
-PCBNEW-LibModule-V1  2011-11-12T18:21:26 CET
+PCBNEW-LibModule-V1  2011-11-13T16:20:40 CET
 # encoding utf-8
 $INDEX
 ssop28-pp
 $EndINDEX
 $MODULE ssop28-pp
-Po 0 0 0 15 4EBEAAFE 4EBEAAF3 ~~
+Po 0 0 0 15 4EBFE03A 4EBFDF0E ~~
 Li ssop28-pp
 Cd SHRINK SMALL OUTLINE PACKAGE with powerpad
 Kw SHRINK SMALL OUTLINE PACKAGE
-Sc 4EBEAAF3
+Sc 4EBFDF0E
 AR ssop28
 Op 0 0 0
 At SMD 
 T0 -2405 -214 500 500 900 35 N V 21 N "ssop28-pp"
-T1 -35 17 500 500 0 35 N V 21 N "ssop28-pp"
+T1 2402 0 500 500 900 35 N V 21 N "ssop28-pp"
 DS -1733 1550 -1593 1550 26 21
 DS -1593 1550 -1593 1040 26 21
 DS -1733 1040 -1593 1040 26 21
@@ -335,6 +335,237 @@ Dr 0 0 0
 At SMD N 00888000
 Ne 0 ""
 Po 0 0
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -945 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -630 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -315 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 315 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 630 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 945 -512
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -787 -276
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -472 -276
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -157 -276
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 157 -276
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 472 -276
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 787 -276
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -945 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -630 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -315 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 315 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 630 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 945 -39
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -787 197
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -472 197
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -157 197
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 157 197
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 472 197
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 787 197
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -945 472
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -630 472
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -315 472
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 472
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 315 472
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 630 472
+$EndPAD
+$PAD
+Sh "bpad" C 118 118 0 0 0
+Dr 118 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 945 472
 $EndPAD
 $EndMODULE  ssop28-pp
 $EndLIBRARY

@@ -1,8 +1,13 @@
-update=2011-11-12T18:55:03 CET
+update=2011-11-13T16:21:22 CET
 version=1
 last_client=pcbnew
 [general]
 version=1
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
 [eeschema]
 version=1
 LibDir=libs
@@ -76,16 +81,12 @@ LibName38=microsd
 LibName39=jumper3
 LibName40=diode2
 LibName41=78l00a
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
+LibName42=conn_11x2
 [pcbnew]
 version=1
-PadDrlX=0
-PadDimH=551
-PadDimV=708
+PadDrlX=118
+PadDimH=118
+PadDimV=118
 BoardThickness=630
 TxtPcbV=800
 TxtPcbH=600
@@ -120,5 +121,7 @@ LibName17=libs/dip-4
 LibName18=libs/solder-jumper-3
 LibName19=libs/c_elec_16x16
 LibName20=libs/PIN_ARRAY_4X1
-LibName21=libs/ssop28-pp
-LibName22=libs/diode-minimelf-unfucked
+LibName21=libs/diode-minimelf-unfucked
+LibName22=libs/diode-SMA-unfucked
+LibName23=libs/2mm-hole
+LibName24=libs/ssop28-pp

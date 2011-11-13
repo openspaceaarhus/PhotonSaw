@@ -1,0 +1,22 @@
+PCBNEW-LibModule-V1  2011-11-13T15:16:35 CET
+# encoding utf-8
+$INDEX
+2mm hole
+$EndINDEX
+$MODULE 2mm hole
+Po 0 0 0 15 4EBFD127 00000000 ~~
+Li 2mm hole
+Sc 00000000
+AR 
+Op 0 0 0
+T0 0 -1969 600 600 0 120 N V 21 N "2mm hole"
+T1 0 1969 600 600 0 120 N V 21 N "VAL**"
+$PAD
+Sh "1" C 787 787 0 0 0
+Dr 787 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 0
+$EndPAD
+$EndMODULE  2mm hole
+$EndLIBRARY
