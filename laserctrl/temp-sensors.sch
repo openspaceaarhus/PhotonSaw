@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-13T12:04:33 CET
+EESchema Schematic File Version 2  date 2011-11-13T23:13:03 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -56,6 +56,169 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L DIODE2 D3
+U 1 1 4EBAE288
+P 1600 1800
+F 0 "D3" H 1750 1900 60  0000 C CNN
+F 1 "BAT 54S" H 1850 2000 60  0000 C CNN
+	1    1600 1800
+	-1   0    0    1   
+$EndComp
+Connection ~ 1600 1800
+Wire Wire Line
+	1600 2400 1600 2100
+Wire Wire Line
+	2100 2400 1600 2400
+Wire Wire Line
+	5500 4900 5500 5100
+Wire Wire Line
+	5100 5000 5750 5000
+Connection ~ 5300 3450
+Wire Wire Line
+	5300 3500 5300 3450
+Wire Wire Line
+	5500 3450 5100 3450
+Wire Wire Line
+	5100 4000 5100 4100
+Connection ~ 5100 4600
+Wire Wire Line
+	5100 4600 5100 4500
+Wire Wire Line
+	5300 4600 5300 4000
+Connection ~ 5300 4600
+Wire Wire Line
+	5100 3450 5100 3500
+Connection ~ 5500 3450
+Connection ~ 5500 5000
+Wire Wire Line
+	5750 4600 4800 4600
+Connection ~ 5500 4600
+Wire Wire Line
+	5500 4300 5500 3400
+Wire Wire Line
+	5750 5000 5750 4800
+Wire Wire Line
+	1300 4100 1300 3700
+Wire Wire Line
+	2000 4400 1200 4400
+Connection ~ 1300 4400
+Wire Wire Line
+	5000 2100 5000 2400
+Wire Wire Line
+	5000 2400 5500 2400
+Wire Wire Line
+	4900 1800 5500 1800
+Connection ~ 5000 1800
+Wire Wire Line
+	5000 1500 5000 1100
+Wire Wire Line
+	3200 2100 3200 2400
+Wire Wire Line
+	3200 2400 3700 2400
+Wire Wire Line
+	3100 1800 3700 1800
+Connection ~ 3200 1800
+Wire Wire Line
+	3200 1500 3200 1100
+Wire Wire Line
+	1600 1500 1600 1100
+Connection ~ 2550 4200
+Wire Wire Line
+	2550 4150 2550 4600
+Wire Wire Line
+	2550 4200 2500 4200
+Connection ~ 2550 3700
+Wire Wire Line
+	2550 3650 2550 3750
+Wire Wire Line
+	2000 3500 2000 3150
+Wire Wire Line
+	2000 3150 2550 3150
+Connection ~ 1800 5000
+Wire Wire Line
+	1800 5000 1800 4950
+Connection ~ 1800 4400
+Wire Wire Line
+	1800 4400 1800 4450
+Wire Wire Line
+	2500 4400 2550 4400
+Wire Wire Line
+	2100 1100 2100 1200
+Wire Wire Line
+	2100 1700 2100 2000
+Connection ~ 1850 1800
+Wire Wire Line
+	1850 1800 1850 1900
+Wire Wire Line
+	1850 2300 1850 2400
+Wire Wire Line
+	1500 1800 2100 1800
+Connection ~ 2100 1800
+Wire Wire Line
+	2100 2500 2100 2200
+Connection ~ 2100 2400
+Connection ~ 1850 2400
+Connection ~ 3450 2400
+Connection ~ 3700 2400
+Wire Wire Line
+	3700 2500 3700 2200
+Connection ~ 3700 1800
+Wire Wire Line
+	3450 2400 3450 2300
+Wire Wire Line
+	3450 1900 3450 1800
+Connection ~ 3450 1800
+Wire Wire Line
+	3700 1700 3700 2000
+Wire Wire Line
+	3700 1100 3700 1200
+Wire Wire Line
+	5500 1100 5500 1200
+Wire Wire Line
+	5500 1700 5500 2000
+Connection ~ 5250 1800
+Wire Wire Line
+	5250 1800 5250 1900
+Wire Wire Line
+	5250 2300 5250 2400
+Connection ~ 5500 1800
+Wire Wire Line
+	5500 2500 5500 2200
+Connection ~ 5500 2400
+Connection ~ 5250 2400
+Connection ~ 1550 5000
+Connection ~ 2550 5000
+Wire Wire Line
+	2550 5100 2550 4800
+Connection ~ 2550 4400
+Wire Wire Line
+	1550 4900 1550 5000
+Wire Wire Line
+	1550 4400 1550 4500
+Connection ~ 1550 4400
+Wire Wire Line
+	2550 5000 1300 5000
+Wire Wire Line
+	2550 3150 2550 3050
+Wire Wire Line
+	2550 3700 2300 3700
+Wire Wire Line
+	2250 3950 2000 3950
+Wire Wire Line
+	2000 3900 2000 4200
+Connection ~ 2000 3950
+Wire Wire Line
+	1300 5000 1300 4700
+$Comp
+L +3.3VADC #PWR046
+U 1 1 4EB52427
+P 1600 1100
+F 0 "#PWR046" H 1600 1220 20  0001 C CNN
+F 1 "+3.3VADC" H 1600 1190 30  0000 C CNN
+	1    1600 1100
+	1    0    0    -1  
+$EndComp
 Text HLabel 4800 4600 0    50   Output ~ 0
 waterflow
 $Comp
@@ -130,151 +293,6 @@ F 1 "10nF" H 4900 4700 50  0000 L CNN
 	1    5100 4800
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5500 4900 5500 5100
-Wire Wire Line
-	5100 5000 5750 5000
-Connection ~ 5300 3450
-Wire Wire Line
-	5300 3500 5300 3450
-Wire Wire Line
-	5500 3450 5100 3450
-Wire Wire Line
-	5100 4000 5100 4100
-Connection ~ 5100 4600
-Wire Wire Line
-	5100 4600 5100 4500
-Wire Wire Line
-	5300 4600 5300 4000
-Connection ~ 5300 4600
-Wire Wire Line
-	5100 3450 5100 3500
-Connection ~ 5500 3450
-Connection ~ 5500 5000
-Wire Wire Line
-	5750 4600 4800 4600
-Connection ~ 5500 4600
-Wire Wire Line
-	5500 4300 5500 3400
-Wire Wire Line
-	5750 5000 5750 4800
-Wire Wire Line
-	1300 4100 1300 3700
-Wire Wire Line
-	2000 4400 1200 4400
-Connection ~ 1300 4400
-Wire Wire Line
-	5000 2100 5000 2400
-Wire Wire Line
-	5000 2400 5500 2400
-Wire Wire Line
-	4900 1800 5500 1800
-Connection ~ 5000 1800
-Wire Wire Line
-	5000 1500 5000 1100
-Wire Wire Line
-	3200 2100 3200 2400
-Wire Wire Line
-	3200 2400 3700 2400
-Wire Wire Line
-	3100 1800 3700 1800
-Connection ~ 3200 1800
-Wire Wire Line
-	3200 1500 3200 1100
-Wire Wire Line
-	1600 1500 1600 1100
-Connection ~ 2550 4200
-Wire Wire Line
-	2550 4150 2550 4600
-Wire Wire Line
-	2550 4200 2500 4200
-Connection ~ 2550 3700
-Wire Wire Line
-	2550 3650 2550 3750
-Wire Wire Line
-	2000 3500 2000 3150
-Wire Wire Line
-	2000 3150 2550 3150
-Connection ~ 1800 5000
-Wire Wire Line
-	1800 5000 1800 4950
-Connection ~ 1800 4400
-Wire Wire Line
-	1800 4400 1800 4450
-Wire Wire Line
-	2500 4400 2550 4400
-Connection ~ 1600 1800
-Wire Wire Line
-	2100 1100 2100 1200
-Wire Wire Line
-	2100 1700 2100 2000
-Connection ~ 1850 1800
-Wire Wire Line
-	1850 1800 1850 1900
-Wire Wire Line
-	1850 2300 1850 2400
-Wire Wire Line
-	1500 1800 2100 1800
-Connection ~ 2100 1800
-Wire Wire Line
-	2100 2500 2100 2200
-Connection ~ 2100 2400
-Wire Wire Line
-	2100 2400 1600 2400
-Connection ~ 1850 2400
-Connection ~ 3450 2400
-Connection ~ 3700 2400
-Wire Wire Line
-	3700 2500 3700 2200
-Connection ~ 3700 1800
-Wire Wire Line
-	3450 2400 3450 2300
-Wire Wire Line
-	3450 1900 3450 1800
-Connection ~ 3450 1800
-Wire Wire Line
-	3700 1700 3700 2000
-Wire Wire Line
-	3700 1100 3700 1200
-Wire Wire Line
-	5500 1100 5500 1200
-Wire Wire Line
-	5500 1700 5500 2000
-Connection ~ 5250 1800
-Wire Wire Line
-	5250 1800 5250 1900
-Wire Wire Line
-	5250 2300 5250 2400
-Connection ~ 5500 1800
-Wire Wire Line
-	5500 2500 5500 2200
-Connection ~ 5500 2400
-Connection ~ 5250 2400
-Connection ~ 1550 5000
-Connection ~ 2550 5000
-Wire Wire Line
-	2550 5100 2550 4800
-Connection ~ 2550 4400
-Wire Wire Line
-	1550 4900 1550 5000
-Wire Wire Line
-	1550 4400 1550 4500
-Connection ~ 1550 4400
-Wire Wire Line
-	2550 5000 1300 5000
-Wire Wire Line
-	2550 3150 2550 3050
-Wire Wire Line
-	2550 3700 2300 3700
-Wire Wire Line
-	2250 3950 2000 3950
-Wire Wire Line
-	2000 3900 2000 4200
-Connection ~ 2000 3950
-Wire Wire Line
-	1600 2400 1600 2100
-Wire Wire Line
-	1300 5000 1300 4700
 $Comp
 L DIODE2 D6
 U 1 1 4EBAE319
@@ -318,15 +336,6 @@ P 3200 1800
 F 0 "D4" H 3350 1900 60  0000 C CNN
 F 1 "BAT 54S" H 3450 2000 60  0000 C CNN
 	1    3200 1800
-	-1   0    0    1   
-$EndComp
-$Comp
-L DIODE2 D3
-U 1 1 4EBAE288
-P 1600 1800
-F 0 "D3" H 1750 1900 60  0000 C CNN
-F 1 "BAT 54S" H 1850 2000 60  0000 C CNN
-	1    1600 1800
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -526,15 +535,6 @@ P 3700 1100
 F 0 "#PWR045" H 3700 1190 20  0001 C CNN
 F 1 "+5V" H 3700 1190 30  0000 C CNN
 	1    3700 1100
-	1    0    0    -1  
-$EndComp
-$Comp
-L +3.3VADC #PWR046
-U 1 1 4EB52427
-P 1600 1100
-F 0 "#PWR046" H 1600 1220 20  0001 C CNN
-F 1 "+3.3VADC" H 1600 1190 30  0000 C CNN
-	1    1600 1100
 	1    0    0    -1  
 $EndComp
 $Comp
