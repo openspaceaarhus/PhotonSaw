@@ -1,4 +1,4 @@
-update=2011-11-13T16:21:22 CET
+update=2011-11-14T19:32:34 CET
 version=1
 last_client=pcbnew
 [general]
@@ -84,9 +84,9 @@ LibName41=78l00a
 LibName42=conn_11x2
 [pcbnew]
 version=1
-PadDrlX=118
-PadDimH=118
-PadDimV=118
+PadDrlX=256
+PadDimH=394
+PadDimV=394
 BoardThickness=630
 TxtPcbV=800
 TxtPcbH=600
@@ -125,3 +125,5 @@ LibName21=libs/diode-minimelf-unfucked
 LibName22=libs/diode-SMA-unfucked
 LibName23=libs/2mm-hole
 LibName24=libs/ssop28-pp
+LibName25=libs/2mm-pad
+LibName26=libs/header-small-2x5

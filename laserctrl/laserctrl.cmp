@@ -1,7 +1,28 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-13T15:20:12 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-14T19:33:55 CET
 
 BeginCmp
-TimeStamp = /4EAD4B80;
+TimeStamp = /4EC15AA5;
+Reference = 3v3;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AAA;
+Reference = 24V1;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AA0;
+Reference = AD4;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB5C316/4EC1599E;
 Reference = C1;
 ValeurCmp = 100nF;
 IdModule  = SM0603;
@@ -771,6 +792,20 @@ IdModule  = R1;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EC15AA3;
+Reference = GND1;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AAE;
+Reference = GND2;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EA1A825/4D87996B;
 Reference = H1;
 ValeurCmp = MOUNTING;
@@ -862,10 +897,45 @@ IdModule  = INDUCTOR_V;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EBEE536;
-Reference = P1;
-ValeurCmp = Extra;
-IdModule  = pin_array_8x2;
+TimeStamp = /4EC15AB5;
+Reference = P0.4;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AB1;
+Reference = P0.5;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AC3;
+Reference = P1.14;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15ABE;
+Reference = P1.15;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15ABB;
+Reference = P1.16;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AB8;
+Reference = P1.17;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
 EndCmp
 
 BeginCmp
@@ -883,10 +953,38 @@ IdModule  = PIN_ARRAY_2X1;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EC15A9B;
+Reference = P3.25;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15A97;
+Reference = P3.26;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EB5C316/4EBAC056;
 Reference = P4;
 ValeurCmp = Chiller;
 IdModule  = PIN_ARRAY_5x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15A94;
+Reference = P4.28;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15A8F;
+Reference = P4.29;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
 EndCmp
 
 BeginCmp
@@ -1030,10 +1128,10 @@ IdModule  = PIN_ARRAY_2X1;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EBD70C4;
+TimeStamp = /4EC15895;
 Reference = P25;
-ValeurCmp = jtag;
-IdModule  = pin_array_8x2;
+ValeurCmp = JTAG;
+IdModule  = header-1.27mm-2x5;
 EndCmp
 
 BeginCmp
@@ -1051,10 +1149,10 @@ IdModule  = bornier2;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB45CE6/4EBFD1A7;
-Reference = P28;
-ValeurCmp = NTC_hole;
-IdModule  = 2mm hole;
+TimeStamp = /4EC15A9D;
+Reference = PWM6;
+ValeurCmp = CONN_1;
+IdModule  = 2mm-pad;
 EndCmp
 
 BeginCmp
@@ -1114,7 +1212,7 @@ IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EA467FA;
+TimeStamp = /4EB5C316/4EC1599F;
 Reference = R1;
 ValeurCmp = 10k;
 IdModule  = SM0603;
