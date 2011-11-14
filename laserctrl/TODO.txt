@@ -1,6 +1,12 @@
 * Add inputs for voltage (0-40000 V) and current (0-50 mA) monitoring of the tube.
   ... perhaps as another separate helperboard on serial, like the chiller controller?
 
+JTAG header:
+ELFA: 43-914-12
+Mouser: 855-M50-3500542 
 
-  
-  
+Female:
+ELFA: 43-914-00
+Mouser: 855-M50-3000545
+
+ 
