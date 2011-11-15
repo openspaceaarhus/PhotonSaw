@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-14T19:33:55 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-15T23:24:10 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -743,13 +743,6 @@ IdModule  = LED-0805;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB45CE6/4EBE3D7A;
-Reference = D31;
-ValeurCmp = LED;
-IdModule  = diode-SOT23;
-EndCmp
-
-BeginCmp
 TimeStamp = /4EB45CE6/4EBE3D7C;
 Reference = D32;
 ValeurCmp = BAT_54S;
@@ -908,6 +901,13 @@ TimeStamp = /4EC15AB1;
 Reference = P0.5;
 ValeurCmp = CONN_1;
 IdModule  = 2mm-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB45CE6/4EC2E647;
+Reference = P1;
+ValeurCmp = CONN_1;
+IdModule  = 2mm hole;
 EndCmp
 
 BeginCmp
@@ -1754,13 +1754,6 @@ BeginCmp
 TimeStamp = /4EA1A825/4EB6CE1B;
 Reference = R92;
 ValeurCmp = 10k;
-IdModule  = SM0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EB45CE6/4EBE3D79;
-Reference = R93;
-ValeurCmp = 330;
 IdModule  = SM0603;
 EndCmp
 
