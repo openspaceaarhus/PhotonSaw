@@ -1,0 +1,22 @@
+PCBNEW-LibModule-V1  2011-11-16T19:51:13 CET
+# encoding utf-8
+$INDEX
+1250um-pad
+$EndINDEX
+$MODULE 1250um-pad
+Po 0 0 0 15 4EC405D6 4EC405C9 ~~
+Li 1250um-pad
+Sc 4EC405C9
+AR 2mm-pad
+Op 0 0 0
+T0 0 -800 394 394 0 99 N V 21 N "1250um-pad"
+T1 25 25 50 50 0 13 N I 21 N "VAL**"
+$PAD
+Sh "1" C 492 492 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0 0
+$EndPAD
+$EndMODULE  1250um-pad
+$EndLIBRARY
