@@ -1,4 +1,4 @@
-update=2011-11-14T19:32:34 CET
+update=2011-11-16T20:20:33 CET
 version=1
 last_client=pcbnew
 [general]
@@ -127,3 +127,6 @@ LibName23=libs/2mm-hole
 LibName24=libs/ssop28-pp
 LibName25=libs/2mm-pad
 LibName26=libs/header-small-2x5
+LibName27=libs/1250um-pad
+LibName28=libs/HTSSOP
+LibName29=libs/mini-sw-CB005

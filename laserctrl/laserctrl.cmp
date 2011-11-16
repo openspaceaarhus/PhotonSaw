@@ -1,24 +1,24 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-15T23:24:10 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-16T20:27:47 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
 Reference = 3v3;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15AAA;
 Reference = 24V1;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15AA0;
 Reference = AD4;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
@@ -148,6 +148,13 @@ IdModule  = SM1206;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EA1A825/4EC40B0F;
+Reference = C19;
+ValeurCmp = 100nF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EAD3DC6/4EAD2BEA;
 Reference = C20;
 ValeurCmp = 100nF;
@@ -239,6 +246,13 @@ IdModule  = SM1206;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EA1A825/4EC40B14;
+Reference = C33;
+ValeurCmp = 100nF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EA1D353/4EAD2BEA;
 Reference = C34;
 ValeurCmp = 100nF;
@@ -295,13 +309,6 @@ IdModule  = SM0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EA3E488/4EA3E4BE;
-Reference = C42;
-ValeurCmp = 15pF;
-IdModule  = SM0603;
-EndCmp
-
-BeginCmp
 TimeStamp = /4EA3E488/4EB841FC;
 Reference = C43;
 ValeurCmp = 100nF;
@@ -319,13 +326,6 @@ BeginCmp
 TimeStamp = /4EA3E488/4EB84209;
 Reference = C45;
 ValeurCmp = 100nF;
-IdModule  = SM0603;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EA3E488/4EA3E4BF;
-Reference = C46;
-ValeurCmp = 15pF;
 IdModule  = SM0603;
 EndCmp
 
@@ -788,14 +788,14 @@ BeginCmp
 TimeStamp = /4EC15AA3;
 Reference = GND1;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15AAE;
 Reference = GND2;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
@@ -837,14 +837,14 @@ BeginCmp
 TimeStamp = /4EAD3DC6/4EA1E74B;
 Reference = IC1;
 ValeurCmp = DRV8811;
-IdModule  = ssop28-pp;
+IdModule  = HTSSOP;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA1D353/4EA1E74B;
 Reference = IC2;
 ValeurCmp = DRV8811;
-IdModule  = ssop28-pp;
+IdModule  = HTSSOP;
 EndCmp
 
 BeginCmp
@@ -858,14 +858,14 @@ BeginCmp
 TimeStamp = /4EA1F56E/4EA1E74B;
 Reference = IC4;
 ValeurCmp = DRV8811;
-IdModule  = ssop28-pp;
+IdModule  = HTSSOP;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA1D331/4EA1E74B;
 Reference = IC5;
 ValeurCmp = DRV8811;
-IdModule  = ssop28-pp;
+IdModule  = HTSSOP;
 EndCmp
 
 BeginCmp
@@ -893,49 +893,49 @@ BeginCmp
 TimeStamp = /4EC15AB5;
 Reference = P0.4;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15AB1;
 Reference = P0.5;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EB45CE6/4EC2E647;
 Reference = P1;
 ValeurCmp = CONN_1;
-IdModule  = 2mm hole;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15AC3;
 Reference = P1.14;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15ABE;
 Reference = P1.15;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15ABB;
 Reference = P1.16;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15AB8;
 Reference = P1.17;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
@@ -956,14 +956,14 @@ BeginCmp
 TimeStamp = /4EC15A9B;
 Reference = P3.25;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15A97;
 Reference = P3.26;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
@@ -977,14 +977,14 @@ BeginCmp
 TimeStamp = /4EC15A94;
 Reference = P4.28;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15A8F;
 Reference = P4.29;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
@@ -1152,7 +1152,7 @@ BeginCmp
 TimeStamp = /4EC15A9D;
 Reference = PWM6;
 ValeurCmp = CONN_1;
-IdModule  = 2mm-pad;
+IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
@@ -1768,14 +1768,14 @@ BeginCmp
 TimeStamp = /4EB5C316/4EB6D42E;
 Reference = SW1;
 ValeurCmp = Program;
-IdModule  = SW_PUSH_SMALL;
+IdModule  = mini-sw-CB00.5;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EB5C316/4EB6D763;
 Reference = SW2;
 ValeurCmp = Reset;
-IdModule  = SW_PUSH_SMALL;
+IdModule  = mini-sw-CB00.5;
 EndCmp
 
 BeginCmp
@@ -1846,13 +1846,6 @@ TimeStamp = /4EA3EDAF;
 Reference = X2;
 ValeurCmp = 32768Hz;
 IdModule  = QMONTRE;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EA3E488/4EA3E4C0;
-Reference = X3;
-ValeurCmp = 10MHz;
-IdModule  = Q_49U3HMS;
 EndCmp
 
 EndListe
