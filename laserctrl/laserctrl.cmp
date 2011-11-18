@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-16T20:27:47 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-18T20:34:35 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -907,7 +907,7 @@ BeginCmp
 TimeStamp = /4EB45CE6/4EC2E647;
 Reference = P1;
 ValeurCmp = CONN_1;
-IdModule  = 1250um-pad;
+IdModule  = 2mm hole;
 EndCmp
 
 BeginCmp
