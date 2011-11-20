@@ -1,0 +1,22 @@
+PCBNEW-LibModule-V1  2011-11-14T19:38:57 CET
+# encoding utf-8
+$INDEX
+2mm-pad
+$EndINDEX
+$MODULE 2mm-pad
+Po 0 0 0 15 4EC1601B 4EC15FE9 ~~
+Li 2mm-pad
+Sc 4EC15FE9
+AR 2mm-pad
+Op 0 0 0
+T0 0 -800 394 394 0 99 N V 21 N "2mm-pad"
+T1 25 25 50 50 0 13 N I 21 N "VAL**"
+$PAD
+Sh "1" C 787 787 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0 0
+$EndPAD
+$EndMODULE  2mm-pad
+$EndLIBRARY

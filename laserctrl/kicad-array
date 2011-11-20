@@ -1,0 +1,201 @@
+#!/usr/bin/perl 
+use strict;
+use warnings;
+use FindBin qw($Bin $Script);
+use Data::Dumper;
+
+# ./kicad-array -s driver.sch -k IC5 -x R85,C73,D28,P22,R86,C28,D29,P23
+
+sub dieUse {
+    print @_;
+    print "\n\nSyntax: $Script -s <sub-schematic.sch> -k <key-component> [-b <board-file.brd>] [-x <exclude>(,<exclude>)]";
+    exit 1;
+}
+
+my $sch;
+my $brd;
+my $key;
+my @exclude;
+
+while (my $sw = shift @ARGV) {
+    if ($sw eq '-b') {
+	$brd = shift @ARGV;
+
+    } elsif ($sw eq '-s') {
+	$sch = shift @ARGV;
+
+    } elsif ($sw eq '-b') {
+	$brd = shift @ARGV;
+
+    } elsif ($sw eq '-k') {
+	$key = shift @ARGV;
+
+    } elsif ($sw eq '-x') {
+	@exclude = sort split /,/, shift @ARGV;
+
+    } else {
+	dieUse "Unknown switch: $sw";
+    }
+}
+
+dieUse "Missing schematic sheet (use -s)" unless $sch and -f $sch;
+dieUse "Missing key component (use -k)" unless $key;
+
+if ($brd) {
+    dieUse "Missing board file (use -d)" unless -f $brd;
+} else {
+    my ($dir) = $sch =~ m!^(.*)[/\\]!;
+    $dir ||= '.';
+    opendir DIR, $dir or die $!;
+    my @brds = grep {/^[^\$]+\.brd$/} readdir DIR;
+    closedir DIR;
+
+    dieUse "Unable to figure out what board file to use (use -d)" unless @brds == 1;
+    ($brd) = @brds;
+
+    print "Guessed board file: $brd\n";
+}
+
+
+# Read the info we need from the schematic, which is the master -> slave relationships.
+my %name2id;
+my %id2name;
+
+my @sch; # groups of components.
+open SCH, "<$sch" or die "Failed to read schematic sheet $sch: $!"; 
+while (my $line = <SCH>) {
+    chomp $line;
+
+    if ($line eq '$Comp') {
+
+	my @comp;
+	while (my $line = <SCH>) {
+	    chomp $line;
+	    last if $line eq '$EndComp';
+	    if ($line =~ /^AR Path="([^"]+)" Ref="([^"]+)"/) {
+		$name2id{$2} = $1;
+		$id2name{$1} = $2;
+		push @comp, $1;
+	    }
+	}
+
+	push @sch, [sort @comp];
+    }
+}
+close SCH;
+
+my $keyId = $name2id{$key} or die "Failed to find key component named $key";
+
+# Find the master component in all of this:
+my $keyIndex;
+outer: for my $g (@sch) {
+    my $index = 0;
+    for my $c (@$g) {
+	if ($c eq $keyId) {
+	    $keyIndex = $index;
+	    last outer;
+	}
+	$index++;
+    }    
+}
+
+dieUse qq'Failed to find key component "$key" in schematic sheet "$sch"' unless defined $keyIndex;
+
+
+# Build schematic hash where each key is a master component with an array of its slaves 
+my %sch;
+for my $g (@sch) {
+    my $ki = $g->[$keyIndex];
+    next if $id2name{$ki} =~ /^#/;
+    $sch{$ki} = [grep {$_ ne $ki} @$g ];
+}
+
+# Get rid of any components that should be left out:
+if (@exclude) {
+    print "Going to exclude: ", join(' ', @exclude)."\n";
+    for my $x (@exclude) {
+	die "Error: $x is not a master component, cannot exclude it" unless $sch{$name2id{$x}};
+	delete $sch{$name2id{$x}};
+    }
+}
+
+# List the remaining components:
+print "Master components to place: ".join(" ", sort map {$id2name{$_}} keys %sch)."\n";
+
+
+# First load in all data for the modules:
+my @mods;
+open BRD, "<$brd" or die "Failed to read $brd: $!";
+while (my $line = <BRD>) {
+    chomp $line;
+
+    if ($line =~ /^\$MODULE (.+)/) {
+	my $moduleKind = $1;	
+	my @lines = ($line);
+	
+	while ($line = <BRD>) {
+	    chomp $line;
+	    push @lines, $line;
+	    last if $line eq "\$EndMODULE $moduleKind";	    
+	}
+
+	push @mods, \@lines;
+    }
+}
+close BRD;
+
+
+# Find the indexes of the interesting (both master and slave) modules:
+my %id2index;
+my $index = 0;
+for my $m (@mods) {
+    for my $l (@$m) {
+	if ($l =~ /^AR (.+)/) {
+	    $id2index{$1} = $index;
+	    last;
+	}
+    }
+    $index++;
+}
+
+die Dumper \%id2index;
+
+# Parse out the master component positions and the slave key components.
+my %id2pos;
+for my $id (sort (keys %sch, @{$sch{$keyId}})) {
+    my $mi = $id2index{$id} // die "Failed to find module $id2name{$id} in board file";
+    for my $l (@{$mods[$mi]}) {	
+	my $ok;
+	if ($l =~ /^Po (.+)/) {
+	    my ($x, $y, $a, $extra) = split /\s+/, $1, 4;
+	    $ok = $id2pos{$id} = {
+		'x' => $x,
+		'y' => $y,
+		'a' => $a,
+		'e' => $extra,
+	    };
+
+	    print "$id2name{$id} is at $ok->{x},$ok->{y},$ok->{a}\n";
+	    last;
+	} else {
+	    print "I: $l\n";
+	}
+	die "Failed to find position of $id ($id2name{$id}) on board" unless $ok;
+    }    
+}
+
+# For each master component 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

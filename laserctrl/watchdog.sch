@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-09T22:36:32 CET
+EESchema Schematic File Version 2  date 2011-11-18T20:24:03 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -39,6 +39,8 @@ LIBS:atmel
 LIBS:microsd
 LIBS:jumper3
 LIBS:diode2
+LIBS:78l00a
+LIBS:conn_11x2
 LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
@@ -46,7 +48,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 7 10
 Title ""
-Date "9 nov 2011"
+Date "18 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -54,6 +56,10 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+NoConn ~ 3750 4000
+NoConn ~ 3750 3400
+NoConn ~ 5650 3550
+NoConn ~ 5650 3450
 Wire Wire Line
 	2000 3450 2000 3400
 Wire Wire Line
@@ -95,10 +101,6 @@ Wire Wire Line
 	3500 1800 3500 1900
 Connection ~ 3500 2550
 Wire Wire Line
-	2750 3400 2600 3400
-Wire Wire Line
-	2600 3400 2600 4100
-Wire Wire Line
 	1825 2200 1500 2200
 Wire Wire Line
 	2450 2450 2450 2300
@@ -114,15 +116,6 @@ Wire Wire Line
 	1500 2300 1825 2300
 Wire Wire Line
 	1500 2100 1825 2100
-Wire Wire Line
-	3150 3400 3750 3400
-Connection ~ 3500 3400
-Wire Wire Line
-	3750 4000 3150 4000
-Connection ~ 3500 4000
-Wire Wire Line
-	2750 4000 2600 4000
-Connection ~ 2600 4000
 Wire Wire Line
 	3500 2700 3500 2400
 Wire Wire Line
@@ -172,19 +165,19 @@ Wire Wire Line
 	1400 3400 1400 3450
 Connection ~ 1700 3400
 $Comp
-L GND #PWR091
+L GND #PWR096
 U 1 1 4EB84218
 P 1700 4000
-F 0 "#PWR091" H 1700 4000 30  0001 C CNN
+F 0 "#PWR096" H 1700 4000 30  0001 C CNN
 F 1 "GND" H 1700 3930 30  0001 C CNN
 	1    1700 4000
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V #PWR092
+L +3.3V #PWR097
 U 1 1 4EB84214
 P 1700 3300
-F 0 "#PWR092" H 1700 3260 30  0001 C CNN
+F 0 "#PWR097" H 1700 3260 30  0001 C CNN
 F 1 "+3.3V" H 1700 3410 30  0000 C CNN
 	1    1700 3300
 	1    0    0    -1  
@@ -217,19 +210,19 @@ F 1 "100nF" H 1450 3550 50  0000 L CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR093
+L GND #PWR098
 U 1 1 4EB84050
 P 4450 4900
-F 0 "#PWR093" H 4450 4900 30  0001 C CNN
+F 0 "#PWR098" H 4450 4900 30  0001 C CNN
 F 1 "GND" H 4450 4830 30  0001 C CNN
 	1    4450 4900
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V #PWR094
+L +3.3V #PWR099
 U 1 1 4EB84034
 P 4350 1700
-F 0 "#PWR094" H 4350 1660 30  0001 C CNN
+F 0 "#PWR099" H 4350 1660 30  0001 C CNN
 F 1 "+3.3V" H 4350 1810 30  0000 C CNN
 	1    4350 1700
 	1    0    0    -1  
@@ -243,39 +236,30 @@ SCK_wd
 Text GLabel 5750 2550 2    50   Input ~ 0
 MISO_wd
 $Comp
-L +3.3V #PWR095
+L +3.3V #PWR0100
 U 1 1 4EB83FCF
 P 2450 1950
-F 0 "#PWR095" H 2450 1910 30  0001 C CNN
+F 0 "#PWR0100" H 2450 1910 30  0001 C CNN
 F 1 "+3.3V" H 2450 2060 30  0000 C CNN
 	1    2450 1950
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR096
+L GND #PWR0101
 U 1 1 4EB83F3F
 P 3500 3200
-F 0 "#PWR096" H 3500 3200 30  0001 C CNN
+F 0 "#PWR0101" H 3500 3200 30  0001 C CNN
 F 1 "GND" H 3500 3130 30  0001 C CNN
 	1    3500 3200
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V #PWR097
+L +3.3V #PWR0102
 U 1 1 4EB83F32
 P 3500 1800
-F 0 "#PWR097" H 3500 1760 30  0001 C CNN
+F 0 "#PWR0102" H 3500 1760 30  0001 C CNN
 F 1 "+3.3V" H 3500 1910 30  0000 C CNN
 	1    3500 1800
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR098
-U 1 1 4EB83ED6
-P 2600 4100
-F 0 "#PWR098" H 2600 4100 30  0001 C CNN
-F 1 "GND" H 2600 4030 30  0001 C CNN
-	1    2600 4100
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -341,33 +325,6 @@ F 1 "10k" V 3500 2150 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CRYSTAL X3
-U 1 1 4EA3E4C0
-P 3500 3700
-F 0 "X3" V 3500 3850 60  0000 C CNN
-F 1 "10MHz" V 3350 3500 60  0000 C CNN
-	1    3500 3700
-	0    1    1    0   
-$EndComp
-$Comp
-L C C46
-U 1 1 4EA3E4BF
-P 2950 4000
-F 0 "C46" V 2850 4150 50  0000 L CNN
-F 1 "15pF" V 2850 3800 50  0000 L CNN
-	1    2950 4000
-	0    1    1    0   
-$EndComp
-$Comp
-L C C42
-U 1 1 4EA3E4BE
-P 2950 3400
-F 0 "C42" V 2850 3550 50  0000 L CNN
-F 1 "15pF" V 2850 3200 50  0000 L CNN
-	1    2950 3400
-	0    1    1    0   
-$EndComp
-$Comp
 L AVR-ISP-6 CON1
 U 1 1 4EA3E4BB
 P 1950 2200
@@ -386,10 +343,10 @@ SCK_wd
 Text GLabel 1500 2300 0    50   Input ~ 0
 ~Reset_wd
 $Comp
-L GND #PWR099
+L GND #PWR0103
 U 1 1 4EA3E4B9
 P 2450 2450
-F 0 "#PWR099" H 2450 2450 30  0001 C CNN
+F 0 "#PWR0103" H 2450 2450 30  0001 C CNN
 F 1 "GND" H 2450 2380 30  0001 C CNN
 	1    2450 2450
 	1    0    0    -1  
