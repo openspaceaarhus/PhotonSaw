@@ -6,6 +6,13 @@ use Data::Dumper;
 
 # ./kicad-array -s driver.sch -k IC5 -x R85,C73,D28,P22,R86,C28,D29,P23
 
+# This script will line up the components surrounding the key component with the same offsets as in the master layout
+
+# Due to the braindead file format of kicad it's not easy to align the angle of modules because the angle of every
+# single pad has to be changed as well when rotating the component.
+
+# Getting the position right is a nice help too, though.
+
 sub dieUse {
     print @_;
     print "\n\nSyntax: $Script -s <sub-schematic.sch> -k <key-component> [-b <board-file.brd>] [-x <exclude>(,<exclude>)]";
@@ -126,6 +133,9 @@ print "Master components to place: ".join(" ", sort map {$id2name{$_}} keys %sch
 # First load in all data for the modules:
 my @mods;
 open BRD, "<$brd" or die "Failed to read $brd: $!";
+my $brdHead = '';
+my $brdFoot = '';
+my $atHead = 1;
 while (my $line = <BRD>) {
     chomp $line;
 
@@ -136,14 +146,22 @@ while (my $line = <BRD>) {
 	while ($line = <BRD>) {
 	    chomp $line;
 	    push @lines, $line;
-	    last if $line eq "\$EndMODULE $moduleKind";	    
+	    last if $line eq "\$EndMODULE  $moduleKind";	    
 	}
 
 	push @mods, \@lines;
+	$atHead = 0;
+    } else {
+	if ($atHead) {
+	    $brdHead .= "$line\n";
+	} else {
+	    $brdFoot .= "$line\n";
+	}
     }
 }
 close BRD;
 
+print "Loaded ".scalar(@mods)." modules from $brd\n";
 
 # Find the indexes of the interesting (both master and slave) modules:
 my %id2index;
@@ -158,14 +176,13 @@ for my $m (@mods) {
     $index++;
 }
 
-die Dumper \%id2index;
-
 # Parse out the master component positions and the slave key components.
 my %id2pos;
-for my $id (sort (keys %sch, @{$sch{$keyId}})) {
+for my $id (sort (keys %sch, map {@{$sch{$_}}} keys %sch)) {
     my $mi = $id2index{$id} // die "Failed to find module $id2name{$id} in board file";
+    my $ok;
+    my $index = 0;
     for my $l (@{$mods[$mi]}) {	
-	my $ok;
 	if ($l =~ /^Po (.+)/) {
 	    my ($x, $y, $a, $extra) = split /\s+/, $1, 4;
 	    $ok = $id2pos{$id} = {
@@ -173,20 +190,59 @@ for my $id (sort (keys %sch, @{$sch{$keyId}})) {
 		'y' => $y,
 		'a' => $a,
 		'e' => $extra,
+		'i' => $index,
 	    };
 
-	    print "$id2name{$id} is at $ok->{x},$ok->{y},$ok->{a}\n";
+	    #print "$id2name{$id} is at $ok->{x},$ok->{y},$ok->{a}\n";
 	    last;
-	} else {
-	    print "I: $l\n";
 	}
-	die "Failed to find position of $id ($id2name{$id}) on board" unless $ok;
+	$index++;
     }    
+    die "Failed to find position of $id ($id2name{$id}) on board: ".Dumper($mods[$mi]) unless $ok;
 }
 
-# For each master component 
+# For each key component figure out the offset to the master key component:
+my @offsets;
+my $p0 = $id2pos{$keyId};
+for my $id (@{$sch{$keyId}}) {
+    my $p = $id2pos{$id};
+    
+    my $delta = {
+	dx=>$p->{x}-$p0->{x},
+	dy=>$p->{y}-$p0->{y},
+    };
+    push @offsets, $delta;
+
+    print "Offset from $id2name{$keyId} to $id2name{$id}: $delta->{dx},$delta->{dy}\n";
+}
+
+# Calculate new positions for all the slave components.
+for my $m (sort keys %sch) {
+    next if $m eq $keyId;
+
+    for my $i (0..@offsets-1) {
+	my $cx = $id2pos{$m}{x}+$offsets[$i]{dx};
+	my $cy = $id2pos{$m}{y}+$offsets[$i]{dy};
+	my $ci = $id2index{$sch{$m}[$i]};
+	my $cp = $id2pos{$sch{$m}[$i]};
+
+	$mods[$ci][$cp->{i}] = join(' ', "Po", $cx, $cy, $cp->{a}, $cp->{e});
+    }
+}
+
+# Write the modified the brd file.
+open BRD, ">$brd.new" or die "Fail! $!";
+print BRD $brdHead;
+for my $m (@mods) {
+    for my $l (@$m) {
+	print BRD "$l\n";
+    }
+}
+print BRD $brdFoot;
+close BRD;
 
 
+exit 0;
 
 
 

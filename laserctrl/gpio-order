@@ -1,0 +1,60 @@
+
+
+Pinout for reordering GPIO pins to match perifrial board layout (Main MCU):
+
+P2.0	X Enable
+P2.1	X DIR
+P2.2	X USM1
+P2.3	X USM0
+P2.4	X STEP
+
+P2.5	Y Enable
+P2.6	Y DIR
+P2.7	Y USM1
+P2.8	Y USM0
+P0.16	Y STEP
+
+P0.15	Z Enable
+P0.17	Z DIR
+P0.18	Z USM1
+P0.19	Z USM0
+P0.20	Z STEP
+
+P0.21	A Enable
+P0.22	A DIR
+P2.11	A USM1
+P2.12	A USM0
+P2.13	A STEP
+
+P1.29	Assist Air
+P1.28	Exhaust
+
+P1.27 	LED
+
+P3.25	Laser Ready
+P3.26	E-stop
+P0.27	Fire
+P0.28	Watchdog Ready
+
+P1.0	A max
+P1.1	A min
+P1.4	Z max
+P1.8	Z min
+P1.9	Y max
+P1.10	Y min
+P1.14	X max
+P1.15	X min
+
+P1.16	Waterflow
+
+
+Extra:
+P1.25
+P1.22
+P1.19
+P1.17
+
+P4.29
+P4.28
+P0.4
+P0.5

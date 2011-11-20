@@ -1,0 +1,107 @@
+#!/usr/bin/perl 
+use strict;
+use warnings;
+
+sub dieUse {
+    print @_;
+
+    print "Syntax: $Script -s <sub-schematic.sch> -k <key-component> [-b <board-file.brd>]";
+}
+
+my $sch;
+my $brd;
+my $key;
+
+while (my $sw = @ARGV) {
+    if ($sw eq '-b') {
+	$brd = shift @ARGV;
+
+    } elsif ($sw eq '-s') {
+	$sch = shift @ARGV;
+
+    } elsif ($sw eq '-b') {
+	$brd = shift @ARGV;
+
+    } elsif ($sw eq '-k') {
+	$key = shift @ARGV;
+
+    } else {
+	dieUse "Unknown switch: $sw";
+    }
+}
+
+dieUse "Missing key component (use -k)" unless $key;
+dieUse "Missing schematic sheet (use -s)" unless $sch or !-f $sch;
+
+if ($brd) {
+    dieUse "Missing board file (use -d)" unless -f $brd;
+} else {
+    my ($dir) = $sch =~ m!^(.+)[/\\]!;
+    opendir DIR, $dir or die $!;
+    my @brds = grep {/^[^\$]+\.brd$/} readdir <DIR>;
+    closeidr DIR;
+
+    dieUse "Unable to figure out what board file to use (use -d)" unless @brds == 1;
+    ($brd) = @brds;
+}
+
+
+# Read the info we need from the schematic, which is the master -> slave relationships.
+
+my @sch; # groups of components.
+open SCH, "<$sch" or die "Failed to read schematic sheet $sch: $!"; 
+while (my $line = <SCH>) {
+    chomp $line;
+
+    if ($line eq '$Comp') {
+
+	my %comp;
+	while (my $line = <SCH>) {
+	    chomp $line;
+	    last if $line eq '$EndComp';
+	    if ($line =~ /^AR Path="([^"]+)" Ref="([^"]+)")/) {
+		$comp{$2} = $1;
+	    }
+	}
+
+	push @sch, [sort {$comp{$a} cmp $comp{$a}} keys %comp];
+    }
+}
+close SCH;
+
+
+# Find the master component in all of this:
+my $KeyIndex;
+outer: for my $g (@sch) {
+    my $index = 0;
+    for my $c (@$g) {
+	if ($c eq $key) {
+	    $keyIndex = $index;
+	    last outer;
+	}
+	$index++;
+    }    
+}
+
+dieUse qq'Failed to find key component "$key" in schematic sheet "$sch"' unless defined $keyIndex;
+
+
+# Build schematic hash where each key is a master component with an array of its slaves 
+my %sch;
+for my $g (@sch) {
+    $sch{$g->[$keyIndex]} = [grep {$_ ne $g->[$keyIndex]} @$g ];
+}
+
+print "Found master components: ".join(" ", sort keys %sch)."\n";
+
+# Get rid of any components that should be left out:
+
+
+
+
+
+
+
+
+
+

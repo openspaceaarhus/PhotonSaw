@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-18T20:34:35 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-20T11:37:15 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -304,6 +304,13 @@ EndCmp
 BeginCmp
 TimeStamp = /4EA3E488/4EA3E4C4;
 Reference = C41;
+ValeurCmp = 100nF;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EA1A825/4EC82C33;
+Reference = C42;
 ValeurCmp = 100nF;
 IdModule  = SM0603;
 EndCmp
@@ -911,29 +918,29 @@ IdModule  = 2mm hole;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EC15AC3;
-Reference = P1.14;
-ValeurCmp = CONN_1;
-IdModule  = 1250um-pad;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EC15ABE;
-Reference = P1.15;
+TimeStamp = /4EC15AB8;
+Reference = P1.17;
 ValeurCmp = CONN_1;
 IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EC15ABB;
-Reference = P1.16;
+Reference = P1.19;
 ValeurCmp = CONN_1;
 IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EC15AB8;
-Reference = P1.17;
+TimeStamp = /4EC15ABE;
+Reference = P1.22;
+ValeurCmp = CONN_1;
+IdModule  = 1250um-pad;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AC3;
+Reference = P1.25;
 ValeurCmp = CONN_1;
 IdModule  = 1250um-pad;
 EndCmp
@@ -950,20 +957,6 @@ TimeStamp = /4EB5C316/4EBAC032;
 Reference = P3;
 ValeurCmp = Assist_Air;
 IdModule  = PIN_ARRAY_2X1;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EC15A9B;
-Reference = P3.25;
-ValeurCmp = CONN_1;
-IdModule  = 1250um-pad;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EC15A97;
-Reference = P3.26;
-ValeurCmp = CONN_1;
-IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp

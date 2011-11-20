@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-18T20:24:03 CET
+EESchema Schematic File Version 2  date 2011-11-20T19:42:38 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,7 +48,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 10
 Title ""
-Date "18 nov 2011"
+Date "20 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -56,6 +56,32 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Text GLabel 9750 5300 0    50   Input ~ 0
+P0.20
+Text GLabel 9750 5100 0    50   Input ~ 0
+P2.4
+Text GLabel 9750 5200 0    50   Input ~ 0
+P0.16
+Text GLabel 9750 5400 0    50   Input ~ 0
+P2.13
+Text GLabel 9750 4900 0    50   Input ~ 0
+P0.27
+Text GLabel 10800 5000 2    50   Input ~ 0
+P1.4
+Text GLabel 10800 5100 2    50   Input ~ 0
+P1.8
+Text GLabel 10800 4700 2    50   Input ~ 0
+P1.15
+Text GLabel 10800 4600 2    50   Input ~ 0
+P1.14
+Text GLabel 10800 5300 2    50   Input ~ 0
+P1.1
+Text GLabel 10800 5200 2    50   Input ~ 0
+P1.0
+Text GLabel 10800 4800 2    50   Input ~ 0
+P1.9
+Text GLabel 10800 4900 2    50   Input ~ 0
+P1.10
 Wire Wire Line
 	6950 6150 7050 6150
 Wire Wire Line
@@ -85,8 +111,6 @@ Wire Wire Line
 	6200 1400 6300 1400
 Wire Wire Line
 	1000 1500 900  1500
-Wire Wire Line
-	1000 1300 900  1300
 Wire Wire Line
 	1000 1100 900  1100
 Wire Wire Line
@@ -491,8 +515,6 @@ Wire Wire Line
 Wire Wire Line
 	900  1200 1000 1200
 Wire Wire Line
-	900  1400 1000 1400
-Wire Wire Line
 	900  1600 1000 1600
 Wire Wire Line
 	3700 1850 3600 1850
@@ -526,28 +548,28 @@ Text Notes 6300 6300 0    50   ~ 0
 Text Notes 1000 950  0    50   ~ 0
 Unused pins terminated\nat solder pads on PCB
 $Comp
-L CONN_1 P1.14
+L CONN_1 P1.25
 U 1 1 4EC15AC3
 P 1750 1100
-F 0 "P1.14" H 1830 1100 40  0000 L CNN
+F 0 "P1.25" H 1830 1100 40  0000 L CNN
 F 1 "CONN_1" H 1750 1155 30  0001 C CNN
 	1    1750 1100
 	-1   0    0    1   
 $EndComp
 $Comp
-L CONN_1 P1.15
+L CONN_1 P1.22
 U 1 1 4EC15ABE
 P 1750 1200
-F 0 "P1.15" H 1830 1200 40  0000 L CNN
+F 0 "P1.22" H 1830 1200 40  0000 L CNN
 F 1 "CONN_1" H 1750 1255 30  0001 C CNN
 	1    1750 1200
 	-1   0    0    1   
 $EndComp
 $Comp
-L CONN_1 P1.16
+L CONN_1 P1.19
 U 1 1 4EC15ABB
 P 1750 1300
-F 0 "P1.16" H 1830 1300 40  0000 L CNN
+F 0 "P1.19" H 1830 1300 40  0000 L CNN
 F 1 "CONN_1" H 1750 1355 30  0001 C CNN
 	1    1750 1300
 	-1   0    0    1   
@@ -634,24 +656,6 @@ F 1 "CONN_1" H 1150 1555 30  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_1 P3.25
-U 1 1 4EC15A9B
-P 1150 1400
-F 0 "P3.25" H 1230 1400 40  0000 L CNN
-F 1 "CONN_1" H 1150 1455 30  0001 C CNN
-	1    1150 1400
-	1    0    0    -1  
-$EndComp
-$Comp
-L CONN_1 P3.26
-U 1 1 4EC15A97
-P 1150 1300
-F 0 "P3.26" H 1230 1300 40  0000 L CNN
-F 1 "CONN_1" H 1150 1355 30  0001 C CNN
-	1    1150 1300
-	1    0    0    -1  
-$EndComp
-$Comp
 L CONN_1 P4.28
 U 1 1 4EC15A94
 P 1150 1200
@@ -689,46 +693,26 @@ F 1 "GND" H 2000 1630 30  0001 C CNN
 	1    2000 1700
 	0    -1   -1   0   
 $EndComp
-Text Notes 5100 3400 0    50   ~ 0
-A USM1
-Text Notes 5100 3300 0    50   ~ 0
-A USM0
-Text Notes 5100 3200 0    50   ~ 0
-Z USM1
-Text Notes 5100 3100 0    50   ~ 0
-Z USM0
-Text Notes 5100 3000 0    50   ~ 0
-Y USM1
-Text Notes 5100 2900 0    50   ~ 0
-Y USM0
-Text Notes 5100 2800 0    50   ~ 0
-X USM1
-Text Notes 5100 2700 0    50   ~ 0
-X USM0
 Text GLabel 8200 2050 0    50   Input ~ 0
-P1.90
+P0.18
 Text GLabel 8200 3700 0    50   Input ~ 0
-P1.14
+P2.12
 Text GLabel 8200 3850 0    50   Input ~ 0
-P1.15
+P2.11
 Text GLabel 10100 1900 0    50   Input ~ 0
-P1.0
+P2.3
 Text GLabel 10100 2050 0    50   Input ~ 0
-P1.1
+P2.2
 Text GLabel 10100 3700 0    50   Input ~ 0
-P1.4
+P2.8
 Text GLabel 10100 3850 0    50   Input ~ 0
-P1.8
+P2.7
 Text GLabel 8200 1900 0    50   Input ~ 0
-P1.9
-Text Notes 900  5200 0    50   ~ 0
-LED
+P0.19
 Text GLabel 3700 1850 2    50   Input ~ 0
-P0.28
-Text Notes 1050 5100 2    50   ~ 0
-waterflow
+P1.27
 Text GLabel 6200 1400 0    50   Input ~ 0
-P0.27
+P1.16
 $Comp
 L +24V #PWR02
 U 1 1 4EBD7C88
@@ -760,10 +744,6 @@ Text GLabel 2000 1500 2    50   Input ~ 0
 P0.4
 Text GLabel 2000 1600 2    50   Input ~ 0
 P0.5
-Text GLabel 900  1400 0    50   Input ~ 0
-P3.25
-Text GLabel 900  1300 0    50   Input ~ 0
-P3.26
 Text GLabel 900  1200 0    50   Input ~ 0
 P4.28
 Text GLabel 900  1100 0    50   Input ~ 0
@@ -773,11 +753,11 @@ PWM6
 Text GLabel 900  1600 0    50   Input ~ 0
 AD4
 Text GLabel 2000 1100 2    50   Input ~ 0
-P1.14
+P1.25
 Text GLabel 2000 1200 2    50   Input ~ 0
-P1.15
+P1.22
 Text GLabel 2000 1300 2    50   Input ~ 0
-P1.16
+P1.19
 Text GLabel 2000 1400 2    50   Input ~ 0
 P1.17
 Text GLabel 4800 5350 2    50   Input ~ 0
@@ -797,7 +777,7 @@ P1.15
 Text GLabel 4800 3250 2    50   Input ~ 0
 P1.14
 Text GLabel 4800 3150 2    50   Input ~ 0
-P1.90
+P1.10
 Text GLabel 4800 3050 2    50   Input ~ 0
 P1.9
 Text GLabel 4800 2950 2    50   Input ~ 0
@@ -812,52 +792,8 @@ Text GLabel 1400 3150 0    50   Input ~ 0
 P0.5
 Text GLabel 1400 3050 0    50   Input ~ 0
 P0.4
-Text Notes 700  6700 0    50   ~ 0
-A min
-Text Notes 700  6600 0    50   ~ 0
-A max
-Text Notes 700  5500 0    50   ~ 0
-A Step
-Text Notes 700  5600 0    50   ~ 0
-A Dir
-Text Notes 700  5700 0    50   ~ 0
-~A Enable
-Text Notes 700  5800 0    50   ~ 0
-Z min
-Text Notes 700  5900 0    50   ~ 0
-Z max
-Text Notes 700  6000 0    50   ~ 0
-Z Step
-Text Notes 700  6100 0    50   ~ 0
-Z Dir
-Text Notes 700  6200 0    50   ~ 0
-~Z Enable
-Text Notes 700  6300 0    50   ~ 0
-Y min
-Text Notes 700  6800 0    50   ~ 0
-Y max
-Text Notes 700  4000 0    50   ~ 0
-Y Step
-Text Notes 700  3900 0    50   ~ 0
-Y Dir
-Text Notes 700  4100 0    50   ~ 0
-~Y Enable
-Text Notes 700  4200 0    50   ~ 0
-X min
-Text Notes 700  4300 0    50   ~ 0
-X max
-Text Notes 700  4400 0    50   ~ 0
-X Dir
-Text Notes 700  4500 0    50   ~ 0
-X Step
-Text Notes 700  4600 0    50   ~ 0
-~X Enable
 Text GLabel 1400 6750 0    50   Input ~ 0
 P2.13
-Text Notes 5100 4800 0    50   ~ 0
-Exhaust
-Text Notes 5100 4700 0    50   ~ 0
-Assist Air
 Text GLabel 3700 1500 2    50   Input ~ 0
 P1.28
 Text GLabel 3700 1600 2    50   Input ~ 0
@@ -866,24 +802,6 @@ Text GLabel 4800 4750 2    50   Input ~ 0
 P1.29
 Text GLabel 4800 4650 2    50   Input ~ 0
 P1.28
-Text GLabel 10800 5300 2    50   Input ~ 0
-P2.12
-Text GLabel 10800 5200 2    50   Input ~ 0
-P2.11
-Text GLabel 10800 5000 2    50   Input ~ 0
-P2.4
-Text GLabel 10800 5100 2    50   Input ~ 0
-P2.3
-Text GLabel 10800 4800 2    50   Input ~ 0
-P2.13
-Text GLabel 10800 4900 2    50   Input ~ 0
-P2.8
-Text GLabel 10800 4700 2    50   Input ~ 0
-P0.18
-Text GLabel 10800 4600 2    50   Input ~ 0
-P0.19
-Text GLabel 9750 4900 0    50   Input ~ 0
-P1.19
 Text GLabel 4700 1600 0    50   Input ~ 0
 WDLE
 Text GLabel 9750 5700 0    50   Input ~ 0
@@ -898,14 +816,6 @@ Text GLabel 10100 1750 0    50   Input ~ 0
 WDME
 Text GLabel 9750 5600 0    50   Input ~ 0
 WDME
-Text GLabel 9750 5400 0    50   Input ~ 0
-P2.0
-Text GLabel 9750 5300 0    50   Input ~ 0
-P2.5
-Text GLabel 9750 5200 0    50   Input ~ 0
-P0.16
-Text GLabel 9750 5100 0    50   Input ~ 0
-P0.21
 Text Notes 5050 5000 0    50   ~ 0
 Supply voltage sense (10.8696 %)
 Text GLabel 10100 6250 0    50   Input ~ 0
@@ -975,45 +885,45 @@ F16 "RXDC" O L 2850 1800 60
 F17 "LED" I R 3600 1850 60 
 $EndSheet
 Text GLabel 8200 3250 0    50   Input ~ 0
-P2.11
+P1.0
 Text GLabel 8200 3400 0    50   Input ~ 0
-P2.12
+P1.1
 Text GLabel 8200 2950 0    50   Input ~ 0
-P2.0
-Text GLabel 8200 2800 0    50   Input ~ 0
-P2.1
-Text GLabel 8200 2650 0    50   Input ~ 0
-P2.2
-Text GLabel 8200 1600 0    50   Input ~ 0
-P2.3
-Text GLabel 8200 1450 0    50   Input ~ 0
-P2.4
-Text GLabel 8200 1150 0    50   Input ~ 0
-P2.5
-Text GLabel 8200 1000 0    50   Input ~ 0
-P2.6
-Text GLabel 8200 850  0    50   Input ~ 0
-P2.7
-Text GLabel 10100 3400 0    50   Input ~ 0
-P2.8
-Text GLabel 10100 3250 0    50   Input ~ 0
 P2.13
-Text GLabel 10100 850  0    50   Input ~ 0
+Text GLabel 8200 2800 0    50   Input ~ 0
 P0.22
-Text GLabel 10100 1000 0    50   Input ~ 0
+Text GLabel 8200 2650 0    50   Input ~ 0
 P0.21
-Text GLabel 10100 1150 0    50   Input ~ 0
+Text GLabel 8200 1600 0    50   Input ~ 0
+P1.8
+Text GLabel 8200 1450 0    50   Input ~ 0
+P1.4
+Text GLabel 8200 1150 0    50   Input ~ 0
 P0.20
-Text GLabel 10100 1450 0    50   Input ~ 0
-P0.19
-Text GLabel 10100 1600 0    50   Input ~ 0
-P0.18
-Text GLabel 10100 2650 0    50   Input ~ 0
+Text GLabel 8200 1000 0    50   Input ~ 0
 P0.17
+Text GLabel 8200 850  0    50   Input ~ 0
+P0.15
+Text GLabel 10100 3400 0    50   Input ~ 0
+P1.10
+Text GLabel 10100 3250 0    50   Input ~ 0
+P1.9
+Text GLabel 10100 850  0    50   Input ~ 0
+P2.0
+Text GLabel 10100 1000 0    50   Input ~ 0
+P2.4
+Text GLabel 10100 1150 0    50   Input ~ 0
+P2.1
+Text GLabel 10100 1450 0    50   Input ~ 0
+P1.14
+Text GLabel 10100 1600 0    50   Input ~ 0
+P1.15
+Text GLabel 10100 2650 0    50   Input ~ 0
+P2.5
 Text GLabel 10100 2950 0    50   Input ~ 0
 P0.16
 Text GLabel 10100 2800 0    50   Input ~ 0
-P0.15
+P2.6
 Text GLabel 1400 3850 0    50   Input ~ 0
 P0.15
 Text GLabel 1400 3950 0    50   Input ~ 0
@@ -1127,24 +1037,16 @@ F4 "laser-in" O L 6300 1100 60
 F5 "Internal" O L 6300 1250 60 
 F6 "waterflow" O L 6300 1400 60 
 $EndSheet
-Text Notes 5100 4600 0    50   ~ 0
-Watchdog Ready
-Text Notes 5100 4400 0    50   ~ 0
-LASER Ready
-Text Notes 5100 4100 0    50   ~ 0
-E-stop
-Text Notes 5100 3800 0    50   ~ 0
-Fire
 Text GLabel 4800 4550 2    50   Input ~ 0
 P1.27
 Text GLabel 4700 1450 0    50   Input ~ 0
-P1.27
+P0.28
 Text GLabel 4700 1300 0    50   Input ~ 0
-P1.25
+P3.25
 Text GLabel 4700 1150 0    50   Input ~ 0
-P1.22
+P3.26
 Text GLabel 4700 850  0    50   Input ~ 0
-P1.19
+P0.27
 Text GLabel 4800 4350 2    50   Input ~ 0
 P1.25
 Text GLabel 4800 4050 2    50   Input ~ 0
