@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-21T19:52:23 CET
+EESchema Schematic File Version 2  date 2011-11-21T20:33:53 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,7 +48,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 7 10
 Title ""
-Date "20 nov 2011"
+Date "21 nov 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -56,14 +56,9 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-NoConn ~ 3750 4000
-NoConn ~ 3750 3400
-NoConn ~ 5650 3550
-NoConn ~ 5650 3450
+Connection ~ 1700 3900
 Wire Wire Line
-	2000 3450 2000 3400
-Wire Wire Line
-	2000 3400 1400 3400
+	1700 3900 1400 3900
 Wire Wire Line
 	1700 3450 1700 3300
 Connection ~ 1700 3900
@@ -154,16 +149,20 @@ Wire Wire Line
 Wire Wire Line
 	5650 3350 5750 3350
 Wire Wire Line
-	1400 3850 1400 3900
-Wire Wire Line
-	1400 3900 2000 3900
-Wire Wire Line
-	2000 3900 2000 3850
+	1400 3900 1400 3850
 Wire Wire Line
 	1700 4000 1700 3850
 Wire Wire Line
-	1400 3400 1400 3450
+	1400 3450 1400 3400
 Connection ~ 1700 3400
+Wire Wire Line
+	1400 3400 1700 3400
+Text HLabel 5750 4350 2    50   Input ~ 0
+Zstep
+NoConn ~ 3750 4000
+NoConn ~ 3750 3400
+NoConn ~ 5650 3550
+NoConn ~ 5650 3450
 $Comp
 L GND #PWR096
 U 1 1 4EB84218
@@ -180,15 +179,6 @@ P 1700 3300
 F 0 "#PWR097" H 1700 3260 30  0001 C CNN
 F 1 "+3.3V" H 1700 3410 30  0000 C CNN
 	1    1700 3300
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C45
-U 1 1 4EB84209
-P 2000 3650
-F 0 "C45" H 2050 3750 50  0000 L CNN
-F 1 "100nF" H 2050 3550 50  0000 L CNN
-	1    2000 3650
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -272,35 +262,33 @@ F 2 "TQFP32" H 4100 1900 50  0001 C CNN
 	1    4650 3250
 	1    0    0    -1  
 $EndComp
-Text HLabel 5750 2250 2    50   Output ~ 0
+Text HLabel 5750 2350 2    50   Output ~ 0
 Enable Motors
-Text HLabel 5750 2150 2    50   Output ~ 0
+Text HLabel 5750 2950 2    50   Output ~ 0
 Enable LASER
-Text HLabel 5750 2350 2    50   Input ~ 0
-Amin
-Text HLabel 5750 3950 2    50   Input ~ 0
-Amax
-Text HLabel 5750 3350 2    50   Input ~ 0
-Zmax
-Text HLabel 5750 3250 2    50   Input ~ 0
-Zmin
 Text HLabel 5750 3150 2    50   Input ~ 0
-Ymax
+Amin
 Text HLabel 5750 3050 2    50   Input ~ 0
-Ymin
-Text HLabel 5750 2850 2    50   Input ~ 0
-Xmin
-Text HLabel 5750 2950 2    50   Input ~ 0
-Xmax
+Amax
+Text HLabel 5750 3250 2    50   Input ~ 0
+Zmax
+Text HLabel 5750 3350 2    50   Input ~ 0
+Zmin
+Text HLabel 5750 3950 2    50   Input ~ 0
+Ymax
 Text HLabel 5750 4050 2    50   Input ~ 0
+Ymin
+Text HLabel 5750 4250 2    50   Input ~ 0
+Xmin
+Text HLabel 5750 4150 2    50   Input ~ 0
+Xmax
+Text HLabel 5750 2850 2    50   Input ~ 0
 FIRE
 Text HLabel 5750 4450 2    50   Input ~ 0
 Astep
-Text HLabel 5750 4350 2    50   Input ~ 0
-Zstep
-Text HLabel 5750 4250 2    50   Input ~ 0
+Text HLabel 5750 2150 2    50   Input ~ 0
 Ystep
-Text HLabel 5750 4150 2    50   Input ~ 0
+Text HLabel 5750 2250 2    50   Input ~ 0
 Xstep
 Text HLabel 5750 3750 2    50   Input ~ 0
 RXD

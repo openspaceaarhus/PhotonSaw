@@ -63,20 +63,21 @@ P0.5
 
 -------------------------------------------------------------
 14	Motor Enable	WDME
-13	P2.4
-12	P0.16
-11	P2.13
-10	P0.20
+13	Xstep 		P2.4
+12	Ystep		P0.16
+11	Astep		P2.13
+10	Zstep		P0.20
 
-10	P1.15
-9	P1.14
-2	P1.10
-1	P1.19
-32	P1.8
-28	P1.4
-26	P1.1
-25	P1.0
+9	Xmin		P1.15
+2	Xmax		P1.14
+1	Ymin		P1.10
+32	Ymax		P1.9
+28	Zmin		P1.8
+27	Zmax		P1.4
+26	Amin		P1.1
+25	Amax		P1.0
 
-24 WDLE
-23 Main Fire
+24	Laser Enable	WDLE
+23	Main Fire	P0.27
+
 

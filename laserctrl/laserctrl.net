@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  2011-11-20T15:10:52 CET
+# EESchema Netlist Version 1.1 created  2011-11-21T20:34:00 CET
 (
  ( /4EC15AC3 $noname  P1.25 CONN_1 {Lib=CONN_1}
   (    1 P1.25 )
@@ -871,10 +871,6 @@
   (    1 +24V )
   (    2 N-000117 )
  )
- ( /4EA3E488/4EB84209 $noname  C45 100nF {Lib=C}
-  (    1 +3.3V )
-  (    2 GND )
- )
  ( /4EA3E488/4EB84203 $noname  C44 100nF {Lib=C}
   (    1 +3.3V )
   (    2 GND )
@@ -884,20 +880,20 @@
   (    2 GND )
  )
  ( /4EA3E488/4EB83DB6 TQFP32  IC3 ATMEGA328P-A {Lib=ATMEGA328P-A}
-  (    1 P0.27 )
-  (    2 P2.4 )
+  (    1 P1.10 )
+  (    2 P1.14 )
   (    3 GND )
   (    4 +3.3V )
   (    5 GND )
   (    6 +3.3V )
   (    7 ? )
   (    8 ? )
-  (    9 P0.16 )
+  (    9 P1.15 )
   (   10 P0.20 )
   (   11 P2.13 )
-  (   12 WDLE )
-  (   13 WDME )
-  (   14 P1.1 )
+  (   12 P0.16 )
+  (   13 P2.4 )
+  (   14 WDME )
   (   15 MOSI_wd )
   (   16 MISO_wd )
   (   17 SCK_wd )
@@ -906,16 +902,16 @@
   (   20 +3.3V )
   (   21 GND )
   (   22 ? )
-  (   23 P1.15 )
-  (   24 P1.14 )
-  (   25 P1.10 )
-  (   26 P1.9 )
-  (   27 P1.8 )
-  (   28 P1.4 )
+  (   23 P0.27 )
+  (   24 WDLE )
+  (   25 P1.0 )
+  (   26 P1.1 )
+  (   27 P1.4 )
+  (   28 P1.8 )
   (   29 ~Reset_wd )
   (   30 TXD3 )
   (   31 RXD3 )
-  (   32 P1.0 )
+  (   32 P1.9 )
  )
  ( /4EA3E488/4EA3E4C4 $noname  C41 100nF {Lib=C}
   (    1 ~Reset_wd )
@@ -1928,11 +1924,6 @@ $component C30
  C?
  C1-1
 $endlist
-$component C45
- SM*
- C?
- C1-1
-$endlist
 $component C44
  SM*
  C?
@@ -2304,93 +2295,93 @@ $endfootprintlist
 }
 { Pin List by Nets
 Net 1 "P0.27" "P0.27"
- IC3 1
- R37 2
  R36 1
+ IC3 23
+ R37 2
  U1 25
 Net 2 "P3.26" "P3.26"
  R26 2
- U3 4
  R28 2
  U1 26
+ U3 4
 Net 3 "P3.25" "P3.25"
+ U1 27
  R25 2
  U2 3
- U1 27
 Net 4 "P0.28" "P0.28"
- R42 1
  U1 24
+ R42 1
  D18 2
 Net 5 "PWM5" "PWM5"
- R31 2
- R30 1
  U1 38
+ R30 1
+ R31 2
 Net 6 "AGND" "AGND"
- P6 2
- C10 2
- P9 2
- D4 1
- U1 15
- U1 11
- D5 1
- FB2 2
- D6 1
- C9 2
- P7 2
- R23 2
- C12 2
- U8 2
- C42 2
- C11 2
- U8 7
  P8 2
- C87 2
- D3 1
- U8 3
- U8 6
+ P9 2
  C89 2
+ U8 6
+ U1 15
+ D3 1
+ U8 7
+ C11 2
+ C42 2
+ P6 2
+ C12 2
+ P7 2
+ C10 2
+ D6 1
+ D5 1
+ D4 1
+ U8 3
+ U1 11
+ C87 2
+ R23 2
+ U8 2
+ FB2 2
+ C9 2
 Net 7 "AD0" "AD0"
- R23 1
- D6 3
- U1 9
  C12 1
+ D6 3
+ R23 1
  R22 2
+ U1 9
 Net 8 "AD1" "AD1"
- R19 2
- C11 1
- P8 1
  U1 8
+ P8 1
+ C11 1
  D5 3
+ R19 2
 Net 9 "AD2" "AD2"
- P7 1
- U1 7
- R18 2
  C10 1
  D4 3
+ U1 7
+ P7 1
+ R18 2
 Net 10 "AD3" "AD3"
- R17 2
+ C9 1
  D3 3
  P6 1
  U1 6
- C9 1
+ R17 2
 Net 11 "P1.16" "P1.16"
- U1 87
+ C40 1
  R94 2
  D32 3
- C40 1
+ U1 87
  P26 1
 Net 12 "PWM2" "PWM2"
  R54 2
  U1 34
 Net 13 "~RESET" "~RESET"
- P25 10
  C1 1
- U1 17
- SW2 1
  R1 2
+ P25 10
+ SW2 1
+ U1 17
 Net 14 "TDO" "TDO"
- P25 6
  U1 1
+ P25 6
 Net 15 "TMS" "TMS"
  P25 2
  U1 3
@@ -2402,25 +2393,25 @@ Net 17 "P1.28" "P1.28"
  R9 2
 Net 18 "P1.0" "P1.0"
  C8 1
- R52 2
  U1 95
- IC3 32
- D14 3
  P14 1
+ IC3 25
+ R52 2
+ D14 3
 Net 19 "P1.1" "P1.1"
- IC3 14
+ IC3 26
  D11 3
- U1 94
  C25 1
- P13 1
  R51 2
+ U1 94
+ P13 1
 Net 20 "P2.13" "P2.13"
+ IC3 11
  U1 50
  IC1 19
- IC3 11
 Net 21 "P0.22" "P0.22"
- IC1 3
  U1 56
+ IC1 3
 Net 22 "P0.21" "P0.21"
  IC1 26
  U1 57
@@ -2428,8 +2419,8 @@ Net 23 "SCK1" "SCK1"
  U1 78
  J2 5
 Net 24 "TXD2" "TXD2"
- P4 1
  U1 48
+ P4 1
 Net 25 "RXD2" "RXD2"
  P4 3
  U1 49
@@ -2437,42 +2428,42 @@ Net 26 "MISO1" "MISO1"
  U1 77
  J2 7
 Net 27 "MOSI1" "MOSI1"
- J2 3
  U1 76
+ J2 3
 Net 28 "SD_CS" "SD_CS"
- J2 2
  U1 79
+ J2 2
 Net 29 "USB_CONN" "USB_CONN"
  U1 64
  R11 2
 Net 30 "P1.10" "P1.10"
- IC3 25
- C39 1
- P16 1
  R62 2
- D20 3
+ C39 1
  U1 90
+ IC3 1
+ D20 3
+ P16 1
 Net 31 "P1.9" "P1.9"
- P17 1
- D22 3
- IC3 26
- C14 1
+ IC3 32
  U1 91
+ P17 1
+ C14 1
  R63 2
+ D22 3
 Net 32 "P0.16" "P0.16"
- IC3 9
- IC2 19
  U1 63
+ IC2 19
+ IC3 12
 Net 33 "P2.5" "P2.5"
- U1 68
  IC2 26
+ U1 68
 Net 34 "P2.6" "P2.6"
  U1 67
  IC2 3
 Net 35 "P0.20" "P0.20"
- IC4 19
- IC3 10
  U1 58
+ IC3 10
+ IC4 19
 Net 36 "RXD3" "RXD3"
  IC3 31
  U1 47
@@ -2480,8 +2471,8 @@ Net 37 "TXD0" "TXD0"
  P5 5
  U1 98
 Net 38 "USB+" "USB+"
- U1 29
  C6 1
+ U1 29
  R13 2
 Net 39 "P1.25" "P1.25"
  U1 39
@@ -2491,23 +2482,23 @@ Net 40 "P0.19" "P0.19"
  IC4 13
 Net 41 "P2.4" "P2.4"
  IC5 19
- IC3 2
+ IC3 13
  U1 69
 Net 42 "P1.22" "P1.22"
- P1.22 1
  U1 36
+ P1.22 1
 Net 43 "P2.8" "P2.8"
- IC2 13
  U1 65
+ IC2 13
 Net 44 "P2.0" "P2.0"
- IC5 26
  U1 75
+ IC5 26
 Net 45 "TXD3" "TXD3"
- IC3 30
  U1 46
+ IC3 30
 Net 46 "P2.7" "P2.7"
- IC2 12
  U1 66
+ IC2 12
 Net 47 "P1.17" "P1.17"
  P1.17 1
  U1 86
@@ -2518,72 +2509,72 @@ Net 49 "P0.15" "P0.15"
  IC4 26
  U1 62
 Net 50 "P1.4" "P1.4"
- IC3 28
  D25 3
  R75 2
- U1 93
+ IC3 27
  C26 1
  P20 1
+ U1 93
 Net 51 "PWM3" "PWM3"
- R66 2
  U1 35
+ R66 2
 Net 52 "P1.8" "P1.8"
+ R74 2
+ D24 3
+ P19 1
  C59 1
  U1 92
- D24 3
- IC3 27
- R74 2
- P19 1
+ IC3 28
 Net 53 "P1.14" "P1.14"
- C28 1
- U1 89
  R86 2
  D29 3
+ C28 1
+ U1 89
  P23 1
- IC3 24
+ IC3 2
 Net 54 "PWM1" "PWM1"
- R77 2
  U1 32
+ R77 2
 Net 55 "P1.15" "P1.15"
+ IC3 9
  U1 88
  D28 3
- C73 1
- P22 1
  R85 2
- IC3 23
+ P22 1
+ C73 1
 Net 56 "WDME" "WDME"
- IC3 13
- IC2 17
- IC4 17
  IC5 17
+ IC4 17
  IC1 17
+ IC3 14
+ IC2 17
 Net 57 "RXD0" "RXD0"
  P5 4
  U1 99
 Net 59 "+BATT" "+BATT"
- D45 2
  D44 2
- C88 1
+ D45 2
  U1 19
+ C88 1
 Net 60 "AD5" "AD5"
  C91 1
  R91 2
  R92 1
  U1 20
 Net 61 "USB-" "USB-"
- C7 1
- U1 30
  R14 2
+ U1 30
+ C7 1
 Net 62 "PWM6" "PWM6"
- U1 40
  PWM6 1
+ U1 40
 Net 63 "" ""
- R6 1
  C5 1
+ R6 1
  X2 2
 Net 64 "" ""
- R6 2
  U1 18
+ R6 2
 Net 66 "" ""
  C3 1
  X1 2
@@ -2595,12 +2586,12 @@ Net 68 "P1.27" "P1.27"
  U1 43
  R87 2
 Net 69 "~ISP" "~ISP"
- R15 2
  SW1 1
  U1 53
+ R15 2
 Net 70 "P2.2" "P2.2"
- IC5 12
  U1 73
+ IC5 12
 Net 72 "P2.1" "P2.1"
  U1 74
  IC5 3
@@ -2617,36 +2608,36 @@ Net 76 "AD4" "AD4"
  AD4 1
  U1 21
 Net 77 "GND" "GND"
- D14 1
  C8 2
+ D22 1
+ D14 1
  C39 2
  P17 2
- C27 2
+ IC2 21
  Q6 1
  R59 2
  D7 1
  D12 1
+ C27 2
  Q8 1
- R41 1
- IC2 21
  C36 2
+ R41 1
  R60 2
  R58 2
- C38 2
- IC2 BPAD
  C35 2
- C37 2
- R37 1
+ IC2 BPAD
  IC2 16
+ R37 1
  Q7 1
  C34 2
  C14 2
- D22 1
  IC2 7
  R56 1
+ C31 2
+ C38 2
+ C37 2
  R57 2
  P16 2
- C31 2
  C32 2
  Q1 1
  D20 1
@@ -2654,62 +2645,62 @@ Net 77 "GND" "GND"
  R68 1
  P20 2
  C59 2
- P4 5
- P4 4
  D25 1
- C17 2
+ C2 2
  C51 2
+ C17 2
  C52 2
  C3 2
  C4 2
- P13 2
  P19 2
  C5 2
+ P13 2
+ P4 4
  C26 2
- U1 55
- J2 6
- U1 97
  IC3 3
  IC3 5
  C41 2
+ U1 97
  CON1 6
  Q2 1
- C2 2
- C43 2
  C44 2
- C45 2
+ C18 2
+ C43 2
  IC3 21
+ U1 55
+ J2 6
  IC1 BPAD
  C13 2
  C22 2
  R49 2
  R48 2
  R47 2
- C24 2
  U1 41
+ C24 2
  IC1 7
- U1 31
  C23 2
  R46 2
  C21 2
- R70 2
+ D11 1
  C47 2
  C56 2
  R72 2
- D11 1
  IC4 7
+ R71 2
+ R70 2
  C58 2
  C57 2
  R69 2
- P4 6
+ P4 5
  D24 1
- C18 2
+ C20 2
+ U1 31
  IC4 16
  R45 1
  C55 2
  IC4 BPAD
- C20 2
  P4 7
+ P4 6
  U1 72
  IC1 16
  U1 83
@@ -2717,7 +2708,6 @@ Net 77 "GND" "GND"
  IC1 21
  C25 2
  P14 2
- R71 2
  D29 1
  C28 2
  R81 2
@@ -2725,77 +2715,77 @@ Net 77 "GND" "GND"
  C71 2
  R80 2
  C69 2
- IC5 BPAD
- R83 2
  R82 2
- H1 1
+ IC5 BPAD
+ D28 1
+ R83 2
  C91 2
  C81 2
  C1 2
  C77 2
  P27 2
- C19 2
  H5 1
+ H1 1
+ C19 2
  C88 2
- H4 1
- C83 2
  U7 4
  R90 2
+ H4 1
+ C83 2
  D43 1
  C75 2
  C76 2
  D30 2
  R92 2
- D28 1
+ C40 2
+ H2 1
  H3 1
  P24 1
  C33 2
  FB2 1
- H2 1
  C79 2
  C84 2
  C85 2
- C40 2
+ U2 2
  GND1 1
- J1 4
  R31 1
  GND2 1
  R42 2
- U2 2
  D13 2
- P25 9
+ IC5 7
  SW2 2
  R79 1
  J1 6
  J1 5
+ P25 9
+ J1 4
  R32 1
- C6 2
  U6 3
+ C6 2
  D9 1
  D8 1
  P10 1
  P25 5
  P11 1
  P11 4
+ C7 2
  P25 3
  U3 3
- C7 2
  IC5 16
- C65 2
- C68 2
- C73 2
- C66 2
- D32 1
- P26 2
- P22 2
  C61 2
+ P26 2
+ C65 2
+ C70 2
+ D32 1
+ C68 2
+ P1 1
+ C66 2
+ SW1 2
  P5 1
  IC5 21
+ P22 2
+ C73 2
  P23 2
- IC5 7
- P1 1
- SW1 2
- C70 2
 Net 78 "P2.12" "P2.12"
  U1 51
  IC1 13
@@ -2804,66 +2794,66 @@ Net 79 "P2.11" "P2.11"
  U1 52
 Net 80 "" ""
  C4 1
- X2 1
  U1 16
+ X2 1
 Net 81 "+3.3VADC" "+3.3VADC"
- D3 2
- FB1 1
- C89 1
- U1 12
- D4 2
- D5 2
- D6 2
  C42 1
+ D4 2
+ D3 2
+ D6 2
+ C89 1
+ D5 2
+ U1 12
+ FB1 1
  U1 10
 Net 82 "" ""
  U1 22
- X1 1
  C2 1
+ X1 1
 Net 83 "P4.29" "P4.29"
  P4.29 1
  U1 85
 Net 84 "+24V" "+24V"
  P3 1
- D2 2
  P2 1
  D1 2
- C18 1
- P4 8
- Q4 1
- C16 1
- P4 9
- R20 1
+ D2 2
  P4 10
+ Q4 1
  IC1 28
  C17 1
+ C18 1
  IC1 15
- IC4 15
- C52 1
- C50 1
- C51 1
- C84 1
  C32 1
- IC5 28
- C65 1
- C66 1
- 24V1 1
- IC5 15
- C31 1
+ P4 9
+ P4 8
+ C16 1
+ R20 1
  IC2 28
+ C84 1
  R91 1
- U8 8
- P27 1
- C85 1
- IC2 15
- U7 6
- C64 1
- C30 1
+ C50 1
  R88 1
+ U7 6
+ U8 8
+ C85 1
+ C51 1
+ P27 1
+ C52 1
+ C30 1
+ IC5 15
+ C64 1
+ 24V1 1
+ C66 1
+ C65 1
+ IC5 28
+ C31 1
+ IC4 15
  IC4 28
+ IC2 15
 Net 85 "TCK" "TCK"
- P25 4
  U1 5
+ P25 4
 Net 86 "RTCK" "RTCK"
  U1 100
  P25 7
@@ -2871,92 +2861,91 @@ Net 87 "TDI" "TDI"
  U1 2
  P25 8
 Net 88 "+3.3V" "+3.3V"
- R86 1
+ C61 1
+ R78 2
+ U2 4
+ IC5 10
+ R85 1
+ IC2 10
+ R38 2
+ R39 2
+ C27 1
+ D20 2
+ R62 1
+ D22 2
+ R63 1
+ R55 2
+ D15 1
+ R34 2
+ R29 2
+ R35 2
+ IC2 27
+ 3v3 1
+ P25 1
+ Q3 1
+ R15 1
+ C33 1
+ U1 42
+ P4 2
+ J2 4
+ U1 28
+ U1 96
+ U1 54
+ U1 84
+ U1 71
+ R94 1
+ R26 1
  D28 2
  D29 2
  C19 1
- R94 1
- R63 1
- R52 1
- R26 1
- R29 2
- C27 1
- R34 2
- D15 1
- U2 4
- IC2 27
- IC2 10
- R35 2
- R38 2
- R39 2
- FB1 2
- IC5 27
+ R86 1
  D32 2
- C61 1
- R55 2
- D20 2
- R62 1
- R78 2
- IC5 10
- D22 2
- R85 1
- C44 1
- C43 1
- C45 1
- Q3 1
- P25 1
+ C81 1
+ C77 1
+ R1 1
+ C79 1
+ IC5 27
+ FB1 2
+ R89 1
+ D44 1
+ L1 2
+ C75 1
+ C76 1
  R74 1
  R51 1
  D24 2
  D25 2
- 3v3 1
  R75 1
  R67 2
- R65 1
- IC3 18
- IC3 4
- IC3 6
- U1 96
- U1 28
- CON1 2
- J2 4
- P4 2
- U1 42
- IC3 20
- U1 71
- U1 84
- U1 54
- C77 1
- R1 1
- C13 1
- C79 1
- C33 1
- IC4 27
- C76 1
- C75 1
- L1 2
- D44 1
- R89 1
  D14 2
- C81 1
+ C13 1
+ IC4 27
+ R44 2
+ IC1 27
  IC1 10
  IC4 10
- R15 1
- R44 2
  C47 1
  D11 2
- IC1 27
+ IC3 4
+ IC3 20
+ IC3 18
+ IC3 6
+ R65 1
+ CON1 2
+ C44 1
+ C43 1
+ R52 1
 Net 89 "P0.4" "P0.4"
- U1 81
  P0.4 1
+ U1 81
 Net 90 "P1.29" "P1.29"
- R10 2
  U1 45
+ R10 2
 Net 91 "WDLE" "WDLE"
  D18 1
- R41 2
  R40 1
- IC3 12
+ R41 2
+ IC3 24
 Net 92 "P4.28" "P4.28"
  P4.28 1
  U1 82
@@ -2964,50 +2953,50 @@ Net 93 "" ""
  P24 2
  D45 1
 Net 94 "+5V" "+5V"
+ R18 1
+ R19 1
+ R17 1
  U8 1
  C87 1
- R18 1
- R17 1
- R19 1
 Net 95 "" ""
- R90 1
  R89 2
+ R90 1
  U7 5
 Net 96 "" ""
- U7 1
- R88 2
  U7 7
  U7 8
+ U7 1
+ R88 2
 Net 97 "" ""
  U7 3
  C83 1
 Net 98 "" ""
  U7 2
- D43 2
  L1 1
+ D43 2
 Net 99 "" ""
- IC5 9
- C72 1
  R81 1
+ C72 1
+ IC5 9
 Net 100 "" ""
  C71 1
- IC5 6
  R80 1
+ IC5 6
 Net 101 "" ""
  IC5 14
  R82 1
 Net 102 "" ""
- IC5 22
  C64 2
+ IC5 22
 Net 103 "" ""
- C70 1
  IC5 20
+ C70 1
 Net 104 "" ""
  P21 4
  IC5 11
 Net 105 "" ""
- IC5 24
  C63 2
+ IC5 24
 Net 106 "" ""
  P21 3
  IC5 18
@@ -3015,18 +3004,18 @@ Net 107 "" ""
  IC5 1
  R83 1
 Net 108 "" ""
- IC5 25
  P21 2
+ IC5 25
 Net 109 "" ""
- IC5 4
  P21 1
+ IC5 4
 Net 110 "" ""
- C63 1
  IC5 23
+ C63 1
 Net 111 "" ""
+ IC5 8
  R77 1
  C68 1
- IC5 8
 Net 112 "" ""
  R78 1
  IC5 5
@@ -3036,40 +3025,40 @@ Net 113 "" ""
  IC2 4
  P15 1
 Net 114 "" ""
+ R58 1
  IC2 9
  C38 1
- R58 1
 Net 115 "" ""
- IC2 6
  R57 1
  C37 1
+ IC2 6
 Net 116 "" ""
- IC2 14
  R59 1
+ IC2 14
 Net 117 "" ""
- C30 2
  IC2 22
+ C30 2
 Net 118 "" ""
- C29 1
  IC2 23
+ C29 1
 Net 119 "" ""
- R54 1
  IC2 8
+ R54 1
  C34 1
 Net 120 "" ""
- C35 1
  IC2 5
  R56 2
+ C35 1
  R55 1
 Net 121 "" ""
  IC2 24
  C29 2
 Net 122 "" ""
- P15 3
  IC2 18
+ P15 3
 Net 123 "" ""
- C36 1
  IC2 20
+ C36 1
 Net 124 "" ""
  R60 1
  IC2 1
@@ -3077,19 +3066,19 @@ Net 125 "" ""
  IC2 25
  P15 2
 Net 126 "" ""
- P15 4
  IC2 11
+ P15 4
 Net 127 "" ""
+ IC4 9
  C58 1
  R70 1
- IC4 9
 Net 128 "" ""
  IC4 4
  P18 1
 Net 129 "" ""
+ C57 1
  IC4 6
  R69 1
- C57 1
 Net 130 "" ""
  R71 1
  IC4 14
@@ -3097,23 +3086,23 @@ Net 131 "" ""
  C50 2
  IC4 22
 Net 132 "" ""
- C56 1
  IC4 20
+ C56 1
 Net 133 "" ""
  IC4 23
  C49 1
 Net 134 "" ""
+ R66 1
  C54 1
  IC4 8
- R66 1
 Net 135 "" ""
+ IC4 5
+ C55 1
  R68 2
  R67 1
- C55 1
- IC4 5
 Net 136 "" ""
- C49 2
  IC4 24
+ C49 2
 Net 137 "" ""
  IC4 18
  P18 3
@@ -3130,28 +3119,28 @@ Net 141 "MOSI_wd" "MOSI_wd"
  CON1 4
  IC3 15
 Net 146 "MISO_wd" "MISO_wd"
- CON1 1
  IC3 16
-Net 147 "~Reset_wd" "~Reset_wd"
- C41 1
- R65 2
- IC3 29
- CON1 5
-Net 148 "SCK_wd" "SCK_wd"
+ CON1 1
+Net 147 "SCK_wd" "SCK_wd"
  IC3 17
  CON1 3
+Net 148 "~Reset_wd" "~Reset_wd"
+ C41 1
+ R65 2
+ CON1 5
+ IC3 29
 Net 149 "" ""
- C15 2
  IC1 24
+ C15 2
 Net 150 "" ""
  IC1 25
  P12 2
 Net 151 "" ""
- IC1 18
  P12 3
+ IC1 18
 Net 152 "" ""
- IC1 11
  P12 4
+ IC1 11
 Net 153 "" ""
  C20 1
  IC1 8
@@ -3163,8 +3152,8 @@ Net 155 "" ""
  R48 1
  IC1 14
 Net 156 "" ""
- R49 1
  IC1 1
+ R49 1
 Net 157 "" ""
  C22 1
  IC1 20
@@ -3176,17 +3165,17 @@ Net 159 "" ""
  IC1 22
 Net 160 "" ""
  R47 1
- IC1 9
  C24 1
+ IC1 9
 Net 161 "" ""
- C21 1
+ IC1 5
  R44 1
  R45 2
- IC1 5
+ C21 1
 Net 162 "" ""
- R46 1
  C23 1
  IC1 6
+ R46 1
 Net 163 "" ""
  R34 1
  D16 1
@@ -3194,91 +3183,91 @@ Net 164 "" ""
  D17 1
  R38 1
 Net 165 "" ""
- R39 1
  U6 1
+ R39 1
 Net 166 "" ""
- R28 1
  D15 2
+ R28 1
 Net 167 "" ""
- R30 2
  Q6 2
+ R30 2
 Net 168 "" ""
- R40 2
  Q8 2
+ R40 2
 Net 169 "" ""
  U5 3
  U6 4
 Net 170 "" ""
- U5 1
  R35 1
+ U5 1
 Net 171 "" ""
- R29 1
  U4 1
+ R29 1
 Net 172 "" ""
- U6 2
- Q8 3
  D17 2
+ Q8 3
+ U6 2
 Net 173 "" ""
+ D12 2
  R24 2
  U2 1
- D12 2
 Net 174 "" ""
- U3 2
- D7 3
  P11 3
  P10 2
+ D7 3
+ U3 2
 Net 175 "" ""
- U3 1
  D7 2
  R27 2
+ U3 1
 Net 176 "" ""
  Q7 3
- U5 2
  D16 2
+ U5 2
 Net 177 "" ""
- Q7 2
  R36 2
+ Q7 2
 Net 178 "" ""
- R32 2
- P11 5
  U4 3
  D8 3
+ R32 2
+ P11 5
 Net 179 "/LASER Interface/+5V from LASER" "+5V from LASER"
  U4 4
- P11 6
- R24 1
- R27 1
- D9 2
- R33 1
  D8 2
+ D9 2
+ P11 6
+ R33 1
+ R27 1
+ R24 1
 Net 180 "" ""
+ D9 3
+ R33 2
  P11 2
  U5 4
- R33 2
- D9 3
 Net 181 "" ""
- D13 1
  R25 1
+ D13 1
 Net 182 "" ""
- Q6 3
  U4 2
+ Q6 3
 Net 183 "" ""
- Q4 3
  R21 2
  Q5 2
+ Q4 3
 Net 184 "" ""
+ Q5 1
  R20 2
  Q4 2
- Q5 1
 Net 185 "" ""
  R21 1
- R22 1
  P9 1
  Q5 3
+ R22 1
 Net 186 "" ""
+ D2 1
  P3 2
  Q2 3
- D2 1
 Net 187 "" ""
  R14 1
  J1 2
