@@ -67,4 +67,3 @@ int uart_getchar(FILE *stream) {
     return -1000;
   }
 }
-

@@ -7,8 +7,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <string.h>
 #include "uart.c"
 
+char uart_buf[40];
+
+void ParseCMD();
 
 int main(void)
 {
@@ -21,24 +25,44 @@ int main(void)
 
 	stdout = stdin = &uart_str;
 
-	char uart_buf[40];
+	char *buf_p;
+	char newchar;
+
+	buf_p = &uart_buf[0];
 
 //	Main loop
 
-	for (;;) 
+	printf("Initalized\n");
+
+	for (;;)
 	{
 
-		fgets(uart_buf, sizeof(uart_buf)-1, stdin);
-
-		if(uart_buf[0] != 0)
+		if(UCSR0A & _BV(RXC0))
 		{
+			newchar = UDR0;
 
-			//do stuff
+			if(newchar == 0x0d)
+			{
+				//Parse CMD
+				memset(uart_buf, 0, sizeof(uart_buf));
+				buf_p = &uart_buf[0];
+			} else {
 
-			printf("ok\n");
+				*buf_p = newchar;
 
-			uart_buf[0] = 0;
+				buf_p++;
+
+				if(buf_p == (void *)&uart_buf[39])
+				{
+					printf("ERROR: linebuffer overflow\n");
+					memset(uart_buf, 0, sizeof(uart_buf));
+					buf_p = &uart_buf[0];
+				}
+
+			}
 
 		}
+
 	}
+
 }
