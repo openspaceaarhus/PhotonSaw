@@ -52,7 +52,7 @@ int main(void)
 		{
 			newchar = UDR0;
 
-			if(newchar == 0x0d)
+			if(newchar == 0x0d)  //if CR recived
 			{
 				ParseCMD();
 				memset(uart_buf, 0, sizeof(uart_buf));
@@ -117,7 +117,7 @@ void ParseCMD()
 	}
         else if(sscanf(uart_buf,"store-min=%d",number))
         {
-                if(option[0])
+                if(number[0])
                 {
                         store_min = number[0];
                         option[4] = 'o';
@@ -129,7 +129,7 @@ void ParseCMD()
         }
         else if(sscanf(uart_buf,"buffer-set=%d",number))
         {
-                if(option[0])
+                if(number[0])
                 {
                         buffer_set = number[0];
                         option[4] = 'o';
@@ -141,7 +141,7 @@ void ParseCMD()
         }
         else if(sscanf(uart_buf,"post-run=%d",number))
         {
-                if(option[0])
+                if(number[0])
                 {
                         post_run = number[0];
                         option[4] = 'o';
