@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+open IN, "<laserctrl.brd" or die "Failed to read $!";
+open OUT, ">laserctrl.brd.new" or die "Failed to write $!";
+
+while (my $line = <IN>) {
+      chomp $line;
+      if ($line =~ /^T(0|1)/) {
+	  my @l = split / /, $line;
+	  $l[3] = 197;
+	  $l[4] = 197;
+	  $l[7] = 45;
+	  $l[8] = 'V';
+      
+	  $line = join ' ', @l;
+      }
+      print OUT "$line\n";
+}
+
+
+close OUT;
+close IN;
