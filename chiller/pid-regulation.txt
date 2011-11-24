@@ -1,0 +1,63 @@
+
+/*
+ PID: Proportional Integral Differential
+
+ This is a minimal example of how to implement PID regulation in C.
+
+ The constants P, I and D need to be tuned to the system being regulated, their meanings are:
+
+ P: The more wrong the temperature is right now, the bigger the control output.
+    This is the main term that will do most of the regulation, but as we get closer and closer to the setpoint, the 
+
+ I: The more wrong the temperature has been, the bigger the control output.
+    This is only needed to hit the target exactly, which would never happen if only P was used.
+ 
+ D: The bigger the change in error has is right now, the bigger the control output.
+    This is used to quickly respond to changes in the setpoint or the system.
+
+ To tune:
+ Start out with I=0 and D=0 and choose a P value which doesn't cause oscilation.
+ Then set D to 0.1*I and tune for rapid response to quick changes in setpoint
+ Then set I to 0.05*P and see if the setpoint is hit any faster.
+
+
+Notice that this implementation needs a constant cycle time to be useable.
+*/
+
+const float P = 5;
+const float I = 0.1;
+const float D = 0.5;
+
+const float MAX_OUTPUT = 255;
+const float MIN_OUTPUT = 0;
+
+float target = 20;
+
+float errorSum = 0;
+float lastError = 0;
+
+float output = 0;
+while (1) {
+      float measurement = getTemperature();
+
+      float error = measurement - target;
+
+      errorSum += error;
+
+      output = output
+        + P*error 
+	+ I*errorSum
+	+ D*(error-lastError);
+
+      lastError = error;
+
+      if (output > MAX_OUTPUT) {
+	output = MAX_OUTPUT;
+
+      } else if (output < MIN_OUTPUT) {
+	output = MIN_OUTPUT;
+      }
+      
+      setPumpPWM(255-output);
+}
+
