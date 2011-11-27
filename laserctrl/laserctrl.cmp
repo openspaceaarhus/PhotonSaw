@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-20T11:37:15 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-27T19:24:17 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -330,13 +330,6 @@ IdModule  = SM0603;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EA3E488/4EB84209;
-Reference = C45;
-ValeurCmp = 100nF;
-IdModule  = SM0603;
-EndCmp
-
-BeginCmp
 TimeStamp = /4EA1F56E/4EA1E7F2;
 Reference = C47;
 ValeurCmp = 100nF;
@@ -645,6 +638,13 @@ IdModule  = diode-SOT23;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EA3E488/4ED27DA2;
+Reference = D10;
+ValeurCmp = LED;
+IdModule  = LED-0805;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EAD3DC6/4EBAE046;
 Reference = D11;
 ValeurCmp = BAT_54S;
@@ -698,6 +698,13 @@ TimeStamp = /4EAEE920/4EB1CCF4;
 Reference = D18;
 ValeurCmp = LS_914B;
 IdModule  = diode-minimelf-unfucked;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EA3E488/4ED27D9C;
+Reference = D19;
+ValeurCmp = LED;
+IdModule  = LED-0805;
 EndCmp
 
 BeginCmp
@@ -1165,7 +1172,7 @@ EndCmp
 BeginCmp
 TimeStamp = /4EB5C316/4EB6D10D;
 Reference = Q3;
-ValeurCmp = BV807;
+ValeurCmp = BC807;
 IdModule  = SOT23-bec;
 EndCmp
 
@@ -1208,6 +1215,20 @@ BeginCmp
 TimeStamp = /4EB5C316/4EC1599F;
 Reference = R1;
 ValeurCmp = 10k;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EA3E488/4ED27D90;
+Reference = R2;
+ValeurCmp = 330R;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EA3E488/4ED27D97;
+Reference = R3;
+ValeurCmp = 330R;
 IdModule  = SM0603;
 EndCmp
 
