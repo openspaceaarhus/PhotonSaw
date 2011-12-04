@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-28T22:17:03 CET
+EESchema Schematic File Version 2  date 2011-12-03T21:12:32 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,7 +48,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 10
 Title ""
-Date "27 nov 2011"
+Date "3 dec 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -305,7 +305,7 @@ L DIODE D2
 U 1 1 4EBC1A1B
 P 9600 2750
 F 0 "D2" H 9600 2850 40  0000 C CNN
-F 1 "DO-213AA" H 9600 2650 40  0000 C CNN
+F 1 "EGL 1D" H 9600 2650 40  0000 C CNN
 	1    9600 2750
 	0    -1   -1   0   
 $EndComp
@@ -314,7 +314,7 @@ L DIODE D1
 U 1 1 4EBC19B2
 P 9600 1300
 F 0 "D1" H 9600 1400 40  0000 C CNN
-F 1 "DO-213AA" H 9600 1200 40  0000 C CNN
+F 1 "EGL 1D" H 9600 1200 40  0000 C CNN
 	1    9600 1300
 	0    -1   -1   0   
 $EndComp
@@ -627,7 +627,7 @@ $Comp
 L R R13
 U 1 1 4EB6D1D2
 P 1800 1800
-F 0 "R13" V 1880 1800 50  0000 C CNN
+F 0 "R13" V 1700 1800 50  0000 C CNN
 F 1 "33R" V 1800 1800 50  0000 C CNN
 	1    1800 1800
 	0    1    1    0   

@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-11-28T22:17:03 CET
+EESchema Schematic File Version 2  date 2011-12-03T21:12:32 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,7 +48,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 10
 Title ""
-Date "27 nov 2011"
+Date "3 dec 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -1222,7 +1222,7 @@ L C C5
 U 1 1 4EA3EE6C
 P 6325 7075
 F 0 "C5" H 6375 7175 50  0000 L CNN
-F 1 "5pF" H 6375 6975 50  0000 L CNN
+F 1 "12pF" H 6375 6975 50  0000 L CNN
 	1    6325 7075
 	1    0    0    -1  
 $EndComp
@@ -1231,7 +1231,7 @@ L C C4
 U 1 1 4EA3EE66
 P 5700 7075
 F 0 "C4" H 5750 7175 50  0000 L CNN
-F 1 "5pF" H 5750 6975 50  0000 L CNN
+F 1 "12pF" H 5750 6975 50  0000 L CNN
 	1    5700 7075
 	1    0    0    -1  
 $EndComp
@@ -1240,7 +1240,7 @@ L C C3
 U 1 1 4EA3EE5C
 P 5450 7075
 F 0 "C3" H 5500 7175 50  0000 L CNN
-F 1 "15pF" H 5500 6975 50  0000 L CNN
+F 1 "18pF" H 5500 6975 50  0000 L CNN
 	1    5450 7075
 	1    0    0    -1  
 $EndComp
@@ -1258,7 +1258,7 @@ L R R6
 U 1 1 4EA3EE02
 P 5100 6650
 F 0 "R6" V 5180 6650 50  0000 C CNN
-F 1 "100k" V 5100 6650 50  0000 C CNN
+F 1 "47k" V 5100 6650 50  0000 C CNN
 	1    5100 6650
 	0    1    1    0   
 $EndComp

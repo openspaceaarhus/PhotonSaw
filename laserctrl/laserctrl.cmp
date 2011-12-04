@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-11-27T19:24:17 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-12-04T16:51:48 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -38,21 +38,21 @@ EndCmp
 BeginCmp
 TimeStamp = /4EA3EE5C;
 Reference = C3;
-ValeurCmp = 15pF;
+ValeurCmp = 18pF;
 IdModule  = SM0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA3EE66;
 Reference = C4;
-ValeurCmp = 5pF;
+ValeurCmp = 12pF;
 IdModule  = SM0603;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EA3EE6C;
 Reference = C5;
-ValeurCmp = 5pF;
+ValeurCmp = 12pF;
 IdModule  = SM0603;
 EndCmp
 
@@ -542,7 +542,7 @@ EndCmp
 BeginCmp
 TimeStamp = /4EA1A825/4EB5493E;
 Reference = C87;
-ValeurCmp = 4.7uF/6.3;
+ValeurCmp = 4.7uF/6.3V;
 IdModule  = SM0603;
 EndCmp
 
@@ -577,14 +577,14 @@ EndCmp
 BeginCmp
 TimeStamp = /4EB5C316/4EBC19B2;
 Reference = D1;
-ValeurCmp = DO-213AA;
+ValeurCmp = EGL_1D;
 IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EB5C316/4EBC1A1B;
 Reference = D2;
-ValeurCmp = DO-213AA;
+ValeurCmp = EGL_1D;
 IdModule  = diode-minimelf-unfucked;
 EndCmp
 
@@ -921,7 +921,7 @@ BeginCmp
 TimeStamp = /4EB45CE6/4EC2E647;
 Reference = P1;
 ValeurCmp = CONN_1;
-IdModule  = 2mm hole;
+IdModule  = ;
 EndCmp
 
 BeginCmp
@@ -1235,7 +1235,7 @@ EndCmp
 BeginCmp
 TimeStamp = /4EA3EE02;
 Reference = R6;
-ValeurCmp = 100k;
+ValeurCmp = 47k;
 IdModule  = SM0603;
 EndCmp
 
