@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  2011-12-04T16:51:48 CET
+# EESchema Netlist Version 1.1 created  2011-12-07T21:07:41 CET
 (
  ( /4EC15AA5 1250um-pad 3v3 CONN_1
   ( 1 +3.3V )
@@ -18,7 +18,7 @@
   ( 2 GND )
  )
  ( /4EA3EE5C SM0603 C3 18pF
-  ( 1 N-000066 )
+  ( 1 N-000067 )
   ( 2 GND )
  )
  ( /4EA3EE66 SM0603 C4 12pF
@@ -26,7 +26,7 @@
   ( 2 GND )
  )
  ( /4EA3EE6C SM0603 C5 12pF
-  ( 1 N-000063 )
+  ( 1 N-000064 )
   ( 2 GND )
  )
  ( /4EB5C316/4EB6D1E9 SM0603 C6 18pF
@@ -330,11 +330,11 @@
   ( 6 GND )
  )
  ( /4EB5C316/4EBC19B2 diode-minimelf-unfucked D1 EGL_1D
-  ( 1 N-000196 )
+  ( 1 N-000197 )
   ( 2 +24V )
  )
  ( /4EB5C316/4EBC1A1B diode-minimelf-unfucked D2 EGL_1D
-  ( 1 N-000190 )
+  ( 1 N-000196 )
   ( 2 +24V )
  )
  ( /4EB45CE6/4EBAE288 diode-SOT23 D3 BAT_54S
@@ -359,18 +359,18 @@
  )
  ( /4EAEE920/4EBADE4A diode-SOT23 D7 BAT_54S
   ( 1 GND )
-  ( 2 N-000176 )
-  ( 3 N-000175 )
+  ( 2 N-000179 )
+  ( 3 N-000176 )
  )
  ( /4EAEE920/4EBADEB8 diode-SOT23 D8 BAT_54S
   ( 1 GND )
   ( 2 /LASER_Interface/+5V_from_LASER )
-  ( 3 N-000177 )
+  ( 3 N-000180 )
  )
  ( /4EAEE920/4EBADF1D diode-SOT23 D9 BAT_54S
   ( 1 GND )
   ( 2 /LASER_Interface/+5V_from_LASER )
-  ( 3 N-000179 )
+  ( 3 N-000182 )
  )
  ( /4EA3E488/4ED27DA2 LED-0805 D10 LED
   ( 1 N-000148 )
@@ -383,7 +383,7 @@
  )
  ( /4EAEE920/4EB43A5B diode-minimelf-unfucked D12 LS_914B
   ( 1 GND )
-  ( 2 N-000186 )
+  ( 2 N-000183 )
  )
  ( /4EAEE920/4EB4389C LED-0805 D13 LED
   ( 1 N-000184 )
@@ -396,15 +396,15 @@
  )
  ( /4EAEE920/4EB43838 LED-0805 D15 LED
   ( 1 +3.3V )
-  ( 2 N-000173 )
+  ( 2 N-000174 )
  )
  ( /4EAEE920/4EAEF1A5 LED-0805 D16 LED
-  ( 1 N-000169 )
-  ( 2 N-000180 )
+  ( 1 N-000177 )
+  ( 2 N-000171 )
  )
  ( /4EAEE920/4EB4471B LED-0805 D17 LED
-  ( 1 N-000168 )
-  ( 2 N-000182 )
+  ( 1 N-000178 )
+  ( 2 N-000173 )
  )
  ( /4EAEE920/4EB1CCF4 diode-minimelf-unfucked D18 LS_914B
   ( 1 WDLE )
@@ -445,7 +445,7 @@
   ( 3 P1.14 )
  )
  ( /4EB5C316/4EBEC7B7 LED-0805 D30 LED
-  ( 1 N-000197 )
+  ( 1 N-000195 )
   ( 2 GND )
  )
  ( /4EB45CE6/4EBE3D7C diode-SOT23 D32 BAT_54S
@@ -577,7 +577,7 @@
   ( 20 +3.3V )
   ( 21 GND )
   ( 22 ? )
-  ( 23 P0.27 )
+  ( 23 P1.19 )
   ( 24 WDLE )
   ( 25 P1.0 )
   ( 26 P1.1 )
@@ -650,8 +650,8 @@
  )
  ( /4EB5C316/4EB6D09A USB_B J1 USB
   ( 1 ? )
-  ( 2 N-000191 )
-  ( 3 N-000192 )
+  ( 2 N-000190 )
+  ( 3 N-000191 )
   ( 4 GND )
   ( 5 GND )
   ( 6 GND )
@@ -680,14 +680,14 @@
  ( /4EC15AB1 1250um-pad P0.5 CONN_1
   ( 1 P0.5 )
  )
- ( /4EB45CE6/4EC2E647 $noname$ P1 CONN_1
+ ( /4EC15ABB 1250um-pad P0.27 CONN_1
+  ( 1 P0.27 )
+ )
+ ( /4EB45CE6/4EC2E647 2mm hole P1 CONN_1
   ( 1 GND )
  )
  ( /4EC15AB8 1250um-pad P1.17 CONN_1
   ( 1 P1.17 )
- )
- ( /4EC15ABB 1250um-pad P1.19 CONN_1
-  ( 1 P1.19 )
  )
  ( /4EC15ABE 1250um-pad P1.22 CONN_1
   ( 1 P1.22 )
@@ -697,11 +697,11 @@
  )
  ( /4EB5C316/4EBAC037 PIN_ARRAY_2X1 P2 Exhaust
   ( 1 +24V )
-  ( 2 N-000196 )
+  ( 2 N-000197 )
  )
  ( /4EB5C316/4EBAC032 PIN_ARRAY_2X1 P3 Assist_Air
   ( 1 +24V )
-  ( 2 N-000190 )
+  ( 2 N-000196 )
  )
  ( /4EB5C316/4EBAC056 PIN_ARRAY_5x2 P4 Chiller
   ( 1 TXD2 )
@@ -747,14 +747,14 @@
  )
  ( /4EAEE920/4EAEEA74 PIN_ARRAY_2X1 P10 estop
   ( 1 GND )
-  ( 2 N-000175 )
+  ( 2 N-000176 )
  )
  ( /4EAEE920/4EAEE941 PIN_ARRAY-6X1 P11 LASER
   ( 1 GND )
-  ( 2 N-000179 )
-  ( 3 N-000175 )
+  ( 2 N-000182 )
+  ( 3 N-000176 )
   ( 4 GND )
-  ( 5 N-000177 )
+  ( 5 N-000180 )
   ( 6 /LASER_Interface/+5V_from_LASER )
  )
  ( /4EAD3DC6/4EA1F182 PIN_ARRAY_4x1 P12 stepper
@@ -840,45 +840,45 @@
  ( /4EC15A9D 1250um-pad PWM6 CONN_1
   ( 1 PWM6 )
  )
- ( /4EB5C316/4EBAC039 SOT23-bec Q1 BC817
-  ( 1 GND )
-  ( 2 N-000200 )
-  ( 3 N-000196 )
+ ( /4EB5C316/4EDFC6C7 SOT23-bec Q1 BC817
+  ( 1 N-000200 )
+  ( 2 GND )
+  ( 3 N-000197 )
  )
- ( /4EB5C316/4EBAC030 SOT23-bec Q2 BC817
-  ( 1 GND )
-  ( 2 N-000199 )
-  ( 3 N-000190 )
+ ( /4EB5C316/4EDFC6CA SOT23-bec Q2 BC817
+  ( 1 N-000194 )
+  ( 2 GND )
+  ( 3 N-000196 )
  )
  ( /4EB5C316/4EB6D10D SOT23-bec Q3 BC807
   ( 1 +3.3V )
-  ( 2 N-000193 )
-  ( 3 N-000194 )
+  ( 2 N-000192 )
+  ( 3 N-000193 )
  )
- ( /4EB45CE6/4EB542BA SOT23-bec Q4 BC807
-  ( 1 +24V )
-  ( 2 N-000188 )
+ ( /4EB45CE6/4EDFC6E1 SOT23-bec Q4 BC807
+  ( 1 N-000188 )
+  ( 2 +24V )
   ( 3 N-000187 )
  )
- ( /4EB45CE6/4EB542A8 SOT23-bec Q5 BC807
-  ( 1 N-000188 )
-  ( 2 N-000187 )
+ ( /4EB45CE6/4EDFC6E6 SOT23-bec Q5 BC807
+  ( 1 N-000187 )
+  ( 2 N-000188 )
   ( 3 N-000189 )
  )
- ( /4EAEE920/4EB4446C SOT23-bec Q6 BC817
-  ( 1 GND )
-  ( 2 N-000174 )
-  ( 3 N-000183 )
+ ( /4EAEE920/4EDFC684 SOT23-bec Q6 BC817
+  ( 1 N-000170 )
+  ( 2 GND )
+  ( 3 N-000169 )
  )
- ( /4EAEE920/4EB44530 SOT23-bec Q7 BC817
-  ( 1 GND )
-  ( 2 N-000181 )
-  ( 3 N-000180 )
+ ( /4EAEE920/4EDFC68C SOT23-bec Q7 BC817
+  ( 1 N-000172 )
+  ( 2 GND )
+  ( 3 N-000171 )
  )
- ( /4EAEE920/4EB44718 SOT23-bec Q8 BC817
-  ( 1 GND )
-  ( 2 N-000170 )
-  ( 3 N-000182 )
+ ( /4EAEE920/4EDFC691 SOT23-bec Q8 BC817
+  ( 1 N-000168 )
+  ( 2 GND )
+  ( 3 N-000173 )
  )
  ( /4EB5C316/4EC1599F SM0603 R1 10k
   ( 1 +3.3V )
@@ -893,31 +893,31 @@
   ( 2 N-000147 )
  )
  ( /4EA3EE02 SM0603 R6 47k
-  ( 1 N-000063 )
-  ( 2 N-000064 )
+  ( 1 N-000064 )
+  ( 2 N-000065 )
  )
  ( /4EB5C316/4EBAC03A SM0603 R9 3k3
   ( 1 N-000200 )
   ( 2 P1.28 )
  )
  ( /4EB5C316/4EBAC02F SM0603 R10 3k3
-  ( 1 N-000199 )
+  ( 1 N-000194 )
   ( 2 P1.29 )
  )
  ( /4EB5C316/4EB6D107 SM0603 R11 3k3
-  ( 1 N-000193 )
+  ( 1 N-000192 )
   ( 2 USB_CONN )
  )
  ( /4EB5C316/4EB6D122 SM0603 R12 1k5
-  ( 1 N-000194 )
-  ( 2 N-000192 )
+  ( 1 N-000193 )
+  ( 2 N-000191 )
  )
  ( /4EB5C316/4EB6D1D2 SM0603 R13 33R
-  ( 1 N-000192 )
+  ( 1 N-000191 )
   ( 2 USB+ )
  )
  ( /4EB5C316/4EB6D1D5 SM0603 R14 33R
-  ( 1 N-000191 )
+  ( 1 N-000190 )
   ( 2 USB- )
  )
  ( /4EB5C316/4EB6D417 SM0603 R15 10k
@@ -954,7 +954,7 @@
  )
  ( /4EAEE920/4EB1C8F1 SM0603 R24 200R
   ( 1 /LASER_Interface/+5V_from_LASER )
-  ( 2 N-000186 )
+  ( 2 N-000183 )
  )
  ( /4EAEE920/4EB4389B SM0603 R25 150R
   ( 1 N-000184 )
@@ -966,19 +966,19 @@
  )
  ( /4EAEE920/4EB1C921 SM0603 R27 200R
   ( 1 /LASER_Interface/+5V_from_LASER )
-  ( 2 N-000176 )
+  ( 2 N-000179 )
  )
  ( /4EAEE920/4EB43839 SM0603 R28 150R
-  ( 1 N-000173 )
+  ( 1 N-000174 )
   ( 2 P3.26 )
  )
  ( /4EAEE920/4EB1C7D0 SM0603 R29 75R
-  ( 1 N-000172 )
+  ( 1 N-000175 )
   ( 2 +3.3V )
  )
  ( /4EAEE920/4EB4445D SM0603 R30 3k3
   ( 1 PWM5 )
-  ( 2 N-000174 )
+  ( 2 N-000170 )
  )
  ( /4EAEE920/4EB44457 SM0603 R31 10k
   ( 1 GND )
@@ -986,30 +986,30 @@
  )
  ( /4EAEE920/4EB1C98D SM0603 R32 1k
   ( 1 GND )
-  ( 2 N-000177 )
+  ( 2 N-000180 )
  )
  ( /4EAEE920/4EB1C95F SM0603 R33 1k
   ( 1 /LASER_Interface/+5V_from_LASER )
-  ( 2 N-000179 )
+  ( 2 N-000182 )
  )
  ( /4EAEE920/4EAEF19C SM0603 R34 150R
-  ( 1 N-000169 )
+  ( 1 N-000177 )
   ( 2 +3.3V )
  )
  ( /4EAEE920/4EAEEED0 SM0603 R35 75R
-  ( 1 N-000185 )
+  ( 1 N-000186 )
   ( 2 +3.3V )
  )
  ( /4EAEE920/4EB44531 SM0603 R36 3k3
-  ( 1 P0.27 )
-  ( 2 N-000181 )
+  ( 1 P1.19 )
+  ( 2 N-000172 )
  )
  ( /4EAEE920/4EB44532 SM0603 R37 10k
   ( 1 GND )
-  ( 2 P0.27 )
+  ( 2 P1.19 )
  )
  ( /4EAEE920/4EB4471C SM0603 R38 150R
-  ( 1 N-000168 )
+  ( 1 N-000178 )
   ( 2 +3.3V )
  )
  ( /4EAEE920/4EB4471A SM0603 R39 75R
@@ -1018,7 +1018,7 @@
  )
  ( /4EAEE920/4EB44717 SM0603 R40 3k3
   ( 1 WDLE )
-  ( 2 N-000170 )
+  ( 2 N-000168 )
  )
  ( /4EAEE920/4EB44716 SM0603 R41 10k
   ( 1 GND )
@@ -1177,7 +1177,7 @@
   ( 2 P1.14 )
  )
  ( /4EB5C316/4EBEC7B3 SM0603 R87 330R
-  ( 1 N-000197 )
+  ( 1 N-000195 )
   ( 2 P1.27 )
  )
  ( /4EA1A825/4D04CE98 SM0805 R88 0R22
@@ -1230,12 +1230,12 @@
   ( 15 AGND )
   ( 16 N-000080 )
   ( 17 ~RESET )
-  ( 18 N-000064 )
+  ( 18 N-000065 )
   ( 19 +BATT )
   ( 20 AD5 )
   ( 21 AD4 )
   ( 22 N-000082 )
-  ( 23 N-000066 )
+  ( 23 N-000067 )
   ( 24 P0.28 )
   ( 25 P0.27 )
   ( 26 P3.26 )
@@ -1315,34 +1315,34 @@
   ( 100 RTCK )
  )
  ( /4EAEE920/4EB1C805 dip-4 U2 EL_816S(TA)
-  ( 1 N-000186 )
+  ( 1 N-000183 )
   ( 2 GND )
   ( 3 P3.25 )
   ( 4 +3.3V )
  )
  ( /4EAEE920/4EB1C635 dip-4 U3 EL_816S(TA)
-  ( 1 N-000176 )
-  ( 2 N-000175 )
+  ( 1 N-000179 )
+  ( 2 N-000176 )
   ( 3 GND )
   ( 4 P3.26 )
  )
  ( /4EAEE920/4EB1C7A7 dip-4 U4 EL_816S(TA)
-  ( 1 N-000172 )
-  ( 2 N-000183 )
-  ( 3 N-000177 )
+  ( 1 N-000175 )
+  ( 2 N-000169 )
+  ( 3 N-000180 )
   ( 4 /LASER_Interface/+5V_from_LASER )
  )
  ( /4EAEE920/4EB1C4CA dip-4 U5 EL_816S(TA)
-  ( 1 N-000185 )
-  ( 2 N-000180 )
-  ( 3 N-000171 )
-  ( 4 N-000179 )
+  ( 1 N-000186 )
+  ( 2 N-000171 )
+  ( 3 N-000185 )
+  ( 4 N-000182 )
  )
  ( /4EAEE920/4EB1C524 dip-4 U6 EL_816S(TA)
   ( 1 N-000167 )
-  ( 2 N-000182 )
+  ( 2 N-000173 )
   ( 3 GND )
-  ( 4 N-000171 )
+  ( 4 N-000185 )
  )
  ( /4EA1A825/4D04CE01 SO8N U7 MC34063
   ( 1 N-000098 )
@@ -1364,11 +1364,11 @@
  )
  ( /4EA3EDBB Q_49U3HMS X1 12MHz
   ( 1 N-000082 )
-  ( 2 N-000066 )
+  ( 2 N-000067 )
  )
  ( /4EA3EDAF QMONTRE X2 32768Hz
   ( 1 N-000080 )
-  ( 2 N-000063 )
+  ( 2 N-000064 )
  )
 )
 *
@@ -1854,6 +1854,21 @@ $component D45
 $endlist
 $component IC3
  tqfp32
+$endlist
+$component Q1
+ sot23-bec
+$endlist
+$component Q2
+ sot23-bec
+$endlist
+$component Q6
+ sot23-bec
+$endlist
+$component Q7
+ sot23-bec
+$endlist
+$component Q8
+ sot23-bec
 $endlist
 $component R1
  R?

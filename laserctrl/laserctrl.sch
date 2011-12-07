@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-12-03T21:12:32 CET
+EESchema Schematic File Version 2  date 2011-12-07T22:22:26 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -41,6 +41,8 @@ LIBS:jumper3
 LIBS:diode2
 LIBS:78l00a
 LIBS:conn_11x2
+LIBS:bc807
+LIBS:bc817
 LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
@@ -48,7 +50,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 10
 Title ""
-Date "3 dec 2011"
+Date "7 dec 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -65,7 +67,7 @@ P0.16
 Text GLabel 9750 5400 0    50   Input ~ 0
 P2.13
 Text GLabel 9750 4900 0    50   Input ~ 0
-P0.27
+P1.19
 Text GLabel 10800 5000 2    50   Input ~ 0
 P1.4
 Text GLabel 10800 5100 2    50   Input ~ 0
@@ -566,10 +568,10 @@ F 1 "CONN_1" H 1750 1255 30  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L CONN_1 P1.19
+L CONN_1 P0.27
 U 1 1 4EC15ABB
 P 1750 1300
-F 0 "P1.19" H 1830 1300 40  0000 L CNN
+F 0 "P0.27" H 1830 1300 40  0000 L CNN
 F 1 "CONN_1" H 1750 1355 30  0001 C CNN
 	1    1750 1300
 	-1   0    0    1   
@@ -757,7 +759,7 @@ P1.25
 Text GLabel 2000 1200 2    50   Input ~ 0
 P1.22
 Text GLabel 2000 1300 2    50   Input ~ 0
-P1.19
+P0.27
 Text GLabel 2000 1400 2    50   Input ~ 0
 P1.17
 Text GLabel 4800 5350 2    50   Input ~ 0
@@ -1046,7 +1048,7 @@ P3.25
 Text GLabel 4700 1150 0    50   Input ~ 0
 P3.26
 Text GLabel 4700 850  0    50   Input ~ 0
-P0.27
+P1.19
 Text GLabel 4800 4350 2    50   Input ~ 0
 P1.25
 Text GLabel 4800 4050 2    50   Input ~ 0

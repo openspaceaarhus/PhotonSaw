@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-12-03T21:12:32 CET
+EESchema Schematic File Version 2  date 2011-12-07T22:22:26 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -41,6 +41,8 @@ LIBS:jumper3
 LIBS:diode2
 LIBS:78l00a
 LIBS:conn_11x2
+LIBS:bc807
+LIBS:bc817
 LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
@@ -48,7 +50,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 3 10
 Title ""
-Date "3 dec 2011"
+Date "7 dec 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -56,6 +58,24 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L BC807 Q5
+U 1 1 4EDFC6E6
+P 2450 3950
+F 0 "Q5" H 2750 3850 60  0000 R CNN
+F 1 "BC807" H 2950 3950 60  0000 R CNN
+	1    2450 3950
+	1    0    0    1   
+$EndComp
+$Comp
+L BC807 Q4
+U 1 1 4EDFC6E1
+P 2100 3700
+F 0 "Q4" H 2100 3550 60  0000 R CNN
+F 1 "BC807" H 2550 3650 60  0000 R CNN
+	1    2100 3700
+	-1   0    0    1   
+$EndComp
 Wire Wire Line
 	2450 2650 2450 2550
 Connection ~ 1600 1800
@@ -363,24 +383,6 @@ F 0 "R20" V 2630 3400 50  0000 C CNN
 F 1 "68R" V 2550 3400 50  0000 C CNN
 	1    2550 3400
 	1    0    0    -1  
-$EndComp
-$Comp
-L PNP Q4
-U 1 1 4EB542BA
-P 2100 3700
-F 0 "Q4" H 2100 3550 60  0000 R CNN
-F 1 "BC807" V 2350 3700 60  0000 R CNN
-	1    2100 3700
-	-1   0    0    1   
-$EndComp
-$Comp
-L PNP Q5
-U 1 1 4EB542A8
-P 2450 3950
-F 0 "Q5" H 2450 3800 60  0000 R CNN
-F 1 "BC807" H 2950 3900 60  0000 R CNN
-	1    2450 3950
-	1    0    0    1   
 $EndComp
 $Comp
 L R R22

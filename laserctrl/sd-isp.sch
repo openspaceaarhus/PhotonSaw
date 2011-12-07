@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-12-03T21:12:32 CET
+EESchema Schematic File Version 2  date 2011-12-07T22:22:26 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -41,6 +41,8 @@ LIBS:jumper3
 LIBS:diode2
 LIBS:78l00a
 LIBS:conn_11x2
+LIBS:bc807
+LIBS:bc817
 LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
@@ -48,7 +50,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 10
 Title ""
-Date "3 dec 2011"
+Date "7 dec 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -56,6 +58,24 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L BC817 Q2
+U 1 1 4EDFC6CA
+P 9500 3200
+F 0 "Q2" H 9500 3050 50  0000 R CNN
+F 1 "BC817" H 9500 3350 50  0000 R CNN
+	1    9500 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L BC817 Q1
+U 1 1 4EDFC6C7
+P 9500 1750
+F 0 "Q1" H 9500 1600 50  0000 R CNN
+F 1 "BC817" H 9500 1900 50  0000 R CNN
+	1    9500 1750
+	1    0    0    -1  
+$EndComp
 NoConn ~ 3150 7400
 NoConn ~ 3000 7400
 Connection ~ 2700 7450
@@ -388,15 +408,6 @@ F 1 "3k3" V 8950 1750 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L NPN Q1
-U 1 1 4EBAC039
-P 9500 1750
-F 0 "Q1" H 9500 1600 50  0000 R CNN
-F 1 "BC817" H 9500 1900 50  0000 R CNN
-	1    9500 1750
-	1    0    0    -1  
-$EndComp
-$Comp
 L GND #PWR024
 U 1 1 4EBAC038
 P 9600 2000
@@ -443,15 +454,6 @@ P 9600 3450
 F 0 "#PWR026" H 9600 3450 30  0001 C CNN
 F 1 "GND" H 9600 3380 30  0001 C CNN
 	1    9600 3450
-	1    0    0    -1  
-$EndComp
-$Comp
-L NPN Q2
-U 1 1 4EBAC030
-P 9500 3200
-F 0 "Q2" H 9500 3050 50  0000 R CNN
-F 1 "BC817" H 9500 3350 50  0000 R CNN
-	1    9500 3200
 	1    0    0    -1  
 $EndComp
 $Comp

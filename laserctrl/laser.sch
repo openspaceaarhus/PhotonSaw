@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-12-03T21:12:32 CET
+EESchema Schematic File Version 2  date 2011-12-07T22:22:26 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -41,6 +41,8 @@ LIBS:jumper3
 LIBS:diode2
 LIBS:78l00a
 LIBS:conn_11x2
+LIBS:bc807
+LIBS:bc817
 LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
@@ -48,7 +50,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 4 10
 Title ""
-Date "3 dec 2011"
+Date "7 dec 2011"
 Rev ""
 Comp ""
 Comment1 ""
@@ -56,6 +58,33 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+$Comp
+L BC817 Q8
+U 1 1 4EDFC691
+P 2700 5900
+F 0 "Q8" H 2700 5750 50  0000 R CNN
+F 1 "BC817" H 2900 6150 50  0000 R CNN
+	1    2700 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L BC817 Q7
+U 1 1 4EDFC68C
+P 2700 4800
+F 0 "Q7" H 2700 4650 50  0000 R CNN
+F 1 "BC817" H 2900 5050 50  0000 R CNN
+	1    2700 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L BC817 Q6
+U 1 1 4EDFC684
+P 2700 3700
+F 0 "Q6" H 2700 3550 50  0000 R CNN
+F 1 "BC817" H 2700 3850 50  0000 R CNN
+	1    2700 3700
+	1    0    0    -1  
+$EndComp
 Connection ~ 2800 1700
 Wire Wire Line
 	6100 5000 6100 5100
@@ -360,15 +389,6 @@ F 1 "GND" H 2800 6130 30  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L NPN Q8
-U 1 1 4EB44718
-P 2700 5900
-F 0 "Q8" H 2700 5750 50  0000 R CNN
-F 1 "BC817" H 2850 6150 50  0000 R CNN
-	1    2700 5900
-	1    0    0    -1  
-$EndComp
-$Comp
 L R R40
 U 1 1 4EB44717
 P 2200 5900
@@ -441,15 +461,6 @@ F 1 "3k3" V 2200 4800 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L NPN Q7
-U 1 1 4EB44530
-P 2700 4800
-F 0 "Q7" H 2700 4650 50  0000 R CNN
-F 1 "BC817" H 2850 5050 50  0000 R CNN
-	1    2700 4800
-	1    0    0    -1  
-$EndComp
-$Comp
 L GND #PWR059
 U 1 1 4EB4452F
 P 2800 5100
@@ -474,15 +485,6 @@ P 2800 4000
 F 0 "#PWR061" H 2800 4000 30  0001 C CNN
 F 1 "GND" H 2800 3930 30  0001 C CNN
 	1    2800 4000
-	1    0    0    -1  
-$EndComp
-$Comp
-L NPN Q6
-U 1 1 4EB4446C
-P 2700 3700
-F 0 "Q6" H 2700 3550 50  0000 R CNN
-F 1 "BC817" H 2700 3850 50  0000 R CNN
-	1    2700 3700
 	1    0    0    -1  
 $EndComp
 $Comp

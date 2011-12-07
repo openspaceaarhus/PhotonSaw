@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-12-04T16:51:48 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-12-07T21:07:41 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -918,22 +918,22 @@ IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB45CE6/4EC2E647;
-Reference = P1;
-ValeurCmp = CONN_1;
-IdModule  = ;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EC15AB8;
-Reference = P1.17;
+TimeStamp = /4EC15ABB;
+Reference = P0.27;
 ValeurCmp = CONN_1;
 IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EC15ABB;
-Reference = P1.19;
+TimeStamp = /4EB45CE6/4EC2E647;
+Reference = P1;
+ValeurCmp = CONN_1;
+IdModule  = 2mm hole;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EC15AB8;
+Reference = P1.17;
 ValeurCmp = CONN_1;
 IdModule  = 1250um-pad;
 EndCmp
@@ -1156,14 +1156,14 @@ IdModule  = 1250um-pad;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB5C316/4EBAC039;
+TimeStamp = /4EB5C316/4EDFC6C7;
 Reference = Q1;
 ValeurCmp = BC817;
 IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB5C316/4EBAC030;
+TimeStamp = /4EB5C316/4EDFC6CA;
 Reference = Q2;
 ValeurCmp = BC817;
 IdModule  = SOT23-bec;
@@ -1177,35 +1177,35 @@ IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB45CE6/4EB542BA;
+TimeStamp = /4EB45CE6/4EDFC6E1;
 Reference = Q4;
 ValeurCmp = BC807;
 IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB45CE6/4EB542A8;
+TimeStamp = /4EB45CE6/4EDFC6E6;
 Reference = Q5;
 ValeurCmp = BC807;
 IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EAEE920/4EB4446C;
+TimeStamp = /4EAEE920/4EDFC684;
 Reference = Q6;
 ValeurCmp = BC817;
 IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EAEE920/4EB44530;
+TimeStamp = /4EAEE920/4EDFC68C;
 Reference = Q7;
 ValeurCmp = BC817;
 IdModule  = SOT23-bec;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EAEE920/4EB44718;
+TimeStamp = /4EAEE920/4EDFC691;
 Reference = Q8;
 ValeurCmp = BC817;
 IdModule  = SOT23-bec;
