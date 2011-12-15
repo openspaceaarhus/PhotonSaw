@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  2011-12-07T21:07:41 CET
+# EESchema Netlist Version 1.1 created  2011-12-15T23:26:53 CET
 (
  ( /4EC15AA5 1250um-pad 3v3 CONN_1
   ( 1 +3.3V )
@@ -494,6 +494,9 @@
  ( /4EA1A825/4D879AD2 3mm-hole H5 MOUNTING
   ( 1 GND )
  )
+ ( /4EB45CE6/4EC2E647 2mm hole P1
+  ( 1 GND )
+ )
  ( /4EAD3DC6/4EA1E74B HTSSOP IC1 DRV8811
   ( 1 N-000164 )
   ( 3 P0.22 )
@@ -682,9 +685,6 @@
  )
  ( /4EC15ABB 1250um-pad P0.27 CONN_1
   ( 1 P0.27 )
- )
- ( /4EB45CE6/4EC2E647 2mm hole P1 CONN_1
-  ( 1 GND )
  )
  ( /4EC15AB8 1250um-pad P1.17 CONN_1
   ( 1 P1.17 )
@@ -1314,31 +1314,31 @@
   ( 99 RXD0 )
   ( 100 RTCK )
  )
- ( /4EAEE920/4EB1C805 dip-4 U2 EL_816S(TA)
+ ( /4EAEE920/4EB1C805 dip-4-smd U2 EL_816S(TA)
   ( 1 N-000183 )
   ( 2 GND )
   ( 3 P3.25 )
   ( 4 +3.3V )
  )
- ( /4EAEE920/4EB1C635 dip-4 U3 EL_816S(TA)
+ ( /4EAEE920/4EB1C635 dip-4-smd U3 EL_816S(TA)
   ( 1 N-000179 )
   ( 2 N-000176 )
   ( 3 GND )
   ( 4 P3.26 )
  )
- ( /4EAEE920/4EB1C7A7 dip-4 U4 EL_816S(TA)
+ ( /4EAEE920/4EB1C7A7 dip-4-smd U4 EL_816S(TA)
   ( 1 N-000175 )
   ( 2 N-000169 )
   ( 3 N-000180 )
   ( 4 /LASER_Interface/+5V_from_LASER )
  )
- ( /4EAEE920/4EB1C4CA dip-4 U5 EL_816S(TA)
+ ( /4EAEE920/4EB1C4CA dip-4-smd U5 EL_816S(TA)
   ( 1 N-000186 )
   ( 2 N-000171 )
   ( 3 N-000185 )
   ( 4 N-000182 )
  )
- ( /4EAEE920/4EB1C524 dip-4 U6 EL_816S(TA)
+ ( /4EAEE920/4EB1C524 dip-4-smd U6 EL_816S(TA)
   ( 1 N-000167 )
   ( 2 N-000173 )
   ( 3 GND )

@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-12-07T21:07:41 CET
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2011-12-15T23:26:53 CET
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -848,6 +848,13 @@ IdModule  = 3mm-hole;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EB45CE6/4EC2E647;
+Reference = hole;
+ValeurCmp = P1;
+IdModule  = 2mm;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EAD3DC6/4EA1E74B;
 Reference = IC1;
 ValeurCmp = DRV8811;
@@ -922,13 +929,6 @@ TimeStamp = /4EC15ABB;
 Reference = P0.27;
 ValeurCmp = CONN_1;
 IdModule  = 1250um-pad;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EB45CE6/4EC2E647;
-Reference = P1;
-ValeurCmp = CONN_1;
-IdModule  = 2mm hole;
 EndCmp
 
 BeginCmp
@@ -1803,35 +1803,35 @@ BeginCmp
 TimeStamp = /4EAEE920/4EB1C805;
 Reference = U2;
 ValeurCmp = EL_816S(TA);
-IdModule  = dip-4;
+IdModule  = dip-4-smd;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EAEE920/4EB1C635;
 Reference = U3;
 ValeurCmp = EL_816S(TA);
-IdModule  = dip-4;
+IdModule  = dip-4-smd;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EAEE920/4EB1C7A7;
 Reference = U4;
 ValeurCmp = EL_816S(TA);
-IdModule  = dip-4;
+IdModule  = dip-4-smd;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EAEE920/4EB1C4CA;
 Reference = U5;
 ValeurCmp = EL_816S(TA);
-IdModule  = dip-4;
+IdModule  = dip-4-smd;
 EndCmp
 
 BeginCmp
 TimeStamp = /4EAEE920/4EB1C524;
 Reference = U6;
 ValeurCmp = EL_816S(TA);
-IdModule  = dip-4;
+IdModule  = dip-4-smd;
 EndCmp
 
 BeginCmp
