@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Data::Dumper;
+
+my $STOCK = 3000;
+my $KERF = 4;
+
+my $otl = 0;
+my @cuts;
+while (my $l = <DATA>) {
+	chomp $l;
+	my ($count, $length) = split /\s+/, $l;
+
+	for my $c (1..$count) {
+		push @cuts, {
+			l=>$length,
+			n=>"$length mm  $c/$count"				
+		};
+		$otl += $length;
+	}
+}
+
+@cuts = sort { $b->{l} <=> $a->{l} } @cuts;
+
+my @bars;
+for my $c (@cuts) {
+	
+	my $best;
+	my $bestSlop;
+	for my $b (@bars) {
+		my $slop = $b->{l} - $c->{l} - $KERF;
+		if ($slop >= 0) {
+			if (!$best or $bestSlop > $slop) {
+				$best = $b;
+				$bestSlop = $best->{l} - $c->{l} - $KERF;
+			}
+		}
+	}
+	
+	unless ($best) {
+		push @bars, $best = {l => $STOCK, cuts=>[]};
+		$bestSlop = $STOCK - $c->{l} - $KERF;
+	}
+	
+	push @{$best->{cuts}}, $c;
+	$best->{l} = $bestSlop;
+}
+
+my $tl;
+my $tw;
+my $bn = 1;
+for my $bar (@bars) {
+	print "Bar $bn: (waste: $bar->{l} mm)\n";
+	$tw += $bar->{l};
+	my $cn = 1;
+	for my $c (@{$bar->{cuts}}) {
+		print "\tCut $cn: $c->{n}\n";
+		$tl += $c->{l};
+		$cn++;
+	}
+	$bn++;
+	print "\n";
+}
+
+print "Totals: Waste: $tw, bars:$tl\n";
+
+die "Total length differs from the original length: $tl != $otl " unless $tl == $otl;
+
+exit 0;
+
+#die Dumper \@bars;
+
+
+__DATA__
+2	430
+2	590
+6	740
+6	1875
+2	160
+2	220
