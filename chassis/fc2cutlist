@@ -1,0 +1,144 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin qw($Bin $Script);
+use Archive::Zip;
+use XML::Simple;
+use Data::Dumper;
+
+my ($fn) = @ARGV;
+die "Syntax: $Script <FreeCAD project>" unless $fn and -f $fn;
+
+# These are the kinds of stock we want to use to build the machine,
+# it will be cut into pieces that are w x h, so those two parameters
+# have to match the part from the CAD project.
+my %STOCK = (
+    '30x30 profile' => {w=>30, h=>30, l=>3000},
+    '30x60 profile' => {w=>30, h=>60, l=>3000},
+);
+
+my $zip = Archive::Zip->new($fn) or die "Failed to read $fn as a zip file";
+my $xmlData = $zip->contents("Document.xml") or die "Failed to read document from zip";
+my $xml = XMLin($xmlData) or die "Failed to parse document";
+
+my %cuts; # stock -> length -> count
+my @cuts; # 
+for my $object (keys %{$xml->{Objects}{Object}}) {
+    my $type = $xml->{Objects}{Object}{$object}{type} or next;
+    my $data = $xml->{ObjectData}{Object}{$object}{Properties}{Property};
+
+    if ($type eq 'Part::Box') {
+	my $l = $data->{Length}{Float}{value};
+	my $w = $data->{Width}{Float}{value};
+	my $h = $data->{Height}{Float}{value};
+	my $n = $data->{Label}{String}{value};
+
+	# See if this part matches one of the kinds of stock we have:
+	my $s;
+	my $cl;
+	for my $stock (keys %STOCK) {
+	    my $st = $STOCK{$stock};
+
+	    if (($l == $st->{h} and $w == $st->{w}) or 
+                ($w == $st->{h} and $l == $st->{w})) {
+		$cl = $h;
+		$s = $stock;
+
+	    } elsif (($l == $st->{h} and $h == $st->{w}) or 
+                     ($h == $st->{h} and $l == $st->{w})) {
+		$cl = $w;
+		$s = $stock;
+
+	    } elsif (($h == $st->{h} and $w == $st->{w}) or 
+                     ($w == $st->{h} and $h == $st->{w})) {
+		$cl = $l;
+		$s = $stock;
+	    }
+	}
+
+	if ($s) {
+	    #print "$n is $cl mm of $s\n";	    
+	    push @{$cuts{$s}{$cl}}, $n;
+
+	} else {
+	    print "$n ($l x $w x $h) is not of any known stock, ignoring.\n";
+	}
+    }
+}
+
+print "Parts count:\n";
+print "Stock\tLength\tNumber\n";
+for my $stock (sort keys %cuts) {
+    for my $length (sort { $a <=> $b } keys %{$cuts{$stock}}) {
+	my $count = @{$cuts{$stock}{$length}};
+	print "$stock\t$length\t$count\n";
+    }
+}
+print "\n";
+
+
+my $KERF = 4; # Width of the saw blade
+
+for my $stock (sort keys %cuts) {
+    
+    my $otl = 0;
+    my @cuts;
+    for my $length (keys %{$cuts{$stock}}) {
+	my $c = 1;
+	my $count = @{$cuts{$stock}{$length}};
+	for my $name (@{$cuts{$stock}{$length}}) {
+	    push @cuts, {
+		l=>$length,
+		n=>"$length mm  $c/$count  $name",				
+	    };
+	    $otl += $length;
+	}
+    }
+
+    @cuts = sort { $b->{l} <=> $a->{l} } @cuts;
+
+    my @bars;
+    for my $c (@cuts) {
+	
+	my $best;
+	my $bestSlop;
+	for my $b (@bars) {
+	    my $slop = $b->{l} - $c->{l} - $KERF;
+	    if ($slop >= 0) {
+		if (!$best or $bestSlop > $slop) {
+		    $best = $b;
+		    $bestSlop = $best->{l} - $c->{l} - $KERF;
+		}
+	    }
+	}
+	
+	unless ($best) {
+	    push @bars, $best = {l => $STOCK{$stock}->{l}, cuts=>[]};
+	    $bestSlop = $STOCK{$stock}->{l} - $c->{l} - $KERF;
+	}
+	
+	push @{$best->{cuts}}, $c;
+	$best->{l} = $bestSlop;
+    }
+
+    my $tl;
+    my $tw;
+    my $bn = 1;
+    print "Stock: $stock - Length: $STOCK{$stock}->{l} mm\n";
+    for my $bar (@bars) {
+	print "\tBar $bn: (waste: $bar->{l} mm)\n";
+	$tw += $bar->{l};
+	my $cn = 1;
+	for my $c (@{$bar->{cuts}}) {
+	    print "\t\tCut $cn: $c->{n}\n";
+	    $tl += $c->{l};
+	    $cn++;
+	}
+	$bn++;
+	print "\n";
+    }
+
+    print "Totals: Waste: $tw, bars:$tl\n\n\n";
+
+    die "Total length differs from the original length: $tl != $otl " unless $tl == $otl;
+}
