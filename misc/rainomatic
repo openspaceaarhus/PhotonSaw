@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Data::Dumper;
+
+while (my $l = <DATA>) {
+    chomp $l;
+    my ($id, $mod, $txt, $budget, $spent, $spender) = split /\t/, $l;
+    
+    next unless $txt;
+    next unless $spent;
+    next if $id;
+    next unless $spender eq 'ff';
+
+    print "insert into accounttransaction (target_account_id, source_account_id, operator_id, amount, comment) values (113, 35, 1, $spent, '$txt');\n";
+}
+
+
+__DATA__
+	LASER+cooling	LASER + PSU + spare optics		4000	Cash
+2021		Transport of LASER		1050	ff
+2022		HV wire		145	ff
+2023		Water cooling fittings		125	ff
+2024		Flow sensor		200	ff
+2025		Pump		434	ff
+2026		More fittings		362	ff
+2027		Hose clamps		85	ff
+2028		Pump + fittings for chiller		848	ff
+2050		Yet more fittings		143	ff
+2051		Yet more fittings		121	ff
+		Tank 2.5 L		63.75	ff
+		Insulation		89	ff
+		rubber gaskets		38	ff
+		HN safety glasses		130	ff
+					
+2029	Optics	Optics kit from Ebay		1462	ff
+					
+	Mechanics				
+2030		V-rails from Klee		1080	ff
+2031		V-groove bearings		540	ff
+2032		MayTec – profiles		3353	ff
+2033		MayTec – connectors		1121	ff
+2034		Toothed belts and pulleys		730	ff
+		Skins (1mm alu)	1426.25		
+					
+					
+2035	OSB møbel	5x OSB + 4x Reglar + Skruer		732.22	ff
+					
+					
+2036	Tools	Lathe tools		386	ff
+2037		Misc tools (HN 2011.11.08)		715	ff
+2038		LPC1769 proto boards		440	ff
+2039		Small plate bending brake		320	ff
+2040		More tools (BH 12/11)		249	ff
+					
+					
+					
+					
+					
+2041	Electronics	ATmega328 + drv8811		618	ff
+2042		Steppers x 3		460	ff
+2043		40x 100 MOhm resistors		364	ff
+2044		iTead PCB v 1		200	ff
+		ELFA main board parts	900		ff
+		ELFA wires		77	ff
+		ELFA NTC		58	ff
+		Mouser via Asbjørn (ARM)	100		
