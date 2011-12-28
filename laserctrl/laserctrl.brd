@@ -1,4 +1,4 @@
-PCBNEW-BOARD Version 1 date 2011-12-18T13:02:52 CET
+PCBNEW-BOARD Version 1 date 2011-12-18T14:23:37 CET
 
 # Created by Pcbnew(2011-05-25)-stable
 
@@ -65,7 +65,7 @@ PadDrill 0
 Pad2MaskClearance 100
 GridOrigin 9646 17913
 AuxiliaryAxisOrg 9646 17913
-PcbPlotParams (pcbplotparams (layerselection 15761409) (usegerberextensions true) (excludeedgelayer false) (linewidth 60) (plotframeref false) (viasonmask false) (mode 1) (useauxorigin true) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 0) (pscolor true) (psnegative false) (psa4output true) (plotreference true) (plotvalue true) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk true) (outputformat 1) (mirror false) (drillshape 2) (scaleselection 1) (outputdirectory output/tapeout-2011-12-18/))
+PcbPlotParams (pcbplotparams (layerselection 15761409) (usegerberextensions true) (excludeedgelayer false) (linewidth 60) (plotframeref false) (viasonmask false) (mode 1) (useauxorigin true) (hpglpennumber 1) (hpglpenspeed 20) (hpglpendiameter 15) (hpglpenoverlay 0) (pscolor true) (psnegative false) (psa4output true) (plotreference true) (plotvalue true) (plotothertext true) (plotinvisibletext false) (padsonsilk false) (subtractmaskfromsilk true) (outputformat 2) (mirror false) (drillshape 2) (scaleselection 1) (outputdirectory output/))
 $EndSETUP
 
 $EQUIPOT
@@ -13635,7 +13635,7 @@ Po 40046 33838 591 591 120 0
 De 21 1 0 Normal
 $EndTEXTPCB
 $TEXTPCB
-Te "Version 1"
+Te "Version 2"
 Po 18221 30563 394 394 79 0
 De 21 1 0 Normal
 $EndTEXTPCB
