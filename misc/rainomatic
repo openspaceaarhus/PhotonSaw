@@ -28,10 +28,10 @@ __DATA__
 2028		Pump + fittings for chiller		848	ff
 2050		Yet more fittings		143	ff
 2051		Yet more fittings		121	ff
-		Tank 2.5 L		63.75	ff
-		Insulation		89	ff
-		rubber gaskets		38	ff
-		HN safety glasses		130	ff
+2052		Tank 2.5 L		63.75	ff
+2053		Insulation		89	ff
+2054		rubber gaskets		38	ff
+2055		HN safety glasses		130	ff
 					
 2029	Optics	Optics kit from Ebay		1462	ff
 					
@@ -41,6 +41,7 @@ __DATA__
 2032		MayTec – profiles		3353	ff
 2033		MayTec – connectors		1121	ff
 2034		Toothed belts and pulleys		730	ff
+		IGUS cable chains		323	ff
 		Skins (1mm alu)	1426.25		
 					
 					
@@ -62,6 +63,6 @@ __DATA__
 2043		40x 100 MOhm resistors		364	ff
 2044		iTead PCB v 1		200	ff
 		ELFA main board parts	900		ff
-		ELFA wires		77	ff
-		ELFA NTC		58	ff
+2056		ELFA wires		77	ff
+2057		ELFA NTC		58	ff
 		Mouser via Asbjørn (ARM)	100		
