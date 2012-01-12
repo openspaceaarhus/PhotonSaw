@@ -1,0 +1,245 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use XML::Simple;
+use FindBin qw($Bin $Script);
+use Data::Dumper;
+
+my ($fn) = @ARGV;
+
+die "Syntax: $Script <plate input file>" unless $fn and -f $fn;
+
+my %ATTR = (
+    import => ['cx','cy','from'],
+    hole => ['cx','cy','d'],
+);
+
+sub check {
+    my ($node, $name) = @_;
+
+    die "Fail: node named $name does not exist" unless $ATTR{$name};
+    for my $k (@{$ATTR{$name}}) {
+	if (!exists $node->{$k}) {
+	    print "The $name element is missing the $k attribute:".Dumper($node);
+	    exit;
+	}
+    }
+}
+
+# inkscape (or is it svg) is always at 90 DPI in framebuffer orientation, this transforms from mathmatical mm to that.
+sub mm2px {
+    my @res;
+    for my $mm (@_) {
+	push @res, 90*$mm/25.4;
+    }
+    return @res;
+}
+
+my %doc;
+my ($root) = $fn =~ m!^(.*?)[^/]+$!;
+$root = $root ? "$root/" : '';
+
+sub load {
+    my ($f, $ox, $oy) = @_;
+
+    my $x = XMLin($f, ForceArray=>['import', 'hole', ]);
+    $x->{import} //= [];
+    $x->{hole} //= [];
+
+    for my $i (@{$x->{hole}}) {
+	check($i, 'hole');
+	push @{$doc{hole}}, {
+	    cx=>$ox+$i->{cx},
+	    cy=>$oy+$i->{cy},
+	    d=>$i->{d},
+	};	
+    }
+
+    for my $i (@{$x->{import}}) {
+	check($i, 'import');
+	my $if = "$root$i->{from}.holes";
+	die "Error: imported file $if does not exist" unless -f $if;
+	load($if, $i->{cx}, $i->{cy});
+    }
+
+    return $x;
+}
+
+my $r = load($fn,0,0);
+
+if ($r->{width} and $r->{height}) {
+    $doc{plate}{shape} = 'rect';
+    $doc{plate}{width}  = $r->{width};
+    $doc{plate}{height} = $r->{height};
+    $doc{plate}{radius} = $r->{radius} || 0;
+
+} else {
+    die "Unable to figure out the plate shape";
+}
+
+my $svg = '';
+
+my ($x0, $y0) = (20, 20);
+my $pageheight = 290.7;
+my $pagewidth = 210;
+my %x;
+my %y;
+
+
+if ($doc{plate}{shape} eq 'rect') {
+    
+    $x0 = $pagewidth/2-$doc{plate}{width}/2;
+    $y0 = $pageheight/2-$doc{plate}{height}/2;
+
+    $x{$doc{plate}{width}}{count}++;
+    $x{$doc{plate}{width}}{edge}=0;
+    $y{$doc{plate}{height}}{count}++;
+    $y{$doc{plate}{height}}{edge}=0;
+    
+    my ($width, $height, $x, $y, $r) = mm2px($doc{plate}{width}, $doc{plate}{height}, 
+					     $x0, $pageheight-$y0-$doc{plate}{height}, $doc{plate}{radius});
+    $svg .= qq{
+ <g inkscape:label="Plate" inkscape:groupmode="layer" id="layer1" >
+    <rect
+       style="fill:#b9b9ff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.35433072;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="platerect" width="$width" height="$height" x="$x" y="$y" ry="$r" rx="$r" />
+ </g>
+};
+} else {
+    die "Plate shape $doc{plate}{shape} not implemented";
+}
+
+
+$svg .= qq{ <g inkscape:label="Holes" inkscape:groupmode="layer" id="layer2" >\n};
+for my $h (@{$doc{hole}}) {
+    my ($x, $y, $r) = mm2px($x0 + $h->{cx}, $pageheight-($y0+$h->{cy}), $h->{d}/2);
+    $svg .= qq{   <circle cx="$x" cy="$y" r="$r" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>\n};
+}
+$svg .= qq{ </g>};
+
+
+$svg .= qq{ <g inkscape:label="Centers" inkscape:groupmode="layer" id="layer3" >\n};
+for my $h (@{$doc{hole}}) {
+    my ($x, $y, $r) = mm2px($x0 + $h->{cx}, $pageheight-($y0+$h->{cy}), $h->{d}/4);
+
+    my $x0 = $x-$r;
+    my $x1 = $x+$r;
+
+    my $y0 = $y-$r;
+    my $y1 = $y+$r;
+
+    $svg .= qq{   <line x1="$x0" y1="$y" x2="$x1" y2="$y" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+    $svg .= qq{   <line x1="$x" y1="$y0" x2="$x" y2="$y1" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+}
+$svg .= qq{ </g>};
+
+
+$svg .= qq{ <g inkscape:label="Measurements" inkscape:groupmode="layer" id="layer4" >\n};
+
+for my $h (@{$doc{hole}}) {
+    $x{$h->{cx}}{count}++;
+    $x{$h->{cx}}{edge} += $h->{cy}/$doc{plate}{height};
+
+    $y{$h->{cy}}{count}++;
+    $y{$h->{cy}}{edge} += $h->{cx}/$doc{plate}{width};
+}
+
+$x{0}{count}++;
+$x{0}{edge}//=0;
+
+for my $x (sort {$b <=> $a} keys %x) {
+    my $edge = $x{$x}{edge}/$x{$x}{count} > 0.5 ? 1 : 0;
+
+    my ($xp, $y, $l) = mm2px($x0 + $x, $pageheight-($y0 + ($edge ? $doc{plate}{height} + 5 : - 5)), 5);
+    my $y1 = $edge ? $y-$l : $y+$l;
+
+    $svg .= qq{   <line x1="$xp" y1="$y" x2="$xp" y2="$y1" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+    
+    $x = int($x*100)/100;
+    my $yt = $edge ? $y-$l*2 : $y+$l*2;
+    my $fs = $l/2;
+    $svg .= qq{   <text x="$xp" y="$yt" font-size="$fs" text-anchor="middle">$x</text>\n};
+}
+
+
+$y{0}{count}++;
+$y{0}{edge}//=0;
+for my $y (sort {$b <=> $a} keys %y) {
+    my $edge = $y{$y}{edge}/$y{$y}{count} > 0.5 ? 1 : 0;
+
+    my ($x, $yp, $l) = mm2px($x0 + ($edge ? $doc{plate}{width} + 5 : - 5), $pageheight-($y0 + $y), 5);
+    my $x1 = $edge ? $x+$l : $x-$l;
+
+    $svg .= qq{   <line x1="$x" y1="$yp" x2="$x1" y2="$yp" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+
+    $y = int($y*100)/100;
+    my $xt = $edge ? $x+$l*2 : $x-$l*2;
+    my $fs = $l/2;
+    my $ta = $edge ? 'start' : 'end';
+    $svg .= qq{   <text x="$xt" y="$yp" font-size="$fs" text-anchor="$ta">$y</text>\n};
+}
+
+$svg .= qq{ </g>};
+
+
+
+
+my $of = "$fn.svg";
+open O, ">$of" or die "Failed to write output file $of: $!";
+print O qq{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with $Script written for http://psaw.osaa.dk -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448"
+   height="1052.3622"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="test.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="414.64317"
+     inkscape:cy="658.96999"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1230"
+     inkscape:window-height="773"
+     inkscape:window-x="44"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     units="mm" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+$svg
+</svg>
+};
+close O;
+
+print "Wrote $of\n";
+exit 0;
