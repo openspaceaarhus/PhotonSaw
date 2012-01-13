@@ -1,0 +1,5 @@
+<plate width="70" height="30" radius="2.5">
+       <hole cx="10" cy="15" d="5"/>
+       <hole cx="30" cy="15" d="5"/>
+       <hole cx="60" cy="15" d="6.8"/>
+</plate>

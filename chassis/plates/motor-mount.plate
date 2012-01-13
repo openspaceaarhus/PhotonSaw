@@ -1,4 +1,4 @@
-<plate width="80" height="50" radius="5">
+<plate width="80" height="50" radius="2.5">
        <import from="nema17" cx="59" cy="25"/>
        <hole cx="15" cy="10" d="5"/>
        <hole cx="15" cy="40" d="5"/>

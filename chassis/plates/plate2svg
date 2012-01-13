@@ -139,9 +139,11 @@ $svg .= qq{ <g inkscape:label="Measurements" inkscape:groupmode="layer" id="laye
 for my $h (@{$doc{hole}}) {
     $x{$h->{cx}}{count}++;
     $x{$h->{cx}}{edge} += $h->{cy}/$doc{plate}{height};
+    push @{$x{$h->{cx}}{holes}}, $h; 
 
     $y{$h->{cy}}{count}++;
     $y{$h->{cy}}{edge} += $h->{cx}/$doc{plate}{width};
+    push @{$y{$h->{cy}}{holes}}, $h; 
 }
 
 $x{0}{count}++;
@@ -158,7 +160,18 @@ for my $x (sort {$b <=> $a} keys %x) {
     $x = int($x*100)/100;
     my $yt = $edge ? $y-$l*2 : $y+$l*2;
     my $fs = $l/2;
+    
     $svg .= qq{   <text x="$xp" y="$yt" font-size="$fs" text-anchor="middle">$x</text>\n};
+    
+    # List the holes found at this mark, in Y-order
+    if ($x{$x}{holes}) {
+	my %hs;
+	my $yht = $edge ? $y-$l*3 : $y+$l*3;
+	my $ht = join(', ', grep {!$hs{$_}++} map {"Ø$_"}  map {$_->{d}} 
+		      sort {$a->{cy} <=> $b->{cy}} @{$x{$x}{holes}});
+	
+	$svg .= qq{   <text x="$xp" y="$yht" font-size="$fs" text-anchor="middle">$ht</text>\n};
+    }
 }
 
 
@@ -176,12 +189,20 @@ for my $y (sort {$b <=> $a} keys %y) {
     my $xt = $edge ? $x+$l*2 : $x-$l*2;
     my $fs = $l/2;
     my $ta = $edge ? 'start' : 'end';
-    $svg .= qq{   <text x="$xt" y="$yp" font-size="$fs" text-anchor="$ta">$y</text>\n};
+
+    # List the holes found at this mark, in X-order
+    my $ht = "";
+    if ($y{$y}{holes}) {
+	my %hs;
+	$ht = join(', ', grep {!$hs{$_}++} map {"Ø$_"}  map {$_->{d}} 
+		      sort {$a->{cx} <=> $b->{cx}} @{$y{$y}{holes}});
+	$ht = " $ht";
+    }
+
+    $svg .= qq{   <text x="$xt" y="$yp" font-size="$fs" text-anchor="$ta">$y$ht</text>\n};
 }
 
 $svg .= qq{ </g>};
-
-
 
 
 my $of = "$fn.svg";
