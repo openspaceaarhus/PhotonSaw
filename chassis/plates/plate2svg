@@ -4,6 +4,7 @@ use warnings;
 use XML::Simple;
 use FindBin qw($Bin $Script);
 use Data::Dumper;
+use Math::Round;
 
 my ($fn) = @ARGV;
 
@@ -39,33 +40,81 @@ my %doc;
 my ($root) = $fn =~ m!^(.*?)[^/]+$!;
 $root = $root ? "$root/" : '';
 
-sub load {
-    my ($f, $ox, $oy) = @_;
+sub translate {
+    my ($x,$y,$xo,$yo,$r) = @_;
 
-    my $x = XMLin($f, ForceArray=>['import', 'hole', ]);
+    my $rr = 3.1415*$r/180;
+
+    return ($x*cos($rr) + $y*sin($rr) + $xo,
+	    $x*sin($rr) + $y*cos($rr) + $yo);   
+}
+
+sub loadPath {
+    my ($p, $ox, $oy, $rotate, $layer) = @_;
+
+    my $d = $p->{d} or die "Missing d attribute for path";
+    my @d = split /\s+/, $d;
+
+    my @path;
+    while (my $e = shift @d) {
+	if ($e eq 'M' or $e eq 'L') {
+	    my $x = shift @d;
+	    my $y = shift @d;
+	    ($x, $y) = translate($x, $y, $ox, $oy, $rotate);
+	
+	    push @path, { o=>$e, x=>$x, 'y'=>$y, };
+	    
+	} elsif ($e eq 'Z') {
+	    push @path, { o=>$e, };
+
+	} else {
+	    die "Failed to translate path definition element $e";
+	}
+    }
+
+    push @{$doc{path}{$layer}}, {
+	d=>\@path,
+    };
+}
+
+sub load {
+    my ($f, $ox, $oy, $rotate) = @_;
+
+    my $x = XMLin($f, ForceArray=>['import', 'hole', 'path']);
     $x->{import} //= [];
     $x->{hole} //= [];
+    $x->{path} //= [];
+
+    for my $p (@{$x->{path}}) {
+	loadPath($p, $ox, $oy, $rotate, 'Annotations');	
+    }    
 
     for my $i (@{$x->{hole}}) {
 	check($i, 'hole');
+
+	my ($x, $y) = translate($i->{cx}, $i->{cy}, $ox, $oy, $rotate);
+
 	push @{$doc{hole}}, {
-	    cx=>$ox+$i->{cx},
-	    cy=>$oy+$i->{cy},
+#	    cx=>$ox+$i->{cx},
+#	    cy=>$oy+$i->{cy},
+	    cx=>$x,
+	    cy=>$y,
 	    d=>$i->{d},
 	};	
     }
 
     for my $i (@{$x->{import}}) {
 	check($i, 'import');
+	$i->{rotate} ||= 0;
 	my $if = "$root$i->{from}.holes";
 	die "Error: imported file $if does not exist" unless -f $if;
-	load($if, $i->{cx}, $i->{cy});
+	load($if, $i->{cx}+$ox, $i->{cy}+$oy, $i->{rotate}+$rotate);
     }
 
     return $x;
 }
 
-my $r = load($fn,0,0);
+my $r = load($fn, 0, 0, 0);
 
 if ($r->{width} and $r->{height}) {
     $doc{plate}{shape} = 'rect';
@@ -77,11 +126,12 @@ if ($r->{width} and $r->{height}) {
     die "Unable to figure out the plate shape";
 }
 
+
 my $svg = '';
 
 my ($x0, $y0) = (20, 20);
-my $pageheight = 290.7;
-my $pagewidth = 210;
+my $pageheight = 210;
+my $pagewidth = 290.7;
 my %x;
 my %y;
 
@@ -137,13 +187,17 @@ $svg .= qq{ </g>};
 $svg .= qq{ <g inkscape:label="Measurements" inkscape:groupmode="layer" id="layer4" >\n};
 
 for my $h (@{$doc{hole}}) {
-    $x{$h->{cx}}{count}++;
-    $x{$h->{cx}}{edge} += $h->{cy}/$doc{plate}{height};
-    push @{$x{$h->{cx}}{holes}}, $h; 
 
-    $y{$h->{cy}}{count}++;
-    $y{$h->{cy}}{edge} += $h->{cx}/$doc{plate}{width};
-    push @{$y{$h->{cy}}{holes}}, $h; 
+    my $rx = round(20*$h->{cx})/20;
+    my $ry = round(20*$h->{cy})/20;
+
+    $x{$rx}{count}++;
+    $x{$rx}{edge} += $h->{cy}/$doc{plate}{height};
+    push @{$x{$rx}{holes}}, $h; 
+
+    $y{$ry}{count}++;
+    $y{$ry}{edge} += $h->{cx}/$doc{plate}{width};
+    push @{$y{$ry}{holes}}, $h; 
 }
 
 $x{0}{count}++;
@@ -157,7 +211,6 @@ for my $x (sort {$b <=> $a} keys %x) {
 
     $svg .= qq{   <line x1="$xp" y1="$y" x2="$xp" y2="$y1" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
     
-    $x = int($x*100)/100;
     my $yt = $edge ? $y-$l*2 : $y+$l*2;
     my $fs = $l/2;
     
@@ -185,7 +238,6 @@ for my $y (sort {$b <=> $a} keys %y) {
 
     $svg .= qq{   <line x1="$x" y1="$yp" x2="$x1" y2="$yp" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
 
-    $y = int($y*100)/100;
     my $xt = $edge ? $x+$l*2 : $x-$l*2;
     my $fs = $l/2;
     my $ta = $edge ? 'start' : 'end';
@@ -204,6 +256,34 @@ for my $y (sort {$b <=> $a} keys %y) {
 
 $svg .= qq{ </g>};
 
+$doc{layer} ||= {};
+my $n = 5;
+for my $l (keys %{$doc{path}}) {
+    $svg .= qq{ <g inkscape:label="$l" inkscape:groupmode="layer" id="layer$n" >\n};
+
+    for my $p (@{$doc{path}{$l}}) {
+
+	my $d = '';
+	for my $e (@{$p->{d}}) {
+	    if ($e->{o} eq 'M' or $e->{o} eq 'L') {
+		$d .= join(' ', 
+			   $e->{o}, 
+			   $x0 + $e->{x},
+			   $pageheight-($y0 + $e->{y})).' ';
+
+	    } elsif ($e->{o} eq 'Z') {
+		$d .= "Z";
+
+	    } else {
+		die "Failed to encode path $e->{o}";
+	    }
+	}
+	$svg .= qq{<path d="$d" style="stroke:#000000;stroke-width:0.35433072;"/>\n};
+    }
+
+    $svg .= qq{ </g>};
+    $n++;
+}
 
 my $of = "$fn.svg";
 open O, ">$of" or die "Failed to write output file $of: $!";
@@ -218,8 +298,8 @@ print O qq{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448"
-   height="1052.3622"
+   width="1052.3622"
+   height="744.09448"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.2 r9819"
