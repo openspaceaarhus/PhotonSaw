@@ -1,5 +1,5 @@
 <plate width="203" height="50" radius="2.5">
-       <import from="mirror" cx="100" cy="25" rotate="225"/>
+       <import from="mirror" cx="130.05" cy="35.05" rotate="-135"/>
 
        <hole cx="15" cy="10" d="5"/>
        <hole cx="15" cy="40" d="5"/>

@@ -43,10 +43,14 @@ $root = $root ? "$root/" : '';
 sub translate {
     my ($x,$y,$xo,$yo,$r) = @_;
 
-    my $rr = 3.1415*$r/180;
+    my $rr = 3.1415*-$r/180;
+    
+    my $xr = $x*cos($rr) + $y*sin($rr) + $xo;
+    my $yr = -$x*sin($rr) + $y*cos($rr) + $yo;   
 
-    return ($x*cos($rr) + $y*sin($rr) + $xo,
-	    $x*sin($rr) + $y*cos($rr) + $yo);   
+#    print "xlate $x,$y --$xo,$yo($r)-> $xr,$yr\n";
+
+    return ($xr,$yr);
 }
 
 sub loadPath {
@@ -60,9 +64,9 @@ sub loadPath {
 	if ($e eq 'M' or $e eq 'L') {
 	    my $x = shift @d;
 	    my $y = shift @d;
-	    ($x, $y) = translate($x, $y, $ox, $oy, $rotate);
+	    my ($xt, $yt) = translate($x, $y, $ox, $oy, $rotate);
 	
-	    push @path, { o=>$e, x=>$x, 'y'=>$y, };
+	    push @path, { 'o'=>$e, 'x'=>$xt, 'y'=>$yt, };
 	    
 	} elsif ($e eq 'Z') {
 	    push @path, { o=>$e, };
@@ -168,18 +172,30 @@ for my $h (@{$doc{hole}}) {
 $svg .= qq{ </g>};
 
 
+sub cross {
+    my ($cx,$cy,$r) = @_;
+
+    my $x0 = $cx-$r;
+    my $x1 = $cx+$r;
+    my $y0 = $cy-$r;
+    my $y1 = $cy+$r;
+
+    return qq{   <line x1="$x0" y1="$cy" x2="$x1" y2="$cy" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n}.
+           qq{   <line x1="$cx" y1="$y0" x2="$cx" y2="$y1" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+}
+
 $svg .= qq{ <g inkscape:label="Centers" inkscape:groupmode="layer" id="layer3" >\n};
 for my $h (@{$doc{hole}}) {
     my ($x, $y, $r) = mm2px($x0 + $h->{cx}, $pageheight-($y0+$h->{cy}), $h->{d}/4);
 
-    my $x0 = $x-$r;
-    my $x1 = $x+$r;
+#    my $x0 = $x-$r;
+#    my $x1 = $x+$r;
+#    my $y0 = $y-$r;
+#    my $y1 = $y+$r;
+#    $svg .= qq{   <line x1="$x0" y1="$y" x2="$x1" y2="$y" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+#    $svg .= qq{   <line x1="$x" y1="$y0" x2="$x" y2="$y1" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
 
-    my $y0 = $y-$r;
-    my $y1 = $y+$r;
-
-    $svg .= qq{   <line x1="$x0" y1="$y" x2="$x1" y2="$y" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
-    $svg .= qq{   <line x1="$x" y1="$y0" x2="$x" y2="$y1" style="stroke:rgb(0,0,0);stroke-width:0.345"/>\n};
+    $svg .= cross($x,$y,$r);
 }
 $svg .= qq{ </g>};
 
@@ -266,10 +282,10 @@ for my $l (keys %{$doc{path}}) {
 	my $d = '';
 	for my $e (@{$p->{d}}) {
 	    if ($e->{o} eq 'M' or $e->{o} eq 'L') {
-		$d .= join(' ', 
-			   $e->{o}, 
-			   $x0 + $e->{x},
-			   $pageheight-($y0 + $e->{y})).' ';
+		my ($x,$y) = mm2px(($x0 + $e->{x}), ($pageheight-($y0 + $e->{y})));
+
+		$d .= "$e->{o} $x,$y ";
+		#$svg .= cross($x, $y, 2);
 
 	    } elsif ($e->{o} eq 'Z') {
 		$d .= "Z";
@@ -278,7 +294,7 @@ for my $l (keys %{$doc{path}}) {
 		die "Failed to encode path $e->{o}";
 	    }
 	}
-	$svg .= qq{<path d="$d" style="stroke:#000000;stroke-width:0.35433072;"/>\n};
+	$svg .= qq{<path d="$d" stroke-dasharray="10,10,2.5,10" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>\n};
     }
 
     $svg .= qq{ </g>};
