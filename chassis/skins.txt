@@ -1,0 +1,36 @@
+All skins are 1.5 mm Al plates:
+
+1930x220 Laser bottom
+1930x795 Bottom
+1930x140 Front top
+1515x280 Front door
+410x280  Front  
+1930x425 Back
+1930x190 Laser back
+1930x215 Laser top
+800x430  Firewall
+605x440  Top
+
+
+2x Sidepanel: 
+
+   215
+ -----------
+ |         |
+ |         | 190
+ |         |
+ |         |
+ |         --------------------------
+ |                                  |
+ |                                  |
+ |                                  |
+ |                                  |
+ | 615                          425 |
+ |                                  |
+ |                                  |
+ |                                  |
+ |                                  |
+ ------------------------------------
+                795
+
+
