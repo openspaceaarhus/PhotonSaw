@@ -10,14 +10,14 @@ while (my $l = <DATA>) {
     next unless $txt;
     next unless $spent;
     next if $id;
-    next unless $spender eq 'ff';
+#    next unless $spender eq 'ff';
 
     print "insert into accounttransaction (target_account_id, source_account_id, operator_id, amount, comment) values (113, 35, 1, $spent, '$txt');\n";
 }
 
 
 __DATA__
-	LASER+cooling	LASER + PSU + spare optics		4000	Cash
+./rain	LASER+cooling	LASER + PSU + spare optics		4000	Cash
 2021		Transport of LASER		1050	ff
 2022		HV wire		145	ff
 2023		Water cooling fittings		125	ff
@@ -41,8 +41,9 @@ __DATA__
 2032		MayTec – profiles		3353	ff
 2033		MayTec – connectors		1121	ff
 2034		Toothed belts and pulleys		730	ff
-		IGUS cable chains		323	ff
-		Skins (1mm alu)	1426.25		
+2144		IGUS cable chains		323	ff
+		PETG windows	620		
+		Skins (1mm alu)	1630		
 					
 					
 2035	OSB møbel	5x OSB + 4x Reglar + Skruer		732.22	ff
@@ -65,4 +66,4 @@ __DATA__
 		ELFA main board parts	900		ff
 2056		ELFA wires		77	ff
 2057		ELFA NTC		58	ff
-		Mouser via Asbjørn (ARM)	100		
+		Digikey via Asbjørn (ARM)		238	asbjørn
