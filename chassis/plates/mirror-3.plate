@@ -1,0 +1,8 @@
+<plate width="85" height="60" radius="2.5">
+       <import from="mirror-2" cx="73" cy="25" rotate="45"/>
+
+       <hole cx="15" cy="10" d="5"/>
+       <hole cx="15" cy="50" d="5"/>
+
+       <path d="M -10 40.9 L 57.1 40.9 L 57.1 70" />       
+</plate>
