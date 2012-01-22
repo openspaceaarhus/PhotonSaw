@@ -1,0 +1,6 @@
+<plate width="50" height="60" radius="2.5">
+       <import from="nema17-front" cx="29" cy="30"/>
+       <hole cx="15" cy="5" d="5"/>
+       <hole cx="15" cy="55" d="5"/>
+       <mark cx="15" cy="55" r="1"/>
+</plate>
