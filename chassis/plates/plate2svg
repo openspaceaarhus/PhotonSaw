@@ -13,6 +13,7 @@ die "Syntax: $Script <plate input file>" unless $fn and -f $fn;
 my %ATTR = (
     import => ['cx','cy','from'],
     hole => ['cx','cy','d'],
+    mark => ['cx','cy','r'],
 );
 
 sub check {
@@ -84,10 +85,11 @@ sub loadPath {
 sub load {
     my ($f, $ox, $oy, $rotate) = @_;
 
-    my $x = XMLin($f, ForceArray=>['import', 'hole', 'path']);
+    my $x = XMLin($f, ForceArray=>['import', 'hole', 'path', 'mark']);
     $x->{import} //= [];
     $x->{hole} //= [];
     $x->{path} //= [];
+    $x->{mark} //= [];
 
     for my $p (@{$x->{path}}) {
 	loadPath($p, $ox, $oy, $rotate, 'Annotations');	
@@ -104,6 +106,18 @@ sub load {
 	    cx=>$x,
 	    cy=>$y,
 	    d=>$i->{d},
+	};	
+    }
+
+    for my $i (@{$x->{mark}}) {
+	check($i, 'mark');
+
+	my ($x, $y) = translate($i->{cx}, $i->{cy}, $ox, $oy, $rotate);
+
+	push @{$doc{mark}}, {
+	    cx=>$x,
+	    cy=>$y,
+	    r=>$i->{r},
 	};	
     }
 
@@ -197,6 +211,25 @@ for my $h (@{$doc{hole}}) {
 
     $svg .= cross($x,$y,$r);
 }
+
+for my $h (@{$doc{mark}}) {
+    my ($x, $y, $r) = mm2px($x0 + $h->{cx}, $pageheight-($y0+$h->{cy}), $h->{r});
+    $svg .= cross($x,$y,$r);
+
+
+    my $rx = round(20*$h->{cx})/20;
+    my $ry = round(20*$h->{cy})/20;
+
+    $x{$rx}{count}++;
+    $x{$rx}{edge} += $h->{cy}/$doc{plate}{height};
+    push @{$x{$rx}{holes}}, $h; 
+
+    $y{$ry}{count}++;
+    $y{$ry}{edge} += $h->{cx}/$doc{plate}{width};
+    push @{$y{$ry}{holes}}, $h; 
+}
+
+
 $svg .= qq{ </g>};
 
 
@@ -237,7 +270,7 @@ for my $x (sort {$b <=> $a} keys %x) {
 	my %hs;
 	my $yht = $edge ? $y-$l*3 : $y+$l*3;
 	my $ht = join(', ', grep {!$hs{$_}++} map {"Ø$_"}  map {$_->{d}} 
-		      sort {$a->{cy} <=> $b->{cy}} @{$x{$x}{holes}});
+		      sort {$a->{cy} <=> $b->{cy}} grep {$_->{d}} @{$x{$x}{holes}});
 	
 	$svg .= qq{   <text x="$xp" y="$yht" font-size="$fs" text-anchor="middle">$ht</text>\n};
     }
@@ -263,7 +296,7 @@ for my $y (sort {$b <=> $a} keys %y) {
     if ($y{$y}{holes}) {
 	my %hs;
 	$ht = join(', ', grep {!$hs{$_}++} map {"Ø$_"}  map {$_->{d}} 
-		      sort {$a->{cx} <=> $b->{cx}} @{$y{$y}{holes}});
+		      sort {$a->{cx} <=> $b->{cx}} grep {$_->{d}} @{$y{$y}{holes}});
 	$ht = " $ht";
     }
 

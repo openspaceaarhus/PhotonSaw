@@ -6,6 +6,7 @@
 
 	<hole cx="0" cy="0" d="8"/>
 	<hole cx="0" cy="14" d="14"/>
+	<path d="M 4 0 L 4 10 L -4 10 L -4 0 Z" />
 
 	<path d="M 15 15 L -15 15 L -15 -15 L 15 -15 Z" />
 </holes>
