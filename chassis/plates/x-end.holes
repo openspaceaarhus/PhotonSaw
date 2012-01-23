@@ -1,0 +1,14 @@
+<holes>
+       <import from="maytec-30x30-end" cx="70" cy="65" rotate="0"/>
+
+       <hole cx="12" cy="91" d="3.7"/>
+       <hole cx="138" cy="91" d="3.7"/>
+
+       <hole cx="75" cy="8" d="10"/>
+
+       <path d="M -5 50 L 40 50 L 40 -25 L -5 -25 Z" />
+       <mark cx="40" cy="50" r="2"/>
+
+       <path d="M 100 50 L 155 50 L 155 -25 L 100 -25 Z" />
+       <mark cx="100" cy="50" r="2"/>
+</holes>

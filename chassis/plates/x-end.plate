@@ -1,6 +1,0 @@
-<plate width="203" height="50" radius="2.5">
-       <import from="maytec-30x30-end" cx="130.05" cy="35.05" rotate="0"/>
-
-       <hole cx="15" cy="10" d="3.7"/>
-
-</plate>
