@@ -1,6 +1,7 @@
 lift.plate.svg			4x	10 mm messing
 
 motor-mount.plate.svg		7x	4 mm Al
+idler.plate.svg			6x	4 mm Al
 lift-bottom-left.plate.svg	2x	4 mm Al
 lift-bottom-right.plate.svg	2x	4 mm Al
 mirror-1.plate.svg		1x	4 mm Al
