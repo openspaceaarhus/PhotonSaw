@@ -14,6 +14,7 @@ my %ATTR = (
     import => ['cx','cy','from'],
     hole => ['cx','cy','d'],
     mark => ['cx','cy','r'],
+    text => ['x','y'],
 );
 
 sub check {
@@ -38,7 +39,7 @@ sub mm2px {
 }
 
 my %doc;
-my ($root) = $fn =~ m!^(.*?)[^/]+$!;
+my ($root, $bfn) = $fn =~ m!^(.*?)([^/]+)$!;
 $root = $root ? "$root/" : '';
 
 sub translate {
@@ -85,11 +86,13 @@ sub loadPath {
 sub load {
     my ($f, $ox, $oy, $rotate) = @_;
 
-    my $x = XMLin($f, ForceArray=>['import', 'hole', 'path', 'mark']);
+    my $x = XMLin($f, ForceArray=>['import', 'hole', 'path', 'mark', 'text']);
+
     $x->{import} //= [];
     $x->{hole} //= [];
     $x->{path} //= [];
     $x->{mark} //= [];
+    $x->{text} //= [];
 
     for my $p (@{$x->{path}}) {
 	loadPath($p, $ox, $oy, $rotate, 'Annotations');	
@@ -121,6 +124,12 @@ sub load {
 	};	
     }
 
+    for my $i (@{$x->{text}}) {
+	check($i, 'text');
+	my ($x, $y) = translate($i->{x}, $i->{y}, $ox, $oy, $rotate);
+	push @{$doc{text}}, $i;
+    }
+
     for my $i (@{$x->{import}}) {
 	check($i, 'import');
 	$i->{rotate} ||= 0;
@@ -133,6 +142,14 @@ sub load {
 }
 
 my $r = load($fn, 0, 0, 0);
+
+my $ts = localtime((stat $fn)[9]);
+push @{$doc{text}}, {
+    'x'=>20,
+    'y'=>20,    
+    content=>"$bfn - $ts",
+};
+
 
 if ($r->{width} and $r->{height}) {
     $doc{plate}{shape} = 'rect';
@@ -333,6 +350,18 @@ for my $l (keys %{$doc{path}}) {
     $svg .= qq{ </g>};
     $n++;
 }
+
+$svg .= qq{ <g inkscape:label="Texts" inkscape:groupmode="layer" id="layer$n" >\n};
+for my $t (@{$doc{text}}) {
+    my ($xt, $yt) = mm2px($t->{x}, $t->{y});
+
+    my ($fs) = mm2px($t->{size} || 5);
+    my $anchor = $t->{anchor} || 'start';
+    
+    $svg .= qq{   <text x="$xt" y="$yt" font-size="$fs" text-anchor="$anchor">$t->{content}</text>\n};
+}
+$svg .= qq{ </g>};
+
 
 my $of = "$fn.svg";
 open O, ">$of" or die "Failed to write output file $of: $!";

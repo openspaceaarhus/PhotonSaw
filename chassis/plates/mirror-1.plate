@@ -1,4 +1,6 @@
 <plate width="203" height="50" radius="2.5">
+       <text x="20" y="30">1 pcs, 4 mm Al</text>
+
        <import from="mirror" cx="138.05" cy="35.05" rotate="-135"/>
 
        <hole cx="15" cy="10" d="5"/>

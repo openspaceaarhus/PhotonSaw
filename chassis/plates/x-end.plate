@@ -1,0 +1,18 @@
+<plate width="150" height="110" radius="2.5">
+       <text x="20" y="30">2 pcs, 4 mm Al</text>
+
+       <import from="maytec-30x30-end" cx="70" cy="75" rotate="0"/>
+
+       <hole cx="12" cy="101" d="3.7"/>
+       <hole cx="138" cy="101" d="3.7"/>
+
+       <hole cx="75" cy="18" d="10"/>
+
+       <path d="M -5 60 L 40 60 L 40 -25 L -5 -25 Z" />
+       <mark cx="40" cy="60" r="2"/>
+
+       <path d="M 110 60 L 155 60 L 155 -25 L 110 -25 Z" />
+       <mark cx="110" cy="60" r="2"/>
+
+       <hole cx="70" cy="50" d="5"/>
+</plate>

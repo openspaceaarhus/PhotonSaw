@@ -1,4 +1,6 @@
 <plate width="80" height="60" radius="2.5">
+       <text x="20" y="30">1 pc, 4 mm Al</text>
+
        <hole cx="10" cy="15" d="5"/>
        <hole cx="10" cy="45" d="5"/>
 

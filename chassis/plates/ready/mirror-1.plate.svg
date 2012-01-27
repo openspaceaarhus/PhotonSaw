@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="mirror-1.plate.svg">
+   sodipodi:docname="test.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,10 +25,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="231.78603"
-     inkscape:cy="477.00298"
+     inkscape:cx="414.64317"
+     inkscape:cy="658.96999"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1230"
      inkscape:window-height="773"
@@ -44,355 +44,69 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Plate"
-     inkscape:groupmode="layer"
-     id="layer1">
+
+ <g inkscape:label="Plate" inkscape:groupmode="layer" id="layer1" >
     <rect
        style="fill:#b9b9ff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.35433072;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="platerect"
-       width="719.291338582677"
-       height="177.165354330709"
-       x="155.374015748031"
-       y="283.464566929134"
-       ry="8.85826771653543"
-       rx="8.85826771653543" />
-  </g>
-  <g
-     inkscape:label="Holes"
-     inkscape:groupmode="layer"
-     id="layer2">
-    <circle
-       cx="208.523622047244"
-       cy="425.196850393701"
-       r="8.85826771653543"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"
-       id="circle9" />
-    <circle
-       cx="208.523622047244"
-       cy="318.897637795276"
-       r="8.85826771653543"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"
-       id="circle11" />
-    <circle
-       cx="821.515748031496"
-       cy="425.196850393701"
-       r="8.85826771653543"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"
-       id="circle13" />
-    <circle
-       cx="821.515748031496"
-       cy="318.897637795276"
-       r="8.85826771653543"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"
-       id="circle15" />
-    <circle
-       cx="626.990302568085"
-       cy="353.976701865089"
-       r="7.08661417322835"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"
-       id="circle17" />
-    <circle
-       cx="662.064815542151"
-       cy="318.897313882943"
-       r="7.08661417322835"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"
-       id="circle19" />
-  </g>
-  <g
-     inkscape:label="Centers"
-     inkscape:groupmode="layer"
-     id="layer3">
-    <line
-       x1="204.094488188976"
-       y1="425.196850393701"
-       x2="212.952755905512"
-       y2="425.196850393701"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line22" />
-    <line
-       x1="208.523622047244"
-       y1="420.767716535433"
-       x2="208.523622047244"
-       y2="429.625984251969"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line24" />
-    <line
-       x1="204.094488188976"
-       y1="318.897637795276"
-       x2="212.952755905512"
-       y2="318.897637795276"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line26" />
-    <line
-       x1="208.523622047244"
-       y1="314.468503937008"
-       x2="208.523622047244"
-       y2="323.326771653543"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line28" />
-    <line
-       x1="817.086614173228"
-       y1="425.196850393701"
-       x2="825.944881889764"
-       y2="425.196850393701"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line30" />
-    <line
-       x1="821.515748031496"
-       y1="420.767716535433"
-       x2="821.515748031496"
-       y2="429.625984251969"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line32" />
-    <line
-       x1="817.086614173228"
-       y1="318.897637795276"
-       x2="825.944881889764"
-       y2="318.897637795276"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line34" />
-    <line
-       x1="821.515748031496"
-       y1="314.468503937008"
-       x2="821.515748031496"
-       y2="323.326771653543"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line36" />
-    <line
-       x1="623.446995481471"
-       y1="353.976701865089"
-       x2="630.533609654699"
-       y2="353.976701865089"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line38" />
-    <line
-       x1="626.990302568085"
-       y1="350.433394778474"
-       x2="626.990302568085"
-       y2="357.520008951703"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line40" />
-    <line
-       x1="658.521508455537"
-       y1="318.897313882943"
-       x2="665.608122628766"
-       y2="318.897313882943"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line42" />
-    <line
-       x1="662.064815542151"
-       y1="315.354006796329"
-       x2="662.064815542151"
-       y2="322.440620969557"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line44" />
-  </g>
-  <g
-     inkscape:label="Measurements"
-     inkscape:groupmode="layer"
-     id="layer4">
-    <line
-       x1="874.665354330709"
-       y1="478.346456692913"
-       x2="874.665354330709"
-       y2="496.062992125984"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line47" />
-    <text
-       x="874.665354330709"
-       y="513.779527559055"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text49">203</text>
-    <line
-       x1="821.515748031496"
-       y1="478.346456692913"
-       x2="821.515748031496"
-       y2="496.062992125984"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line51" />
-    <text
-       x="821.515748031496"
-       y="513.779527559055"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text53">188</text>
-    <text
-       x="821.515748031496"
-       y="531.496062992126"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text55">Ø5</text>
-    <line
-       x1="662.066929133858"
-       y1="265.748031496063"
-       x2="662.066929133858"
-       y2="248.031496062992"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line57" />
-    <text
-       x="662.066929133858"
-       y="230.314960629921"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text59">143</text>
-    <text
-       x="662.066929133858"
-       y="212.59842519685"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text61">Ø4</text>
-    <line
-       x1="626.988188976378"
-       y1="265.748031496063"
-       x2="626.988188976378"
-       y2="248.031496062992"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line63" />
-    <text
-       x="626.988188976378"
-       y="230.314960629921"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text65">133.1</text>
-    <text
-       x="626.988188976378"
-       y="212.59842519685"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text67">Ø4</text>
-    <line
-       x1="208.523622047244"
-       y1="478.346456692913"
-       x2="208.523622047244"
-       y2="496.062992125984"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line69" />
-    <text
-       x="208.523622047244"
-       y="513.779527559055"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text71">15</text>
-    <text
-       x="208.523622047244"
-       y="531.496062992126"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text73">Ø5</text>
-    <line
-       x1="155.374015748031"
-       y1="478.346456692913"
-       x2="155.374015748031"
-       y2="496.062992125984"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line75" />
-    <text
-       x="155.374015748031"
-       y="513.779527559055"
-       font-size="8.85826771653543"
-       text-anchor="middle"
-       id="text77">0</text>
-    <line
-       x1="137.657480314961"
-       y1="283.464566929134"
-       x2="119.94094488189"
-       y2="283.464566929134"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line79" />
-    <text
-       x="102.224409448819"
-       y="283.464566929134"
-       font-size="8.85826771653543"
-       text-anchor="end"
-       id="text81">50</text>
-    <line
-       x1="892.38188976378"
-       y1="318.897637795276"
-       x2="910.09842519685"
-       y2="318.897637795276"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line83" />
-    <text
-       x="927.814960629921"
-       y="318.897637795276"
-       font-size="8.85826771653543"
-       text-anchor="start"
-       id="text85">40 Ø5, Ø4</text>
-    <line
-       x1="892.38188976378"
-       y1="353.976377952756"
-       x2="910.09842519685"
-       y2="353.976377952756"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line87" />
-    <text
-       x="927.814960629921"
-       y="353.976377952756"
-       font-size="8.85826771653543"
-       text-anchor="start"
-       id="text89">30.1 Ø4</text>
-    <line
-       x1="137.657480314961"
-       y1="425.196850393701"
-       x2="119.94094488189"
-       y2="425.196850393701"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line91" />
-    <text
-       x="102.224409448819"
-       y="425.196850393701"
-       font-size="8.85826771653543"
-       text-anchor="end"
-       id="text93">10 Ø5</text>
-    <line
-       x1="137.657480314961"
-       y1="460.629921259843"
-       x2="119.94094488189"
-       y2="460.629921259843"
-       style="stroke:rgb(0,0,0);stroke-width:0.345"
-       id="line95" />
-    <text
-       x="102.224409448819"
-       y="460.629921259843"
-       font-size="8.85826771653543"
-       text-anchor="end"
-       id="text97">0</text>
-  </g>
-  <g
-     inkscape:label="Annotations"
-     inkscape:groupmode="layer"
-     id="layer5">
-    <path
-       d="M 703.401067437561,255.004281310918 L 758.525819980933,310.121373127308 L 618.227768084667,450.43892505589 L 563.103015541296,395.3218332395 Z"
-       stroke-dasharray="10,10,2.5,10"
-       style="stroke:#000000;stroke-width:0.35433072;fill:none"
-       id="path100" />
-    <path
-       d="M 703.401067437561,255.004281310918 L 652.03482074942,203.645173027463 L 614.454985420063,241.230231579762 L 665.821232108205,292.589339863217 "
-       stroke-dasharray="10,10,2.5,10"
-       style="stroke:#000000;stroke-width:0.35433072;fill:none"
-       id="path102" />
-    <path
-       d="M 734.725257605674,333.925243543764 L 749.759281026593,348.957177675507 L 657.062353880846,441.666988771177 L 642.028330459926,426.635054639434 "
-       stroke-dasharray="10,10,2.5,10"
-       style="stroke:#000000;stroke-width:0.35433072;fill:none"
-       id="path104" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="45.714287"
-       y="61.237339"
-       id="text3081"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3083"
-         x="45.714287"
-         y="61.237339">1x</tspan></text>
-  </g>
+       id="platerect" width="719.291338582677" height="177.165354330709" x="155.374015748031" y="283.464566929134" ry="8.85826771653543" rx="8.85826771653543" />
+ </g>
+ <g inkscape:label="Holes" inkscape:groupmode="layer" id="layer2" >
+   <circle cx="208.523622047244" cy="425.196850393701" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="208.523622047244" cy="318.897637795276" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="821.515748031496" cy="425.196850393701" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="821.515748031496" cy="318.897637795276" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="626.990302568085" cy="353.976701865089" r="7.08661417322835" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="662.064815542151" cy="318.897313882943" r="7.08661417322835" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+ </g> <g inkscape:label="Centers" inkscape:groupmode="layer" id="layer3" >
+   <line x1="204.094488188976" y1="425.196850393701" x2="212.952755905512" y2="425.196850393701" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="208.523622047244" y1="420.767716535433" x2="208.523622047244" y2="429.625984251969" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="204.094488188976" y1="318.897637795276" x2="212.952755905512" y2="318.897637795276" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="208.523622047244" y1="314.468503937008" x2="208.523622047244" y2="323.326771653543" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="817.086614173228" y1="425.196850393701" x2="825.944881889764" y2="425.196850393701" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="821.515748031496" y1="420.767716535433" x2="821.515748031496" y2="429.625984251969" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="817.086614173228" y1="318.897637795276" x2="825.944881889764" y2="318.897637795276" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="821.515748031496" y1="314.468503937008" x2="821.515748031496" y2="323.326771653543" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="623.446995481471" y1="353.976701865089" x2="630.533609654699" y2="353.976701865089" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="626.990302568085" y1="350.433394778474" x2="626.990302568085" y2="357.520008951703" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="658.521508455537" y1="318.897313882943" x2="665.608122628766" y2="318.897313882943" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="662.064815542151" y1="315.354006796329" x2="662.064815542151" y2="322.440620969557" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+ </g> <g inkscape:label="Measurements" inkscape:groupmode="layer" id="layer4" >
+   <line x1="874.665354330709" y1="478.346456692913" x2="874.665354330709" y2="496.062992125984" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="874.665354330709" y="513.779527559055" font-size="8.85826771653543" text-anchor="middle">203</text>
+   <line x1="821.515748031496" y1="478.346456692913" x2="821.515748031496" y2="496.062992125984" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="821.515748031496" y="513.779527559055" font-size="8.85826771653543" text-anchor="middle">188</text>
+   <text x="821.515748031496" y="531.496062992126" font-size="8.85826771653543" text-anchor="middle">Ø5</text>
+   <line x1="662.066929133858" y1="265.748031496063" x2="662.066929133858" y2="248.031496062992" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="662.066929133858" y="230.314960629921" font-size="8.85826771653543" text-anchor="middle">143</text>
+   <text x="662.066929133858" y="212.59842519685" font-size="8.85826771653543" text-anchor="middle">Ø4</text>
+   <line x1="626.988188976378" y1="265.748031496063" x2="626.988188976378" y2="248.031496062992" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="626.988188976378" y="230.314960629921" font-size="8.85826771653543" text-anchor="middle">133.1</text>
+   <text x="626.988188976378" y="212.59842519685" font-size="8.85826771653543" text-anchor="middle">Ø4</text>
+   <line x1="208.523622047244" y1="478.346456692913" x2="208.523622047244" y2="496.062992125984" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="208.523622047244" y="513.779527559055" font-size="8.85826771653543" text-anchor="middle">15</text>
+   <text x="208.523622047244" y="531.496062992126" font-size="8.85826771653543" text-anchor="middle">Ø5</text>
+   <line x1="155.374015748031" y1="478.346456692913" x2="155.374015748031" y2="496.062992125984" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="155.374015748031" y="513.779527559055" font-size="8.85826771653543" text-anchor="middle">0</text>
+   <line x1="137.657480314961" y1="283.464566929134" x2="119.94094488189" y2="283.464566929134" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="102.224409448819" y="283.464566929134" font-size="8.85826771653543" text-anchor="end">50</text>
+   <line x1="892.38188976378" y1="318.897637795276" x2="910.09842519685" y2="318.897637795276" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="927.814960629921" y="318.897637795276" font-size="8.85826771653543" text-anchor="start">40 Ø5, Ø4</text>
+   <line x1="892.38188976378" y1="353.976377952756" x2="910.09842519685" y2="353.976377952756" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="927.814960629921" y="353.976377952756" font-size="8.85826771653543" text-anchor="start">30.1 Ø4</text>
+   <line x1="137.657480314961" y1="425.196850393701" x2="119.94094488189" y2="425.196850393701" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="102.224409448819" y="425.196850393701" font-size="8.85826771653543" text-anchor="end">10 Ø5</text>
+   <line x1="137.657480314961" y1="460.629921259843" x2="119.94094488189" y2="460.629921259843" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <text x="102.224409448819" y="460.629921259843" font-size="8.85826771653543" text-anchor="end">0</text>
+ </g> <g inkscape:label="Annotations" inkscape:groupmode="layer" id="layer5" >
+<path d="M 703.401067437561,255.004281310918 L 758.525819980933,310.121373127308 L 618.227768084667,450.43892505589 L 563.103015541296,395.3218332395 Z" stroke-dasharray="10,10,2.5,10" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
+<path d="M 703.401067437561,255.004281310918 L 652.03482074942,203.645173027463 L 614.454985420063,241.230231579762 L 665.821232108205,292.589339863217 " stroke-dasharray="10,10,2.5,10" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
+<path d="M 734.725257605674,333.925243543764 L 749.759281026593,348.957177675507 L 657.062353880846,441.666988771177 L 642.028330459926,426.635054639434 " stroke-dasharray="10,10,2.5,10" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
+ </g> <g inkscape:label="Texts" inkscape:groupmode="layer" id="layer6" >
+   <text x="70.8661417322835" y="106.299212598425" font-size="17.7165354330709" text-anchor="start">1 pcs, 4 mm Al</text>
+   <text x="70.8661417322835" y="70.8661417322835" font-size="17.7165354330709" text-anchor="start">mirror-1.plate - Fri Jan 27 21:08:50 2012</text>
+ </g>
 </svg>
