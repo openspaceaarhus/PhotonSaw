@@ -55,16 +55,16 @@
        id="platerect" width="354.330708661417" height="354.330708661417" x="337.854330708661" y="194.88188976378" ry="8.85826771653543" rx="8.85826771653543" />
  </g>
  <g inkscape:label="Holes" inkscape:groupmode="layer" id="layer2" >
-   <circle cx="380.374015748032" cy="226.771653543307" r="6.55511811023622" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
-   <circle cx="649.665354330709" cy="226.771653543307" r="6.55511811023622" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="380.374015748032" cy="226.771653543307" r="5.66929133858268" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
+   <circle cx="649.665354330709" cy="226.771653543307" r="5.66929133858268" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
    <circle cx="479.586614173228" cy="520.866141732283" r="17.7165354330709" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
    <circle cx="520.334645669291" cy="372.933070866142" r="7.08661417322835" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
    <circle cx="520.334645669291" cy="289.665354330709" r="7.08661417322835" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
  </g> <g inkscape:label="Centers" inkscape:groupmode="layer" id="layer3" >
-   <line x1="377.096456692913" y1="226.771653543307" x2="383.65157480315" y2="226.771653543307" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="380.374015748032" y1="223.494094488189" x2="380.374015748032" y2="230.049212598425" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="646.387795275591" y1="226.771653543307" x2="652.942913385827" y2="226.771653543307" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="649.665354330709" y1="223.494094488189" x2="649.665354330709" y2="230.049212598425" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="377.53937007874" y1="226.771653543307" x2="383.208661417323" y2="226.771653543307" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="380.374015748032" y1="223.937007874016" x2="380.374015748032" y2="229.606299212598" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="646.830708661417" y1="226.771653543307" x2="652.5" y2="226.771653543307" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
+   <line x1="649.665354330709" y1="223.937007874016" x2="649.665354330709" y2="229.606299212598" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <line x1="470.728346456693" y1="520.866141732283" x2="488.444881889764" y2="520.866141732283" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <line x1="479.586614173228" y1="512.007874015748" x2="479.586614173228" y2="529.724409448819" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <line x1="516.791338582677" y1="372.933070866142" x2="523.877952755906" y2="372.933070866142" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
@@ -76,7 +76,7 @@
    <text x="692.185039370079" y="602.362204724409" font-size="8.85826771653543" text-anchor="middle">100</text>
    <line x1="649.665354330709" y1="177.165354330709" x2="649.665354330709" y2="159.448818897638" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <text x="649.665354330709" y="141.732283464567" font-size="8.85826771653543" text-anchor="middle">88</text>
-   <text x="649.665354330709" y="124.015748031496" font-size="8.85826771653543" text-anchor="middle">Ø3.7</text>
+   <text x="649.665354330709" y="124.015748031496" font-size="8.85826771653543" text-anchor="middle">Ø3.2</text>
    <line x1="520.334645669291" y1="177.165354330709" x2="520.334645669291" y2="159.448818897638" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <text x="520.334645669291" y="141.732283464567" font-size="8.85826771653543" text-anchor="middle">51.5</text>
    <text x="520.334645669291" y="124.015748031496" font-size="8.85826771653543" text-anchor="middle">Ø4</text>
@@ -85,13 +85,13 @@
    <text x="479.586614173228" y="620.07874015748" font-size="8.85826771653543" text-anchor="middle">Ø10</text>
    <line x1="380.374015748032" y1="177.165354330709" x2="380.374015748032" y2="159.448818897638" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <text x="380.374015748032" y="141.732283464567" font-size="8.85826771653543" text-anchor="middle">12</text>
-   <text x="380.374015748032" y="124.015748031496" font-size="8.85826771653543" text-anchor="middle">Ø3.7</text>
+   <text x="380.374015748032" y="124.015748031496" font-size="8.85826771653543" text-anchor="middle">Ø3.2</text>
    <line x1="337.854330708661" y1="566.929133858268" x2="337.854330708661" y2="584.645669291339" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <text x="337.854330708661" y="602.362204724409" font-size="8.85826771653543" text-anchor="middle">0</text>
    <line x1="320.137795275591" y1="194.88188976378" x2="302.42125984252" y2="194.88188976378" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <text x="284.704724409449" y="194.88188976378" font-size="8.85826771653543" text-anchor="end">100</text>
    <line x1="320.137795275591" y1="226.771653543307" x2="302.42125984252" y2="226.771653543307" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="284.704724409449" y="226.771653543307" font-size="8.85826771653543" text-anchor="end">91 Ø3.7</text>
+   <text x="284.704724409449" y="226.771653543307" font-size="8.85826771653543" text-anchor="end">91 Ø3.2</text>
    <line x1="709.90157480315" y1="289.665354330709" x2="727.61811023622" y2="289.665354330709" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
    <text x="745.334645669291" y="289.665354330709" font-size="8.85826771653543" text-anchor="start">73.25 Ø4</text>
    <line x1="709.90157480315" y1="372.933070866142" x2="727.61811023622" y2="372.933070866142" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
@@ -104,6 +104,6 @@
 <path d="M 504.389763779528,409.251968503937 L 504.389763779528,150.590551181102 L 518.562992125984,150.590551181102 L 624.862204724409,260.433070866142 L 624.862204724409,409.251968503937 Z" stroke-dasharray="10,10,2.5,10" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
  </g> <g inkscape:label="Texts" inkscape:groupmode="layer" id="layer6" >
    <text x="70.8661417322835" y="106.299212598425" font-size="17.7165354330709" text-anchor="start">1 pc, 4 mm Al</text>
-   <text x="70.8661417322835" y="70.8661417322835" font-size="17.7165354330709" text-anchor="start">x.plate - Fri Jan 27 21:05:31 2012</text>
+   <text x="70.8661417322835" y="70.8661417322835" font-size="17.7165354330709" text-anchor="start">x.plate - Thu Feb  2 19:24:03 2012</text>
  </g>
 </svg>
