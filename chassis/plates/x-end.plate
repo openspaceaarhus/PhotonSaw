@@ -3,8 +3,8 @@
 
        <import from="maytec-30x30-end" cx="70" cy="75" rotate="0"/>
 
-       <hole cx="12" cy="101" d="3.2"/>
-       <hole cx="138" cy="101" d="3.2"/>
+       <hole cx="12" cy="101" d="3.3"/>
+       <hole cx="138" cy="101" d="3.3"/>
 
        <hole cx="75" cy="18" d="10"/>
 

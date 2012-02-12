@@ -1,0 +1,22 @@
+PlateCAD is a very simple CAD program which allows the user to create drawings of simple 2D plates.
+
+A side effect of restricting the program to construction of only simple primitives is that they can be produced from plate stock, using only a bench drill and a hacksaw, whereas a proper CAD program would allow any arbitrary shape to be constructed.
+
+
+The primitives available are:
+* Rectangular plate size, optionally with rounded corners.
+* Round hole location and diameter.
+* Arbitrary paths consisting of straight lines.
+* Informational marks.
+
+Other than the plate itself the other features can be located in a separate file and reused in several plates.
+
+
+The output is an Inkscape compatible SVG file containg several layers:
+* Plate: Only the rectangular plate.
+* Holes: The holes, as white circles of the appropriate size.
+* Marks: crosses at each hole center and informational marks.
+* Measurements: The x/y position of all marks along the edges of the plate.
+* Annotations: All the paths.
+
+The layers can be turned on and off in Inkscape to produce the needed work drawing or G-code for automated production.

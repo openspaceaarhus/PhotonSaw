@@ -1,6 +1,6 @@
 <holes>
-	<hole cx="4.5" cy="10.25" d="4"/>
-	<hole cx="4.5" cy="33.75" d="4"/>
+	<hole cx="4.5" cy="10.25" d="4.2"/>
+	<hole cx="4.5" cy="33.75" d="4.2"/>
 
 	<path d="M 0 0 L 0 73 L 4 73 L 34 42 L 34 0 Z" />
 </holes>
