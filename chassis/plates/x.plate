@@ -3,8 +3,8 @@
 
        <import from="laser-head" cx="47" cy="39.5" rotate="0"/>
 
-       <hole cx="12" cy="91" d="3.7"/>
-       <hole cx="88" cy="91" d="3.7"/>
+       <hole cx="12" cy="91" d="3.2"/>
+       <hole cx="88" cy="91" d="3.2"/>
 
        <hole cx="40" cy="8" d="10"/>
 </plate>
