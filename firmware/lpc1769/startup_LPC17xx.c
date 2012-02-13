@@ -174,6 +174,13 @@ void (* const g_pfnVectors[])(void) =
         PLL1_IRQHandler,           /* PLL1 (USB PLL) */
 };
 
+/*
+TODO: This is a terrible hack and should not be done this way, help!
+*/
+char __exidx_start[0];
+char __exidx_end[0];
+
+
 /*******************************************************************************
 * Function Name  : Reset_Handler
 * Description    : This is the code that gets called when the processor first starts execution
@@ -245,7 +252,7 @@ void Reset_Handler(void)
 }
 
 
-#if (1)
+#if (0)
 
 //*****************************************************************************
 // 

@@ -12,18 +12,6 @@
 #define TEST_UART (LPC_UART_TypeDef *)UART1
 #endif
 
-int c_entry(void)
-{
-
-    /* Loop forever */
-    while(1);
-    return 1;
-}
-
-
-
-
-
 volatile unsigned long SysTickCnt;
 void SysTick_Handler (void) {
   SysTickCnt++;
@@ -41,6 +29,11 @@ void uartSend(char *str) {
 
 int main(void) {
   SysTick_Config(SystemCoreClock/1000 - 1);
+
+  GPIO_SetDir(1, 1<<27, 1);
+  GPIO_SetValue(1, 1<<27);
+
+
 
   PINSEL_CFG_Type PinCfg;
 #if (UART_PORT == 0)
@@ -91,8 +84,6 @@ int main(void) {
   UART_TxCmd(TEST_UART, ENABLE);
 
   uartSend("Power Up!\n");
-
-  GPIO_SetDir(1, 1<<27, 1);
 
   while (1) {
     GPIO_SetValue(1, 1<<27);

@@ -20,6 +20,7 @@ OBJDUMP                 = arm-none-eabi-objdump
 OBJCOPY                 = arm-none-eabi-objcopy
 READELF                 = arm-none-eabi-readelf
 CODESIZE                = arm-none-eabi-size
+GDB                     = arm-none-eabi-gdb
 
 CFLAGS                  = 
 CFLAGS			+= -std=c99
@@ -62,6 +63,10 @@ flash: $(EXECNAME)
 	$(OBJCOPY) -O binary $(EXECNAME) $(PROJ).bin
 	$(FW)/fix-lpcchecksum $(PROJ).bin
 	openocd -f $(FW)/openocd.cfg -c 'flash write_image erase $(PROJ).bin' -c 'verify_image $(PROJ).bin' -c 'reset run'
+
+gdb:
+	$(GDB) -ex 'target remote localhost:3333' $(EXECNAME)
+
 
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~
