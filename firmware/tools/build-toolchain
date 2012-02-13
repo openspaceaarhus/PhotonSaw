@@ -17,6 +17,37 @@ my $GCC_URL = "$GNU_MIRROR/gcc/gcc-$GCC_VERSION";
 my $GDB_URL = "$GNU_MIRROR/gdb";
 my $BINUTILS_URL = "$GNU_MIRROR/binutils";
 
+my $issue = 'this OS';
+if (open I, "</etc/issue") {
+	$issue = <I>;
+	close I;
+
+	$issue =~ s/\\.*$//g;
+	$issue =~ s/\s+$//g;
+}
+
+if ($issue =~ /^Ubuntu/) {
+
+	if ($issue !~ /^Ubuntu 11.10/) {
+		warn "Notice that this script hasn't been tested on $issue, if it fails, try Ubuntu 11.10 in stead\n";
+	}
+
+	my @missing;
+	for my $p qw'build-essential zlib1g-dev libgmp-dev libmpfr-dev libmpc-dev texinfo libftdi-dev libncurses5-dev libreadline-dev' {
+		print "Checking that you have $p\n";
+		push @missing, $p if system("dpkg -s $p > /dev/null");
+	}
+
+	if (@missing) {
+		my $cmd = "sudo apt-get install ".join(' ', @missing);
+		print "You're missing some packages, trying to fix that with: $cmd\n";
+		system($cmd) and die "Failed to install missing packages, please run this command manually: $cmd";		
+	}
+
+} else {
+	warn "Notice that this script hasn't been tested on $issue, if it fails, try Ubuntu 11.10 in stead\n";
+}
+
 my @DIRS = (
     {
 	dir => "binutils-$BINUTILS_VERSION",
@@ -174,6 +205,7 @@ for my $d (@DIRS) {
     close D;
 }
 
-print "All done, toolchain can be found in $installDir\n";
+print "\n\nAll done, toolchain can be found in $installDir\n";
+print "Add to path with: export PATH=\${PATH}:$installDir/bin\n";
 exit 0;
 

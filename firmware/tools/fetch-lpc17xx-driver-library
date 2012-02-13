@@ -6,10 +6,11 @@ use File::Path;
 
 my $TRIM = 1;
 my $DIR = "lpc17xx.cmsis.driver.library";
-my $FN = "$DIR.zip";
+my $FN = "tarballs/$DIR.zip";
 my $URL = "http://ics.nxp.com/support/documents/microcontrollers/zip/$FN";
 
 if (!-f "$Bin/$FN") {
+	mkdir "$Bin/tarballs";
     system("wget", $URL) and die "Failed to fetch $URL";
 }
 
@@ -19,7 +20,7 @@ if (!-d $DIR) {
 
 my $gccRoot = `which arm-none-eabi-gcc`;
 if (!$gccRoot) {
-    die "Put arm-none-eabi-gcc in the path, if you need to build it first see: http://www.kunen.org/uC/gnu_tool.html";
+    die "Put arm-none-eabi-gcc in the path, if you need to build it run build-toolchain";
 }
 $gccRoot =~ s/\/bin\/[^\/]+$//;
 
