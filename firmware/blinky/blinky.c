@@ -11,9 +11,6 @@ void Delay (unsigned long tick) {
 }
 
 int main(void) {
-  int num = -1;
-  int dir =  1;
-
   SysTick_Config(SystemCoreClock/1000 - 1);
 
   GPIO_SetDir(1, 1<<27, 1);

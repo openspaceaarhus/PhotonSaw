@@ -60,7 +60,9 @@ my @DIRS = (
 	dir => "gcc-$GCC_VERSION",
 	url => $GCC_URL,
 	cfg => ['--target=arm-none-eabi', '--enable-interwork', '--enable-multilib', '--enable-languages=c,c++',
-		'--with-newlib', "--with-headers=../../src/newlib-$NEWLIB_VERSION/newlib/libc/include", '--with-system-zlib'],
+		'--with-newlib',
+		"--with-headers=../../src/newlib-$NEWLIB_VERSION/newlib/libc/include",
+		'--with-system-zlib'],
 	make=>'make all-gcc install-gcc',
 
 	make2=>'make all install',

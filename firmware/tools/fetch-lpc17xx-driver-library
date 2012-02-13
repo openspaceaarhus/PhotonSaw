@@ -6,16 +6,16 @@ use File::Path;
 
 my $TRIM = 1;
 my $DIR = "lpc17xx.cmsis.driver.library";
-my $FN = "tarballs/$DIR.zip";
+my $FN = "$DIR.zip";
 my $URL = "http://ics.nxp.com/support/documents/microcontrollers/zip/$FN";
 
-if (!-f "$Bin/$FN") {
-	mkdir "$Bin/tarballs";
-    system("wget", $URL) and die "Failed to fetch $URL";
+if (!-f "$Bin/tarballs/$FN") {
+    mkdir "$Bin/tarballs";
+    system("wget", '-O', "tarballs/$FN", $URL) and die "Failed to fetch $URL";
 }
 
 if (!-d $DIR) {
-    system("unzip", $FN) and die "Failed to unzip $FN";
+    system("unzip", "tarballs/$FN") and die "Failed to unzip tarballs/$FN";
 }
 
 my $gccRoot = `which arm-none-eabi-gcc`;

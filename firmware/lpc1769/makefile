@@ -6,8 +6,8 @@ MAPFILE=$(PROJ).map
 
 FW = ../lpc1769
 
-CSRC  = $(wildcard $(FW)/*.c) $(wildcard *.c)
-CPSRC = $(wildcard $(FW)/*.cpp) $(wildcard *.cpp)
+CSRC  = $(wildcard $(FW)/*.c) $(wildcard $(FW)/*/*.c) $(wildcard *.c) $(wildcard */*.c)
+CPSRC = $(wildcard $(FW)/*.cpp) $(wildcard $(FW)/*/*.cpp) $(wildcard *.cpp) $(wildcard */*.cpp)
 
 OBJS = $(CSRC:%.c=%.o) $(CPSRC:%.cpp=%.o)
 
@@ -22,9 +22,11 @@ READELF                 = arm-none-eabi-readelf
 CODESIZE                = arm-none-eabi-size
 
 CFLAGS                  = 
+CFLAGS			+= -std=c99
+CFLAGS			+= -Werror
+CFLAGS                  += -Wall 
 CFLAGS                  += -mcpu=cortex-m3
 CFLAGS                  += -mthumb 
-CFLAGS                  += -Wall 
 CFLAGS                  += -Os
 CFLAGS                  += -mapcs-frame 
 CFLAGS                  += -D__thumb2__=1 
@@ -38,12 +40,13 @@ CFLAGS                  += -march=armv7-m
 CFLAGS                  += -mfix-cortex-m3-ldrd  
 CFLAGS                  += -ffunction-sections 
 CFLAGS                  += -fdata-sections 
-CFLAGS                  += -I$(FW)
+CFLAGS                  += -fno-asynchronous-unwind-tables -fno-unwind-tables
+CFLAGS                  += -I$(FW) -I$(FW)/drivers
 
 LDFLAGS = -static -mcpu=cortex-m3 -mthumb -mthumb-interwork -Wl,--start-group 
 #LDFLAGS += -L$(THUMB2GNULIB) -L$(THUMB2GNULIB2)
-LDFLAGS += -lc -lg -lstdc++ -lsupc++ 
 LDFLAGS += -lgcc -lm 
+LDFLAGS += -lc -lg -lstdc++ -lsupc++ 
 LDFLAGS += -Wl,--end-group 
 LDFLAGS += -Wl,--gc-sections
 #LDFLAGS += -Wl,--print-gc-sections 
