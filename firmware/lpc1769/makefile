@@ -65,8 +65,7 @@ flash: $(EXECNAME)
 	openocd -f $(FW)/openocd.cfg -c 'flash write_image erase $(PROJ).bin' -c 'verify_image $(PROJ).bin' -c 'reset run'
 
 gdb:
-	$(GDB) -ex 'target remote localhost:3333' $(EXECNAME)
-
+	$(GDB) -x $(FW)/gdb.config $(EXECNAME)
 
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~
