@@ -33,13 +33,8 @@ int main(void) {
   GPIO_SetDir(1, 1<<27, 1);
   GPIO_SetValue(1, 1<<27);
 
-
-
   PINSEL_CFG_Type PinCfg;
 #if (UART_PORT == 0)
-  /*
-   * Initialize UART0 pin connect
-   */
   PinCfg.Funcnum = 1;
   PinCfg.OpenDrain = 0;
   PinCfg.Pinmode = 0;
@@ -51,9 +46,6 @@ int main(void) {
 #endif
   
 #if (UART_PORT == 1)
-  /*
-   * Initialize UART1 pin connect
-   */
   PinCfg.Funcnum = 2;
   PinCfg.OpenDrain = 0;
   PinCfg.Pinmode = 0;
@@ -68,7 +60,7 @@ int main(void) {
   /* Initialize UART Configuration parameter structure to default state: 9600 8n1 */
   UART_CFG_Type uartConfig;
   UART_ConfigStructInit(&uartConfig);
-  uartConfig.Baud_rate = 115000;
+  uartConfig.Baud_rate = 115200;
   UART_Init(TEST_UART, &uartConfig);
 
   /* Initialize FIFOConfigStruct to default state:
@@ -83,14 +75,14 @@ int main(void) {
   UART_FIFOConfig(TEST_UART, &fifoConfig);
   UART_TxCmd(TEST_UART, ENABLE);
 
-  uartSend("Power Up!\n");
+  uartSend("Power Up!\n\r");
 
   while (1) {
     GPIO_SetValue(1, 1<<27);
-    uartSend("On!\n");
+    uartSend("On!\n\r");
     Delay(500);
     GPIO_ClearValue(1, 1<<27);
-    uartSend("Off!\n");
+    uartSend("Off!\n\r");
     Delay(500);
   }
 }

@@ -105,7 +105,8 @@ static Status uart_set_divisors(LPC_UART_TypeDef *UARTx, uint32_t baudrate)
 	{
 		for (d = 0 ; d < m ; d++)
 		{
-		  divisor = ((uint64_t)uClk<<28)*m/(baudrate*(m+d));
+		  divisor = ((uint64_t)uClk<<28)*m;
+		  divisor /= ((uint64_t)baudrate*(m+d));
 		  current_error = divisor & 0xFFFFFFFF;
 
 		  tmp = divisor>>32;
