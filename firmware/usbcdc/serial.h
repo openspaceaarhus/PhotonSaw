@@ -14,7 +14,7 @@
  * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
  *---------------------------------------------------------------------------*/
 
-#define PORT_NUM	1
+#define PORT_NUM	0
 
 /*----------------------------------------------------------------------------
  Serial interface related prototypes
