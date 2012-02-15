@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date 2011-12-07T22:22:26 CET
+EESchema Schematic File Version 2  date 2012-02-15T21:12:24 CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -50,7 +50,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 2 10
 Title ""
-Date "7 dec 2011"
+Date "15 feb 2012"
 Rev ""
 Comp ""
 Comment1 ""
@@ -662,7 +662,7 @@ F 1 "+3.3V" H 2200 860 30  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L PNP Q3
+L BC807 Q3
 U 1 1 4EB6D10D
 P 2100 1000
 F 0 "Q3" H 2100 850 60  0000 R CNN
