@@ -1,5 +1,8 @@
 /**************************************************************************//**
- * @file     system_LPC17xx.c
+ * Notice: This is a modified version of the system_LPC17xx.c file shipped
+ * by NXP as part of the lpc17xx driver library, the following is
+ * the original copyright header:
+ *
  * @brief    CMSIS Cortex-M3 Device Peripheral Access Layer Source File
  *           for the NXP LPC17xx Device Series
  * @version  V1.03
@@ -25,11 +28,6 @@
 
 #include <stdint.h>
 #include "LPC17xx.h"
-
-
-/** @addtogroup LPC17xx_System
- * @{
- */
 
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> ------------------
@@ -287,11 +285,6 @@
 */
 
 
-
-/** @addtogroup LPC17xx_System_Defines  LPC17xx System Defines
-  @{
- */
-
 #define CLOCK_SETUP           1
 #define SCS_Val               0x00000020
 #define CLKSRCSEL_Val         0x00000001
@@ -487,8 +480,18 @@ void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
 
 }
 
+
+void check_failed(uint8_t *file, uint32_t line)
+{
+	/* User can add his own implementation to report the file name and line number,
+	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+
+	/* Infinite loop */
+	while(1);
+}
+
 /**
- * Initialize the system
+ * Initialize the system, called from the bootstrap, before main
  *
  * @param  none
  * @return none
@@ -496,7 +499,7 @@ void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
  * @brief  Setup the microcontroller system.
  *         Initialize the System.
  */
-void SystemInit (void)
+void SystemInit(void)
 {
 #if (CLOCK_SETUP)                       /* Clock Setup                        */
   LPC_SC->SCS       = SCS_Val;
@@ -561,22 +564,4 @@ void SystemInit (void)
 #else
   SCB->VTOR  = 0x00000000 & 0x3FFFFF80;
 #endif
-}
-
-/**
- * @}
- */
-
-/**
- * @}
- */
-
-
-void check_failed(uint8_t *file, uint32_t line)
-{
-	/* User can add his own implementation to report the file name and line number,
-	 ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-
-	/* Infinite loop */
-	while(1);
 }

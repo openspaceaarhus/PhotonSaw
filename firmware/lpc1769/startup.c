@@ -1,4 +1,8 @@
 /****************************************************************************//**
+ * Notice: This is a modified version of the system_LPC17xx.c file shipped
+ * by NXP as part of the lpc17xx driver library, the following is
+ * the original copyright header:
+ *
  * @file :    startup_LPC17xx.c
  * @brief : CMSIS Cortex-M3 Core Device Startup File
  * @version : V1.01
@@ -24,6 +28,7 @@
 
 #include "cpu_def.h"
 #include "LPC17xx.h"
+#include "board.h"
 
 #define WEAK __attribute__ ((weak))
 //*****************************************************************************
@@ -224,8 +229,6 @@ void Reset_Handler(void)
         *(pulDest++) = 0;
     }
 
-    SystemInit();
-
     // copy initial values and set irq table
     if(irq_handler_table && irq_table_size) {
         int i;
@@ -238,9 +241,13 @@ void Reset_Handler(void)
         SCB->VTOR=(uint32_t)irq_handler_table;
     }
 
-    //
+	// Start the CPU (PLL, FLASH)
+    SystemInit();
+
+	// Configure the rest of the board 
+    boardInit();
+
     // Call the application's entry point.
-    //
     main();
 
     /* disable interrupts */

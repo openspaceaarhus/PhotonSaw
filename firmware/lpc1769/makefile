@@ -1,13 +1,27 @@
 # Set the PROJ variable before including this make file.
 # PROJ = blinky
+# BOARD = photonsaw-v1
+
+# Default to version 1 of the PhotonSaw board
+BOARD ?= photonsaw-v1
 
 EXECNAME=$(PROJ).elf
 MAPFILE=$(PROJ).map
 
+
 FW = ../lpc1769
 
-CSRC  = $(wildcard $(FW)/*.c) $(wildcard $(FW)/*/*.c) $(wildcard *.c) $(wildcard */*.c)
-CPSRC = $(wildcard $(FW)/*.cpp) $(wildcard $(FW)/*/*.cpp) $(wildcard *.cpp) $(wildcard */*.cpp)
+CSRC  = $(wildcard $(FW)/*.c)
+CSRC += $(wildcard $(FW)/drivers/*.c)
+CSRC += $(wildcard $(FW)/$(BOARD)/*.c)
+CSRC += $(wildcard *.c)
+CSRC += $(wildcard */*.c)
+
+CPSRC  = $(wildcard $(FW)/*.cpp)
+CPSRC += $(wildcard $(FW)/drivers/*.cpp)
+CPSRC += $(wildcard $(FW)/$(BOARD)/*.cpp)
+CPSRC += $(wildcard *.cpp)
+CPSRC += $(wildcard */*.cpp)
 
 OBJS = $(CSRC:%.c=%.o) $(CPSRC:%.cpp=%.o)
 
@@ -42,7 +56,7 @@ CFLAGS                  += -mfix-cortex-m3-ldrd
 CFLAGS                  += -ffunction-sections 
 CFLAGS                  += -fdata-sections 
 CFLAGS                  += -fno-asynchronous-unwind-tables -fno-unwind-tables
-CFLAGS                  += -I$(FW) -I$(FW)/drivers
+CFLAGS                  += -I$(FW) -I$(FW)/drivers -I$(FW)/$(BOARD)
 
 LDFLAGS = -static -mcpu=cortex-m3 -mthumb -mthumb-interwork -Wl,--start-group 
 #LDFLAGS += -L$(THUMB2GNULIB) -L$(THUMB2GNULIB2)
@@ -69,4 +83,3 @@ gdb:
 
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~
-
