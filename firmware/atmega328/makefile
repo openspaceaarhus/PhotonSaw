@@ -2,7 +2,10 @@
 
 AVR = atmega328p
 #PROG = -c usbtiny
-PROG = -c avrispv2 -P usb
+AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
+
+# Allow the user to have a different programmer.
+-include $(HOME)/.makefile
 
 FW = ../atmega328
 
@@ -12,25 +15,25 @@ CPSRC = $(wildcard $(FW)/*.cpp) $(wildcard $(FW)/*/*.cpp) $(wildcard *.cpp) $(wi
 OBJS = $(CSRC:%.c=%.o) $(CPSRC:%.cpp=%.o)
 
 CC=avr-gcc
-CFLAGS  = -Os -Wall -pedantic-errors -Werror -mcall-prologues -mmcu=$(AVR) -std=c99
+SIZE=avr-size
+CFLAGS  = -Os -Wall -pedantic-errors -Werror -mcall-prologues -mmcu=$(AVR) -std=c99 -g
 CFLAGS  += -I$(FW)
 
+CPPFLAGS=-fno-exceptions
+
+LDFLAGS = -Wl,--gc-sections -Wl,-Map,$(PROJ).map -mmcu=$(AVR) -lm
+
 program : $(PROJ).hex
-	avrdude $(PROG) -p $(AVR) -e -U flash:w:$(PROJ).hex
-
-# Internal oscilator:
-fuses:
-	avrdude $(PROG) -p $(AVR) -U lfuse:w:0x4e:m -U hfuse:w:0xdd:m
-
-#$(PROG).obj : *.c
-#	$(CC) $(CFLAGS) uart.c votron.c sleep.c -o $@
-
+	avr-objcopy -O ihex $(PROJ).elf $(PROJ).hex
+	avrdude $(AVR_ISP_PROGRAMMER) -p $(AVR) -B 1 -e -U flash:w:$(PROJ).hex
 
 $(PROJ).hex : $(OBJS)
-	$(CC) $(OBJS) -o $(PROJ).hex
-#	avr-ld 
-#	avr-objcopy -R .eeprom -O ihex $< $(OBJ
+	$(CC) $(LDFLAGS) $(OBJS) -o $(PROJ).elf
+
+# Internal oscilator 8MHz, no prescaler, BOD=2.7V:
+fuses:
+	avrdude $(AVR_ISP_PROGRAMMER) -p $(AVR) -B 100 -U lfuse:w:0xe2:m -U hfuse:w:0xd9:m -U efuse:w:0x05:m
 
 clean :
-	rm -f *.hex *.obj *.o
+	rm -f $(PROJ).hex $(PROJ).elf $(PROJ).map $(OBJS) 
 
