@@ -68,10 +68,13 @@ LDFLAGS += -Wl,--gc-sections
 LDFLAGS += -T $(FW)/lpc1769.ld
 LDFLAGS += -Xlinker -Map -Xlinker $(PROJ).map
 
-$(EXECNAME): $(OBJS)
+$(EXECNAME): $(FW)/$(BOARD)/board-pins.h $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXECNAME)
 #	$(OBJCOPY) -O ihex $(EXECNAME) $(PROJ).hex
 	$(CODESIZE) $(EXECNAME)
+
+$(FW)/$(BOARD)/board-pins.h: $(FW)/$(BOARD)/board-pins.h.pl
+	 $(FW)/$(BOARD)/board-pins.h.pl
 
 flash: $(EXECNAME)
 	$(OBJCOPY) -O binary $(EXECNAME) $(PROJ).bin
@@ -82,4 +85,4 @@ gdb:
 	$(GDB) -x $(FW)/gdb.config $(EXECNAME)
 
 clean:
-	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~
+	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~ $(FW)/$(BOARD)/board-pins.h

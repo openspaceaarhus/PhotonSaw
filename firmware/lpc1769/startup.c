@@ -241,10 +241,10 @@ void Reset_Handler(void)
         SCB->VTOR=(uint32_t)irq_handler_table;
     }
 
-	// Start the CPU (PLL, FLASH)
+    // Start the CPU (PLL, FLASH)
     SystemInit();
 
-	// Configure the rest of the board 
+    // Configure the rest of the board 
     boardInit();
 
     // Call the application's entry point.
