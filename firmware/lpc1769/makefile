@@ -13,6 +13,7 @@ FW = ../lpc1769
 
 CSRC  = $(wildcard $(FW)/*.c)
 CSRC += $(wildcard $(FW)/drivers/*.c)
+CSRC += $(wildcard $(FW)/newlib/*.c)
 CSRC += $(wildcard $(FW)/$(BOARD)/*.c)
 CSRC += $(wildcard *.c)
 CSRC += $(wildcard */*.c)
