@@ -86,7 +86,7 @@ my @DIRS = (
 	url => $NEWLIB_URL,
 
 	cfg => ['--target=arm-none-eabi', '--enable-interwork', '--enable-multilib',
-		'--with-cpu=cortex-m3', '--with-mode=thumb',
+		'--with-cpu=cortex-m3', '--with-mode=thumb', '--disable-newlib-supplied-syscalls'
 	    ],
 	make => 'make all install',
     },

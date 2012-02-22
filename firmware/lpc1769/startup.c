@@ -101,9 +101,6 @@ extern unsigned long _ebss;			/* end address for the .bss section. defined in li
 
 extern void _estack;		/* init value for the stack pointer. defined in linker script */
 
-extern unsigned long _mem_app_start;
-
-
 
 /* Private typedef -----------------------------------------------------------*/
 /* function prototypes ------------------------------------------------------*/
@@ -249,13 +246,8 @@ void Reset_Handler(void)
 
     // Call the application's entry point.
     main();
-
-    /* disable interrupts */
-    NVIC->ICER[0] = 0xffffffff;
-    NVIC->ICER[1] = 0x00000007;
-    __set_MSP(*(unsigned long *)(&_mem_app_start));         /* Stack pointer */
-    fnc_entry = (FNC)*(unsigned long *)(&_mem_app_start+1); /* Reset handler */
-    fnc_entry();
+    
+    while (1) {}; // Wait for the sweet release of death by watchdog
 }
 
 

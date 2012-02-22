@@ -1,7 +1,5 @@
 /* From: http://ulan.git.sourceforge.net/git/gitweb.cgi?p=ulan/sysless;a=blob;f=board/arm/lpc17xx-common/libs/ldscripts/lpc1768.ld-cfg;h=c37ec2de11b5b3d9667a89257c4ec3acecb09b64;hb=HEAD */
 
-KEYVAL_PAGE_LEN = 0x00001000;
-
 PROVIDE( __bbconf_pt_addr = 0 );
 
 MEMORY
@@ -11,9 +9,7 @@ MEMORY
 
 
         /* Main ROM region - 512k for LPC176[89] */
-        FLASHBOOT (rx) : ORIGIN = 0x00000000, LENGTH = 0x00007000
-        KEYVAL (rx) : ORIGIN = 0x00007000, LENGTH = 0x00002000
-        FLASHAPP (rx) : ORIGIN = 0x00009000, LENGTH = 0x00077000
+        FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 512k
 
         /* local static RAM - 32k for LPC176[89] */
         IRAM0 (rwx) : ORIGIN = 0x10000000, LENGTH = 32k
@@ -55,7 +51,7 @@ SECTIONS
 		*(.gcc_except_table)
 		*(.rodata .rodata*)
 		*(.gnu.linkonce.r.*)
-	} >FLASHBOOT
+	} >FLASH
 
 	/******************************************/
 	/* .ctors .dtors are used for c++ constructors/destructors */
@@ -66,7 +62,7 @@ SECTIONS
 		KEEP(*(SORT(.ctors.*)))
 		KEEP(*(.ctors))
 		PROVIDE(__ctors_end = .);
-	} >FLASHBOOT
+	} >FLASH
 
 	.dtors :
 	{
@@ -80,20 +76,8 @@ SECTIONS
 		/* End Of .text section */
 		_etext = .;
                 _sifastcode = .;
-	} >FLASHBOOT
+	} >FLASH
 	
-
-        .keyval :
-        {
-                PROVIDE (_keyval_start = .);
-                PROVIDE (_keyval_page_len = KEYVAL_PAGE_LEN );
-        }> KEYVAL
-
-        .app :
-        {
-                PROVIDE (_mem_app_start = . );
-          } > FLASHAPP
-
         .irqarea (NOLOAD):
         {
                 . = ALIGN (256);
@@ -117,7 +101,7 @@ SECTIONS
           . = ALIGN (4);
           _efastcode = . ;
           _sidata = .;
-        } >IRAM0 AT>FLASHBOOT
+        } >IRAM0 AT>FLASH
 
 	/******************************************/
 	/* This used for USB RAM section */
@@ -144,7 +128,7 @@ SECTIONS
 
 		. = ALIGN(4);
 		_edata = . ;
-	} >IRAM0 AT>FLASHBOOT
+	} >IRAM0 AT>FLASH
 
 	/******************************************/
 	/* For no-init variables section */

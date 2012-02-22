@@ -3,7 +3,7 @@
 //#include <sys/sysdefs.h>
 
 // One k ought to be enough for everyone!
-#define HEAPSIZE 1024
+#define HEAPSIZE 8*1024
 unsigned char heap[HEAPSIZE];
 
 

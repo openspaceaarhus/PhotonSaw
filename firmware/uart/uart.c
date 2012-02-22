@@ -1,5 +1,6 @@
 #include "board.h"
 #include <string.h>
+#include <stdio.h>
 
 volatile unsigned long SysTickCnt;
 void SysTick_Handler (void) {
@@ -35,5 +36,8 @@ int main(void) {
     GPIO_SET(IO_LASER_FIRE);
     uartSend("Off!\n\r");
     Delay(500);
+
+
+    printf("Hest: 0x%0x\n", 42);
   }
 }
