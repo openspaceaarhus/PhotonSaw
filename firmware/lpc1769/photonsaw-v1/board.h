@@ -35,13 +35,13 @@
 #define IO_P4 (4 << 8)
 
 #include "board-pins.h"
+extern void configPin(const uint32_t pin);
 
 extern uint32_t BAUD[];
 extern LPC_UART_TypeDef* UARTS[];
 extern LPC_UART_TypeDef* DEBUG_UART;
 extern LPC_UART_TypeDef* WATCHDOG_UART;
 extern LPC_UART_TypeDef* CHILLER_UART;
-
 
 // TODO: Make macros for manipulating GPIO pins (I/O) via memory banding
 

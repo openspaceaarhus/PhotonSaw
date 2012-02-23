@@ -119,3 +119,10 @@ __DATA__
 
 #define IO_CHILLER_TX    ((1<<24) | (0<<16) | IO_P0 | 10)
 #define IO_CHILLER_RX    ((1<<24) | (0<<16) | IO_P0 | 11)
+
+// The USB port, if nothing else, then for setting the mode.
+#define IO_USB_CONN      ((1<<24) |           IO_P2 | 9)
+#define IO_USB_D_PLUS    ((1<<24) |           IO_P0 | 29)
+#define IO_USB_D_MINUS   ((1<<24) |           IO_P0 | 30)
+
+

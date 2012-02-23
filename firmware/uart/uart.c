@@ -1,4 +1,5 @@
 #include "board.h"
+#include "adc.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -27,17 +28,20 @@ int main(void) {
     GPIO_SET(IO_ASSIST_AIR);
     GPIO_CLEAR(IO_EXHAUST);
     GPIO_CLEAR(IO_LASER_FIRE);
-    uartSend("On!\n\r");
     Delay(500);
+
+    int airflow = readADC(IO_AIRFLOW);
 
     GPIO_CLEAR(IO_LED);
     GPIO_CLEAR(IO_ASSIST_AIR);
     GPIO_SET(IO_EXHAUST);
     GPIO_SET(IO_LASER_FIRE);
-    uartSend("Off!\n\r");
     Delay(500);
-
-
-    printf("Hest: 0x%0x\n", 42);
+    
+    iprintf("Airflow: %d\n", airflow);
+    iprintf("T out:   %d\n", readADC(IO_TEMP_OUT));
+    iprintf("T in:    %d\n", readADC(IO_TEMP_IN));
+    iprintf("T in:    %d\n", readADC(IO_TEMP_INTERNAL));
+    iprintf("Supply:  %d\n", readADC(IO_VOLTAGE));    
   }
 }
