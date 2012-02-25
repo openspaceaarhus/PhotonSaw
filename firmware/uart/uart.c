@@ -38,10 +38,11 @@ int main(void) {
     GPIO_SET(IO_LASER_FIRE);
     Delay(500);
     
-    iprintf("Airflow: %d\n", airflow);
-    iprintf("T out:   %d\n", readADC(IO_TEMP_OUT));
-    iprintf("T in:    %d\n", readADC(IO_TEMP_IN));
-    iprintf("T in:    %d\n", readADC(IO_TEMP_INTERNAL));
-    iprintf("Supply:  %d\n", readADC(IO_VOLTAGE));    
+    iprintf("Airflow: %d\n\r", airflow);
+    iprintf("T out:   %d\n\r", readADC(IO_TEMP_OUT));
+    iprintf("T in:    %d\n\r", readADC(IO_TEMP_IN));
+    iprintf("T inter: %d\n\r", readADC(IO_TEMP_INTERNAL));
+    iprintf("Supply:  %d\n\r", readADC(IO_VOLTAGE));    
+    
   }
 }

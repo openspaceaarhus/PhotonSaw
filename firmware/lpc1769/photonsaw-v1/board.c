@@ -55,8 +55,8 @@ void configUart(const uint32_t txpin, const uint32_t rxpin) {
 
 void configureADC(const uint32_t pin) {
   const int channel = IO_CHAN(pin);
-  ADC_Init(LPC_ADC, 200000);
-  ADC_IntConfig(LPC_ADC, channel, DISABLE);
+  ADC_IntConfig( LPC_ADC, channel, DISABLE);
+  ADC_ChannelCmd(LPC_ADC, channel, ENABLE);
   configPin(pin);
 }
 
@@ -72,12 +72,16 @@ void boardInit() {
   CHILLER_UART = UARTS[IO_CHAN(IO_CHILLER_TX)];
 
   // Configure the ADCs
-  configureADC(IO_AIRFLOW);
+  ADC_Init(LPC_ADC, 200000);
+  configureADC(IO_AIRFLOW); 
+  
   configureADC(IO_TEMP_OUT);
   configureADC(IO_TEMP_IN);
   configureADC(IO_TEMP_INTERNAL);
   configureADC(IO_VOLTAGE);
-  
+  ADC_StartCmd(LPC_ADC, ADC_START_CONTINUOUS);
+  ADC_BurstCmd(LPC_ADC, 1);
+   
   // Configure the PWM outputs
   
 
