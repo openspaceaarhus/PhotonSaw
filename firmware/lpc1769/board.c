@@ -3,6 +3,7 @@
 #include "board.h"
 #include "adc.h"
 #include "uarts.h"
+#include "pwm.h"
 
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_adc.h"
@@ -27,7 +28,8 @@ void configPin(const uint32_t pin) {
 void boardInit() {    
   initUARTs();
   initADC();
-
+  initPWM();
+  
   
    
   /*

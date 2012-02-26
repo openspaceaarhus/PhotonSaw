@@ -1,5 +1,6 @@
 #include "board.h"
 #include "adc.h"
+#include "pwm.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -19,6 +20,10 @@ int main(void) {
 
   iprintf("Power Up!\n\r");
 
+  setPWM(IO_CHAN(IO_X_CURRENT), 128);
+  setPWM(IO_CHAN(IO_Y_CURRENT), 256);
+  setPWM(IO_CHAN(IO_Z_CURRENT), 0);
+  
   while (1) {
     GPIO_SET(IO_LED);
     GPIO_SET(IO_ASSIST_AIR);
@@ -39,7 +44,6 @@ int main(void) {
 	   readNTCres(IO_CHAN(IO_TEMP_OUT)),
 	   readNTCcelcius(IO_CHAN(IO_TEMP_OUT))
 	   );
-
 
     printf("T in:    %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_IN)));
     printf("T inter: %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL)));
