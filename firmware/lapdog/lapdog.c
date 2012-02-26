@@ -72,6 +72,7 @@ int main(void) {
 
   DDRB  |= _BV(PB2);  // Enable Motors output
   DDRC  |= _BV(PC1);  // Enable LASER outout 
+  run();
   
   wdt_enable(WDTO_4S);
   
@@ -90,12 +91,9 @@ int main(void) {
     }
 
     if (frame & 8) {
-      led1(!(frame & 1));
-      run();
-  
+      led1(!(frame & 1));  
     } else {
       led2(!(frame & 1));
-      stop();
     }
     
     sleepMs(50);

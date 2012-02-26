@@ -4,8 +4,7 @@
 #include "lpc17xx_gpio.h"
 #include "lpc17xx_uart.h"
 
-// Actual voltage measured on the board
-#define VDD_MV 3293
+#include "board-config.h"
 
 /*
   Set up port configuration constants, these constants should be the only
