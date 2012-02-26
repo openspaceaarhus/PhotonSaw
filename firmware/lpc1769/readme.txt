@@ -19,6 +19,8 @@ Files:
   startup.c: Boot strap code run before main, calls out to the board specific boardInit()
              and the application main()
 
+  adc.h & adc.c: ADC "API" routines
+
   fix-lpcchecksum: Perl script used to make the interrupt vector checksum correct in a bin file.
 
   openocd.cfg: Configuration file used to start and configure openocd (use make flash)
@@ -26,3 +28,15 @@ Files:
   gdb.cfg: Configuration file loaded by gdb (use make gdb once openocd is started)
 
   makefile: Do not run this manually, include it from the application specific directories
+
+
+
+
+*** TODO ***
+
+Each UART should have a circular receive and transmit buffer.
+
+Block only when writing to a full buffer.
+
+Flow control on usbcdc?
+

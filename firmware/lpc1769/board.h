@@ -4,6 +4,9 @@
 #include "lpc17xx_gpio.h"
 #include "lpc17xx_uart.h"
 
+// Actual voltage measured on the board
+#define VDD_MV 3293
+
 /*
   Set up port configuration constants, these constants should be the only
   place with port specific references, each constant should fit in a 32 bit int.
@@ -19,7 +22,6 @@
   Use these macros to access the bits:
 */
 
-
 #define OUTPUT (1<<31)
 
 #define IO_PIN(x)  ( (x)        & 31)
@@ -34,20 +36,19 @@
 #define IO_P3 (3 << 8)
 #define IO_P4 (4 << 8)
 
+// This file is supplied from the board subdirectory and should never be include from other files:
 #include "board-pins.h"
-extern void configPin(const uint32_t pin);
 
-extern uint32_t BAUD[];
-extern LPC_UART_TypeDef* UARTS[];
-extern LPC_UART_TypeDef* DEBUG_UART;
-extern LPC_UART_TypeDef* WATCHDOG_UART;
-extern LPC_UART_TypeDef* CHILLER_UART;
+void configPin(const uint32_t pin);
 
 // TODO: Make macros for manipulating GPIO pins (I/O) via memory banding
 
 #define GPIO_SET(x)   GPIO_SetValue(IO_PORT(x), 1<<IO_PIN(x))
 #define GPIO_CLEAR(x) GPIO_ClearValue(IO_PORT(x), 1<<IO_PIN(x))
 //#define GPIO_GET(x) GPIO_GetValue(IO_PORT(x), IO_PIN(x))
+
+// Use this macro with a pin config constant:
+#define READ_ADC(pin) readADC(IO_CHAN(pin))
 
 void boardInit();
 

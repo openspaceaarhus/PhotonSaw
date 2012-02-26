@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include "board.h"
+#include "uarts.h"
 
 int _close(int file) { return -1; }
 
