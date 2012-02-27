@@ -25,16 +25,20 @@ void configPin(const uint32_t pin) {
   GPIO_SetDir(IO_PORT(pin), 1<<IO_PIN(pin), IO_OUTPUT(pin) ? 1 : 0);
 }
 
-void boardInit() {    
+void boardInit() {
   initUARTs();
   initADC();
   initPWM();
   
-  
+  // Motor drivers are active low, so let's disable all of them, until the drivers turn them on:
+  GPIO_SET(IO_X_ENABLE);
+  GPIO_SET(IO_Y_ENABLE);
+  GPIO_SET(IO_Z_ENABLE);
+  GPIO_SET(IO_A_ENABLE); 
    
   /*
     Set the simple I/O configuration for all the pins we use,    
-    this will ensure that all pins have had its function selected.
+    this will ensure that all pins have had its function selected
   */
   for (int i=0;i<ALL_PINS_SIZE;i++) {
     configPin(ALL_PINS[i]);

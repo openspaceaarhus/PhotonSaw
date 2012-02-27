@@ -1,4 +1,4 @@
-PCBNEW-BOARD Version 1 date 2012-02-19T21:02:55 CET
+PCBNEW-BOARD Version 1 date 2012-02-26T23:28:15 CET
 
 # Created by Pcbnew(2011-05-25)-stable
 
@@ -21,7 +21,7 @@ $EndGENERAL
 $SHEETDESCR
 Sheet A4 11700 8267
 Title ""
-Date "19 feb 2012"
+Date "26 feb 2012"
 Rev ""
 Comp ""
 Comment1 ""
@@ -37,7 +37,7 @@ Layer[0] Back signal
 Layer[1] Jumper_Back jumper
 Layer[2] Jumper_Front jumper
 Layer[15] Front signal
-TrackWidth 787
+TrackWidth 80
 TrackWidthList 80
 TrackWidthList 157
 TrackWidthList 787
@@ -13967,11 +13967,11 @@ Po 0 46096 48938 47096 48938 787 -1
 De 0 0 1 0 C00000
 Po 0 46696 38538 46721 38563 157 -1
 De 15 0 1 0 0
-Po 0 40921 30913 43621 30913 157 -1
+Po 0 40921 30913 43296 30913 157 -1
 De 15 0 1 0 400000
-Po 0 43877 30657 44971 30657 157 -1
+Po 0 43552 30657 44971 30657 157 -1
 De 15 0 1 0 800000
-Po 0 43621 30913 43877 30657 157 -1
+Po 0 43296 30913 43552 30657 157 -1
 De 15 0 1 0 0
 Po 0 48346 24963 48346 26713 787 -1
 De 15 0 1 0 0

@@ -19,11 +19,12 @@ int main(void) {
   SysTick_Config(SystemCoreClock/1000 - 1);
 
   iprintf("Power Up!\n\r");
-
+  /*
   setPWM(IO_CHAN(IO_X_CURRENT), 128);
   setPWM(IO_CHAN(IO_Y_CURRENT), 256);
   setPWM(IO_CHAN(IO_Z_CURRENT), 0);
-  
+  */
+
   while (1) {
     GPIO_SET(IO_LED);
     GPIO_SET(IO_ASSIST_AIR);

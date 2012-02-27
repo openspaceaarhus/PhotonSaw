@@ -38,5 +38,35 @@ Each UART should have a circular receive and transmit buffer.
 
 Block only when writing to a full buffer.
 
-Flow control on usbcdc?
 
+
+*** Flow control ***
+
+Ignore it completely for all channels except USB-CDC and just go slow enough the receiver is always
+able to keep up.
+
+For the USB connection it's certainly possible to fill up the receive buffer,
+so perhaps we should reply to each command with a status message telling
+the client how much buffer space is available, so the client can figure out ahead of time
+if it should wait before sending a command.
+
+A good way to ensure proper handling of buffers and avoiding overruns is to package every command
+in frames that first tells the controller how long the command is going to be before sending it.
+
+P:Controlling PC
+M:MCU
+
+P:gcode 9        <--- Here comes an 9 char long g-code command
+P:G0 X1 Y2       <--- The command itself, read from the input file.
+C:ok 9991/10000  <--- 9991 bytes of 10000 are available in the g-code buffer
+
+
+Other meta-commands could be implemented, like one for getting the current buffer status:
+
+P:buffer         <--- Hey what's going on?
+C:ok 40/10000    <--- 40 bytes of 10000 are available in the g-code buffer
+
+
+Perhaps a non-flow-control aware fallback could be implemented that simply discards overflowing
+gcode commands and returns an error, that way legacy applications will be able to talk to the
+controller, but not as efficiently as a flow control aware one.

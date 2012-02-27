@@ -10,9 +10,11 @@ needed to build the lpc1769 based firmware.
 
 blinky contains a very minimal test project that simply blinks the status LED on the PhotonSaw board.
 
-uart blinky plus output via debug serial port
+uart blinky plus output via debug serial port and ADC readout
 
 usbcdc gives the USB a workout.
+
+stepper is a step motor test program
 
 
 ATMega328 software:
@@ -20,5 +22,5 @@ ATMega328 software:
 The atmega328 directory contains the framework for the AVR based part of the firmware:
 
 lapdog is a sample firmware for the watchdog MCU, it doesn't really protect
-anything, it just flashes the LEDs and the enable outputs.
+anything, it just flashes the LEDs and enables both steppers and the LASER.
 
