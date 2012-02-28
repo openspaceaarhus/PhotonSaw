@@ -1,7 +1,7 @@
-<plate width="70" height="30" radius="2.5">
-       <text x="20" y="30">4 pcs, 10 mm Brass</text>
+<plate width="75" height="30" radius="2.5">
+       <text x="20" y="30">4 pcs, 4 mm Al</text>
 
        <hole cx="10" cy="15" d="5"/>
        <hole cx="30" cy="15" d="5"/>
-       <hole cx="60" cy="15" d="6.8"/>
+       <hole cx="60" cy="15" d="13"/>
 </plate>

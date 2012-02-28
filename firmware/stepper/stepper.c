@@ -19,12 +19,12 @@ void Delay (unsigned long tick) {
 }
 
 int main(void) {
-  SysTick_Config(SystemCoreClock/5000 - 1);
+  SysTick_Config(SystemCoreClock/100 - 1);
 
   iprintf("Power Up!\n\r");
 
   Stepper s = stpInit(IO_X_STEP, IO_X_DIR, IO_X_ENABLE, IO_X_CURRENT, IO_X_USM0, IO_X_USM1);
-  stpCurrent(&s, 350);
+  stpCurrent(&s, 1800);
   stpMicrostep(&s, 3);
   stpEnable(&s);
    
