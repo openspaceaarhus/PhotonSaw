@@ -82,6 +82,7 @@ sub fix {
 	    
 	    $txt =~ s/\r//g; # Don't use DOS line ends.
 	    $txt =~ s/lpc17xx\.h/LPC17xx.h/gi if $e =~ /(h|c)$/; # Fix include statements to use correct case.
+		$txt =~ s/NONE_BLOCKING/NON_BLOCKING/g;
 
 	    if ($e =~ /^makefile/) {
 		my $nt = '';
