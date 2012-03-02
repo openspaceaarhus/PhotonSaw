@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin qw($Bin);
+
+my @all;
+opendir D, $Bin or die $!;
+for my $fn (sort grep {/\.svg$/} readdir D) {
+    system('inkscape', "--export-pdf=$fn.pdf", $fn) and die "Urgh $fn";
+    push @all, "$fn.pdf";
+}
+closedir D;
+
+system("gs", "-dBATCH", "-dNOPAUSE",
+       "-q", "-sDEVICE=pdfwrite", "-sOutputFile=ps-plates.pdf",
+       @all) and die "Unable to combine ";
+
