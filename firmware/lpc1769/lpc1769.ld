@@ -136,6 +136,7 @@ SECTIONS
 	{
 		. = ALIGN(4);
 		_sbss = . ;
+		__bss_start__ = . ;
 
 		*(.bss .bss.*)
 		*(.gnu.linkonce.b*)
@@ -143,6 +144,7 @@ SECTIONS
 
 		. = ALIGN(4);
 		_ebss = . ;
+		__bss_end__ = .;
 
 		. = ALIGN(4);
 		_end = . ;
