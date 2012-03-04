@@ -72,7 +72,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} Status;
  */
 typedef enum
 {
-	NONE_BLOCKING = 0,		/**< None Blocking type */
+	NON_BLOCKING = 0,		/**< Non Blocking type */
 	BLOCKING				/**< Blocking type */
 } TRANSFER_BLOCK_Type;
 

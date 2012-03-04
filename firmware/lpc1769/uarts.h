@@ -1,11 +1,14 @@
 #ifndef __UARTS_H
 #define __UARTS_H
 
-extern LPC_UART_TypeDef* UARTS[];
-extern LPC_UART_TypeDef* DEBUG_UART;
-extern LPC_UART_TypeDef* WATCHDOG_UART;
-extern LPC_UART_TypeDef* CHILLER_UART;
+#include "board.h"
 
 void initUARTs();
+
+uint32_t recvUART(unsigned int rxPin, char *txbuf, uint32_t buflen);
+uint32_t sendUART(unsigned int txPin, char *txbuf, uint32_t buflen);
+void flushUART(unsigned int txPin);
+
+uint32_t errorUART(unsigned int rxPin);
 
 #endif

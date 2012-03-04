@@ -11,7 +11,8 @@ print H "#define __BOARD_PINS_H\n\n";
 my @all;
 while (my $line = <DATA>) {
     if ($line =~ /^\#define\s+(\S+)\s+/) {
-	push @all, $1;
+	my $name = $1;
+	push @all, $name if $name =~ /^IO_/;
     }
 
     print H $line;
@@ -114,11 +115,15 @@ __DATA__
 #define IO_DEBUG_TX      ((1<<24) | (0<<16) | IO_P0 | 2)
 #define IO_DEBUG_RX      ((1<<24) | (0<<16) | IO_P0 | 3)
 
-#define IO_WATCHDOG_TX   ((2<<24) | (0<<16) | IO_P0 | 0)
-#define IO_WATCHDOG_RX   ((2<<24) | (0<<16) | IO_P0 | 1)
+#define IO_WATCHDOG_TX   ((2<<24) | (3<<16) | IO_P0 | 0)
+#define IO_WATCHDOG_RX   ((2<<24) | (3<<16) | IO_P0 | 1)
 
-#define IO_CHILLER_TX    ((1<<24) | (0<<16) | IO_P0 | 10)
-#define IO_CHILLER_RX    ((1<<24) | (0<<16) | IO_P0 | 11)
+#define IO_CHILLER_TX    ((1<<24) | (2<<16) | IO_P0 | 10)
+#define IO_CHILLER_RX    ((1<<24) | (2<<16) | IO_P0 | 11)
+
+#define USE_UART0
+#define USE_UART2
+#define USE_UART3
 
 // The USB port, if nothing else, then for setting the mode.
 #define IO_USB_CONN      ((1<<24) |           IO_P2 | 9)

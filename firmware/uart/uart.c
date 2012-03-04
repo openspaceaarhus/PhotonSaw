@@ -2,6 +2,8 @@
 #include "adc.h"
 #include "pwm.h"
 
+#include "uarts.h"
+
 #include <string.h>
 #include <stdio.h>
 
@@ -49,5 +51,29 @@ int main(void) {
     printf("T in:    %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_IN)));
     printf("T inter: %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL)));
     iprintf("Supply:  %d mv\n\r", supplyVoltage());        
+
+    
+    char buffer[100];
+    uint32_t len = recvUART(IO_WATCHDOG_RX, buffer, sizeof(buffer)-1);
+    if (len) {
+      buffer[len] = 0;
+      iprintf("WD said (%d): %s\n\r", (unsigned int)len, buffer);
+    }
+
+    unsigned int err0 = errorUART(IO_DEBUG_RX);
+    if (err0) {
+      iprintf("Debug UART Error: %x\n\r", err0);        
+    }
+
+    err0 = errorUART(IO_WATCHDOG_RX);
+    if (err0) {
+      iprintf("Watchdog UART Error: %x\n\r", err0);        
+    }
+    err0 = errorUART(IO_CHILLER_RX);
+    if (err0) {
+      iprintf("Chiller UART Error: %x\n\r", err0);        
+    }
+
+
   }
 }

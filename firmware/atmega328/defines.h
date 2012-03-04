@@ -1,4 +1,4 @@
-#define CLOCK_10
+#define CLOCK_8
 
 #if defined(CLOCK_10)
 

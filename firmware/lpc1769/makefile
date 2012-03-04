@@ -43,7 +43,7 @@ CFLAGS			+= -Werror
 CFLAGS                  += -Wall 
 CFLAGS                  += -mcpu=cortex-m3
 CFLAGS                  += -mthumb 
-CFLAGS                  += -O0
+CFLAGS                  += -O2
 CFLAGS                  += -mapcs-frame 
 CFLAGS                  += -D__thumb2__=1 
 CFLAGS                  += -D__RAM_MODE__=0

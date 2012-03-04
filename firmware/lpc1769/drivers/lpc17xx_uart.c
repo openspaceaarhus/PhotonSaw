@@ -516,7 +516,7 @@ uint8_t UART_ReceiveByte(LPC_UART_TypeDef* UARTx)
  * @param[in]	txbuf 	Pointer to Transmit buffer
  * @param[in]	buflen 	Length of Transmit buffer
  * @param[in] 	flag 	Flag used in  UART transfer, should be
- * 						NONE_BLOCKING or BLOCKING
+ * 						NON_BLOCKING or BLOCKING
  * @return 		Number of bytes sent.
  *
  * Note: when using UART in BLOCKING mode, a time-out condition is used
@@ -580,7 +580,7 @@ uint32_t UART_Send(LPC_UART_TypeDef *UARTx, uint8_t *txbuf,
  * 				- LPC_UART3: UART3 peripheral
  * @param[out]	rxbuf 	Pointer to Received buffer
  * @param[in]	buflen 	Length of Received buffer
- * @param[in] 	flag 	Flag mode, should be NONE_BLOCKING or BLOCKING
+ * @param[in] 	flag 	Flag mode, should be NON_BLOCKING or BLOCKING
 
  * @return 		Number of bytes received
  *

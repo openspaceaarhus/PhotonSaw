@@ -35,8 +35,5 @@ int _read(int file, char *ptr, int len) {
 
 int _write(int file, char *ptr, int len) {
   
-  UART_Send(DEBUG_UART, (uint8_t *)ptr, len, BLOCKING);
-  while (UART_CheckBusy(DEBUG_UART) == SET);
-
-  return len;
+  return sendUART(IO_DEBUG_TX, ptr, len);
 }
