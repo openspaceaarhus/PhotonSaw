@@ -8,6 +8,7 @@ BOARD ?= photonsaw-v1
 EXECNAME=$(PROJ).elf
 MAPFILE=$(PROJ).map
 
+-include $(HOME)/.makefile
 
 FW = ../lpc1769
 
