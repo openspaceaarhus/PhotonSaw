@@ -1,3 +1,4 @@
+#include <string.h>
 #include <sys/stat.h>
 #include "board.h"
 #include "uarts.h"

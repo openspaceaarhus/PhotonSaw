@@ -43,26 +43,26 @@ __DATA__
 #define IO_LASER_FIRE (OUTPUT | IO_P1 | 19)
 
 #define IO_X_ENABLE   (OUTPUT | IO_P2 | 0)
-#define IO_X_STEP     (OUTPUT | IO_P2 | 4)
 #define IO_X_DIR      (OUTPUT | IO_P2 | 1)
+#define IO_X_STEP     (OUTPUT | IO_P2 | 4)
 #define IO_X_USM0     (OUTPUT | IO_P2 | 3)
 #define IO_X_USM1     (OUTPUT | IO_P2 | 2)
 
 #define IO_Y_ENABLE   (OUTPUT | IO_P2 | 5)
-#define IO_Y_STEP     (OUTPUT | IO_P2 | 6)
-#define IO_Y_DIR      (OUTPUT | IO_P0 | 16)
+#define IO_Y_DIR      (OUTPUT | IO_P2 | 6)
+#define IO_Y_STEP     (OUTPUT | IO_P0 | 16)
 #define IO_Y_USM0     (OUTPUT | IO_P2 | 8)
 #define IO_Y_USM1     (OUTPUT | IO_P2 | 7)
 
 #define IO_Z_ENABLE   (OUTPUT | IO_P0 | 15)
-#define IO_Z_STEP     (OUTPUT | IO_P0 | 17)
-#define IO_Z_DIR      (OUTPUT | IO_P0 | 20)
+#define IO_Z_DIR      (OUTPUT | IO_P0 | 17)
+#define IO_Z_STEP     (OUTPUT | IO_P0 | 20)
 #define IO_Z_USM0     (OUTPUT | IO_P0 | 19)
 #define IO_Z_USM1     (OUTPUT | IO_P0 | 18)
 
 #define IO_A_ENABLE   (OUTPUT | IO_P0 | 21)
-#define IO_A_STEP     (OUTPUT | IO_P0 | 22)
-#define IO_A_DIR      (OUTPUT | IO_P2 | 13)
+#define IO_A_DIR      (OUTPUT | IO_P0 | 22)
+#define IO_A_STEP     (OUTPUT | IO_P2 | 13)
 #define IO_A_USM0     (OUTPUT | IO_P2 | 12)
 #define IO_A_USM1     (OUTPUT | IO_P2 | 11)
 
