@@ -10,3 +10,6 @@ mirror-2-x.plate.svg			1x	4 mm Al
 mirror-2-z.plate.svg			1x	4 mm Al
 mirror-3.plate.svg			1x	4 mm Al
 laserctrl-cooling.plate.svg		1x	4 mm Al
+
+
+tube-mount.plate.svg			2x	6 mm plastic (Nylon/POM/ABS)

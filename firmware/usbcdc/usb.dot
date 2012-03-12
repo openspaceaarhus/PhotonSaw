@@ -1,0 +1,48 @@
+digraph "source tree" {
+    overlap=scale;
+    size="8,10";
+    ratio="fill";
+    fontsize="16";
+    fontname="Helvetica";
+	clusterrank="local";
+	"serial.c" -> "serial.h"
+	"cdcuser.c" -> "usbcfg.h"
+	"usbhw.c" -> "usbcore.h"
+	"vcomdemo.c" -> "usbcore.h"
+	"usbuser.c" -> "usbcore.h"
+	"usbcore.c" -> "cdcuser.h"
+	"usbhw.c" -> "usb.h"
+	"usbuser.c" -> "usbhw.h"
+	"vcomdemo.c" -> "cdcuser.h"
+	"usbhw.c" -> "usbuser.h"
+	"usbcore.c" -> "usbcfg.h"
+	"usbdesc.c" -> "cdc.h"
+	"cdcuser.c" -> "usbhw.h"
+	"usbuser.c" -> "usbuser.h"
+	"vcomdemo.c" -> "usb.h"
+	"cdcuser.c" -> "serial.h"
+	"usbcore.c" -> "usbcore.h"
+	"vcomdemo.c" -> "usbcfg.h"
+	"vcomdemo.c" -> "cdc.h"
+	"usbdesc.c" -> "usbdesc.h"
+	"usbcore.c" -> "usbdesc.h"
+	"usbdesc.c" -> "usb.h"
+	"cdcuser.c" -> "cdcuser.h"
+	"usbcore.c" -> "usbhw.h"
+	"usbuser.c" -> "usb.h"
+	"usbdesc.c" -> "usbcfg.h"
+	"vcomdemo.c" -> "usbhw.h"
+	"usbuser.c" -> "cdcuser.h"
+	"usbcore.c" -> "usb.h"
+	"usbcore.c" -> "cdc.h"
+	"usbcore.c" -> "usbuser.h"
+	"vcomdemo.c" -> "vcomdemo.h"
+	"usbhw.c" -> "usbcfg.h"
+	"cdcuser.c" -> "usbcore.h"
+	"cdcuser.c" -> "usb.h"
+	"cdcuser.c" -> "cdc.h"
+	"usbhw.c" -> "usbhw.h"
+	"usbuser.c" -> "usbcfg.h"
+	"usbhw.c" -> "usbreg.h"
+	"vcomdemo.c" -> "serial.h"
+}

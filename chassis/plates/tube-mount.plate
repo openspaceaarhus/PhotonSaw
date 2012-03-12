@@ -1,0 +1,11 @@
+<plate width="90" height="75" radius="2.5">
+       <text x="20" y="30">2 pcs, 6 mm Nylon/POM/ABS/PLA</text>
+
+       <hole cx="45" cy="75" d="60"/>
+  
+       <hole cx="10" cy="15" d="5"/>
+       <hole cx="80" cy="15" d="5"/>
+
+       <hole cx="7"  cy="68" d="4"/>
+       <hole cx="83" cy="68" d="4"/>
+</plate>
