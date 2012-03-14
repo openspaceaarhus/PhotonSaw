@@ -52,4 +52,3 @@ void configPin(const uint32_t pin);
 void boardInit();
 
 #endif
-

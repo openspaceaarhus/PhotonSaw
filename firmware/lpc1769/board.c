@@ -4,11 +4,12 @@
 #include "adc.h"
 #include "uarts.h"
 #include "pwm.h"
+#include "api.h"
 
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_adc.h"
 
-// Does the basic GPIO/function configuration of a pin
+// Does the basic GPIO/function configuration of a pin using the pin config constant.
 void configPin(const uint32_t pin) {
 
   PINSEL_CFG_Type PinCfg;
@@ -43,5 +44,7 @@ void boardInit() {
   for (int i=0;i<ALL_PINS_SIZE;i++) {
     configPin(ALL_PINS[i]);
   }
+
+  initAPI();
 }
 

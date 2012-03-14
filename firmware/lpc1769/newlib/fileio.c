@@ -3,12 +3,19 @@
 #include "board.h"
 #include "uarts.h"
 
-typedef struct {
-  char *NAME;
-  int FD;
+const unsigned int UART_FD[10] = {
+  [2] = IO_DEBUG_TX
   
+#ifdef IO_WATCHDOG_TX
+  ,[3] = IO_WATCHDOG_TX
+#endif
+  
+#ifdef IO_CHILLER_TX
+  ,[4] = IO_CHILLER_TX
+#endif
+};
 
-} File;
+const char SD[] = "/sd/";
 
 int _open(const char *name, int flags, int mode) {
 
@@ -27,43 +34,82 @@ int _open(const char *name, int flags, int mode) {
   } else if (!strcmp(name, "/dev/chiller")) {
     return 4;
 
-  } 
-
+  } else if (!strncmp(name, SD, strlen(SD))) {
+    // TODO: Call down to the FAT code here.
+    return -2;
+  }
 
   return -1;
 }
 
-int _close(int file) { return -1; }
+int _close(int file) {
+  if (file < 10) {
+    return -1; // We don't support closing a device.
+
+  } else {
+    // TODO: Call down to the FAT code here.
+    return -1;
+  }
+}
 
 int _fstat(int file, struct stat *st) {
-  st->st_mode = S_IFCHR;
+  if (file < 10) {
+    st->st_mode = S_IFCHR;
+    return 0; 
+
+  } else {
+    // TODO: Call down to the FAT code here.
+    return -1;
+  }
+}
+
+int _isatty(int file) {
+  return file <= 2 ? 1 : 0; // stderr, stdout, stdin are all terminals, of sorts.
+}
+
+int _lseek(int file, int ptr, int dir) {
+  // TODO: Call down to the FAT code here.
   return 0;
 }
 
-int _isatty(int file) { return 1; }
-
-int _lseek(int file, int ptr, int dir) { return 0; }
-
-
 int _read(int file, char *ptr, int len) {
-  if(len == 0) return 0;
+  if (len == 0) return 0;
+
+  if (file == 0 || file == 1) {
+    // TODO: Call down to the CDC code here
+
+  } else if (file < 10) {
+    unsigned int port = UART_FD[file];
+
+    if (port) {
+      return recvUART(port, ptr, len);
+    } else {
+      return -1;
+    }
+
+  } else {
+    // TODO: Call down to the FAT code here.
+  }
 
   return -1;
-  /*
-  while(UART_FR(UART0_ADDR) & UART_FR_RXFE);
-  *ptr++ = UART_DR(UART0_ADDR);
-  int todo;
-  for(todo = 1; todo < len; todo++) {
-    if(UART_FR(UART0_ADDR) & UART_FR_RXFE) {
-      break;
-    }
-    *ptr++ = UART_DR(UART0_ADDR);
-  }
-  return todo;
-  */
 }
 
 int _write(int file, char *ptr, int len) {
-  
-  return sendUART(IO_DEBUG_TX, ptr, len);
+  if (len == 0) return 0;
+
+  if (file == 0 || file == 1) {
+    // TODO: Call down to the CDC code here
+
+  } else if (file < 10) {
+    unsigned int port = UART_FD[file];
+    if (port) {
+      return sendUART(port, ptr, len);
+    } else {
+      return -1;
+    }
+
+  } else {
+    // TODO: Call down to the FAT code here.
+  }  
+  return -1;
 }
