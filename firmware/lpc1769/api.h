@@ -5,6 +5,7 @@
 #include "adc.h"
 #include "pwm.h"
 #include "uarts.h"
+#include <stdio.h>
 
 extern FILE *chiller;
 extern FILE *watchdog;

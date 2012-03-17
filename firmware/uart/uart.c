@@ -37,8 +37,9 @@ int main(void) {
     fiprintf(stderr, "Supply:  %d mv\n\r", supplyVoltage());        
     
     char buffer[100];
-    uint32_t len = recvUART(IO_WATCHDOG_RX, buffer, sizeof(buffer)-1);
-    if (len) {
+    //    uint32_t len = recvUART(IO_WATCHDOG_RX, buffer, sizeof(buffer)-1);
+    fgets(buffer, sizeof(buffer), watchdog);
+    if (*buffer) {
       buffer[len] = 0;
       fiprintf(stderr, "WD said (%d): %s\n\r", (unsigned int)len, buffer);
     }
