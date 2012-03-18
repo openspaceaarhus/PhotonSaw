@@ -5,24 +5,19 @@
 
 int main(void) {
   fiprintf(stderr, "Power Up!\n\r");
-  /*
-  setPWM(IO_CHAN(IO_X_CURRENT), 128);
-  setPWM(IO_CHAN(IO_Y_CURRENT), 256);
-  setPWM(IO_CHAN(IO_Z_CURRENT), 0);
-  */
 
   while (1) {
     GPIO_SET(IO_LED);
     GPIO_SET(IO_ASSIST_AIR);
     GPIO_CLEAR(IO_EXHAUST);
     GPIO_CLEAR(IO_LASER_FIRE);
-    Delay(500);
+    delay(200);
 
     GPIO_CLEAR(IO_LED);
     GPIO_CLEAR(IO_ASSIST_AIR);
     GPIO_SET(IO_EXHAUST);
     GPIO_SET(IO_LASER_FIRE);
-    Delay(500);
+    delay(200);
     
     fiprintf(stderr, "Airflow: %d (%d %%)\n\r", READ_ADC(IO_AIRFLOW), airflow());
 
@@ -37,11 +32,10 @@ int main(void) {
     fiprintf(stderr, "Supply:  %d mv\n\r", supplyVoltage());        
     
     char buffer[100];
-    //    uint32_t len = recvUART(IO_WATCHDOG_RX, buffer, sizeof(buffer)-1);
+    *buffer = 0;
     fgets(buffer, sizeof(buffer), watchdog);
     if (*buffer) {
-      buffer[len] = 0;
-      fiprintf(stderr, "WD said (%d): %s\n\r", (unsigned int)len, buffer);
+      fiprintf(stderr, "WD said: %s\n\r", buffer);
     }
 
     unsigned int err0 = errorUART(IO_DEBUG_RX);

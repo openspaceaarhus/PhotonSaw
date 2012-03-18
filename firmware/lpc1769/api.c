@@ -20,8 +20,8 @@ void delay(unsigned long ms) {
 }
 
 void initAPI() {
-  chiller = open("/dev/chiller", "r+");
-  watchdog = open("/dev/watchdog", "r+");
+  chiller = fopen("/dev/chiller", "r+");
+  watchdog = fopen("/dev/watchdog", "r+");
 
   SysTick_Config(SystemCoreClock/1000 - 1);
 }

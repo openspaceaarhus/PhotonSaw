@@ -120,24 +120,7 @@ int CDC_OutBufAvailChar (int *availChar) {
   Parameters:   None
   Return Value: None
  *---------------------------------------------------------------------------*/
-void CDC_Init (char portNum ) {
-
-  if ( portNum == 0 )
-  {
-	ser_OpenPort (0);
-	ser_InitPort0 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-  }
-  else
-  {
-	ser_OpenPort (1);
-	ser_InitPort1 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-  }
+void CDC_Init() {
   CDC_DepInEmpty  = 1;
   CDC_SerialState = CDC_GetSerialState();
 
@@ -225,21 +208,6 @@ uint32_t CDC_SetLineCoding (void) {
   CDC_LineCoding.bParityType =  EP0Buf[5];
   CDC_LineCoding.bDataBits   =  EP0Buf[6];
 
-#if PORT_NUM
-  ser_ClosePort(1);
-  ser_OpenPort (1);
-  ser_InitPort1 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-#else
-  ser_ClosePort(0);
-  ser_OpenPort (0);
-  ser_InitPort0 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-#endif
   return (TRUE);
 }
 
@@ -300,11 +268,13 @@ uint32_t CDC_SendBreak (unsigned short wDurationOfBreak) {
 void CDC_BulkIn(void) {
   int numBytesRead, numBytesAvail;
 
+  /* TODO: Find some data to transmit.
   ser_AvailChar (&numBytesAvail);
 
   // ... add code to check for overwrite
 
   numBytesRead = ser_Read ((char *)&BulkBufIn[0], &numBytesAvail);
+  */
 
   // send over USB
   if (numBytesRead > 0) {
@@ -331,7 +301,6 @@ void CDC_BulkOut(void) {
 
   // store data in a buffer to transmit it over serial interface
   CDC_WrOutBuf ((char *)&BulkBufOut[0], &numBytesRead);
-
 }
 
 
@@ -344,7 +313,6 @@ unsigned short CDC_GetSerialState (void) {
   unsigned short temp;
 
   CDC_SerialState = 0;
-  ser_LineState (&temp);
 
   if (temp & 0x8000)  CDC_SerialState |= CDC_SERIAL_STATE_RX_CARRIER;
   if (temp & 0x2000)  CDC_SerialState |= CDC_SERIAL_STATE_TX_CARRIER;

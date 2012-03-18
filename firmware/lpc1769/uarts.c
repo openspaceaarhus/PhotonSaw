@@ -426,8 +426,8 @@ void flushUART(unsigned int txPin) {
   UARTFlush(UART_BUFFER[IO_CHAN(txPin)]);
 }
 
-uint32_t recvUART(unsigned int rxPin, char *txbuf, uint32_t buflen) {
-  return UARTReceive(UART_BUFFER[IO_CHAN(rxPin)], txbuf, buflen);
+uint32_t recvUART(unsigned int rxPin, char *rxbuf, uint32_t buflen) {
+  return UARTReceive(UART_BUFFER[IO_CHAN(rxPin)], rxbuf, buflen);
 }
 
 uint32_t errorUART(unsigned int rxPin) {

@@ -51,7 +51,7 @@ extern void CDC_BulkOut                  (void);
 extern void CDC_NotificationIn           (void);
 
 /* CDC Initializtion Function */
-extern void CDC_Init (char portNum);
+extern void CDC_Init();
 
 /* CDC prepare the SERAIAL_STATE */
 extern unsigned short CDC_GetSerialState (void);

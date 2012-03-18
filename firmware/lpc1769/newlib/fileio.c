@@ -82,7 +82,11 @@ int _read(int file, char *ptr, int len) {
     unsigned int port = UART_FD[file];
 
     if (port) {
-      return recvUART(port, ptr, len);
+      unsigned int res;
+      while (!(res = recvUART(port, ptr, len))) {
+	// Let's just wait, surely the UART will deliver...
+      }
+      return res;
     } else {
       return -1;
     }
