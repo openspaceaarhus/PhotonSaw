@@ -7,6 +7,8 @@
 #include "uarts.h"
 #include <stdio.h>
 
+#define IN_IRAM1 __attribute__ ((section (".iram1")))
+
 extern FILE *chiller;
 extern FILE *watchdog;
 extern volatile unsigned long systick;
@@ -14,5 +16,7 @@ extern volatile unsigned long systick;
 void delay(unsigned long ms);
 
 void initAPI();
+
+extern void usbLine(char *line);
 
 #endif

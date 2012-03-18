@@ -25,8 +25,8 @@
 #include "lpc_types.h"
 
 /* USB RAM Definitions */
-#define USB_RAM_ADR     0x20080000  /* USB RAM Start Address */
-#define USB_RAM_SZ      0x00004000  /* USB RAM Size (4kB) */
+#define USB_RAM_ADR     _usbram  /* USB RAM Start Address */
+#define USB_RAM_SZ      (_usbram_end-_usbram)  /* USB RAM Size (4kB) */
 
 /* DMA Endpoint Descriptors */
 #define DD_NISO_CNT             16  /* Non-Iso EP DMA Descr. Count (max. 32) */

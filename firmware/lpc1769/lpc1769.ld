@@ -17,8 +17,9 @@ MEMORY
         /* stack location */
         STACK (rw) : ORIGIN = 0x10000000 + 0x00007FE0 - 4, LENGTH = 4
 
-        /* AHB SRAM - 16k for LPC176[89] - often used for USB */
-        IRAM1 (rwx) : ORIGIN = 0x2007C000, LENGTH = 32k
+        /* AHB SRAM - 2x16k for LPC176[89] - often used for USB */
+        USBRAM (rwx) : ORIGIN = 0x2007C000, LENGTH = 4k
+        IRAM1  (rwx) : ORIGIN = 0x2007D000, LENGTH = 28k
 }
 
 /* From: http://ulan.git.sourceforge.net/git/gitweb.cgi?p=ulan/sysless;a=blob;f=board/arm/lpc17xx-common/libs/ldscripts/lpc17xx-base.ld-boot;h=b2c64fa863fba493dfc23aa3a6604851b73e1770;hb=HEAD */
@@ -108,10 +109,20 @@ SECTIONS
 	.usbram (NOLOAD):
 	{
 		_usbram = . ;
+		USB_RAM_ADR = . ;
 		*(.usbram)
 		. = ALIGN(4);
 		_eusbram = . ;
 		_usbram_end = . ;
+	} > USBRAM
+
+	/* Extra RAM */
+	.iram1 (NOLOAD):
+	{
+		_iram = . ;
+		*(.iram)
+		. = ALIGN(4);
+		_iram_end = . ;
 	} > IRAM1
 
         /******************************************/

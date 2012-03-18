@@ -2,7 +2,6 @@
 #include <reent.h>
 //#include <sys/sysdefs.h>
 
-// One k ought to be enough for everyone!
 #define HEAPSIZE 8*1024
 unsigned char heap[HEAPSIZE];
 

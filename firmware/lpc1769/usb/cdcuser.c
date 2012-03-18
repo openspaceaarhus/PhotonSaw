@@ -25,6 +25,15 @@
 #include "cdc.h"
 #include "cdcuser.h"
 
+#include "stdio.h"
+
+void __attribute__ ((weak)) usbLine(char *line) {
+  fiprintf(stderr, "Ignoring line via USB: %s\n\r", line)
+}
+
+
+
+
 
 unsigned char BulkBufIn  [USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
 unsigned char BulkBufOut [USB_CDC_BUFSIZE];            // Buffer to store USB OUT packet

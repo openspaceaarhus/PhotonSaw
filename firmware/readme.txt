@@ -117,4 +117,53 @@ Another annoying problem is that the planner needs to modify the acceleration pr
 as new moves are added, so to keep the stepper from executing moves before the planner is done modifying them
 it must hold back the commitOperation call until it's done with lookahead.
 
-I'll need to look into how grbl handles modifying the moves duing lookahead.
+
+= Current sticking points =
+
+I'll need to look more into how grbl handles modifying the moves during lookahead to design the buffer
+primitives correctly.
+
+I currently intend to fire the stepper interrupt at a fixed rate rather than do the complex
+timer reprogramming and acceleration management that grbl does.
+20-50 kHz, would leave 6000 to 2400 cycles per interrupt which my intuition tells me would be plenty.
+I might have to code up the stepper routine first to see how many cycles it takes before deciding how
+to approach this.
+
+
+if (done) {
+   if (moveBufferEmpty) {
+      return;
+   } else {
+      pop move;
+      done = false;
+   }
+} 
+
+if (accelTicks) { // Accelerating
+   accelTicks--;
+   xSpeed += xAccel;
+   ySpeed += yAccel;
+  ...
+
+} else if (runTicks) { // Running full speeed.
+  runTicks--;
+
+} else if (deccelTicks) { // Deccelerating
+   done = !--deccelTicks;
+   xSpeed -= xDeccel;
+  ...
+
+   
+}
+
+xError += xSpeed;
+if (xError & (1<<31)) {
+   xError &=~ (1<<31);
+   xPos += xDir;
+   step(x);
+}
+
+if (done) {
+   if (
+}
+
