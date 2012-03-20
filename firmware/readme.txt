@@ -29,8 +29,6 @@ anything, it just flashes the LEDs and enables both steppers and the LASER.
 
 -------------
 
-
-
 = Thoughts on the general structure of the main firmware =
 
 
@@ -118,6 +116,46 @@ as new moves are added, so to keep the stepper from executing moves before the p
 it must hold back the commitOperation call until it's done with lookahead.
 
 
+== The Planner ==
+
+The stepper routine is very simple, but the planner is horrendously complex, so I think I want to
+split the part of the code transforms g-code to moves out as a separate module so it's possible
+to test and debug it in isolation on the host PC and do things such as generate a nice graph over
+the speed and acceleration over the entire run and accurately predict the buffer space needed to
+buffer a g-code.
+
+An interesting option would be to run the g-code engine on the host and only shuffle the moves over
+to the controller, the only disadvantage to this approach is that more bandwidth is needed, but
+timing-wise the constraints are nearly the same as each g-code is converted to moves immediately
+and we're using USB, so that's not a problem.
+
+Special handling would be needed to stop the machine in a controlled way if it runs out of moves,
+but this is very easy to handle as it's only a matter of generating two synthetic moves, one to
+decellerate from whatever speed the last move was going at and one to creep back to the stopping
+point.
+
+Moving the planner off the controller and on to the host has several advantages:
+* Allows the planner to use many more resources to optimize the path, so it might give a better result
+* It's easier to upgrade code on the host.
+* The planner doesn't share its internal move representation with the stepper, so it's possible to
+remove a lot of the data fields that are only used by the planner from the data sent to the stepper,
+so the only real buffer in the system, the move buffer, will be able to contain more moves.
+* It might even be possible to remove data from the move bitstream that the stepper doesn't need for
+that move, like the acceleration data if the move happens at full speed or the data for an axis that
+doesn't move (the z, a and pixel axises would be still for most of the moves)
+
+
+To be fair, the compression trick (removal of planner-only and dead data) from the move stream could
+be implemented with the planner on the controller too, but it's slightly more tricky as it would have
+to happen in-place.
+
+It might be neccesary to have a separate look-ahead buffer where the uncompressed, planner-friendly,
+moves can be stored, but that raises an issue with engraving moves which have a huge amount of pixels.
+
+Perhaps the best way around this problem is to always force a flush and immediate compression of
+engraving moves, which would seem to fit the physical reality of how engraving works.
+
+
 = Current sticking points =
 
 I'll need to look more into how grbl handles modifying the moves during lookahead to design the buffer
@@ -125,6 +163,7 @@ primitives correctly.
 
 I currently intend to fire the stepper interrupt at a fixed rate rather than do the complex
 timer reprogramming and acceleration management that grbl does.
+
 20-50 kHz, would leave 6000 to 2400 cycles per interrupt which my intuition tells me would be plenty.
 I might have to code up the stepper routine first to see how many cycles it takes before deciding how
 to approach this.
@@ -132,11 +171,15 @@ to approach this.
 
 if (done) {
    if (moveBufferEmpty) {
-      return;
-   } else {
-      pop move;
-      done = false;
+      if (currentSpeed) {
+         decellerateAndStopHere(); // create the two moves needed to stop the machine and return it to this location in an orderly fashion.
+      } else {
+	  	 return;
+      }
    }
+
+   pop move;
+   done = false;
 } 
 
 if (accelTicks) { // Accelerating
@@ -163,7 +206,6 @@ if (xError & (1<<31)) {
    step(x);
 }
 
-if (done) {
-   if (
-}
+
+---------------
 
