@@ -24,18 +24,10 @@
 #include "usbcore.h"
 #include "cdc.h"
 #include "cdcuser.h"
+#include "usbapi.h"
 
 #include "stdio.h"
 
-void __attribute__ ((weak)) usbLine(char *line) {
-  fiprintf(stderr, "Ignoring line via USB: %s\n\r", line)
-}
-
-
-
-
-
-unsigned char BulkBufIn  [USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
 unsigned char BulkBufOut [USB_CDC_BUFSIZE];            // Buffer to store USB OUT packet
 unsigned char NotificationBuf [10];
 
@@ -134,6 +126,7 @@ void CDC_Init() {
   CDC_SerialState = CDC_GetSerialState();
 
   CDC_BUF_RESET(CDC_OutBuf);
+  usbAPIInit();
 }
 
 
@@ -275,21 +268,14 @@ uint32_t CDC_SendBreak (unsigned short wDurationOfBreak) {
   Return Value: none
  *---------------------------------------------------------------------------*/
 void CDC_BulkIn(void) {
-  int numBytesRead, numBytesAvail;
 
-  /* TODO: Find some data to transmit.
-  ser_AvailChar (&numBytesAvail);
-
-  // ... add code to check for overwrite
-
-  numBytesRead = ser_Read ((char *)&BulkBufIn[0], &numBytesAvail);
-  */
+	unsigned char txPacket[USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
+	int bytesReady = usbPopForTransmit(txPacket, USB_CDC_BUFSIZE);
 
   // send over USB
-  if (numBytesRead > 0) {
-	USB_WriteEP (CDC_DEP_IN, &BulkBufIn[0], numBytesRead);
-  }
-  else {
+  if (bytesReady > 0) {
+  	USB_WriteEP(CDC_DEP_IN, &txPacket[0], bytesReady);
+  } else {
     CDC_DepInEmpty = 1;
   }
 }
@@ -319,7 +305,9 @@ void CDC_BulkOut(void) {
   Return Value: SerialState as defined in usbcdc11.pdf
  *---------------------------------------------------------------------------*/
 unsigned short CDC_GetSerialState (void) {
-  unsigned short temp;
+  unsigned short temp = 0;
+
+  // TODO: Report errors here, if we ever need to...
 
   CDC_SerialState = 0;
 

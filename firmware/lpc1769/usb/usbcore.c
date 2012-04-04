@@ -30,6 +30,9 @@
 #include "usbdesc.h"
 #include "usbuser.h"
 
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+
+
 #if (USB_CLASS)
 
 #if (USB_AUDIO)

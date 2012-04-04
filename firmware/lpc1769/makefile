@@ -14,7 +14,7 @@ FW = ../lpc1769
 
 CSRC  = $(wildcard $(FW)/*.c)
 CSRC += $(wildcard $(FW)/drivers/*.c)
-#CSRC += $(wildcard $(FW)/usb/*.c)
+CSRC += $(wildcard $(FW)/usb/*.c)
 CSRC += $(wildcard $(FW)/newlib/*.c)
 CSRC += $(wildcard $(FW)/$(BOARD)/*.c)
 CSRC += $(wildcard *.c)
@@ -70,6 +70,8 @@ LDFLAGS += -Wl,--gc-sections
 #LDFLAGS += -Wl,--print-gc-sections 
 LDFLAGS += -T $(FW)/lpc1769.ld
 LDFLAGS += -Xlinker -Map -Xlinker $(PROJ).map
+
+all: $(EXECNAME)
 
 $(EXECNAME): $(FW)/$(BOARD)/board-pins.h $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXECNAME)

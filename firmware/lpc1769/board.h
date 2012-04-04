@@ -6,6 +6,8 @@
 
 #include "board-config.h"
 
+#define IN_IRAM1 __attribute__ ((section (".iram1")))
+
 /*
   Set up port configuration constants, these constants should be the only
   place with port specific references, each constant should fit in a 32 bit int.
