@@ -24,6 +24,8 @@ void initAPI() {
   watchdog = fopen("/dev/watchdog", "r+");
 
   SysTick_Config(SystemCoreClock/1000 - 1);
+
+  usbInit();
 }
 
 int getline(FILE *file, char line[], int max) {

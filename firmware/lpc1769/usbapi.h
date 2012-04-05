@@ -4,13 +4,11 @@
 #include "board.h"
 #include "ringbuffer.h"
 
-#define USB_LINE_BUFFER_ORDER 13
+// This is the maximum command line 
+#define USB_LINE_BUFFER_SIZE 1<<13
 #define USB_TX_BUFFER_ORDER 12
 
-EXTERN_RING_BUFFER(usbLineBuffer, USB_LINE_BUFFER_ORDER, char);
 EXTERN_RING_BUFFER(usbTxBuffer, USB_TX_BUFFER_ORDER, char);
-
-void usbAPIInit();
 
 // Callback called when a full line has been buffered by the USB CDC layer.
 void usbLine(char *line, unsigned int lineSize);
@@ -18,6 +16,9 @@ void usbLine(char *line, unsigned int lineSize);
 // Function to send data via USB
 void usbSend(char *data, unsigned int dataSize);
 
+
+// Initializes the USB subsystem, called from initAPI()
+void usbInit();
 
 // Internal functions called by the USB CDC layer
 

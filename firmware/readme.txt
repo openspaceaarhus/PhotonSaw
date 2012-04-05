@@ -63,28 +63,42 @@ exactly what g-code is being executed.
 
 The commands could look something like this:
 
-0: BB05AA00: Not ready
+0: 05AA1000: Pause 
+1: move id
+2: ms
 
-0: BB05AA01: Pause 
-1: Size in words
-2: g-code line number
-3: ms
+0: 05AA2aaa: Move
+1: move id
+2: Length in ticks
 
-0: BB05AA02: Move
-1: Size in words
-2: g-code line number
+a0: x-speed
+a1: x-accleration
 
-0: BB05AA03: Move, with engraving pixels
-1: Size in words
-2: g-code line number
-...
+a2: y-speed
+a3: y-accleration
 
-n  : Pixel 0 step number
-n+1: Last pixel step number
-n+2: Pixels >> 16 / tick
-n+3: Pixel 0..31
-n+4: Pixel 32..63
-...
+a4: z-speed
+a5: z-accleration
+
+a6: a-speed
+a7: a-accleration
+
+a8: Laser intensity
+a9: Laser acceleration.
+
+a10: If bit 10 of the feature field is set, then there are pixels in the command: 
+p:   pixel count  
+p+1: pixel speed
+p+2: pixels 0..31
+p+3: pixels 32..63
+
+
+The aa byte is a bit field which dictates which of the words are present in the move stream,
+thus the minimal move will be 3 words long (constant speed along one axis).
+
+Notice that if a scan line consists of long blank stretches and long filled stretches,
+then it's possible to compress the scanline to lines which are just one pixel.   
+
 
 Each pixel is one bit.
 

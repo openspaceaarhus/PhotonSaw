@@ -1,12 +1,25 @@
 #include "usbapi.h"
 #include "stdio.h"
+#include "usb/usb.h"
+#include "usb/usbcfg.h"
+#include "usb/cdcuser.h"
+#include "usb/usbhw.h"
+#include "usb/usbcore.h"
 
-RING_BUFFER(usbLineBuffer, USB_LINE_BUFFER_ORDER, char) IN_IRAM1;
 RING_BUFFER(usbTxBuffer, USB_TX_BUFFER_ORDER, char) IN_IRAM1;
 
-void usbAPIInit() {
-	rbInit(&usbLineBuffer, USB_LINE_BUFFER_ORDER);
-	rbInit(&usbTxBuffer, USB_TX_BUFFER_ORDER);
+char usbLineBuffer[USB_LINE_BUFFER_SIZE] IN_IRAM1;
+int usbLineLength;
+
+void usbInit() {
+  usbLineLength = 0;
+  rbInit(&usbTxBuffer, USB_TX_BUFFER_ORDER);
+  CDC_Init();
+
+  USB_Init();
+  USB_Connect(TRUE);
+
+  while (!USB_Configuration);
 }
 
 // Callback called when a full line has been buffered by the USB CDC layer.
@@ -39,9 +52,17 @@ int usbPopForTransmit(unsigned char *data, int dataSize) {
 
 // Write data from the USB buffer to the receive buffer
 void usbPushReceived(unsigned char *data, int dataSize) {
-	while (dataSize--) {
-		while (rbIsFull(&usbLineBuffer)); // Wait for the buffer to empty
-		RB_WRITE(usbLineBuffer, *(data++));
-	}
+  while (dataSize--) {
+    unsigned char ch = *(data++);
+
+    if (ch == '\r' || ch == '\n' || usbLineLength == USB_LINE_BUFFER_SIZE) {
+      usbLineBuffer[usbLineLength] = 0;
+      usbLine(usbLineBuffer, usbLineLength);
+      usbLineLength=0;
+
+    } else {
+      usbLineBuffer[usbLineLength++] = ch;
+    }
+  }
 }
 

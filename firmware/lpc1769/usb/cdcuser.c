@@ -126,7 +126,6 @@ void CDC_Init() {
   CDC_SerialState = CDC_GetSerialState();
 
   CDC_BUF_RESET(CDC_OutBuf);
-  usbAPIInit();
 }
 
 
