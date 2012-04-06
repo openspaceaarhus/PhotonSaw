@@ -1,5 +1,7 @@
+#include <stdio.h>
+
 #include "usbapi.h"
-#include "stdio.h"
+#include "ringbuffer.h"
 
 #include "usb/usb.h"
 #include "usb/usbcfg.h"
@@ -7,6 +9,12 @@
 #include "usb/usbcore.h"
 #include "usb/cdc.h"
 #include "usb/cdcuser.h"
+
+// This is the maximum command line size
+#define USB_LINE_BUFFER_SIZE 1<<13
+
+// This buffer only needs to be large enough to allow a full packet to be assembled
+#define USB_TX_BUFFER_ORDER 8
 
 RING_BUFFER(usbTxBuffer, USB_TX_BUFFER_ORDER, char) IN_IRAM1;
 
@@ -20,12 +28,6 @@ void usbInit() {
 
   USB_Init();
   USB_Connect(TRUE);
-  /*
-  USB_SetStallEP(CDC_EP_IN);
-  USB_SetStallEP(CDC_EP_OUT);
-  */
-
-  //  while (!USB_Configuration);
 }
 
 // Callback called when a full line has been buffered by the USB CDC layer.
@@ -41,12 +43,20 @@ char usbConnected() {
 /*
   TODO: We call CDC_BulkIn here, but we'd rather that it was called as soon as
   the hardware is ready for more data, but how do you make that happen?
+
+  Never mind, for now we'll just let the packet sending code operate in sync,
+  there's not a great amount of data to send anyway.
 */
+
 
 // Function to send data via USB
 void usbSend(const char *data, unsigned int dataSize) {
+  if (!USB_Configuration) {
+    return;
+  }
+
   while (dataSize--) {
-    while (rbIsFull(&usbTxBuffer)) CDC_BulkIn(); // Wait for the buffer to empty
+    while (rbIsFull(&usbTxBuffer)) CDC_BulkIn(); // Wait for the buffer to empty enough
     RB_WRITE(usbTxBuffer, *(data++));
   }  
   
@@ -57,6 +67,10 @@ void usbSend(const char *data, unsigned int dataSize) {
 }
 
 void usbSendFlush(const char *data, unsigned int dataSize) {
+  if (!USB_Configuration) {
+    return;
+  }
+
   while (dataSize--) {
     while (rbIsFull(&usbTxBuffer)) CDC_BulkIn(); // Wait for the buffer to empty
     RB_WRITE(usbTxBuffer, *(data++));

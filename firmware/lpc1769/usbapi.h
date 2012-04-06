@@ -2,13 +2,6 @@
 #define __USBAPI_H
 
 #include "board.h"
-#include "ringbuffer.h"
-
-// This is the maximum command line 
-#define USB_LINE_BUFFER_SIZE 1<<13
-#define USB_TX_BUFFER_ORDER 12
-
-//EXTERN_RING_BUFFER(usbTxBuffer, USB_TX_BUFFER_ORDER, char);
 
 // returns true if connected to a host 
 char usbConnected();
