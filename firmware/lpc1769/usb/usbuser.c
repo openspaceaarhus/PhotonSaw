@@ -23,7 +23,7 @@
 #include "usbcore.h"
 #include "usbuser.h"
 #include "cdcuser.h"
-
+#include <stdio.h>
 
 /*
  *  USB Power Event Callback

@@ -75,7 +75,7 @@
 // </h>
 */
 
-#define USB_POWER           0
+#define USB_POWER           1
 #define USB_IF_NUM          4
 #define USB_EP_NUM          32
 #define USB_MAX_PACKET0     8
@@ -127,7 +127,7 @@
 #define USB_WAKEUP_EVENT    0
 #define USB_SOF_EVENT       0
 #define USB_ERROR_EVENT     0
-#define USB_EP_EVENT        0x0007
+#define USB_EP_EVENT        0x0037
 #define USB_CONFIGURE_EVENT 1
 #define USB_INTERFACE_EVENT 0
 #define USB_FEATURE_EVENT   0

@@ -8,14 +8,18 @@
 #define USB_LINE_BUFFER_SIZE 1<<13
 #define USB_TX_BUFFER_ORDER 12
 
-EXTERN_RING_BUFFER(usbTxBuffer, USB_TX_BUFFER_ORDER, char);
+//EXTERN_RING_BUFFER(usbTxBuffer, USB_TX_BUFFER_ORDER, char);
+
+// returns true if connected to a host 
+char usbConnected();
 
 // Callback called when a full line has been buffered by the USB CDC layer.
 void usbLine(char *line, unsigned int lineSize);
 
 // Function to send data via USB
-void usbSend(char *data, unsigned int dataSize);
-
+void usbSend(const char *data, unsigned int dataSize);
+void usbSendFlush(const char *data, unsigned int dataSize);
+void usbFlush();
 
 // Initializes the USB subsystem, called from initAPI()
 void usbInit();

@@ -12,6 +12,7 @@ void rbInit(RingBufferControl *rb, int order);
 
 extern char rbIsFull(RingBufferControl *rb);
 extern char rbIsEmpty(RingBufferControl *rb);
+extern int rbLength(RingBufferControl *rb);
 
 // Returns the index of element to write to, will overwrite the oldest element in case of overflow
 extern int rbOverWrite(RingBufferControl *rb);

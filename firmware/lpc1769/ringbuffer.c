@@ -15,6 +15,10 @@ inline char rbIsEmpty(RingBufferControl *rb) {
     return rb->end == rb->start;
 }
 
+inline int rbLength(RingBufferControl *rb) {
+  return (rb->end-rb->start) & rb->mask;
+}
+
 // Returns the index of element to write to, will overwrite the oldest element in case of overflow
 inline int rbOverWrite(RingBufferControl *rb) {
 		int res = rb->end;

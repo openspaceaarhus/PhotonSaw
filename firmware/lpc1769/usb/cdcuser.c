@@ -268,12 +268,12 @@ uint32_t CDC_SendBreak (unsigned short wDurationOfBreak) {
  *---------------------------------------------------------------------------*/
 void CDC_BulkIn(void) {
 
-	unsigned char txPacket[USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
-	int bytesReady = usbPopForTransmit(txPacket, USB_CDC_BUFSIZE);
+  unsigned char txPacket[USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
+  int bytesReady = usbPopForTransmit(txPacket, USB_CDC_BUFSIZE);
 
   // send over USB
   if (bytesReady > 0) {
-  	USB_WriteEP(CDC_DEP_IN, &txPacket[0], bytesReady);
+    USB_WriteEP(CDC_DEP_IN, &txPacket[0], bytesReady);
   } else {
     CDC_DepInEmpty = 1;
   }
@@ -286,15 +286,8 @@ void CDC_BulkIn(void) {
   Return Value: none
  *---------------------------------------------------------------------------*/
 void CDC_BulkOut(void) {
-  int numBytesRead;
-
-  // get data from USB into intermediate buffer
-  numBytesRead = USB_ReadEP(CDC_DEP_OUT, &BulkBufOut[0]);
-
-  // ... add code to check for overwrite
-
-  // store data in a buffer to transmit it over serial interface
-  CDC_WrOutBuf ((char *)&BulkBufOut[0], &numBytesRead);
+  int numBytesRead = USB_ReadEP(CDC_DEP_OUT, BulkBufOut);
+  usbPushReceived(BulkBufOut, numBytesRead);
 }
 
 
@@ -304,6 +297,7 @@ void CDC_BulkOut(void) {
   Return Value: SerialState as defined in usbcdc11.pdf
  *---------------------------------------------------------------------------*/
 unsigned short CDC_GetSerialState (void) {
+/*
   unsigned short temp = 0;
 
   // TODO: Report errors here, if we ever need to...
@@ -317,6 +311,10 @@ unsigned short CDC_GetSerialState (void) {
   if (temp & 0x0008)  CDC_SerialState |= CDC_SERIAL_STATE_FRAMING;
   if (temp & 0x0004)  CDC_SerialState |= CDC_SERIAL_STATE_PARITY;
   if (temp & 0x0002)  CDC_SerialState |= CDC_SERIAL_STATE_OVERRUN;
+*/
+  CDC_SerialState = 0;
+  CDC_SerialState |= CDC_SERIAL_STATE_RX_CARRIER;
+  CDC_SerialState |= CDC_SERIAL_STATE_TX_CARRIER;
 
   return (CDC_SerialState);
 }

@@ -4,8 +4,10 @@
 #include <stdio.h>
 
 void usbLine(char *line, unsigned int lineSize) {
-  fprintf(stderr, "Got line from USB: %s\n", line);
+  fprintf(stderr, "Got line from USB: %s\n\r", line);
 }
+
+const char TESTHEST[] = "Test hest\n\r";
 
 int main(void) {
   fiprintf(stderr, "Power Up!\n\r");
@@ -23,6 +25,12 @@ int main(void) {
     GPIO_SET(IO_LASER_FIRE);
     delay(200);
     
+    fiprintf(stderr, "USB connected: %d\n\r", usbConnected());
+    if (usbConnected()) {
+      usbSend(TESTHEST, sizeof(TESTHEST));
+      usbSendFlush(TESTHEST, sizeof(TESTHEST));
+    }
+
     fiprintf(stderr, "Airflow: %d (%d %%)\n\r", READ_ADC(IO_AIRFLOW), airflow());
 
     fprintf(stderr, "T out:   %d (%f Ohm, %f degC)\n\r",
