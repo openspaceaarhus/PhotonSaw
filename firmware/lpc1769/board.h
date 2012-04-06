@@ -51,6 +51,14 @@ void configPin(const uint32_t pin);
 // Use this macro with a pin config constant:
 #define READ_ADC(pin) readADC(IO_CHAN(pin))
 
+
+extern volatile unsigned long systick;
+
+void delay(unsigned long ms);
+
+// Implement this to get it called at 100Hz
+void diskTick100Hz();
+
 void boardInit();
 
 #endif

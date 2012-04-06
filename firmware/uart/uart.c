@@ -24,6 +24,16 @@ int main(void) {
     GPIO_SET(IO_EXHAUST);
     GPIO_SET(IO_LASER_FIRE);
     delay(200);
+
+    char buffer[100];
+    *buffer = 0;
+    fgets(buffer, sizeof(buffer), watchdog);
+    if (*buffer) {
+      fiprintf(stderr, "WD said: %s\n\r", buffer);
+    } else {
+      fiprintf(stderr, "WD said: nada\n\r");
+    }
+
     
     fiprintf(stderr, "USB connected: %d\n\r", usbConnected());
     if (usbConnected()) {
@@ -43,13 +53,6 @@ int main(void) {
     fprintf(stderr, "T inter: %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL)));
     fiprintf(stderr, "Supply:  %d mv\n\r", supplyVoltage());        
     
-    char buffer[100];
-    *buffer = 0;
-    fgets(buffer, sizeof(buffer), watchdog);
-    if (*buffer) {
-      fiprintf(stderr, "WD said: %s\n\r", buffer);
-    }
-
     unsigned int err0 = errorUART(IO_DEBUG_RX);
     if (err0) {
       fiprintf(stderr, "Debug UART Error: %x\n\r", err0);        

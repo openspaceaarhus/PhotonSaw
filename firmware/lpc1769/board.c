@@ -9,6 +9,33 @@
 #include "lpc17xx_pinsel.h"
 #include "lpc17xx_adc.h"
 
+volatile unsigned long systick;
+
+void __attribute__ ((weak)) diskTick100Hz() {
+  // Do nothing.
+}
+
+unsigned char div10 = 0;
+
+void SysTick_Handler (void) {
+  systick++;
+
+  if (++div10 > 10) {
+    div10 = 0;
+    diskTick100Hz();
+  }
+}
+
+void delay(unsigned long ms) {
+  unsigned long endtick = ms+systick;
+
+  if (endtick < systick) { // Wraparound
+    while (systick); // Wait for 0 to roll around.
+  }
+
+  while (systick < endtick); 
+}
+
 // Does the basic GPIO/function configuration of a pin using the pin config constant.
 void configPin(const uint32_t pin) {
 
@@ -27,6 +54,8 @@ void configPin(const uint32_t pin) {
 }
 
 void boardInit() {
+  SysTick_Config(SystemCoreClock/1000 - 1);
+
   initUARTs();
   initADC();
   initPWM();
