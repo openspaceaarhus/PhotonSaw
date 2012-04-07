@@ -34,16 +34,6 @@ Files:
   makefile: Do not run this manually, include it from the application specific directories
 
 
-
-
-*** TODO ***
-
-* Make the UARTs receive interrupts buffer into a line buffer and then use a callback routine
-  to let the application handle a full line at a time.
-
-* Plumb fat_sd into stdio.
-
-
 *** Flow control ***
 
 Ignore it completely for all channels except USB-CDC and just go slow enough the receiver is always

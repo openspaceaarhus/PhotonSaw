@@ -7,6 +7,25 @@ void usbLine(char *line, unsigned int lineSize) {
   fprintf(stderr, "Got line from USB: %s\n\r", line);
 }
 
+void handleUart0Line(const char *line, int lineLength) {
+  fprintf(stderr, "Got line from UART0: %s\r\n", line); 
+}
+
+void handleUart1Line(const char *line, int lineLength) {
+  fprintf(stderr, "Got line from UART1: %s\r\n", line); 
+}
+
+void handleUart2Line(const char *line, int lineLength) {
+  fprintf(stderr, "Got line from UART2: %s\r\n", line); 
+}
+
+void handleUart3Line(const char *line, int lineLength) {
+  if (lineLength) {
+    fiprintf(stderr, "WD said: %s\n\r", line);
+  }
+}
+
+
 const char TESTHEST[] = "Test hest\n\r";
 
 int main(void) {
@@ -17,27 +36,16 @@ int main(void) {
     GPIO_SET(IO_ASSIST_AIR);
     GPIO_CLEAR(IO_EXHAUST);
     GPIO_CLEAR(IO_LASER_FIRE);
-    delay(200);
+    delay(500);
 
     GPIO_CLEAR(IO_LED);
     GPIO_CLEAR(IO_ASSIST_AIR);
     GPIO_SET(IO_EXHAUST);
     GPIO_SET(IO_LASER_FIRE);
-    delay(200);
+    delay(500);
 
-    char buffer[100];
-    *buffer = 0;
-    fgets(buffer, sizeof(buffer), watchdog);
-    if (*buffer) {
-      fiprintf(stderr, "WD said: %s\n\r", buffer);
-    } else {
-      fiprintf(stderr, "WD said: nada\n\r");
-    }
-
-    
     fiprintf(stderr, "USB connected: %d\n\r", usbConnected());
     if (usbConnected()) {
-      usbSend(TESTHEST, sizeof(TESTHEST));
       usbSendFlush(TESTHEST, sizeof(TESTHEST));
     }
 

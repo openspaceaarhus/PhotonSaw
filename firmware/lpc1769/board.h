@@ -7,6 +7,17 @@
 #include "board-config.h"
 
 #define IN_IRAM1 __attribute__ ((section (".iram1")))
+#define WEAK __attribute__ ((weak))
+
+/*
+  Preemption priority groups for IRQs (0..7)
+*/
+#define GROUP_PRIORITY_STEPPER (0<<2)
+#define GROUP_PRIORITY_SYSTICK (1<<2)
+#define GROUP_PRIORITY_SDTICK  (2<<2)
+#define GROUP_PRIORITY_SERIAL  (3<<2)
+#define GROUP_PRIORITY_USB     (4<<2)
+
 
 /*
   Set up port configuration constants, these constants should be the only

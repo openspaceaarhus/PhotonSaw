@@ -31,7 +31,7 @@ void usbInit() {
 }
 
 // Callback called when a full line has been buffered by the USB CDC layer.
-void __attribute__ ((weak)) usbLine(char *line, unsigned int lineSize) {
+void WEAK usbLine(char *line, unsigned int lineSize) {
   fprintf(stderr, "Ignoring line from USB: %s\n\r", line);
 }
 

@@ -225,20 +225,10 @@ int _read(int file, char *ptr, int len) {
   if (len == 0) return 0;
 
   if (file == 0 || file == 1) {
-    // TODO: Call down to the CDC code here
+    // Notice: We don't read from USB with stdio, implement the usbLine callback in stead
 
   } else if (file < 10) {
-    unsigned int port = UART_FD[file];
-
-    if (port) {
-      unsigned int res;
-      while (!(res = recvUART(port, ptr, len))) {
-	// Let's just wait, surely the UART will deliver...
-      }
-      return res;
-    } else {
-      return -1;
-    }
+    // Notice: We don't read from UARTS with stdio, implement the handleUart?Line callbacks in stead
 
   } else {
     int fd = file-10;

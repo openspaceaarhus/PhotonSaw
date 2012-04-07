@@ -25,17 +25,17 @@ extern int rbRead(RingBufferControl *rb);
 
 
 // Define the ring buffer control and the array and initialize the control structure
-#define RING_BUFFER(ctrl, order, type) RingBufferControl ctrl; type ctrl ## Buffer[1<<(order)]
-#define EXTERN_RING_BUFFER(ctrl, order, type) extern RingBufferControl ctrl; extern type ctrl ## Buffer[1<<(order)];
+#define RING_BUFFER(ctrl, order, type) RingBufferControl ctrl; type ctrl ## Array[1<<(order)]
+#define EXTERN_RING_BUFFER(ctrl, order, type) extern RingBufferControl ctrl; extern type ctrl ## Array[1<<(order)];
 
 // Read an element (be sure to check rbIsEmpty first or you will crash!)
-#define RB_READ(ctrl) ctrl ## Buffer[rbRead(&ctrl)]
+#define RB_READ(ctrl) ctrl ## Array[rbRead(&ctrl)]
 
 // Writes an element (be sure to check rbIsFull first or you will crash!)
-#define RB_WRITE(ctrl, value) ctrl ## Buffer[rbWrite(&ctrl)]=value;
+#define RB_WRITE(ctrl, value) ctrl ## Array[rbWrite(&ctrl)]=value;
 
 // Writes an element, possibly overwriting the oldest element
-#define RB_OVERWRITE(ctrl, value) ctrl ## Buffer[rbOverWrite(&ctrl)]=value;
+#define RB_OVERWRITE(ctrl, value) ctrl ## Array[rbOverWrite(&ctrl)]=value;
 
 
 

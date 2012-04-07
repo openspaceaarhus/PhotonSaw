@@ -11,7 +11,7 @@
 
 volatile unsigned long systick;
 
-void __attribute__ ((weak)) diskTick100Hz() {
+void WEAK diskTick100Hz() {
   // Do nothing.
 }
 
@@ -56,6 +56,29 @@ void configPin(const uint32_t pin) {
 void boardInit() {
   SysTick_Config(SystemCoreClock/1000 - 1);
 
+  /*
+    A note about interrupt priorities
+
+    A smaller numeric priority means that the priority is higher, thus
+    the most important interrupt has priority 0, the least import 31.
+
+    If an interrupt arrives while servicing an interrupt with a lower
+    priority, then the lesser interrupt is interrupted to service the
+    high priority one, if the high priority interrupt is of a different
+    preemption priority group.
+
+    IOW: an IRQ in PP group 3 will be interrupted if an IRQ arrives with
+    PP group 2,1 or 0.
+
+    The sub priority is only used to order the interrupts at the same PE
+    level.
+
+    NVIC_SetPriorityGrouping is used here to divide the 32 levels of
+    IRQ priorities into 8 preemption groups and 4 sub priorities.
+  */
+  NVIC_SetPriorityGrouping(4); 
+  NVIC_SetPriority(SysTick_IRQn, GROUP_PRIORITY_SYSTICK); 
+  
   initUARTs();
   initADC();
   initPWM();

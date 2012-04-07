@@ -1,45 +1,53 @@
 #include "board.h"
 #include "uarts.h"
+#include "stdio.h"
 
-/* buffer size for each ring buffer, each used UART takes two of these */
-#define UART_RING_BUFSIZE (1<<8)
+#include "ringbuffer.h"
 
-// UART Ring buffer structure
+#define UART_TX_ORDER 8
+#define UART_LINE_BUFFER_SIZE (1<<7)
+
+void WEAK handleUart0Line(const char *line, int lineLength) {
+  fprintf(stderr, "Ignoring line from UART0: %s\r\n", line); 
+}
+void WEAK handleUart1Line(const char *line, int lineLength) {
+  fprintf(stderr, "Ignoring line from UART1: %s\r\n", line); 
+}
+void WEAK handleUart2Line(const char *line, int lineLength) {
+  fprintf(stderr, "Ignoring line from UART2: %s\r\n", line); 
+}
+void WEAK handleUart3Line(const char *line, int lineLength) {
+  fprintf(stderr, "Ignoring line from UART3: %s\r\n", line); 
+}
+
+
 typedef struct {
-  volatile uint32_t tx_head;                /* UART Tx ring buffer head index */
-  volatile uint32_t tx_tail;                /* UART Tx ring buffer tail index */
-  volatile uint32_t rx_head;                /* UART Rx ring buffer head index */
-  volatile uint32_t rx_tail;                /* UART Rx ring buffer tail index */
-  volatile uint8_t  tx[UART_RING_BUFSIZE];  /* UART Tx data ring buffer */
-  volatile uint8_t  rx[UART_RING_BUFSIZE];  /* UART Rx data ring buffer */
+  RingBufferControl tx;
+  char txArray[1<<(UART_TX_ORDER)];
+
+  char rx[UART_LINE_BUFFER_SIZE];
+  unsigned int rxLength;
+
   volatile FlagStatus txInterrupt;
   LPC_UART_TypeDef *uart;
   unsigned int error;
 } UartRingBuffer;
 
-/* Buf mask */
-#define __BUF_MASK (UART_RING_BUFSIZE-1)
-/* Check buf is full or not */
-#define __BUF_IS_FULL(head, tail) ((tail&__BUF_MASK)==((head+1)&__BUF_MASK))
-/* Check buf will be full in next receiving or not */
-#define __BUF_WILL_FULL(head, tail) ((tail&__BUF_MASK)==((head+2)&__BUF_MASK))
-/* Check buf is empty */
-#define __BUF_IS_EMPTY(head, tail) ((head&__BUF_MASK)==(tail&__BUF_MASK))
-/* Reset buf */
-#define __BUF_RESET(bufidx)	(bufidx=0)
-#define __BUF_INCR(bufidx)	(bufidx=(bufidx+1)&__BUF_MASK)
 
 #ifdef USE_UART0
-UartRingBuffer uart0;
+UartRingBuffer uart0 IN_IRAM1;
 #endif
+
 #ifdef USE_UART1
-UartRingBuffer uart1;
+UartRingBuffer uart1 IN_IRAM1;
 #endif
+
 #ifdef USE_UART2
-UartRingBuffer uart2;
+UartRingBuffer uart2 IN_IRAM1;
 #endif
+
 #ifdef USE_UART3
-UartRingBuffer uart3;
+UartRingBuffer uart3 IN_IRAM1;
 #endif
 
 UartRingBuffer *UART_BUFFER[4] = {
@@ -100,12 +108,10 @@ void configUart(const uint32_t txpin, const uint32_t rxpin) {
    * first time
    */
   ub->txInterrupt = RESET;
-  
-  // Reset ring buf head and tail idx
-  __BUF_RESET(ub->rx_head);
-  __BUF_RESET(ub->rx_tail);
-  __BUF_RESET(ub->tx_head);
-  __BUF_RESET(ub->tx_tail);
+
+  // Reset the buffers.
+  rbInit(&ub->tx, UART_TX_ORDER);
+  ub->rxLength = 0;
 
   // Enable UART Transmit
   UART_TxCmd(uart, ENABLE);
@@ -129,8 +135,8 @@ void configUart(const uint32_t txpin, const uint32_t rxpin) {
     irq = UART3_IRQn;
   } 
 
-  /* preemption = 1, sub-priority = 1 */
-  NVIC_SetPriority(irq, ((0x01<<3)|0x01));
+  NVIC_SetPriority(irq, GROUP_PRIORITY_SERIAL); 
+
   /* Enable Interrupt for UART channel */
   NVIC_EnableIRQ(irq);
 
@@ -156,26 +162,6 @@ void initUARTs() {
 
 
 /*----------------- INTERRUPT SERVICE ROUTINES --------------------------*/
-void UART_IntReceive(UartRingBuffer *ub) {
-  while (1) {
-    // Call UART read function in UART driver
-    uint8_t tmpc;
-    uint32_t rLen = UART_Receive(ub->uart, &tmpc, 1, NON_BLOCKING);
-    // If data received
-    if (rLen){
-      /* Check if buffer has more space
-       * If no more space, remaining character will be trimmed out
-       */
-      if (!__BUF_IS_FULL(ub->rx_head,ub->rx_tail)) {
-	ub->rx[ub->rx_head] = tmpc;
-	__BUF_INCR(ub->rx_head);
-      }
-    } else { // no more data
-      break;
-    }
-  }
-}
-
 void UART_IntTransmit(UartRingBuffer *ub) {
   // Disable THRE interrupt
   UART_IntConfig(ub->uart, UART_INTCFG_THRE, DISABLE);
@@ -185,11 +171,11 @@ void UART_IntTransmit(UartRingBuffer *ub) {
   /* Wait until THR empty */
   while (UART_CheckBusy(ub->uart) == SET);
 
-  while (!__BUF_IS_EMPTY(ub->tx_head,ub->tx_tail)) {
-    /* Move a piece of data into the transmit FIFO */
-    if (UART_Send(ub->uart, (uint8_t *)&ub->tx[ub->tx_tail], 1, NON_BLOCKING)){
-      /* Update transmit ring FIFO tail pointer */
-      __BUF_INCR(ub->tx_tail);
+  while (!rbIsEmpty(&ub->tx)) {
+    unsigned char ch = ub->txArray[ub->tx.start];
+    
+    if (UART_Send(ub->uart, &ch, 1, NON_BLOCKING)){
+      rbRead(&ub->tx); // actually pop the char from the ring
     } else {
       break;
     }
@@ -197,7 +183,7 @@ void UART_IntTransmit(UartRingBuffer *ub) {
 
   /* If there is no more data to send, disable the transmit
      interrupt - else enable it or keep it enabled */
-  if (__BUF_IS_EMPTY(ub->tx_head, ub->tx_tail)) {
+  if (rbIsEmpty(&ub->tx)) {
     UART_IntConfig(ub->uart, UART_INTCFG_THRE, DISABLE);
     // Reset Tx Interrupt state
     ub->txInterrupt = RESET;
@@ -233,7 +219,24 @@ void UART0_IRQHandler(void) {
    
    // Receive Data Available or Character time-out
    if ((tmp == UART_IIR_INTID_RDA) || (tmp == UART_IIR_INTID_CTI)){
-     UART_IntReceive(&uart0);
+
+     while (1) {
+       // Call UART read function in UART driver
+       unsigned char ch;
+       if (UART_Receive(uart0.uart, &ch, 1, NON_BLOCKING)){
+      
+	 if (ch == '\n' || ch == '\r' || uart0.rxLength >= UART_LINE_BUFFER_SIZE) {
+	   uart0.rx[uart0.rxLength] = 0;
+	   handleUart0Line(uart0.rx, uart0.rxLength);
+	   uart0.rxLength = 0;
+	 } else {
+	   uart0.rx[uart0.rxLength++] = ch;
+	 }
+       } else { // no more data
+	 break;
+       }
+     }
+
    }
 
    // Transmit Holding Empty
@@ -264,7 +267,23 @@ void UART1_IRQHandler(void) {
    
    // Receive Data Available or Character time-out
    if ((tmp == UART_IIR_INTID_RDA) || (tmp == UART_IIR_INTID_CTI)){
-     UART_IntReceive(&uart1);
+     while (1) {
+       // Call UART read function in UART driver
+       unsigned char ch;
+       if (UART_Receive(uart1.uart, &ch, 1, NON_BLOCKING)){
+      
+	 if (ch == '\n' || ch == '\r' || uart1.rxLength >= UART_LINE_BUFFER_SIZE) {
+	   uart1.rx[uart1.rxLength] = 0;
+	   handleUart1Line(uart1.rx, uart1.rxLength);
+	   uart1.rxLength = 0;
+	 } else {
+	   uart1.rx[uart1.rxLength++] = ch;
+	 }
+       } else { // no more data
+	 break;
+       }
+     }
+
    }
 
    // Transmit Holding Empty
@@ -295,7 +314,23 @@ void UART2_IRQHandler(void) {
    
    // Receive Data Available or Character time-out
    if ((tmp == UART_IIR_INTID_RDA) || (tmp == UART_IIR_INTID_CTI)){
-     UART_IntReceive(&uart2);
+     while (1) {
+       // Call UART read function in UART driver
+       unsigned char ch;
+       if (UART_Receive(uart2.uart, &ch, 1, NON_BLOCKING)){
+      
+	 if (ch == '\n' || ch == '\r' || uart2.rxLength >= UART_LINE_BUFFER_SIZE) {
+	   uart2.rx[uart2.rxLength] = 0;
+	   handleUart2Line(uart2.rx, uart2.rxLength);
+	   uart2.rxLength = 0;
+	 } else {
+	   uart2.rx[uart2.rxLength++] = ch;
+	 }
+       } else { // no more data
+	 break;
+       }
+     }
+
    }
 
    // Transmit Holding Empty
@@ -326,7 +361,23 @@ void UART3_IRQHandler(void) {
    
    // Receive Data Available or Character time-out
    if ((tmp == UART_IIR_INTID_RDA) || (tmp == UART_IIR_INTID_CTI)){
-     UART_IntReceive(&uart3);
+     while (1) {
+       // Call UART read function in UART driver
+       unsigned char ch;
+       if (UART_Receive(uart3.uart, &ch, 1, NON_BLOCKING)){
+      
+	 if (ch == '\n' || ch == '\r' || uart3.rxLength >= UART_LINE_BUFFER_SIZE) {
+	   uart3.rx[uart3.rxLength] = 0;
+	   handleUart3Line(uart3.rx, uart3.rxLength);
+	   uart3.rxLength = 0;
+	 } else {
+	   uart3.rx[uart3.rxLength++] = ch;
+	 }
+       } else { // no more data
+	 break;
+       }
+     }
+
    }
 
    // Transmit Holding Empty
@@ -349,15 +400,10 @@ uint32_t UARTSend(UartRingBuffer *ub, char *txbuf, uint32_t buflen)  {
   
   /* Loop until transmit run buffer is full or until n_bytes
      expires */
-  while ((buflen > 0) && (!__BUF_IS_FULL(ub->tx_head, ub->tx_tail))) {
+  while ((buflen > 0) && (!rbIsFull(&ub->tx)) ) {
     /* Write data from buffer into ring buffer */
-    ub->tx[ub->tx_head] = *data;
-    data++;
+    ub->txArray[rbWrite(&ub->tx)] = *data++;
     
-    /* Increment head pointer */
-    __BUF_INCR(ub->tx_head);
-    
-    /* Increment data count and decrement buffer size count */
     bytes++;
     buflen--;
   }
@@ -381,53 +427,19 @@ uint32_t UARTSend(UartRingBuffer *ub, char *txbuf, uint32_t buflen)  {
   return bytes;
 }
 
-
-uint32_t UARTReceive(UartRingBuffer *ub, char *rxbuf, uint32_t buflen) {
-  uint8_t *data = (uint8_t *) rxbuf;
-  uint32_t bytes = 0;
-  
-  /* Temporarily lock out UART receive interrupts during this
-     read so the UART receive interrupt won't cause problems
-     with the index values */
-  UART_IntConfig(ub->uart, UART_INTCFG_RBR, DISABLE);
-  
-  /* Loop until receive buffer ring is empty or until max_bytes expires */
-  while ((buflen > 0) && (!(__BUF_IS_EMPTY(ub->rx_head, ub->rx_tail)))) {
-    /* Read data from ring buffer into user buffer */
-    *data = ub->rx[ub->rx_tail];
-    data++;
-
-    __BUF_INCR(ub->rx_tail);
-    
-    bytes++;
-    buflen--;
-  }
-  
-  /* Re-enable UART interrupts */
-  UART_IntConfig(ub->uart, UART_INTCFG_RBR, ENABLE);
-  
-  return bytes;
-}
-
 void UARTFlush(UartRingBuffer *ub) {
   // wait for current transmission complete - THR must be empty
   while (UART_CheckBusy(ub->uart));
 }
 
 
-
 // Abstracted, public API
-
 uint32_t sendUART(unsigned int txPin, char *txbuf, uint32_t buflen) {
   return UARTSend(UART_BUFFER[IO_CHAN(txPin)], txbuf, buflen);
 }
 
 void flushUART(unsigned int txPin) {
   UARTFlush(UART_BUFFER[IO_CHAN(txPin)]);
-}
-
-uint32_t recvUART(unsigned int rxPin, char *rxbuf, uint32_t buflen) {
-  return UARTReceive(UART_BUFFER[IO_CHAN(rxPin)], rxbuf, buflen);
 }
 
 uint32_t errorUART(unsigned int rxPin) {
