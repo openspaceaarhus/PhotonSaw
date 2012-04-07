@@ -110,7 +110,7 @@
 /  enable LFN feature and set _LFN_UNICODE to 1. */
 
 
-#define _FS_RPATH	1		/* 0:Disable or 1:Enable */
+#define _FS_RPATH	0		/* 0:Disable or 1:Enable */
 /* When _FS_RPATH is set to 1, relative path feature is enabled and f_chdir,
 /  f_chdrive function are available.
 /  Note that output of the f_readdir function is affected by this option. */

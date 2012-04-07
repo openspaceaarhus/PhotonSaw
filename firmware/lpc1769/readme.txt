@@ -11,6 +11,10 @@ Subdirs:
 
   newlib: Stubs that allow the needed functions of newlib to work, including file system support.
 
+  usb: The USB-CDC sub system, use the functions in usbapi.h to access it.
+  
+  fat_sd: The SD card based FAT file system from: http://www.siwawi.arubi.uni-kl.de/avr_projects/arm_projects/arm_memcards/#chanfat_lpc_cm3
+
 
 Files:
 
@@ -34,10 +38,10 @@ Files:
 
 *** TODO ***
 
-Each UART should have a circular receive and transmit buffer.
+* Make the UARTs receive interrupts buffer into a line buffer and then use a callback routine
+  to let the application handle a full line at a time.
 
-Block only when writing to a full buffer.
-
+* Plumb fat_sd into stdio.
 
 
 *** Flow control ***

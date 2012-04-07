@@ -1,16 +1,26 @@
 #include <string.h>
 #include <stdio.h>
 
-
 #include "api.h"
-#include "fat_sd/ff.h"
+
 
 int main(void) {
   fiprintf(stderr, "Power Up!\n\r");
-  
-  FATFS fs;
-  FRESULT mr = f_mount(0, &fs);
-  fiprintf(stderr, "Mount result: %d\n\r", mr);
+
+  FILE *f = fopen("/sd/test.log", "a");
+  fprintf(f, "Test text\n\r");
+  fclose(f);
+
+  FILE *f1 = fopen("/sd/test.log", "r");
+  while (!feof(f1)) {
+    char buffer[100];
+    *buffer = 0;
+    fgets(buffer, sizeof(buffer), f1);
+    fprintf(stderr, buffer);
+  }
+  fclose(f1);
+
+
   /*
   FRESULT r = f_mkfs(0, 0, 0);
   fiprintf(stderr, "MKFS result: %d\n\r", r);
