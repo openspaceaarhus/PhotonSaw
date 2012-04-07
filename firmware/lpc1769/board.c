@@ -7,27 +7,25 @@
 #include "api.h"
 
 #include "lpc17xx_pinsel.h"
-#include "lpc17xx_adc.h"
-
-volatile unsigned long systick;
+#include "lpc17xx_timer.h"
 
 void WEAK diskTick100Hz() {
   // Do nothing.
 }
-
-unsigned char div10 = 0;
-
-void SysTick_Handler (void) {
-  systick++;
-
-  if (++div10 > 10) {
-    div10 = 0;
-    diskTick100Hz();
-  }
+     
+void TIMER3_IRQHandler(void) {
+  TIM_ClearIntPending(LPC_TIM3, TIM_MR0_INT);
+  diskTick100Hz();
 }
 
-void delay(unsigned long ms) {
-  unsigned long endtick = ms+systick;
+//volatile unsigned long systick;
+volatile SYSTICK_TYPE systick;
+void SysTick_Handler (void) {
+  systick++;
+}
+
+void delay(SYSTICK_TYPE ms) {
+  SYSTICK_TYPE endtick = ms+systick;
 
   if (endtick < systick) { // Wraparound
     while (systick); // Wait for 0 to roll around.
@@ -54,7 +52,7 @@ void configPin(const uint32_t pin) {
 }
 
 void boardInit() {
-  SysTick_Config(SystemCoreClock/1000 - 1);
+  SysTick_Config(SystemCoreClock/1000 - 1); 
 
   /*
     A note about interrupt priorities
@@ -77,7 +75,9 @@ void boardInit() {
     IRQ priorities into 8 preemption groups and 4 sub priorities.
   */
   NVIC_SetPriorityGrouping(4); 
-  NVIC_SetPriority(SysTick_IRQn, GROUP_PRIORITY_SYSTICK); 
+  NVIC_SetPriority(SysTick_IRQn, GROUP_PRIORITY_1000HZ); 
+  NVIC_SetPriority(TIMER3_IRQn, GROUP_PRIORITY_100HZ);
+  NVIC_SetPriority(USB_IRQn, GROUP_PRIORITY_USB);
   
   initUARTs();
   initADC();
@@ -97,6 +97,27 @@ void boardInit() {
     configPin(ALL_PINS[i]);
   }
 
+  /*
+    Set up timer3 to poke the "slow" 100Hz maintainance routine
+   */    
+
+  TIM_TIMERCFG_Type timerCfg;
+  timerCfg.PrescaleOption = TIM_PRESCALE_USVAL;
+  timerCfg.PrescaleValue  = 1000; // 1 ms interval
+  TIM_Init(LPC_TIM3, TIM_TIMER_MODE, &timerCfg);
+
+  TIM_MATCHCFG_Type timerMatch;
+  timerMatch.MatchChannel = 0;
+  timerMatch.IntOnMatch   = TRUE;
+  timerMatch.ResetOnMatch = TRUE;
+  timerMatch.StopOnMatch  = FALSE;
+  timerMatch.ExtMatchOutputType = TIM_EXTMATCH_NOTHING;
+  timerMatch.MatchValue   = 10-1;
+  TIM_ConfigMatch(LPC_TIM3,&timerMatch);
+
+  NVIC_EnableIRQ(TIMER3_IRQn);
+  TIM_Cmd(LPC_TIM3,ENABLE);
+  
   initAPI();
 }
 

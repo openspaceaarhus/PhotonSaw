@@ -13,8 +13,8 @@
   Preemption priority groups for IRQs (0..7)
 */
 #define GROUP_PRIORITY_STEPPER (0<<2)
-#define GROUP_PRIORITY_SYSTICK (1<<2)
-#define GROUP_PRIORITY_SDTICK  (2<<2)
+#define GROUP_PRIORITY_1000HZ  (1<<2)
+#define GROUP_PRIORITY_100HZ   (2<<2)
 #define GROUP_PRIORITY_SERIAL  (3<<2)
 #define GROUP_PRIORITY_USB     (4<<2)
 
@@ -62,10 +62,11 @@ void configPin(const uint32_t pin);
 // Use this macro with a pin config constant:
 #define READ_ADC(pin) readADC(IO_CHAN(pin))
 
+// 8,16 and 32 bit ints takes 10 clock cycles, 64 bit (long long) takes 16
+#define SYSTICK_TYPE unsigned int
+extern volatile SYSTICK_TYPE systick;
 
-extern volatile unsigned long systick;
-
-void delay(unsigned long ms);
+void delay(SYSTICK_TYPE ms);
 
 // Implement this to get it called at 100Hz
 void diskTick100Hz();
