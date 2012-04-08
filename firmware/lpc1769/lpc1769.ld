@@ -104,27 +104,6 @@ SECTIONS
           _sidata = .;
         } >IRAM0 AT>FLASH
 
-	/******************************************/
-	/* This used for USB RAM section */
-	.usbram (NOLOAD):
-	{
-		_usbram = . ;
-		USB_RAM_ADR = . ;
-		*(.usbram)
-		. = ALIGN(4);
-		_eusbram = . ;
-		_usbram_end = . ;
-	} > USBRAM
-
-	/* Extra RAM */
-	.iram1 (NOLOAD):
-	{
-		_iram = . ;
-		*(.iram)
-		. = ALIGN(4);
-		_iram_end = . ;
-	} > IRAM1
-
         /******************************************/
 	/* data section */
 	.data :
@@ -167,6 +146,26 @@ SECTIONS
              _stack = .;
         } >STACK
 
+	/******************************************/
+	/* This used for USB RAM section */
+	.usbram (NOLOAD):
+	{
+		_usbram = . ;
+		USB_RAM_ADR = . ;
+		*(.usbram)
+		. = ALIGN(4);
+		_eusbram = . ;
+		_usbram_end = . ;
+	} > USBRAM
+
+	/* Extra RAM */
+	.iram1 (NOLOAD):
+	{
+		_iram = . ;
+		*(.iram1)
+		. = ALIGN(4);
+		_iram_end = . ;
+	} > IRAM1
 
 	/******************************************/
 	/* Stabs debugging sections.  */

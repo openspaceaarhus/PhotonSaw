@@ -2,17 +2,19 @@
 
 #include "state.h"
 #include "api.h"
+#include "shaker.h"
 
 WatchdogState *wdState;
 
 void printState(FILE *file) {
   
-  if (wdState) {
-    SYSTICK_TYPE age = systickInterval(wdState->timestamp, systick);
+  WatchdogState *wds = wdState;
+  if (wds) {
+    SYSTICK_TYPE age = systickInterval(wds->timestamp, systick);
     if (age < 2000) {
-      fiprintf(file, "Watchdog: %s (age: %d)\r\n", wdState->msg, age);
+      fiprintf(file, "Watchdog: %s (age: %d)\r\n", wds->msg, age);
     } else {
-      fiprintf(file, "Watchdog: Stale, age:%d (was: %s)\r\n", age, wdState->msg);
+      fiprintf(file, "Watchdog: Stale, age:%d (was: %s)\r\n", age, wds->msg);
     }
   }
 
@@ -35,5 +37,8 @@ void printState(FILE *file) {
   if (err0) {
     fiprintf(file, "Chiller UART Error: %x\n\r", err0);        
   }
+
+  fiprintf(file, "Stepper max time: %d us\n\r", stepperIRQMax);
+  fprintf(file, "Stepper avg time: %f us\n\r", (stepperIRQAvg >> 8) / 255.0);
 }
 

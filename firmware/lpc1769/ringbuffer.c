@@ -31,14 +31,14 @@ inline int rbOverWrite(RingBufferControl *rb) {
 
 // Returns the index of element to write to, will return -1 if buffer is full
 inline int rbWrite(RingBufferControl *rb) {
-		int res = rb->end;
-		int newEnd = (rb->end + 1) & rb->mask;
-    if (newEnd == rb->start) {
-        return -1;
-    } else {
-      rb->end = newEnd;
-    	return res;
-    }
+  int res = rb->end;
+  int newEnd = (rb->end + 1) & rb->mask;
+  if (newEnd == rb->start) {
+    return -1;
+  } else {
+    rb->end = newEnd;
+    return res;
+  }
 }
 
 // Returns the index of the element to read from, will return -1 if buffer is empty.
@@ -50,4 +50,28 @@ inline int rbRead(RingBufferControl *rb) {
 		int res = rb->start;
     rb->start = (rb->start + 1) & rb->mask;
     return res;
+}
+
+
+inline int rbWriteHidden(RingBufferControl *rb) {
+  int res = rb->endHidden;
+  int newEnd = (rb->endHidden + 1) & rb->mask;
+  if (newEnd == rb->start) {
+    return -1;
+  } else {
+    rb->endHidden = newEnd;
+    return res;
+  }
+}
+
+inline char rbIsFullHidden(RingBufferControl *rb) {
+  return ((rb->endHidden + 1) & rb->mask) == rb->start;
+}
+
+inline void rbShowHidden(RingBufferControl *rb) {
+  rb->end = rb->endHidden;
+}
+
+inline int rbLengthHidden(RingBufferControl *rb) {
+  return (rb->endHidden-rb->start) & rb->mask;
 }

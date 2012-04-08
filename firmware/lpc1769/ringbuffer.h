@@ -2,9 +2,10 @@
 #define __RINGBUFFER_H__
 
 typedef struct {
-		unsigned int mask;  // The mask to and the index with to cause it wrap around.
-		int start; // Index of the oldest element (where the reader reads from)
-		int end;   // Index just beyond the newest element (where the writer can write to)
+  unsigned int mask;  // The mask to and the index with to cause it wrap around.
+  int start; // Index of the oldest element (where the reader reads from)
+  int end;   // Index just beyond the newest element (where the writer can write to)
+  int endHidden; // Like end, but used for inserting hidden elements.
 } RingBufferControl;
 
 // Initializes a ring buffer to use an array with 1<<order elements
@@ -23,6 +24,10 @@ extern int rbWrite(RingBufferControl *rb);
 // Returns the index of the element to read from, will return -1 if buffer is empty.
 extern int rbRead(RingBufferControl *rb);
 
+extern int rbWriteHidden(RingBufferControl *rb);
+extern char rbIsFullHidden(RingBufferControl *rb);
+extern void rbShowHidden(RingBufferControl *rb);
+extern int rbLengthHidden(RingBufferControl *rb);
 
 // Define the ring buffer control and the array and initialize the control structure
 #define RING_BUFFER(ctrl, order, type) RingBufferControl ctrl; type ctrl ## Array[1<<(order)]

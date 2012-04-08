@@ -2,31 +2,27 @@
 #include "pwm.h"
 #include "board.h"
 
-Stepper xStepper;
+void stpInit(Stepper *s,
+	     const unsigned int stepPin, 
+	     const unsigned int dirPin, 
+	     const unsigned int enablePin, 
+	     const unsigned int currentPin, 
+	     const unsigned int usm0Pin, 
+	     const unsigned int usm1Pin) {
 
-Stepper stpInit(const unsigned int stepPin, 
-		const unsigned int dirPin, 
-		const unsigned int enablePin, 
-		const unsigned int currentPin, 
-		const unsigned int usm0Pin, 
-		const unsigned int usm1Pin) {
+  s->stepPin = stepPin;
+  s->dirPin = dirPin;
+  s->enablePin = enablePin;
+  s->currentPin = currentPin;
+  s->usm0Pin = usm0Pin;
+  s->usm1Pin = usm1Pin;
 
-  Stepper s;
-  s.stepPin = stepPin;
-  s.dirPin = dirPin;
-  s.enablePin = enablePin;
-  s.currentPin = currentPin;
-  s.usm0Pin = usm0Pin;
-  s.usm1Pin = usm1Pin;
-
-  configPin(s.stepPin);
-  configPin(s.dirPin);
-  configPin(s.enablePin);
-  configPin(s.currentPin);
-  configPin(s.usm0Pin);
-  configPin(s.usm1Pin);
-
-  return s;
+  configPin(s->stepPin);
+  configPin(s->dirPin);
+  configPin(s->enablePin);
+  configPin(s->currentPin);
+  configPin(s->usm0Pin);
+  configPin(s->usm1Pin);
 }
 
 void stpEnable(Stepper *s) {

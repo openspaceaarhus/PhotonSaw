@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "api.h"
+#include "shaker.h"
 
 int main(void) {
   fiprintf(stderr, "\x1b[2JPower Up!\r\n");
@@ -15,6 +16,9 @@ int main(void) {
     console.c   Debug serial port interface 
     shaker.c    Realtime control output
   */
+
+  shakerInit();
+
   while (1) {
     GPIO_SET(IO_LED);
     delay(200);

@@ -131,3 +131,6 @@ __DATA__
 #define IO_USB_D_MINUS   ((1<<24) |           IO_P0 | 30)
 
 
+// Misc outputs:
+#define IO_STEPPER_ACTIVE     (OUTPUT | IO_P1 | 17)
+

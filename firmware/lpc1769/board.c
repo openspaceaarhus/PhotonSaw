@@ -80,6 +80,7 @@ void boardInit() {
     IRQ priorities into 8 preemption groups and 4 sub priorities.
   */
   NVIC_SetPriorityGrouping(4); 
+  NVIC_SetPriority(TIMER2_IRQn, GROUP_PRIORITY_STEPPER);
   NVIC_SetPriority(SysTick_IRQn, GROUP_PRIORITY_1000HZ); 
   NVIC_SetPriority(TIMER3_IRQn, GROUP_PRIORITY_100HZ);
   NVIC_SetPriority(USB_IRQn, GROUP_PRIORITY_USB);

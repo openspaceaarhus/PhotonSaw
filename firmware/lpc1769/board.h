@@ -53,11 +53,16 @@
 
 void configPin(const uint32_t pin);
 
-// TODO: Make macros for manipulating GPIO pins (I/O) via memory banding
-
+// TODO: Make macros for manipulating GPIO pins (I/O) via bit banding
+/*
+typedef unsigned int *preg32;
+#define GPIO_SET(x)   (*(preg32 ((LPC_GPIO0_BASE + (IO_PORT(x) << 16)) + ((1 << IO_PIN(x)) << 2)))) = 0xFFF
+#define GPIO_CLEAR(x) (*(preg32 ((LPC_GPIO0_BASE + (IO_PORT(x) << 16)) + ((1 << IO_PIN(x)) << 2)))) = 0
+#define GPIO_GET(x)   (*(preg32 ((LPC_GPIO0_BASE + (IO_PORT(x) << 16)) + ((1 << IO_PIN(x)) << 2))))
+*/
 #define GPIO_SET(x)   GPIO_SetValue(IO_PORT(x), 1<<IO_PIN(x))
 #define GPIO_CLEAR(x) GPIO_ClearValue(IO_PORT(x), 1<<IO_PIN(x))
-//#define GPIO_GET(x) GPIO_GetValue(IO_PORT(x), IO_PIN(x))
+#define GPIO_GET(x)   (GPIO_ReadValue(IO_PORT(x)) & (1<<IO_PIN(x)))
 
 // Use this macro with a pin config constant:
 #define READ_ADC(pin) readADC(IO_CHAN(pin))

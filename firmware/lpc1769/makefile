@@ -77,7 +77,7 @@ all: $(EXECNAME)
 $(EXECNAME): $(FW)/$(BOARD)/board-pins.h $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXECNAME)
 #	$(OBJCOPY) -O ihex $(EXECNAME) $(PROJ).hex
-	$(CODESIZE) $(EXECNAME)
+	$(CODESIZE) -A $(EXECNAME)
 
 $(FW)/$(BOARD)/board-pins.h: $(FW)/$(BOARD)/board-pins.h.pl
 	 $(FW)/$(BOARD)/board-pins.h.pl
