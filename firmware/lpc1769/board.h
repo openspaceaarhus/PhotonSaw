@@ -67,6 +67,7 @@ void configPin(const uint32_t pin);
 extern volatile SYSTICK_TYPE systick;
 
 void delay(SYSTICK_TYPE ms);
+SYSTICK_TYPE systickInterval(SYSTICK_TYPE t0, SYSTICK_TYPE t1);
 
 // Implement this to get it called at 100Hz
 void diskTick100Hz();

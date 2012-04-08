@@ -5,23 +5,22 @@ The tools subdirectory contains a script which will download and build the entir
 
 LPC1769 software:
 
-The lpc1769 directory contains the low level framework (startup code, linker script, makefile, openocd config)
+The lpc1769 directory contains the low level framework
+(startup code, linker script, makefile, openocd config)
 needed to build the lpc1769 based firmware.
 
-blinky contains a very minimal test project that simply blinks the status LED on the PhotonSaw board.
-
-uart blinky plus output via debug serial port and ADC readout
-
-usbcdc gives the USB a workout.
-
-stepper is a step motor test program
+* blinky: A very minimal test project that simply blinks the status LED.
+* uart: blinky plus output via debug serial port and ADC readout
+* stepper: is a step motor test program
+* sdcard: SDcard and FAT test code
+* mover: The actual 
 
 
 ATMega328 software:
 
 The atmega328 directory contains the framework for the AVR based part of the firmware:
 
-lapdog is a sample firmware for the watchdog MCU, it doesn't really protect
+* lapdog: A sample firmware for the watchdog MCU, it doesn't really protect
 anything, it just flashes the LEDs and enables both steppers and the LASER.
 
 

@@ -34,6 +34,11 @@ void delay(SYSTICK_TYPE ms) {
   while (systick < endtick); 
 }
 
+SYSTICK_TYPE systickInterval(SYSTICK_TYPE t0, SYSTICK_TYPE t1) {
+  return t1-t0;
+}
+
+
 // Does the basic GPIO/function configuration of a pin using the pin config constant.
 void configPin(const uint32_t pin) {
 

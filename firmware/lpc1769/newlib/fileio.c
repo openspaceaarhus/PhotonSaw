@@ -6,6 +6,7 @@
 
 #include "board.h"
 #include "uarts.h"
+#include "usbapi.h"
 
 #include "fat_sd/ff.h"
 
@@ -256,7 +257,8 @@ int _write(int file, char *ptr, int len) {
   if (len == 0) return 0;
 
   if (file == 0 || file == 1) {
-    // TODO: Call down to the CDC code here
+    usbSend(ptr, len);
+    return len;
 
   } else if (file < 10) {
     unsigned int port = UART_FD[file];
