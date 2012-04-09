@@ -7,6 +7,7 @@
   Output all of the available state to the file
 */
 void printState(FILE *file);
+void printAlarmState(FILE *file);
 
 #define WD_STATE_MAX 100
 typedef struct {

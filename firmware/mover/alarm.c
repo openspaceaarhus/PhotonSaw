@@ -1,10 +1,20 @@
+#include <string.h>
+
 #include "api.h"
 #include "alarm.h"
 #include "shaker.h"
-#include <string.h>
+#include "joules.h"
+
 
 Alarm alarms[ALARMS] IN_IRAM1;
 int alarmsActive;
+
+void alarmInit() {
+  for (int i=0;i<ALARMS;i++) {
+    alarms[i].active = 0;
+  }
+  alarmsActive = 0;
+}
 
 // Sets an alarm
 int alarmSet(unsigned int switches, char *message) {
@@ -33,15 +43,17 @@ int alarmSet(unsigned int switches, char *message) {
 }
 
 // Clears an active alarm
-void alarmClear(int index) {
-  if (index > 0 && index < ALARMS && alarms[index].active) {
+int alarmClear(int index) {
+  if (index >= 0 && index < ALARMS && alarms[index].active) {
     alarms[index].active = 0;
     alarmsActive--;
+    return 0;
+  } else {
+    return 1;
   }
 }
 
 // Returns the number of non-cleared alarms
-
 unsigned int checkAlarmInputs() {  
   if (alarmsActive) {
     return alarmsActive;
@@ -57,11 +69,21 @@ unsigned int checkAlarmInputs() {
   if (!GPIO_GET(IO_A_MIN)) sw |= 1<<ALARM_SW_A_MIN;
   if (!GPIO_GET(IO_A_MAX)) sw |= 1<<ALARM_SW_A_MAX;
 
-  if (!GPIO_GET(IO_ESTOP)) sw |= 1<<ALARM_SW_ESTOP;
-  if (!GPIO_GET(IO_WD_READY)) sw |= 1<<ALARM_SW_WD_READY;
+  if (GPIO_GET(IO_ESTOP)) sw |= 1<<ALARM_SW_ESTOP;
+  if (!GPIO_GET(IO_WD_READY)) sw |= 1<<ALARM_WD;
+  if (!GPIO_GET(IO_LASER_READY)) sw |= 1<<ALARM_LASER;
 
-  if (sw) {
-    alarmSet(sw, "One or more switches triggered");
+  unsigned int csw = getCoolantAlarm();  
+  if (sw || csw) {
+    if (sw && csw) {
+      alarmSet(sw|csw, "Switches triggered and cooling failure");
+      return 2;
+    } 
+    if (sw) {
+      alarmSet(sw|csw, "Switches triggered");
+      return 1;
+    }
+    alarmSet(sw|csw, "Cooling failure");
     return 1;
   }
 

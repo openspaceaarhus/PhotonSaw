@@ -327,6 +327,7 @@ void shakerInit() {
   rbInit(&moves, MOVE_BUFFER_ORDER);
   stepperIRQMax = 0;
   stepperIRQAvg = 0;
+  alarmInit();
 
   AXIS_INIT(&axes[AXIS_X], X);
   AXIS_INIT(&axes[AXIS_Y], Y);

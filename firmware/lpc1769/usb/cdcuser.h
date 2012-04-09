@@ -22,7 +22,6 @@
 /* CDC buffer handling */
 extern int CDC_RdOutBuf        (char *buffer, const int *length);
 extern int CDC_WrOutBuf        (const char *buffer, int *length);
-extern int CDC_OutBufAvailChar (int *availChar);
 
 
 /* CDC Data In/Out Endpoint Address */

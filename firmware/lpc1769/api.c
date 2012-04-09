@@ -9,6 +9,11 @@ void initAPI() {
   watchdog = fopen("/dev/watchdog", "r+");
 
   usbInit();
+
+  setvbuf(stdout,  0, _IONBF, 0);
+  setvbuf(stderr,  0, _IONBF, 0);
+  setvbuf(chiller, 0, _IONBF, 0);
+  setvbuf(watchdog,0, _IONBF, 0);
 }
 
 int getline(FILE *file, char line[], int max) {

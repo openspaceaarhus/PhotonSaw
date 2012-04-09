@@ -200,7 +200,7 @@ void USB_EndPoint2 (uint32_t event) {
       CDC_BulkOut ();                /* data received from Host */
       break;
     case USB_EVT_IN:
-      CDC_BulkIn ();                 /* data expected from Host */
+      //      CDC_BulkIn ();                 /* data expected from Host */
       break;
   }
 }

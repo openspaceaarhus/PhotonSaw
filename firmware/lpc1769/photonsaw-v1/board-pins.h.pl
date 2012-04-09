@@ -70,7 +70,8 @@ __DATA__
 // Inputs:
 #define IO_WATERFLOW   (IO_P1 | 16)
 #define IO_ISP         (IO_P2 | 10)
-#define IO_WD_READY    (IO_P3 | 25)
+#define IO_WD_READY    (IO_P0 | 28)
+#define IO_LASER_READY (IO_P3 | 25)
 #define IO_ESTOP       (IO_P3 | 26)
 
 #define IO_X_MAX      (IO_P1 | 14)

@@ -73,7 +73,6 @@ int CDC_RdOutBuf (char *buffer, const int *length) {
   bytesToRead = (bytesToRead < (*length)) ? bytesToRead : (*length);
   bytesRead = bytesToRead;
 
-
   // ... add code to check for underrun
 
   while (bytesToRead--) {
@@ -92,9 +91,7 @@ int CDC_WrOutBuf (const char *buffer, int *length) {
   bytesToWrite = *length;
   bytesWritten = bytesToWrite;
 
-
   // ... add code to check for overwrite
-
   while (bytesToWrite) {
       CDC_BUF_WR(CDC_OutBuf, *buffer++);           // Copy Data to buffer
       bytesToWrite--;
@@ -103,16 +100,6 @@ int CDC_WrOutBuf (const char *buffer, int *length) {
   return (bytesWritten);
 }
 
-/*----------------------------------------------------------------------------
-  check if character(s) are available at CDC_OutBuf
- *---------------------------------------------------------------------------*/
-int CDC_OutBufAvailChar (int *availChar) {
-
-  *availChar = CDC_BUF_COUNT(CDC_OutBuf);
-
-  return (0);
-}
-/* end Buffer handling */
 
 
 /*----------------------------------------------------------------------------

@@ -90,15 +90,15 @@ void usbFlush() {
 
 // Read up to dataSize chars from the transmit buffer
 int usbPopForTransmit(unsigned char *data, int dataSize) {
-
-	int res = 0;
-	while (dataSize && !rbIsEmpty(&usbTxBuffer)) {
-		dataSize--;
-		res++;
-		*data = RB_READ(usbTxBuffer);
-		data++;
-	}
-	return res;
+  int res = 0;
+  while (dataSize && !rbIsEmpty(&usbTxBuffer)) {
+    dataSize--;
+    res++;
+    *data = RB_READ(usbTxBuffer);
+    data++;
+  }
+  
+  return res;
 }
 
 // Write data from the USB buffer to the receive buffer

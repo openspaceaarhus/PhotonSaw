@@ -3,6 +3,8 @@
 
 #include "board.h"
 
+void alarmInit();
+
 /*
   Checks the limit switches, emergency switch, watchdog ready output
   then sets an alarm if anything is wrong.  
@@ -29,7 +31,7 @@ unsigned int checkAlarmInputs();
 #define ALARM_SW_ESTOP 8
 
 // Watchdog is unhappy
-#define ALARM_SW_WD_READY    9
+#define ALARM_WD    9
 
 // The code was invalid
 #define ALARM_CODE    10
@@ -42,6 +44,9 @@ unsigned int checkAlarmInputs();
 
 // The buffer is about to be reset
 #define ALARM_RESET 13
+
+// LASER is not ready
+#define ALARM_LASER 14
 
 #define ALARM_MAX_LENGTH 80
 typedef struct {
@@ -61,7 +66,7 @@ extern int alarmsActive;
 int alarmSet(unsigned int switches, char *message);
 
 // Clears an alarm
-void alarmClear(int index);
+int alarmClear(int index);
 
 // Returns the number of non-cleared alarms
 int inline alarmCount() {
