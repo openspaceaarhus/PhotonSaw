@@ -16,6 +16,7 @@ extern unsigned int stepperIRQMax;
 extern unsigned int stepperIRQAvg;
 
 unsigned int getCurrentMove();
+unsigned int getCurrentMoveCodeOffset();
 
 
 // True if it's possible to add more move codes
@@ -36,7 +37,8 @@ int bufferInUse();
 // True if there are no moves ready for execution
 char bufferIsEmpty();
 
-
+// Stop any action and purge the move buffer, do not call this from shaker itself or it will deadlock!
+void shakerResetBuffer();
 
 #define AXIS_X 0
 #define AXIS_Y 1

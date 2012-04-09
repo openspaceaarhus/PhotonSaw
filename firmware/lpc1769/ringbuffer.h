@@ -11,6 +11,9 @@ typedef struct {
 // Initializes a ring buffer to use an array with 1<<order elements
 void rbInit(RingBufferControl *rb, int order);
 
+// Re-initialize a buffer so it becomes empty
+void rbReset(RingBufferControl *rb);
+
 extern char rbIsFull(RingBufferControl *rb);
 extern char rbIsEmpty(RingBufferControl *rb);
 extern int rbLength(RingBufferControl *rb);
@@ -26,6 +29,7 @@ extern int rbRead(RingBufferControl *rb);
 
 extern int rbWriteHidden(RingBufferControl *rb);
 extern char rbIsFullHidden(RingBufferControl *rb);
+extern char rbIsEmptyHidden(RingBufferControl *rb);
 extern void rbShowHidden(RingBufferControl *rb);
 extern int rbLengthHidden(RingBufferControl *rb);
 

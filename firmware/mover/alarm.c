@@ -7,7 +7,7 @@ Alarm alarms[ALARMS] IN_IRAM1;
 int alarmsActive;
 
 // Sets an alarm
-void alarmSet(unsigned int switches, char *message) {
+int alarmSet(unsigned int switches, char *message) {
   int index = -1;
   for (int i=0;i<ALARMS;i++) {
     if (!alarms[i].active) {
@@ -17,20 +17,23 @@ void alarmSet(unsigned int switches, char *message) {
   }
 
   if (index < 0) {
-    return; // Well, shit has already hit the fan, it does nobody any good to remove the evidence.
+    return -1; // Well, shit has already hit the fan, it does nobody any good to remove the evidence.
   }
 
   alarms[index].timestamp = systick;
   alarms[index].active = 1;
   alarms[index].switches = switches;
   alarms[index].moveId = getCurrentMove();
+  alarms[index].moveCodeOffset = getCurrentMoveCodeOffset();
   strncpy(alarms[index].msg, message, ALARM_MAX_LENGTH);
   alarmsActive++;
+
+  return index;
 }
 
-// Clears an alarm
+// Clears an active alarm
 void alarmClear(int index) {
-  if (alarms[index].active) {
+  if (index > 0 && index < ALARMS && alarms[index].active) {
     alarms[index].active = 0;
     alarmsActive--;
   }

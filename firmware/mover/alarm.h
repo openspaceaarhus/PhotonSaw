@@ -11,6 +11,10 @@
 */
 unsigned int checkAlarmInputs();
 
+
+// Alarm source bits, used in the switches field of each alarm.
+
+// Limit switches
 #define ALARM_SW_X_MIN 0
 #define ALARM_SW_Y_MIN 1
 #define ALARM_SW_Z_MIN 2
@@ -21,16 +25,30 @@ unsigned int checkAlarmInputs();
 #define ALARM_SW_Z_MAX 6
 #define ALARM_SW_A_MAX 7
 
+// Emergency stop was triggered
 #define ALARM_SW_ESTOP 8
 
+// Watchdog is unhappy
 #define ALARM_SW_WD_READY    9
 
+// The code was invalid
+#define ALARM_CODE    10
+
+// Coolant flow was too low and the laser was commanded on
+#define ALARM_COOLANT_FLOW 11
+
+// Coolant temperature outside parameters and the laser was commanded on
+#define ALARM_COOLANT_TEMP 12
+
+// The buffer is about to be reset
+#define ALARM_RESET 13
 
 #define ALARM_MAX_LENGTH 80
 typedef struct {
-  SYSTICK_TYPE timestamp;
+  SYSTICK_TYPE timestamp; // The milisecond systick value when the fault occured
   int active; // Never set or clear this manually always use alarmSet and alarmClear!
-  unsigned int moveId;
+  unsigned int moveId;         // The Move ID active/being interpreted when the alarm occured
+  unsigned int moveCodeOffset; // The number of the move code being interpreted
   unsigned int switches;
   char msg[ALARM_MAX_LENGTH];
 } Alarm;
@@ -39,8 +57,8 @@ typedef struct {
 extern Alarm alarms[ALARMS] IN_IRAM1;
 extern int alarmsActive;
 
-// Sets an alarm
-void alarmSet(unsigned int switches, char *message);
+// Sets an alarm and returns the index
+int alarmSet(unsigned int switches, char *message);
 
 // Clears an alarm
 void alarmClear(int index);

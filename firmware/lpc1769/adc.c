@@ -63,23 +63,16 @@ unsigned int airflow() {
 }
 
 
-// 
-#define NTC_PULLUP 10000
-#define NTC_PULLUP_VOLTAGE 5
-
+// See board-config.h for the constants
+ 
 double readNTCres(const int channel) {
   double v = readADCmv(channel);
   v /= 1000;
   return -(NTC_PULLUP * v) / (v-NTC_PULLUP_VOLTAGE);
 }
 
-// Constants from the datasheet for the NTC used:
-// ELFA:60-279-24 (1% 5k RH16 6D502)
-#define B50 3936.0
-#define R25 5000.0
-
 double r2c(double r) {
-  return 1/(1/(25+273.15) + 1/B50 * log(r/R25))-273.15;
+  return 1/(1/(25+273.15) + 1/NTC_B50 * log(r/NTC_R25))-273.15;
 }
 
 double readNTCcelcius(const int channel) {

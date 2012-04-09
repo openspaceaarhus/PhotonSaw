@@ -12,10 +12,15 @@
 void WEAK diskTick100Hz() {
   // Do nothing.
 }
+
+void WEAK joulesUpdateTotals100Hz() {
+  // Do nothing here either
+}
      
 void TIMER3_IRQHandler(void) {
   TIM_ClearIntPending(LPC_TIM3, TIM_MR0_INT);
   diskTick100Hz();
+  joulesUpdateTotals100Hz();
 }
 
 //volatile unsigned long systick;

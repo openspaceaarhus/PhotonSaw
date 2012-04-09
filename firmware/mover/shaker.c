@@ -5,11 +5,14 @@
 #include "move.h"
 #include "lpc17xx_timer.h"
 #include "alarm.h"
+#include "joules.h"
 
 // Notice: NO stdio or other slow routines in this file!
 
 unsigned int stepperIRQMax;
 unsigned int stepperIRQAvg;
+
+unsigned int cuMoveCodeOffset;
 
 Axis axes[4];
 
@@ -42,16 +45,15 @@ inline char bufferIsEmpty() {
 }
 
 void codeError(char *msg) {
-  // TODO: Add the error to an error stack along with the code value and the offset
-  // from the last move start with id.
+  alarmSet(ALARM_CODE, msg);
 }
-
 
 inline unsigned int bufferPop() {
   if (bufferIsEmpty()) {
     codeError("Truncated code");
     return 0;
   }
+  cuMoveCodeOffset++;
   return RB_READ(moves);
 }
 
@@ -62,7 +64,7 @@ inline unsigned int bufferPop() {
 */
 
 // Are we currently in the middle of making a move?
-int cuActive;
+int volatile cuActive;
 
 // The ID of the current move
 unsigned int cuID; 
@@ -105,8 +107,27 @@ inline void nextPixel() {
   cuPV = cuPixelWord & 1<<cuPP++;
 }
 
+unsigned int cuMoveCodeOffset;
+unsigned int getCurrentMoveCodeOffset() {
+  return cuMoveCodeOffset;
+}
+
+// Stop any action and purge the move buffer, do not call this from shaker itself or it will deadlock!
+void shakerResetBuffer() {
+  int alarmIndex = alarmSet(ALARM_RESET, "Stopping");
+  
+  while (cuActive) {
+    // Wait until the RT code discovers the alarm and stops moving
+  }  
+
+  rbReset(&moves);
+  setLaserFire(0); // Make really sure the laser is off!
+  alarmClear(alarmIndex); // Get rid of the alarm again.
+}
+
 inline void startNewMove() {
   if (bufferIsEmpty()) {    
+    setLaserFire(0); // Make really sure the laser is off if we run out of moves!
     
     /*
      TODO: If at least one axis is moving so fast it's impossible to stop it immediatly,
@@ -116,6 +137,7 @@ inline void startNewMove() {
     return; // Well, never mind then.
   }
 
+  cuMoveCodeOffset = 0;
   unsigned int head = bufferPop();
   if (!IS_MOVE_START_CODE(head)) {
     codeError("Not a start code");
@@ -146,16 +168,21 @@ inline void startNewMove() {
   if (MOVE_HAS_ZA(head)) axisSetAccel(&axes[AXIS_Z], bufferPop());
   if (MOVE_HAS_AA(head)) axisSetAccel(&axes[AXIS_A], bufferPop());
 
-  // See if we should be running the laser and at what power:
+  // See if we should be running the LASER and at what power:
   if (MOVE_HAS_LASER(head)) {
     unsigned int lc = bufferPop();
     if (!IS_LASER_CODE(lc)) {
-      codeError("Not a laser code");
+      codeError("Not a LASER code");
       return;
     }
     
     cuLaserPWM = LASER_PWM(lc) << 16;
     cuLaserOn = 1;
+
+    if (getCoolantAlarm()) {
+      alarmSet(getCoolantAlarm(), "Coolant outside of spec, will not power on LASER");
+      return;
+    }
   } else {
     cuLaserOn = 0;
   }  
@@ -167,12 +194,11 @@ inline void startNewMove() {
     cuLaserPWMA = 0;
   }
 
-
   if (MOVE_HAS_PIXELS(head)) {
     cuHasPixels = 1;
     cuPS = bufferPop();
     cuPixelWords = bufferPop();
-    cuPP = 42; nextPixel(); // Pops off a pixel word and readies the first pixel cuPV
+    cuPP = 42; nextPixel(); // Pops off a pixel word and readies the first pixel in cuPV
   } else {
     cuHasPixels = 0;
   }
@@ -212,11 +238,9 @@ inline void continueCurrentMove() {
   axisTick(&axes[AXIS_Z]);
   axisTick(&axes[AXIS_A]);
 
-  // Check limit switches and emergency stop if any if them is triggered.
+  // Check limit switches and emergency stop to seee if any if them is triggered.
   unsigned int alarms = checkAlarmInputs();
 
-  // TODO: Call water flow input poller.
-  
   /*
     We deliver the end of the pulses in one heap here so we don't need to stick
     delays in each tick function and the pulses can be as long as possible.
@@ -243,8 +267,18 @@ void TIMER2_IRQHandler(void) {
     Done with the initial setup, let's get down to business.
    */
 
+  /* 
+    Call the routine that detects water flow pulses,
+    this should be done by an interrupt or a hardware counter, 
+    but I am not a clever man.
+
+    TODO: A later revision of the board will rectify this mistake.
+  */    
+  joulesPollFlow();
+  
   if (alarmCount()) {
     cuActive = 0;
+    setLaserFire(0); // Make really sure the laser is off if there are any alarms!
 
   } else {
 

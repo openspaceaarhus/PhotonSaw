@@ -2,9 +2,12 @@
 
 // Initializes a ring buffer to use an array with 1<<order elements
 void rbInit(RingBufferControl *rb, int order) {
-	rb->mask = (1<<order) -1;
-	rb->start = 0;
-	rb->end = 0;
+  rb->mask = (1<<order) -1;
+  rbReset(rb);
+}
+
+void rbReset(RingBufferControl *rb) {
+  rb->start = rb->end = rb->endHidden = 0;  
 }
 
 inline char rbIsFull(RingBufferControl *rb) {
@@ -66,6 +69,10 @@ inline int rbWriteHidden(RingBufferControl *rb) {
 
 inline char rbIsFullHidden(RingBufferControl *rb) {
   return ((rb->endHidden + 1) & rb->mask) == rb->start;
+}
+
+inline char rbIsEmptyHidden(RingBufferControl *rb) {
+    return rb->endHidden == rb->start;
 }
 
 inline void rbShowHidden(RingBufferControl *rb) {
