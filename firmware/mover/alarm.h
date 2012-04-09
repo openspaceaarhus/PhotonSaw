@@ -64,6 +64,9 @@ int alarmSet(unsigned int switches, char *message);
 void alarmClear(int index);
 
 // Returns the number of non-cleared alarms
-int alarmCount();
+int inline alarmCount() {
+  return alarmsActive;
+}
+
 
 #endif

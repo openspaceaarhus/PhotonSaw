@@ -394,7 +394,7 @@ uint32_t UARTSend(UartRingBuffer *ub, char *txbuf, uint32_t buflen)  {
   uint32_t bytes = 0;
   
   /* Temporarily lock out UART transmit interrupts during this
-     read so the UART transmit interrupt won't cause problems
+     write so the UART transmit interrupt won't cause problems
      with the index values */
   UART_IntConfig(ub->uart, UART_INTCFG_THRE, DISABLE);
   

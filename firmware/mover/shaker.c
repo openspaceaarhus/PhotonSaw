@@ -10,7 +10,7 @@
 // Notice: NO stdio or other slow routines in this file!
 
 unsigned int stepperIRQMax;
-unsigned int stepperIRQAvg;
+int stepperIRQAvg;
 
 unsigned int cuMoveCodeOffset;
 
@@ -305,14 +305,17 @@ void TIMER2_IRQHandler(void) {
     Here we keep some simple statistics on the number of micro seconds
     it takes to service the interrupt
   */
+#ifdef IO_STEPPER_ACTIVE
+  GPIO_CLEAR(IO_STEPPER_ACTIVE);
+#endif
+
   unsigned int tc = LPC_TIM2->TC;
   if (tc > stepperIRQMax) {
     stepperIRQMax = tc;
   }
-  stepperIRQAvg += ((tc<<16)-stepperIRQAvg) >> 8;
-#ifdef IO_STEPPER_ACTIVE
-  GPIO_CLEAR(IO_STEPPER_ACTIVE);
-#endif
+
+  int delta = (tc<<16)-stepperIRQAvg;
+  stepperIRQAvg += delta >> 8;
 }
 
 

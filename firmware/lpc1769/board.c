@@ -84,7 +84,10 @@ void boardInit() {
     NVIC_SetPriorityGrouping is used here to divide the 32 levels of
     IRQ priorities into 8 preemption groups and 4 sub priorities.
   */
-  NVIC_SetPriorityGrouping(4); 
+  NVIC_SetPriorityGrouping(4);   
+  for (int i=0;i<35;i++) {
+    NVIC_SetPriority(i, GROUP_PRIORITY_DEFAULT);    
+  }
   NVIC_SetPriority(TIMER2_IRQn, GROUP_PRIORITY_STEPPER);
   NVIC_SetPriority(SysTick_IRQn, GROUP_PRIORITY_1000HZ); 
   NVIC_SetPriority(TIMER3_IRQn, GROUP_PRIORITY_100HZ);
@@ -131,4 +134,3 @@ void boardInit() {
   
   initAPI();
 }
-

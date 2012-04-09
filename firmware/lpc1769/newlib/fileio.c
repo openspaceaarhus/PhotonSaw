@@ -263,7 +263,14 @@ int _write(int file, char *ptr, int len) {
   } else if (file < 10) {
     unsigned int port = UART_FD[file];
     if (port) {
-      return sendUART(port, ptr, len);
+      int totalSent = 0;
+      while (len > 0) {
+	int sent = sendUART(port, ptr, len);
+	len -= sent;
+	ptr += sent;
+	totalSent += sent;
+      }
+      return totalSent;
     } else {
       return -1;
     }

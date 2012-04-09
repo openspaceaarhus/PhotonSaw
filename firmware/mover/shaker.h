@@ -13,7 +13,7 @@
 void shakerInit();
 
 extern unsigned int stepperIRQMax;
-extern unsigned int stepperIRQAvg;
+extern int stepperIRQAvg;
 
 unsigned int getCurrentMove();
 unsigned int getCurrentMoveCodeOffset();

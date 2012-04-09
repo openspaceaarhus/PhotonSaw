@@ -20,12 +20,13 @@ int alarmSet(unsigned int switches, char *message) {
     return -1; // Well, shit has already hit the fan, it does nobody any good to remove the evidence.
   }
 
-  alarms[index].timestamp = systick;
   alarms[index].active = 1;
+  alarms[index].timestamp = systick;
   alarms[index].switches = switches;
   alarms[index].moveId = getCurrentMove();
   alarms[index].moveCodeOffset = getCurrentMoveCodeOffset();
   strncpy(alarms[index].msg, message, ALARM_MAX_LENGTH);
+
   alarmsActive++;
 
   return index;
@@ -40,15 +41,12 @@ void alarmClear(int index) {
 }
 
 // Returns the number of non-cleared alarms
-int alarmCount() {
-  return alarmsActive;
-}
 
-unsigned int checkAlarmInputs() {
+unsigned int checkAlarmInputs() {  
   if (alarmsActive) {
     return alarmsActive;
   }
-
+  
   unsigned int sw = 0;
   if (!GPIO_GET(IO_X_MIN)) sw |= 1<<ALARM_SW_X_MIN;
   if (!GPIO_GET(IO_X_MAX)) sw |= 1<<ALARM_SW_X_MAX;

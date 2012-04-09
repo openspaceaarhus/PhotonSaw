@@ -17,6 +17,7 @@
 #define GROUP_PRIORITY_100HZ   (2<<2)
 #define GROUP_PRIORITY_SERIAL  (3<<2)
 #define GROUP_PRIORITY_USB     (4<<2)
+#define GROUP_PRIORITY_DEFAULT ((7<<2) | 3)
 
 
 /*
@@ -53,16 +54,36 @@
 
 void configPin(const uint32_t pin);
 
-// TODO: Make macros for manipulating GPIO pins (I/O) via bit banding
-/*
-typedef unsigned int *preg32;
-#define GPIO_SET(x)   (*(preg32 ((LPC_GPIO0_BASE + (IO_PORT(x) << 16)) + ((1 << IO_PIN(x)) << 2)))) = 0xFFF
-#define GPIO_CLEAR(x) (*(preg32 ((LPC_GPIO0_BASE + (IO_PORT(x) << 16)) + ((1 << IO_PIN(x)) << 2)))) = 0
-#define GPIO_GET(x)   (*(preg32 ((LPC_GPIO0_BASE + (IO_PORT(x) << 16)) + ((1 << IO_PIN(x)) << 2))))
-*/
+#ifndef GPIO_SLOW
+
+#define GPIO_SET(x)   gpioSet(  IO_PORT(x), IO_PIN(x))
+#define GPIO_CLEAR(x) gpioClear(IO_PORT(x), IO_PIN(x))
+#define GPIO_GET(x)   gpioGet(  IO_PORT(x), IO_PIN(x))
+
+#else
+
 #define GPIO_SET(x)   GPIO_SetValue(IO_PORT(x), 1<<IO_PIN(x))
 #define GPIO_CLEAR(x) GPIO_ClearValue(IO_PORT(x), 1<<IO_PIN(x))
 #define GPIO_GET(x)   (GPIO_ReadValue(IO_PORT(x)) & (1<<IO_PIN(x)))
+
+#endif
+
+
+#define GPIO_CTRL(gpio) ((LPC_GPIO_TypeDef *)(LPC_GPIO_BASE+((gpio)<<5)))
+
+inline void gpioSet(unsigned int port, unsigned int pin) {
+  GPIO_CTRL(port)->FIOSET = 1<<pin;
+}
+
+inline void gpioClear(unsigned int port, unsigned int pin) {
+  GPIO_CTRL(port)->FIOCLR = 1<<pin;
+}
+
+inline int gpioGet(unsigned int port, unsigned int pin) {
+  return GPIO_CTRL(port)->FIOPIN & 1<<pin;
+}
+
+
 
 // Use this macro with a pin config constant:
 #define READ_ADC(pin) readADC(IO_CHAN(pin))

@@ -8,30 +8,89 @@ typedef struct {
   int endHidden; // Like end, but used for inserting hidden elements.
 } RingBufferControl;
 
+inline void rbReset(RingBufferControl *rb) {
+  rb->start = rb->end = rb->endHidden = 0;  
+}
+
 // Initializes a ring buffer to use an array with 1<<order elements
-void rbInit(RingBufferControl *rb, int order);
+inline void rbInit(RingBufferControl *rb, int order) {
+  rb->mask = (1<<order) -1;
+  rbReset(rb);
+}
 
-// Re-initialize a buffer so it becomes empty
-void rbReset(RingBufferControl *rb);
 
-extern char rbIsFull(RingBufferControl *rb);
-extern char rbIsEmpty(RingBufferControl *rb);
-extern int rbLength(RingBufferControl *rb);
+inline char rbIsFull(RingBufferControl *rb) {
+  return ((rb->end + 1) & rb->mask) == rb->start;
+}
+
+inline char rbIsEmpty(RingBufferControl *rb) {
+    return rb->end == rb->start;
+}
+
+inline int rbLength(RingBufferControl *rb) {
+  return (rb->end-rb->start) & rb->mask;
+}
 
 // Returns the index of element to write to, will overwrite the oldest element in case of overflow
-extern int rbOverWrite(RingBufferControl *rb);
+inline int rbOverWrite(RingBufferControl *rb) {
+		int res = rb->end;
+    rb->end = (rb->end + 1) & rb->mask;
+    if (rb->end == rb->start) {
+        rb->start = (rb->start + 1) & rb->mask; /* full, overwrite */
+    }
+    return res;
+}
 
 // Returns the index of element to write to, will return -1 if buffer is full
-extern int rbWrite(RingBufferControl *rb);
+inline int rbWrite(RingBufferControl *rb) {
+  int res = rb->end;
+  int newEnd = (rb->end + 1) & rb->mask;
+  if (newEnd == rb->start) {
+    return -1;
+  } else {
+    rb->end = newEnd;
+    return res;
+  }
+}
 
 // Returns the index of the element to read from, will return -1 if buffer is empty.
-extern int rbRead(RingBufferControl *rb);
+inline int rbRead(RingBufferControl *rb) {
+		if (rb->start == rb->end) {
+			return -1;
+		}
 
-extern int rbWriteHidden(RingBufferControl *rb);
-extern char rbIsFullHidden(RingBufferControl *rb);
-extern char rbIsEmptyHidden(RingBufferControl *rb);
-extern void rbShowHidden(RingBufferControl *rb);
-extern int rbLengthHidden(RingBufferControl *rb);
+		int res = rb->start;
+    rb->start = (rb->start + 1) & rb->mask;
+    return res;
+}
+
+
+inline int rbWriteHidden(RingBufferControl *rb) {
+  int res = rb->endHidden;
+  int newEnd = (rb->endHidden + 1) & rb->mask;
+  if (newEnd == rb->start) {
+    return -1;
+  } else {
+    rb->endHidden = newEnd;
+    return res;
+  }
+}
+
+inline char rbIsFullHidden(RingBufferControl *rb) {
+  return ((rb->endHidden + 1) & rb->mask) == rb->start;
+}
+
+inline char rbIsEmptyHidden(RingBufferControl *rb) {
+    return rb->endHidden == rb->start;
+}
+
+inline void rbShowHidden(RingBufferControl *rb) {
+  rb->end = rb->endHidden;
+}
+
+inline int rbLengthHidden(RingBufferControl *rb) {
+  return (rb->endHidden-rb->start) & rb->mask;
+}
 
 // Define the ring buffer control and the array and initialize the control structure
 #define RING_BUFFER(ctrl, order, type) RingBufferControl ctrl; type ctrl ## Array[1<<(order)]

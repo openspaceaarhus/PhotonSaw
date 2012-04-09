@@ -19,6 +19,15 @@ int main(void) {
 
   shakerInit();
 
+  fiprintf(stderr, "Non-default IRQ priorities:\r\n");    
+  for (int i=-2;i<35;i++) {
+    unsigned int p = (unsigned int)NVIC_GetPriority(i);
+
+    if (p != GROUP_PRIORITY_DEFAULT) {
+      fiprintf(stderr, "  IRQ %d group:%d, sub:%d\r\n", i, p >> 2, p & 3);    
+    }
+  }
+
   while (1) {
     GPIO_SET(IO_LED);
     delay(200);

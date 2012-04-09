@@ -2,6 +2,8 @@
 #define __AXIS_H__
 
 #include "stepper.h"
+#include "move.h"
+#include "api.h"
 
 typedef struct {
   int volatile position;     // Current step position.
@@ -23,14 +25,48 @@ void axisInit(Axis *a,
 
 #define AXIS_INIT(a, name) axisInit(a, IO_ ## name ## _STEP, IO_ ## name ## _DIR, IO_ ## name ## _ENABLE, IO_ ## name ## _CURRENT, IO_ ## name ## _USM0, IO_ ## name ## _USM1)
 
-void axisNewMove(Axis *a);
-void axisSetSpeed(Axis *a, int speed);
-void axisSetAccel(Axis *a, int accel);
+void inline axisNewMove(Axis *a) {
+  a->moveError = a->moveSpeed = a->moveDirection = a->moveAccel = 0;
+}
 
-// Call to start taking a step
-void axisTick(Axis *a);
+void inline axisSetSpeed(Axis *a, int speed) {
+  if (speed < 0) {
+    a->moveSpeed = -speed;
+    a->moveDirection = 1;
+    GPIO_SET(a->stepper.dirPin);
+    
+  } else {
+    a->moveSpeed = speed;    
+    GPIO_CLEAR(a->stepper.dirPin);
+  }
+}
 
-// Call a bit later to stop taking a step.
-void axisTock(Axis *a);
+void inline axisSetAccel(Axis *a, int accel) {
+  a->moveAccel = accel;
+}
+
+void inline axisTick(Axis *a) {
+  a->moveError += a->moveSpeed;
+
+  if (a->moveError >= ONE_STEP) {
+    a->moveError -= ONE_STEP;
+
+    GPIO_SET(a->stepper.stepPin);
+    if (a->moveDirection) {
+      a->position--;
+    } else {
+      a->position++;
+    }
+  }
+
+  if (a->moveAccel) {
+    a->moveSpeed += a->moveAccel;
+  } 
+}
+
+void inline axisTock(Axis *a) {
+  GPIO_CLEAR(a->stepper.stepPin);
+}
+
 
 #endif

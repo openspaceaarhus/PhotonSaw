@@ -8,12 +8,12 @@ int main(void) {
     GPIO_SET(IO_ASSIST_AIR);
     GPIO_CLEAR(IO_EXHAUST);
     GPIO_CLEAR(IO_LASER_FIRE);
-    Delay(200);
+    delay(200);
 
     GPIO_CLEAR(IO_LED);
     GPIO_CLEAR(IO_ASSIST_AIR);
     GPIO_SET(IO_EXHAUST);
     GPIO_SET(IO_LASER_FIRE);
-    Delay(200);
+    delay(200);
   }
 }

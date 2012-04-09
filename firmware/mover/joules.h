@@ -4,8 +4,8 @@
 // This gets called at the highest possible frequency to detect the pulses
 void joulesPollFlow();
 
-// This gets called at a much slower speed to 
-void joulesUpdateTotals();
+// This gets called at a much slower speed to update all the totals
+void joulesUpdateTotals100Hz();
 
 // The total number of water flow pulses seen
 unsigned int joulesRawFlowCount();
@@ -24,5 +24,10 @@ double joulesWaterFlow();
 
 // returns true if coolant is not within spec
 unsigned int getCoolantAlarm();
+
+double joulesLastInTemp();
+double joulesLastOutTemp();
+
+
 
 #endif

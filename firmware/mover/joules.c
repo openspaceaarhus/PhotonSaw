@@ -43,13 +43,17 @@ void joulesUpdateTotals100Hz() {
 
   double it = readNTCcelcius(IO_CHAN(IO_TEMP_IN)); 
   double ot = readNTCcelcius(IO_CHAN(IO_TEMP_OUT));
-
-  if (it < 0 || ot < 0 || it > 50 || ot > 50) {
-    // Ignore crazy values
-    return;
-  }
   SYSTICK_TYPE t1 = systick;
   SYSTICK_TYPE deltaTime = systickInterval(lastTime, t1);
+
+  if (it < 0 || ot < 0 || it > 50 || ot > 50) { // Ignore crazy values
+
+    // But raise the alarm if the sensor problems keep up for more than 1 second
+    if (deltaTime > 1000) {
+      coolantAlarm |= ALARM_COOLANT_TEMP;
+    }
+    return;
+  }
   unsigned int p = waterflowPulses;
   
   if (lastTime && deltaTime) {
@@ -96,4 +100,12 @@ double joulesWaterFlow() {
 
 unsigned int getCoolantAlarm() {
   return coolantAlarm;
+}
+
+double joulesLastInTemp() {
+  return lastInTemp;
+}
+
+double joulesLastOutTemp() {
+  return lastOutTemp;
 }

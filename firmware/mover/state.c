@@ -3,6 +3,8 @@
 #include "state.h"
 #include "api.h"
 #include "shaker.h"
+#include "alarm.h"
+#include "joules.h"
 
 WatchdogState *wdState;
 
@@ -20,10 +22,14 @@ void printState(FILE *file) {
 
   fiprintf(file, "USB connected: %d\n\r", usbConnected());
   fiprintf(file, "Airflow:  %d %%\n\r", airflow());
-  fprintf(file,  "T in:     %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_OUT)));
-  fprintf(file,  "T out:    %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_IN)));
   fprintf(file,  "T driver: %f degC\n\r", readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL)));
   fiprintf(file, "Supply:   %d mv\n\r", supplyVoltage());        
+
+  fiprintf(file, "Coolant alarm:   %x\n\r", getCoolantAlarm());        
+  fprintf(file, "Coolant flow:    %f gram/s\n\r", joulesWaterFlow());        
+  fprintf(file, "Coolant power:   %f Watt\n\r", joulesCurrentPower());        
+  fprintf(file,  "T in:     %f degC\n\r", joulesLastOutTemp());
+  fprintf(file,  "T out:    %f degC\n\r", joulesLastInTemp());
     
   unsigned int err0 = errorUART(IO_DEBUG_RX);
   if (err0) {
