@@ -107,6 +107,10 @@ extern uint32_t USB_DMA_BufAdr (uint32_t EPNum);
 extern uint32_t USB_DMA_BufCnt (uint32_t EPNum);
 extern uint32_t USB_GetFrame   (void);
 extern void  USB_IRQHandler (void);
+extern uint32_t EPAdr (uint32_t EPNum);
+uint32_t RdCmdDat (uint32_t cmd);
+void WrCmdDat (uint32_t cmd, uint32_t val);
+void WrCmd (uint32_t cmd);
 
 
 #endif  /* __USBHW_H__ */

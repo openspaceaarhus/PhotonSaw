@@ -22,6 +22,7 @@
 #include "usbhw.h"
 #include "usbcfg.h"
 #include "usbcore.h"
+#include "usbreg.h"
 #include "cdc.h"
 #include "cdcuser.h"
 #include "usbapi.h"
@@ -253,6 +254,9 @@ uint32_t CDC_SendBreak (unsigned short wDurationOfBreak) {
   Parameters:   none
   Return Value: none
  *---------------------------------------------------------------------------*/
+const char START[]="<";
+const char END[]=">";
+
 void CDC_BulkIn(void) {
 
   unsigned char txPacket[USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
@@ -260,7 +264,34 @@ void CDC_BulkIn(void) {
 
   // send over USB
   if (bytesReady > 0) {
+    //USB_WriteEP(CDC_DEP_IN, (unsigned char *)START, 1);
     USB_WriteEP(CDC_DEP_IN, &txPacket[0], bytesReady);
+
+    while (1) {
+      WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
+      if (!(LPC_USB->USBCmdData & EP_SEL_F))
+	break;
+    }
+
+    /*
+    for (int i=0;i<5;i++) {
+      WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
+      unsigned int d = LPC_USB->USBCmdData;
+      fiprintf(stderr, " %x", d);
+      delay(1);
+    }
+    */
+
+    USB_WriteEP(CDC_DEP_IN, (unsigned char *)END, 1);
+    while (1) {
+      WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
+      if (!(LPC_USB->USBCmdData & EP_SEL_F))
+	break;
+    }
+
+    //fiprintf(stderr, "  %d\r\n", bytesReady);
+    // if (!(d & EP_SEL_B_1_FULL))  break;
+
   } else {
     CDC_DepInEmpty = 1;
   }

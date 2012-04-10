@@ -3,6 +3,7 @@
 
 #include "api.h"
 #include "shaker.h"
+#include "console.h"
 
 int main(void) {
   fiprintf(stderr, "\x1b[2JPower Up!\r\n");
@@ -31,8 +32,10 @@ int main(void) {
   while (1) {
     GPIO_SET(IO_LED);
     delay(200);
+    handleCommands();
 
     GPIO_CLEAR(IO_LED);
     delay(500);
+    handleCommands();
   }
 }

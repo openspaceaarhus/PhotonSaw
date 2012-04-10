@@ -109,7 +109,6 @@ void WrCmdDat (uint32_t cmd, uint32_t val) {
  *                     val:   Data
  *    Return Value:    None
  */
-
 void WrCmdEP (uint32_t EPNum, uint32_t cmd){
 
   LPC_USB->USBDevIntClr = CCEMTY_INT;
@@ -448,8 +447,9 @@ uint32_t USB_ReadEP (uint32_t EPNum, uint8_t *pData) {
 uint32_t USB_WriteEP (uint32_t EPNum, uint8_t *pData, uint32_t cnt) {
   uint32_t n;
 
-  LPC_USB->USBCtrl = ((EPNum & 0x0F) << 2) | CTRL_WR_EN;
+  // TODO: Wait for the buffer to empty.    
 
+  LPC_USB->USBCtrl = ((EPNum & 0x0F) << 2) | CTRL_WR_EN;
   LPC_USB->USBTxPLen = cnt;
 
   for (n = 0; n < (cnt + 3) / 4; n++) {
