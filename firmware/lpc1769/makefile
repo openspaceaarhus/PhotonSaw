@@ -12,18 +12,18 @@ MAPFILE=$(PROJ).map
 
 FW = ../lpc1769
 
-CSRC  = $(wildcard $(FW)/*.c)
-CSRC += $(wildcard $(FW)/drivers/*.c)
+CSRC  = $(wildcard $(FW)/drivers/*.c)
 CSRC += $(wildcard $(FW)/lpcusb/*.c)
 CSRC += $(wildcard $(FW)/newlib/*.c)
 CSRC += $(wildcard $(FW)/fat_sd/*.c)
 CSRC += $(wildcard $(FW)/$(BOARD)/*.c)
+CSRC += $(wildcard $(FW)/*.c)
 CSRC += $(wildcard *.c)
 CSRC += $(wildcard */*.c)
 
-CPSRC  = $(wildcard $(FW)/*.cpp)
-CPSRC += $(wildcard $(FW)/drivers/*.cpp)
+CPSRC  = $(wildcard $(FW)/drivers/*.cpp)
 CPSRC += $(wildcard $(FW)/$(BOARD)/*.cpp)
+CPSRC += $(wildcard $(FW)/*.cpp)
 CPSRC += $(wildcard *.cpp)
 CPSRC += $(wildcard */*.cpp)
 
@@ -72,6 +72,7 @@ LDFLAGS += -Wl,--gc-sections
 LDFLAGS += -T $(FW)/lpc1769.ld
 LDFLAGS += -Xlinker -Map -Xlinker $(PROJ).map
 
+.PHONY : all
 all: $(EXECNAME)
 
 $(EXECNAME): $(FW)/$(BOARD)/board-pins.h $(OBJS)
@@ -82,13 +83,16 @@ $(EXECNAME): $(FW)/$(BOARD)/board-pins.h $(OBJS)
 $(FW)/$(BOARD)/board-pins.h: $(FW)/$(BOARD)/board-pins.h.pl
 	 $(FW)/$(BOARD)/board-pins.h.pl
 
+.PHONY : flash
 flash: $(EXECNAME)
 	$(OBJCOPY) -O binary $(EXECNAME) $(PROJ).bin
 	$(FW)/fix-lpcchecksum $(PROJ).bin
 	openocd -f $(FW)/openocd.cfg -c 'flash write_image erase $(PROJ).bin' -c 'verify_image $(PROJ).bin' -c 'reset run'
 
+.PHONY : gdb
 gdb:
 	$(GDB) -x $(FW)/gdb.config $(EXECNAME)
 
+.PHONY : clean
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~ $(FW)/$(BOARD)/board-pins.h
