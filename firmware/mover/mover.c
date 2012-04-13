@@ -4,6 +4,8 @@
 #include "api.h"
 #include "shaker.h"
 #include "console.h"
+#include "commander.h"
+
 
 int main(void) {
   fiprintf(stderr, "\x1b[2JPower Up!\r\n");
@@ -29,13 +31,27 @@ int main(void) {
     }
   }
 
+  int loop = 0;
   while (1) {
-    GPIO_SET(IO_LED);
-    delay(200);
-    handleCommands();
+    SYSTICK_TYPE blinky = systick;
+    while (!consolePending() && 
+	   !usbPending() && 
+	   systickInterval(blinky, systick) < 1000) ;
 
-    GPIO_CLEAR(IO_LED);
-    delay(500);
-    handleCommands();
+    if (usbPending()) {
+      usbHandle();
+    }
+
+    if (consolePending()) {
+      consoleHandle();
+    }
+
+    if (loop) {
+      GPIO_SET(IO_LED);
+      loop = 0;
+    } else {
+      GPIO_CLEAR(IO_LED);
+      loop = 1;
+    }
   }
 }

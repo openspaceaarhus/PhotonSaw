@@ -17,6 +17,8 @@
 #define GROUP_PRIORITY_100HZ   (2<<2)
 #define GROUP_PRIORITY_SERIAL  (3<<2)
 #define GROUP_PRIORITY_USB     (4<<2)
+#define GROUP_PRIORITY_USBCMD  (5<<2)
+#define GROUP_PRIORITY_CONSOLE (6<<2)
 #define GROUP_PRIORITY_DEFAULT ((7<<2) | 3)
 
 

@@ -5,6 +5,21 @@
 #include "state.h"
 #include "alarm.h"
 
+#include "commander.h"
+
+volatile int pendingUsbCommand;
+int usbPending() {
+  return pendingUsbCommand;
+}
+
+char usbCommandLine[USB_LINE_BUFFER_SIZE] IN_IRAM1;
+void usbLine(char *line, unsigned int lineSize) {
+  if (!pendingUsbCommand) {
+    strcpy(usbCommandLine, line);
+    pendingUsbCommand = 1;
+  } 
+}
+
 char READY[] = "Ready\r\n";
 void respondReady() {
   fflush(stdout);
@@ -22,10 +37,20 @@ void respondSyntaxError(char *msg) {
   respondReady();
 }
 
-void usbLine(char *line, unsigned int lineSize) {
-  if (lineSize == 0) {
+void usbHandleInternal();
+void usbHandle() {
+  if (!pendingUsbCommand) {
+    return;
+  }
+
+  usbHandleInternal();
+
+  pendingUsbCommand = 0;
+} 
+
+void usbHandleInternal() {
+  if (!*usbCommandLine) {
     iprintf("\x1b[2J   PhotonSaw\r\n");
-    printState(stdout);
     printState(stdout);
     iprintf("\r\nTry ? for help\r\n");
     respondReady();
@@ -33,7 +58,7 @@ void usbLine(char *line, unsigned int lineSize) {
   }
 
   int id; // General purpose parameter
-  if (!strcmp(line, "?")) {
+  if (!strcmp(usbCommandLine, "?")) {
     iprintf("Known commands:\r\n");
     iprintf("blank line: clear terminal and print status.\r\n");
     iprintf("st: Print status\r\n");
@@ -42,18 +67,18 @@ void usbLine(char *line, unsigned int lineSize) {
     respondReady();
     return;
 
-  } else if (!strcmp(line, "st")) {
+  } else if (!strcmp(usbCommandLine, "st")) {
     printState(stdout);
     respondReady();
     return;
 
-  } else if (!strcmp(line, "pf")) {
+  } else if (!strcmp(usbCommandLine, "pf")) {
     checkAlarmInputs();
     printState(stdout);
     respondReady();
     return;
 
-  } else if (sscanf(line, "ac=%d", &id)) {
+  } else if (sscanf(usbCommandLine, "ac=%d", &id)) {
     if (alarmClear(id)) {
       iprintf("Error: Alarm id not valid: %d\r\n", id);      
     } else {
@@ -64,7 +89,7 @@ void usbLine(char *line, unsigned int lineSize) {
     respondReady();
     
   } else {
-    respondSyntaxError(line);
+    respondSyntaxError(usbCommandLine);
     return;
   }
 }

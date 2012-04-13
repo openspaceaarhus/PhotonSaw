@@ -10,8 +10,6 @@
 #include "usb/cdc.h"
 #include "usb/cdcuser.h"
 
-// This is the maximum command line size
-#define USB_LINE_BUFFER_SIZE 1<<13
 
 // This buffer only needs to be large enough to allow a full packet to be assembled
 #define USB_TX_BUFFER_ORDER 8
@@ -38,7 +36,6 @@ void WEAK usbLine(char *line, unsigned int lineSize) {
 char usbConnected() {
   return USB_Configuration;
 }
-
 
 /*
   TODO: We call CDC_BulkIn here, but we'd rather that it was called as soon as

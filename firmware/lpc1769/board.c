@@ -92,6 +92,12 @@ void boardInit() {
   NVIC_SetPriority(SysTick_IRQn, GROUP_PRIORITY_1000HZ); 
   NVIC_SetPriority(TIMER3_IRQn, GROUP_PRIORITY_100HZ);
   NVIC_SetPriority(USB_IRQn, GROUP_PRIORITY_USB);
+  NVIC_SetPriority(MCPWM_IRQn, GROUP_PRIORITY_USBCMD);
+  NVIC_SetPriority(QEI_IRQn, GROUP_PRIORITY_CONSOLE);
+  NVIC_EnableIRQ(QEI_IRQn);
+  NVIC_EnableIRQ(MCPWM_IRQn);
+//void WEAK      	MCPWM_IRQHandler(void);          /* Motor Control PWM */
+
   
   initUARTs();
   initADC();

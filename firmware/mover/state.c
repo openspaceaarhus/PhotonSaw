@@ -41,6 +41,8 @@ void printState(FILE *file) {
 
   printBool(file, "usb.connected", usbConnected());
   printInt(file, "exhaust.airflow", airflow(), "%");
+  //printInt(file, "exhaust.airflow.adc", readADC(IO_CHAN(IO_AIRFLOW)), "adc");
+
   printDouble(file, "board.temperature", readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL)), "C" );
   printInt(file, "board.inputvoltage", supplyVoltage(), "mv");        
 

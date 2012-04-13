@@ -6,7 +6,7 @@
 #include "alarm.h"
 
 char commandBuffer[1<<7];
-int pendingCommand;
+volatile int pendingCommand;
 
 void handleUart0Line(const char *line, int lineLength) {
   if (!pendingCommand) {
@@ -15,7 +15,11 @@ void handleUart0Line(const char *line, int lineLength) {
   }
 }
 
-void handleCommands() {
+int consolePending() {
+  return pendingCommand;
+}
+
+void consoleHandle() {
   if (!pendingCommand) {
     return;
   }
@@ -24,7 +28,7 @@ void handleCommands() {
     fprintf(stderr, "Sorry don't know command: %s\r\n", commandBuffer);
   } else {
     fiprintf(stderr, "\x1b[2J   PhotonSaw console\r\n");
-    printState(stdout);
+    printState(stderr);
   }
 
   pendingCommand = 0;

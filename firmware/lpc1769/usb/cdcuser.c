@@ -266,30 +266,15 @@ void CDC_BulkIn(void) {
   if (bytesReady > 0) {
     //USB_WriteEP(CDC_DEP_IN, (unsigned char *)START, 1);
     USB_WriteEP(CDC_DEP_IN, &txPacket[0], bytesReady);
-
+    
+    //WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
+    //unsigned int hest = LPC_USB->USBCmdData;      
+    WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
     while (1) {
-      WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
-      if (!(LPC_USB->USBCmdData & EP_SEL_F))
+      if ((LPC_USB->USBCmdData & (EP_SEL_B_1_FULL|EP_SEL_B_2_FULL)) == 0)
 	break;
     }
-
-    /*
-    for (int i=0;i<5;i++) {
-      WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
-      unsigned int d = LPC_USB->USBCmdData;
-      fiprintf(stderr, " %x", d);
-      delay(1);
-    }
-    */
-
-    USB_WriteEP(CDC_DEP_IN, (unsigned char *)END, 1);
-    while (1) {
-      WrCmd(CMD_SEL_EP(EPAdr(CDC_DEP_IN)));
-      if (!(LPC_USB->USBCmdData & EP_SEL_F))
-	break;
-    }
-
-    //fiprintf(stderr, "  %d\r\n", bytesReady);
+    //fiprintf(stderr, "  %x\r\n", hest);
     // if (!(d & EP_SEL_B_1_FULL))  break;
 
   } else {
