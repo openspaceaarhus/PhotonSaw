@@ -7,7 +7,7 @@
 #include "adc.h"
 #include "pwm.h"
 #include "uarts.h"
-#include "usbapi.h"
+#include "usbwrapper.h"
 
 extern FILE *chiller;
 extern FILE *watchdog;

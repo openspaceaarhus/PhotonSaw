@@ -1,30 +1,42 @@
 #ifndef __RINGBUFFER_H__
 #define __RINGBUFFER_H__
 
+#include "LPC17xx.h"
+#include "lpc_types.h"
+
 typedef struct {
   unsigned int mask;  // The mask to and the index with to cause it wrap around.
-  int start; // Index of the oldest element (where the reader reads from)
-  int end;   // Index just beyond the newest element (where the writer can write to)
-  int endHidden; // Like end, but used for inserting hidden elements.
+  volatile int start; // Index of the oldest element (where the reader reads from)
+  volatile int end;   // Index just beyond the newest element (where the writer can write to)
+  volatile int endHidden; // Like end, but used for inserting hidden elements.
+  volatile char lock;
 } RingBufferControl;
+
+// Really simple locking primitives, be sure to never hold the lock for longer that you need to
+static inline void rbLock(RingBufferControl *rb) {
+  __disable_irq();  
+}
+
+static inline void rbUnlock(RingBufferControl *rb) {
+  __enable_irq();
+}
 
 inline void rbReset(RingBufferControl *rb) {
   rb->start = rb->end = rb->endHidden = 0;  
 }
 
 // Initializes a ring buffer to use an array with 1<<order elements
-inline void rbInit(RingBufferControl *rb, int order) {
+inline void rbInit(RingBufferControl *rb, int order) {  
   rb->mask = (1<<order) -1;
   rbReset(rb);
 }
-
 
 inline char rbIsFull(RingBufferControl *rb) {
   return ((rb->end + 1) & rb->mask) == rb->start;
 }
 
 inline char rbIsEmpty(RingBufferControl *rb) {
-    return rb->end == rb->start;
+  return rb->end == rb->start;
 }
 
 inline int rbLength(RingBufferControl *rb) {
@@ -33,12 +45,12 @@ inline int rbLength(RingBufferControl *rb) {
 
 // Returns the index of element to write to, will overwrite the oldest element in case of overflow
 inline int rbOverWrite(RingBufferControl *rb) {
-		int res = rb->end;
-    rb->end = (rb->end + 1) & rb->mask;
-    if (rb->end == rb->start) {
-        rb->start = (rb->start + 1) & rb->mask; /* full, overwrite */
-    }
-    return res;
+  int res = rb->end;
+  rb->end = (rb->end + 1) & rb->mask;
+  if (rb->end == rb->start) {
+    rb->start = (rb->start + 1) & rb->mask; /* full, overwrite */
+  }
+  return res;
 }
 
 // Returns the index of element to write to, will return -1 if buffer is full

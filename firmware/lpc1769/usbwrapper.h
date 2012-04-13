@@ -1,5 +1,5 @@
-#ifndef __USBAPI_H
-#define __USBAPI_H
+#ifndef __USBWRAPPER_H
+#define __USBWRAPPER_H
 
 #include "board.h"
 
@@ -18,14 +18,6 @@ void usbSendFlush(const char *data, unsigned int dataSize);
 void usbFlush();
 
 // Initializes the USB subsystem, called from initAPI()
-void usbInit();
-
-// Internal functions called by the USB CDC layer
-
-// Read up to dataSize chars from the transmit buffer
-int usbPopForTransmit(unsigned char *data, int dataSize);
-
-// Write data from the USB buffer to the receive buffer
-void usbPushReceived(unsigned char *data, int dataSize);
+void usbWrapperInit();
 
 #endif

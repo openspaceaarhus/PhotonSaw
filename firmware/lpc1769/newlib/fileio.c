@@ -6,7 +6,7 @@
 
 #include "board.h"
 #include "uarts.h"
-#include "usbapi.h"
+#include "usbwrapper.h"
 
 #include "fat_sd/ff.h"
 

@@ -8,7 +8,7 @@ void initAPI() {
   chiller = fopen("/dev/chiller", "r+");
   watchdog = fopen("/dev/watchdog", "r+");
 
-  usbInit();
+  usbWrapperInit();
 
   setvbuf(stdout,  0, _IONBF, 0);
   setvbuf(stderr,  0, _IONBF, 0);
