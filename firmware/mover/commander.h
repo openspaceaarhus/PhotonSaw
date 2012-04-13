@@ -1,7 +1,6 @@
 #ifndef __COMMANDER_H__
 #define __COMMANDER_H__
 
-int usbPending();
-void usbHandle();
+void commandRun(char *line, FILE *output);
 
 #endif

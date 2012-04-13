@@ -7,89 +7,71 @@
 
 #include "commander.h"
 
-volatile int pendingUsbCommand;
-int usbPending() {
-  return pendingUsbCommand;
-}
-
-char usbCommandLine[USB_LINE_BUFFER_SIZE] IN_IRAM1;
-void usbLine(char *line, unsigned int lineSize) {
-  if (!pendingUsbCommand) {
-    strcpy(usbCommandLine, line);
-    pendingUsbCommand = 1;
-  } 
-}
-
 char READY[] = "Ready\r\n";
-void respondReady() {
-  fflush(stdout);
-  usbSendFlush(READY, sizeof(READY)-1);
-}
-
-void respondError(char *msg) {
-  iprintf("Error %s\r\n", msg);
-  respondReady();
-}
-
-void respondSyntaxError(char *msg) {
-  iprintf("Error, unknown command: %s\r\nReady\r\n", msg);
-  fprintf(stderr, "Got invalid command from USB: %s\r\n", msg);
-  respondReady();
-}
-
-void usbHandleInternal();
-void usbHandle() {
-  if (!pendingUsbCommand) {
-    return;
+void respondReady(FILE *output) {
+  fflush(output);
+  if (output == stdout) {
+    usbSendFlush(READY, sizeof(READY)-1);
+  } else {
+    fiprintf(output, READY);    
   }
+}
 
-  usbHandleInternal();
+void respondError(char *msg, FILE *output) {
+  fiprintf(output, "Error %s\r\n", msg);
+  respondReady(output);
+}
 
-  pendingUsbCommand = 0;
-} 
+void respondSyntaxError(char *msg, FILE *output) {
+  fiprintf(output, "Error, unknown command: %s\r\n", msg);
+  if (output != stderr) {
+    fiprintf(stderr, "Got invalid command from USB: %s\r\n", msg);
+  }
+  respondReady(output);
+}
 
-void usbHandleInternal() {
-  if (!*usbCommandLine) {
-    iprintf("\x1b[2J   PhotonSaw\r\n");
-    printState(stdout);
-    iprintf("\r\nTry ? for help\r\n");
-    respondReady();
+void commandRun(char *line, FILE *output) {
+  if (!*line) {
+    fiprintf(output, "\x1b[2J   PhotonSaw\r\n");
+    printState(output);
+    fiprintf(output, "\r\nTry ? for help\r\n");
+    respondReady(output);
     return;
   }
 
   int id; // General purpose parameter
-  if (!strcmp(usbCommandLine, "?")) {
-    iprintf("Known commands:\r\n");
-    iprintf("blank line: clear terminal and print status.\r\n");
-    iprintf("st: Print status\r\n");
-    iprintf("pf: Preflight, sets alarms in case of trouble\r\n");
-    iprintf("ac=<id>: Clears alarm with <id>\r\n");
-    respondReady();
+  if (!strcmp(line, "?")) {
+    fiprintf(output, "Known commands:\r\n");
+    fiprintf(output, "blank line: clear terminal and print status.\r\n");
+    fiprintf(output, "st: Print status\r\n");
+    fiprintf(output, "pf: Preflight, sets alarms in case of trouble\r\n");
+    fiprintf(output, "ac=<id>: Clears alarm with <id>\r\n");
+    respondReady(output);
     return;
 
-  } else if (!strcmp(usbCommandLine, "st")) {
-    printState(stdout);
-    respondReady();
+  } else if (!strcmp(line, "st")) {
+    printState(output);
+    respondReady(output);
     return;
 
-  } else if (!strcmp(usbCommandLine, "pf")) {
+  } else if (!strcmp(line, "pf")) {
     checkAlarmInputs();
-    printState(stdout);
-    respondReady();
+    printState(output);
+    respondReady(output);
     return;
 
-  } else if (sscanf(usbCommandLine, "ac=%d", &id)) {
+  } else if (sscanf(line, "ac=%d", &id)) {
     if (alarmClear(id)) {
-      iprintf("Error: Alarm id not valid: %d\r\n", id);      
+      fiprintf(output, "Error: Alarm id not valid: %d\r\n", id);      
     } else {
-      iprintf("OK: Alarm %d cleared\r\n", id);      
+      fiprintf(output, "OK: Alarm %d cleared\r\n", id);      
     }
 
-    printAlarmState(stdout);
-    respondReady();
+    printAlarmState(output);
+    respondReady(output);
     
   } else {
-    respondSyntaxError(usbCommandLine);
+    respondSyntaxError(line, output);
     return;
   }
 }

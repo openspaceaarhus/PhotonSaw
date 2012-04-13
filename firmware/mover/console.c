@@ -2,8 +2,7 @@
 #include <string.h>
 
 #include "api.h"
-#include "state.h"
-#include "alarm.h"
+#include "commander.h"
 
 char commandBuffer[1<<7];
 volatile int pendingCommand;
@@ -24,12 +23,7 @@ void consoleHandle() {
     return;
   }
 
-  if (*commandBuffer) {
-    fprintf(stderr, "Sorry don't know command: %s\r\n", commandBuffer);
-  } else {
-    fiprintf(stderr, "\x1b[2J   PhotonSaw console\r\n");
-    printState(stderr);
-  }
+  commandRun(commandBuffer, stderr);
 
   pendingCommand = 0;
 }

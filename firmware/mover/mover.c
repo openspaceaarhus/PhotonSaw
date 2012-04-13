@@ -4,7 +4,7 @@
 #include "api.h"
 #include "shaker.h"
 #include "console.h"
-#include "commander.h"
+#include "usbconsole.h"
 
 
 int main(void) {
