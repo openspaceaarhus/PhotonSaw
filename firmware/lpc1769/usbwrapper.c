@@ -83,18 +83,8 @@ static BOOL HandleClassRequest(TSetupPacket *setupPacket, int *answerLength, uns
   return TRUE;
 }
 
-
-inline char usbConnected() {
-  return 1;
-  //  return USB_Configuration;
-}
-
 void usbSend(const char *data, unsigned int dataSize) {
   
-  if (!usbConnected()) {
-    return;
-  }
-
   while (dataSize--) {    
     while (rbIsFull(&usbTxBuffer)) ; // Wait for the buffer to empty enough
     rbLock(&usbTxBuffer);
@@ -107,9 +97,6 @@ void usbSend(const char *data, unsigned int dataSize) {
 }
 
 void usbSendFlush(const char *data, unsigned int dataSize) {
-  if (!usbConnected()) {
-    return;
-  }
 
   while (dataSize--) {
     while (rbIsFull(&usbTxBuffer)) ; // Wait for the buffer to empty

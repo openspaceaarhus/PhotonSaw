@@ -6,9 +6,6 @@
 // This is the maximum input line size
 #define USB_LINE_BUFFER_SIZE 1<<12
 
-// returns true if connected to a host 
-char usbConnected();
-
 // Callback called when a full line has been buffered by the USB CDC layer.
 void usbLine(char *line, unsigned int lineSize);
 

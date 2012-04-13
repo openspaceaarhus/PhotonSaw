@@ -39,7 +39,6 @@ void printState(FILE *file) {
     printString(file, "watchdog.state", wds->msg);
   }
 
-  printBool(file, "usb.connected", usbConnected());
   printInt(file, "exhaust.airflow", airflow(), "%");
   //printInt(file, "exhaust.airflow.adc", readADC(IO_CHAN(IO_AIRFLOW)), "adc");
 
