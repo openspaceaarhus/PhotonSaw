@@ -17,7 +17,6 @@ unsigned int cuMoveCodeOffset;
 Axis axes[4];
 
 
-#define MOVE_BUFFER_ORDER 12
 RING_BUFFER(moves, MOVE_BUFFER_ORDER, unsigned int) IN_IRAM1;
 
 inline char bufferIsFull() {
@@ -29,7 +28,15 @@ inline void bufferMoveCode(unsigned int code) {
 }
 
 inline void bufferCommit() {
+  rbLock(&moves);
   rbShowHidden(&moves);
+  rbUnlock(&moves);
+}
+
+inline void bufferRollback() {
+  rbLock(&moves);
+  rbRemoveHidden(&moves);
+  rbUnlock(&moves);
 }
 
 inline int bufferAvailable() {

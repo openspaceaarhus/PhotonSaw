@@ -69,6 +69,7 @@ void printState(FILE *file) {
   printInt(file, "sys.time", systick, "ms");
 
   printAlarmState(file);
+  printBufferState(file);
 }
 
 void printAlarmState(FILE *file) {
@@ -96,3 +97,10 @@ void printAlarmState(FILE *file) {
   }
 }
 
+void printBufferState(FILE *file) {
+  printInt(file, "buffer.size", 1<<MOVE_BUFFER_ORDER, "moves");
+  printInt(file, "buffer.free", bufferAvailable(), "moves");
+  printInt(file, "buffer.inuse", bufferInUse(), "moves");  
+  printBool(file, "buffer.empty", bufferIsEmpty());  
+  printBool(file, "buffer.full", bufferIsFull());    
+}

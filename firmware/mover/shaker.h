@@ -9,6 +9,7 @@
 */
 
 #define STEPPER_TIMER_INTERVAL_US 50
+#define MOVE_BUFFER_ORDER 12
 
 void shakerInit();
 
@@ -27,6 +28,9 @@ void bufferMoveCode(unsigned int code);
 
 // Release the buffered move for execution
 void bufferCommit();
+
+// Undo uncommitted writes to the buffer
+void bufferRollback();
 
 // Number of move codes available in the buffer
 int bufferAvailable();

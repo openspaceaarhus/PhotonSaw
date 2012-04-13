@@ -100,6 +100,10 @@ inline void rbShowHidden(RingBufferControl *rb) {
   rb->end = rb->endHidden;
 }
 
+inline void rbRemoveHidden(RingBufferControl *rb) {
+  rb->endHidden = rb->end;
+}
+
 inline int rbLengthHidden(RingBufferControl *rb) {
   return (rb->endHidden-rb->start) & rb->mask;
 }
