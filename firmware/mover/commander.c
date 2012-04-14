@@ -41,14 +41,19 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "bm (-nc) <moves> <code>... to buffer move codes\r\n");
 }
 
-void cmdAlarmClear(int id, FILE *output) {
-    if (alarmClear(id)) {
-      fiprintf(output, "Error: Alarm id not valid: %d\r\n", id);      
-    } else {
-      fiprintf(output, "OK: Alarm %d cleared\r\n", id);      
-    }
+void cmdAlarmClear(char *line, FILE *output) {
+  int id; // General purpose parameter variable
+  if (sscanf(line, "%d", &id) != 1) {
+    fiprintf(output, "Error: Unable to parse alarm id: %s\r\n", line);    
+  }
 
-    printAlarmState(output);
+  if (alarmClear(id)) {
+    fiprintf(output, "Error: Alarm id not valid: %d\r\n", id);      
+  } else {
+    fiprintf(output, "OK: Alarm %d cleared\r\n", id);      
+  }
+
+  printAlarmState(output);
 }
 
 /**
@@ -148,7 +153,6 @@ void commandRun(char *line, FILE *output) {
     return;
   }
 
-  int id; // General purpose parameter variable
   if (!strncmp(line, "bm ", 3)) {
     cmdBufferMoves(line+3, output);
     return;
@@ -166,8 +170,8 @@ void commandRun(char *line, FILE *output) {
     checkAlarmInputs();
     printState(output);
 
-  } else if (sscanf(line, "ac %d", &id)) {
-    cmdAlarmClear(id, output);
+  } else if (!strncmp(line, "ac ", 3)) {
+    cmdAlarmClear(line+3, output);
     
   } else {
     respondSyntaxError(line, output);
