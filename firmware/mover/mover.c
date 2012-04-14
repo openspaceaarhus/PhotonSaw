@@ -11,13 +11,14 @@ int main(void) {
   fiprintf(stderr, "\x1b[2JPower Up!\r\n");
 
   /*
-    What a boring main routine, but everything happens in the IRQ service routines:
+    Everything happens in the IRQ service routines:
 
-    commander.c Parses the usb commands
-    watchbone.c Code the watchdog chews on
-    mrchilly.c  Chiller interface
-    console.c   Debug serial port interface 
-    shaker.c    Realtime control output
+    commander.c   Parses the usb commands
+    watchbone.c   Code the watchdog chews on
+    mrchilly.c    Chiller interface
+    console.c     Debug serial port interface 
+    usbconsole.c  USB serial port interface
+    shaker.c      Realtime control output
   */
 
   shakerInit();

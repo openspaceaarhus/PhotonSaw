@@ -13,7 +13,6 @@ void alarmInit();
 */
 unsigned int checkAlarmInputs();
 
-
 // Alarm source bits, used in the switches field of each alarm.
 
 // Limit switches
@@ -61,6 +60,8 @@ typedef struct {
 #define ALARMS 10
 extern Alarm alarms[ALARMS] IN_IRAM1;
 extern int alarmsActive;
+extern unsigned int alarmsIgnored;
+
 
 // Sets an alarm and returns the index
 int alarmSet(unsigned int switches, char *message);

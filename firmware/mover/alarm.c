@@ -8,12 +8,14 @@
 
 Alarm alarms[ALARMS] IN_IRAM1;
 int alarmsActive;
+unsigned int alarmsIgnored;
 
 void alarmInit() {
   for (int i=0;i<ALARMS;i++) {
     alarms[i].active = 0;
   }
   alarmsActive = 0;
+  alarmsIgnored = 0;
 }
 
 // Sets an alarm
@@ -28,6 +30,15 @@ int alarmSet(unsigned int switches, char *message) {
 
   if (index < 0) {
     return -1; // Well, shit has already hit the fan, it does nobody any good to remove the evidence.
+  }
+
+  // If all the flags are ignored, don't crated 
+  if (alarmsIgnored) {
+    switches &=~ alarmsIgnored;
+  }
+
+  if (!switches) { 
+    return -2;
   }
 
   alarms[index].active = 1;
