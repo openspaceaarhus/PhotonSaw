@@ -73,15 +73,22 @@ inline unsigned int bufferPop() {
 // Are we currently in the middle of making a move?
 int volatile cuActive;
 
+int motionActive() {
+  return cuActive;
+}
+
 // The ID of the current move
 unsigned int cuID; 
 
-unsigned int getCurrentMove() {
+unsigned int motionMoveID() {
   return cuID;
 }
 
 // Number of ticks left for this move.
 unsigned int cuDuration;
+unsigned int motionDuration() {
+  return cuDuration;
+}
 
 // The Laser state:
 int cuLaserPWM;
@@ -115,7 +122,7 @@ inline void nextPixel() {
 }
 
 unsigned int cuMoveCodeOffset;
-unsigned int getCurrentMoveCodeOffset() {
+unsigned int motionMoveOffset() {
   return cuMoveCodeOffset;
 }
 

@@ -71,6 +71,7 @@ void printState(FILE *file) {
 
   printAlarmState(file);
   printBufferState(file);
+  printMotionState(file);
 }
 
 void printAlarmState(FILE *file) {
@@ -99,9 +100,27 @@ void printAlarmState(FILE *file) {
 }
 
 void printBufferState(FILE *file) {
-  printInt(file, "buffer.size", (1<<MOVE_BUFFER_ORDER)-1, "moves");
-  printInt(file, "buffer.free", bufferAvailable(), "moves");
-  printInt(file, "buffer.inuse", bufferInUse(), "moves");  
+  printInt(file, "buffer.size", (1<<MOVE_BUFFER_ORDER)-1, "words");
+  printInt(file, "buffer.free", bufferAvailable(), "words");
+  printInt(file, "buffer.inuse", bufferInUse(), "words");  
   printBool(file, "buffer.empty", bufferIsEmpty());  
   printBool(file, "buffer.full", bufferIsFull());    
+}
+
+static const FIXED_TO_SEC = (1.0/ONE_STEP)*STEPPER_TIMER_INTERVAL_US;
+
+void printMotionState(FILE *file) {
+  printBool(file, "motion.active", motionActive());  
+  printInt(file, "motion.duration", motionDuration(), "ticks");
+  printHex(file, "motion.move.id", motionMoveID());
+  printInt(file, "motion.move.offset", motionMoveOffset(), "words");
+
+  for (int i=0;i<4;i++) {
+    Axis *a = &axes[i];
+    fprintf(file, "%-30s motion.axis.%c.pos %d step\r\n", a->name, a->position);
+    fprintf(file, "%-30s motion.axis.%c.speed %f step/s\r\n", a->name, 
+	    a->moveSpeed*FIXED_TO_SEC);
+    fprintf(file, "%-30s motion.axis.%c.accel %f step/s²\r\n", a->name,
+	    a->moveAccel*FIXED_TO_SEC);
+  }
 }

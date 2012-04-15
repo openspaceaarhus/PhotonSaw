@@ -9,6 +9,7 @@
 void printState(FILE *file);
 void printAlarmState(FILE *file);
 void printBufferState(FILE *file);
+void printMotionState(FILE *file);
 
 #define WD_STATE_MAX 100
 typedef struct {

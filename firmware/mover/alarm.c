@@ -44,8 +44,8 @@ int alarmSet(unsigned int switches, char *message) {
   alarms[index].active = 1;
   alarms[index].timestamp = systick;
   alarms[index].switches = switches;
-  alarms[index].moveId = getCurrentMove();
-  alarms[index].moveCodeOffset = getCurrentMoveCodeOffset();
+  alarms[index].moveId = motionMoveID();
+  alarms[index].moveCodeOffset = motionMoveOffset();
   strncpy(alarms[index].msg, message, ALARM_MAX_LENGTH);
 
   alarmsActive++;

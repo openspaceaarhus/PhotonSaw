@@ -161,7 +161,7 @@ while (1) {
     my $res = portCmd(strMoves());
     
     while (1) {
-	if ($res =~ /buffer\.free\s+(\d+)\s+moves/) {
+	if ($res =~ /buffer\.free\s+(\d+)\s+words/) {
 	    my $moves = $1;
 	    if ($moves > 4095-100) {
 		last;
@@ -177,7 +177,7 @@ while (1) {
     
 my $res = '';
     while (1) {
-	if ($res =~ /buffer\.inuse\s+(\d+)\s+moves/) {
+	if ($res =~ /buffer\.inuse\s+(\d+)\s+words/) {
 	    my $moves = $1;
 	    if (!$moves) {
 		last;

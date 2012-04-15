@@ -16,8 +16,10 @@ void shakerInit();
 extern unsigned int stepperIRQMax;
 extern int stepperIRQAvg;
 
-unsigned int getCurrentMove();
-unsigned int getCurrentMoveCodeOffset();
+int motionActive();
+unsigned int motionDuration();
+unsigned int motionMoveID();
+unsigned int motionMoveOffset();
 
 
 // True if it's possible to add more move codes

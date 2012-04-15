@@ -13,9 +13,11 @@ typedef struct {
   int moveSpeed;    // Never negative.
   int moveDirection;// 1 if speed was negative 
   int moveAccel;    
+  char name;
 } Axis;
 
-void axisInit(Axis *a, 
+void axisInit(Axis *a,
+	      const char *name,
 	      const unsigned int stepPin, 
 	      const unsigned int dirPin, 
 	      const unsigned int enablePin, 
@@ -23,7 +25,7 @@ void axisInit(Axis *a,
 	      const unsigned int usm0Pin, 
 	      const unsigned int usm1Pin);
 
-#define AXIS_INIT(a, name) axisInit(a, IO_ ## name ## _STEP, IO_ ## name ## _DIR, IO_ ## name ## _ENABLE, IO_ ## name ## _CURRENT, IO_ ## name ## _USM0, IO_ ## name ## _USM1)
+#define AXIS_INIT(a, name) axisInit(a, #name, IO_ ## name ## _STEP, IO_ ## name ## _DIR, IO_ ## name ## _ENABLE, IO_ ## name ## _CURRENT, IO_ ## name ## _USM0, IO_ ## name ## _USM1)
 
 void inline axisNewMove(Axis *a) {
   a->moveError = a->moveSpeed = a->moveDirection = a->moveAccel = 0;
