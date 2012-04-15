@@ -52,6 +52,12 @@ void inline axisPrepareMove(Axis *a) {
   }
 }
 
+void inline axisStartMove(Axis *a, int speed, int accel) {
+  a->moveError = a->moveDirection = 0;
+  a->moveSpeed = speed;
+  a->moveAccel = accel;
+  axisPrepareMove(a);
+}
 
 void inline axisTick(Axis *a) {
   a->moveError += a->moveSpeed;

@@ -40,6 +40,8 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "ai <flags>: Ignore alarms\r\n");
     fiprintf(output, "bs Report buffer state\r\n");
     fiprintf(output, "bm (-nc) <moves> <code>... to buffer move codes\r\n");
+    fiprintf(output, "bs: Buffer status\r\n");
+    fiprintf(output, "br: Buffer reset\r\n");
     fiprintf(output, "me <axis> <current> <usm>: Motor Enable\r\n");
 }
 
@@ -158,6 +160,10 @@ void commandRun(char *line, FILE *output) {
     cmdBufferMoves(line+3, output);
     
   } else if (!strcmp(line, "bs")) {
+    printBufferState(output);
+
+  } else if (!strcmp(line, "br")) {
+    shakerResetBuffer();
     printBufferState(output);
 
   } else if (!strcmp(line, "?")) {

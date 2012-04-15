@@ -5,7 +5,7 @@ use Device::SerialPort;
 #use Time::HiRes(
 
 my $F = 50000;    # step frequency;
-my $A = 1/$F;  # step/s^2 Accelerate to full speed in 1 second  
+my $A = 57800/$F;  # step/s^2 Accelerate to full speed in 1 second  
 my $OS = 1<<30;
 
 my @moves;
@@ -26,26 +26,30 @@ sub encodeMove {
         
     my $head = 0x05aa0000;
     $head |= 1<<1 if $xs;
-    $head |= 1<<2 if $ys;
-    $head |= 1<<3 if $zs;
-    $head |= 1<<4 if $as;
+    $head |= 1<<2 if $xa;
 
-    $head |= 1<<5 if $xa;
-    $head |= 1<<6 if $ya;
-    $head |= 1<<7 if $za;
+    $head |= 1<<3 if $ys;
+    $head |= 1<<4 if $ya;
+
+    $head |= 1<<5 if $zs;
+    $head |= 1<<6 if $za;
+
+    $head |= 1<<7 if $as;
     $head |= 1<<8 if $aa;
     
     mout($head);
     mout($ticks);
 
     mout($xs) if $xs;
-    mout($ys) if $ys;
-    mout($zs) if $zs;
-    mout($as) if $as;
-
     mout($xa) if $xa;
+
+    mout($ys) if $ys;
     mout($ya) if $ya;
+
+    mout($zs) if $zs;
     mout($za) if $za;
+
+    mout($as) if $as;
     mout($aa) if $aa;
 }
 
@@ -69,8 +73,10 @@ sub linexy {
 
 	$a = (($s1**2-$s0**2)/(2*$dist));	
 	print "$s0 -> $s1 in $dist -> $a\n";
-	if (abs($a) > $A) { # TODO: This doesn't work! Clamp at max acceleration
-	    print "Clamped at $a --> $A\n";	    
+	if (abs($a) > $A) { 
+	    # TODO: This doesn't work because the end speed cannot be reached
+	    die "Too high acceleration $a > $A\n";
+
 	    $a = $a>0 ? $A : -$A;
 	    $ticks = int(0.5+ ((sqrt($s0**2+2*$a*$dist)-$s0)/$a));
 	} else {
@@ -90,16 +96,19 @@ sub linexy {
     print "  xs=$xs ys=$ys xa=$xa ya=$ya a=$a dist=$dist ticks=$ticks\n"; 
 
     encodeMove($ticks,
-	       $xs, $ys, 0, 0,
-	       $xa, $ya, 0, 0);
+#	       $xs, $ys, 0, 0, $xa, $ya, 0, 0,
+	       $xs, $ys, $xs, $xs, $xa, $ya, $xa, $xa
+	);
 }
 
 sub linexys {
     my ($xd, $yd, $s0) = @_;
 
-    linexy(  $xd/10,   $yd/10, 0, $s0);
-    linexy(8*$xd/10, 8*$yd/10, $s0);
-    linexy(  $xd/10,   $yd/10, $s0, 0);
+    my $ap = 0.4;
+
+    linexy($ap*$xd, $ap*$yd, 0, $s0);
+    linexy((1-2*$ap)*$xd, (1-2*$ap)*$yd, $s0);
+    linexy($ap*$xd, $ap*$yd, $s0, 0);
 }
 
 my $portName = "/dev/ttyACM0";
@@ -130,6 +139,8 @@ sub portCmd {
 
 sub strMoves {
     my $res = "bm";
+    die "Too many moves!" if @moves > 4090;
+
     $res .= sprintf(" %x", scalar(@moves));
 
     for my $m (@moves) {
@@ -142,16 +153,19 @@ sub strMoves {
 
 portCmd("ai 10c");
 portCmd(sprintf("me %d %d %d", 0, 350, 3));
-portCmd(sprintf("me %d %d %d", 1, 350, 3));
-portCmd(sprintf("me %d %d %d", 2, 0, 3));
+portCmd(sprintf("me %d %d %d", 1, 1870, 3));
+portCmd(sprintf("me %d %d %d", 2, 350, 3));
 portCmd(sprintf("me %d %d %d", 3, 0, 3));
 
 
 while (1) {
-
-    for my $i (0..10) {
-	linexys(1600, 1600, 5*1600);
-	linexys(-1600, -1600, 5*1600);
+    for my $i (0..0) {
+	for my $j (1..8) {
+	    linexys(200, 2*200, $j*1600*1.5);
+	    linexys(-200, -2*200, $j*1600*1.5);
+	}
+	linexys(2*4*200, 2*8*200, 17*1600);
+	linexys(-2*4*200, -2*8*200, 1*1600);
     }
 
 #    linexys(400, 400, 10*1600);

@@ -165,21 +165,31 @@ inline void startNewMove() {
     cuID++;
   }
 
+  // Load the speeds needed  
+  for (int ax=0;ax<4;ax++) {
+    if (MOVE_HAS_ACCEL_OR_SPEED(head, ax)) {
+      int speed = MOVE_HAS_SPEED(head, ax) ? bufferPop() : 0;
+      int accel = MOVE_HAS_ACCEL(head, ax) ? bufferPop() : 0;
+      axisStartMove(&axes[ax], speed, accel);
+    } else {
+      axisNewMove(&axes[ax]);
+    }
+  }
+    
+      /*
   axisNewMove(&axes[AXIS_X]);
   axisNewMove(&axes[AXIS_Y]);
   axisNewMove(&axes[AXIS_Z]);
   axisNewMove(&axes[AXIS_A]);
-  
-  // Load the speeds needed  
-  if (MOVE_HAS_XS(head)) axisSetSpeed(&axes[AXIS_X], bufferPop());
-  if (MOVE_HAS_YS(head)) axisSetSpeed(&axes[AXIS_Y], bufferPop());
-  if (MOVE_HAS_ZS(head)) axisSetSpeed(&axes[AXIS_Z], bufferPop());
-  if (MOVE_HAS_AS(head)) axisSetSpeed(&axes[AXIS_A], bufferPop());
 
-  // Load the accelerations needed
+  if (MOVE_HAS_XS(head)) axisSetSpeed(&axes[AXIS_X], bufferPop());
   if (MOVE_HAS_XA(head)) axisSetAccel(&axes[AXIS_X], bufferPop());
+
+  if (MOVE_HAS_YS(head)) axisSetSpeed(&axes[AXIS_Y], bufferPop());
   if (MOVE_HAS_YA(head)) axisSetAccel(&axes[AXIS_Y], bufferPop());
+  if (MOVE_HAS_ZS(head)) axisSetSpeed(&axes[AXIS_Z], bufferPop());
   if (MOVE_HAS_ZA(head)) axisSetAccel(&axes[AXIS_Z], bufferPop());
+  if (MOVE_HAS_AS(head)) axisSetSpeed(&axes[AXIS_A], bufferPop());
   if (MOVE_HAS_AA(head)) axisSetAccel(&axes[AXIS_A], bufferPop());
 
   // Do some pre-calculations on the move
@@ -187,7 +197,8 @@ inline void startNewMove() {
   if (MOVE_HAS_YA(head) || MOVE_HAS_YS(head)) axisPrepareMove(&axes[AXIS_Y]);
   if (MOVE_HAS_ZA(head) || MOVE_HAS_ZS(head)) axisPrepareMove(&axes[AXIS_Z]);
   if (MOVE_HAS_AA(head) || MOVE_HAS_AS(head)) axisPrepareMove(&axes[AXIS_A]);
-  
+      */
+
   // See if we should be running the LASER and at what power:
   if (MOVE_HAS_LASER(head)) {
     unsigned int lc = bufferPop();

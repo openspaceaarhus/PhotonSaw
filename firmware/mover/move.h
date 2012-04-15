@@ -11,12 +11,12 @@ Header: 05AAffff
 Duration: Number of ticks this move lasts
 0: ID 
 1: X speed
-2: Y speed
-3: Z speed
-4: A speed
-5: X accel
-6: Y accel
-7: Z accel
+2: X accel
+3: Y speed
+4: Y accel
+5: Z speed
+6: Z accel
+7: A speed
 8: A accel
 9: LASER intensity 
 10: LASER intensity acceleration
@@ -64,14 +64,20 @@ If pixels are present then the laser word must also be present to set the pwm an
 
 #define MOVE_HAS_ID(x) ((x) & (1<<0))
 
-#define MOVE_HAS_XS(x) ((x) & (1<<1))
-#define MOVE_HAS_YS(x) ((x) & (1<<2))
-#define MOVE_HAS_ZS(x) ((x) & (1<<3))
-#define MOVE_HAS_AS(x) ((x) & (1<<4))
+#define MOVE_HAS_SPEED(x, a)          ((x) & (1<<(((a)<<1)+1)))
+#define MOVE_HAS_ACCEL(x, a)          ((x) & (1<<(((a)<<1)+2)))
+#define MOVE_HAS_ACCEL_OR_SPEED(x, a) ((x) & (3<<(((a)<<1)+1)))
 
-#define MOVE_HAS_XA(x) ((x) & (1<<5))
-#define MOVE_HAS_YA(x) ((x) & (1<<6))
-#define MOVE_HAS_ZA(x) ((x) & (1<<7))
+#define MOVE_HAS_XS(x) ((x) & (1<<1))
+#define MOVE_HAS_XA(x) ((x) & (1<<2))
+
+#define MOVE_HAS_YS(x) ((x) & (1<<3))
+#define MOVE_HAS_YA(x) ((x) & (1<<4))
+
+#define MOVE_HAS_ZS(x) ((x) & (1<<5))
+#define MOVE_HAS_ZA(x) ((x) & (1<<6))
+
+#define MOVE_HAS_AS(x) ((x) & (1<<7))
 #define MOVE_HAS_AA(x) ((x) & (1<<8))
 
 #define MOVE_HAS_LASER(x) ((x) & (1<<9))

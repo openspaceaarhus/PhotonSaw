@@ -107,7 +107,9 @@ void printBufferState(FILE *file) {
   printBool(file, "buffer.full", bufferIsFull());    
 }
 
-static const FIXED_TO_SEC = (1.0/ONE_STEP)*STEPPER_TIMER_INTERVAL_US;
+#define FREQ (1000000.0/STEPPER_TIMER_INTERVAL_US)
+#define SPEED_TO_SEC (FREQ/ONE_STEP)
+#define ACCEL_TO_SEC (FREQ*FREQ/ONE_STEP)
 
 void printMotionState(FILE *file) {
   printBool(file, "motion.active", motionActive());  
@@ -117,10 +119,11 @@ void printMotionState(FILE *file) {
 
   for (int i=0;i<4;i++) {
     Axis *a = &axes[i];
-    fprintf(file, "%-30s motion.axis.%c.pos %d step\r\n", a->name, a->position);
-    fprintf(file, "%-30s motion.axis.%c.speed %f step/s\r\n", a->name, 
-	    a->moveSpeed*FIXED_TO_SEC);
-    fprintf(file, "%-30s motion.axis.%c.accel %f step/s²\r\n", a->name,
-	    a->moveAccel*FIXED_TO_SEC);
+    fprintf(file, "motion.axis.%c.pos              %d step\r\n", a->name, 
+	    a->position);
+    fprintf(file, "motion.axis.%c.speed            %f step/s\r\n", a->name, 
+	    a->moveSpeed*SPEED_TO_SEC);
+    fprintf(file, "motion.axis.%c.accel            %f step/s^2\r\n", a->name,
+	    a->moveAccel*ACCEL_TO_SEC);
   }
 }
