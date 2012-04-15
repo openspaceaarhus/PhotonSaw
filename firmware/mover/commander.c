@@ -8,7 +8,7 @@
 #include "hexparser.h"
 #include "commander.h"
 
-char READY[] = "Ready\r\n";
+char READY[] = "\r\nReady\r\n";
 void respondReady(FILE *output) {
   fflush(output);
   if (output == stdout) {
@@ -40,6 +40,7 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "ai <flags>: Ignore alarms\r\n");
     fiprintf(output, "bs Report buffer state\r\n");
     fiprintf(output, "bm (-nc) <moves> <code>... to buffer move codes\r\n");
+    fiprintf(output, "me <axis> <current> <usm>: Motor Enable\r\n");
 }
 
 void cmdAlarmClear(char *line, FILE *output) {
@@ -90,13 +91,11 @@ void cmdBufferMoves(char *line, FILE *output) {
   unsigned int moves = 0;
   if (parseHex(&line, &moves) < 1) {
     fprintf(output, "Error: Unable to parse the number of moves int at char %d\r\n", (line-lineStart));
-    respondReady(output);
     return;
   }
 
   if (moves > bufferAvailable()) {
     fprintf(output, "Error: Not enough room in buffer for %d moves (only %d words free)\r\n", moves, bufferAvailable());
-    respondReady(output);
     return;
   }
 
@@ -104,7 +103,6 @@ void cmdBufferMoves(char *line, FILE *output) {
     unsigned int mc;
     if (parseHex(&line, &mc) < 1) {
       fiprintf(output, "Error: Unable to parse the move code at char %d\r\n", (line-lineStart));
-      respondReady(output);
       bufferRollback();
       return;
     }
@@ -115,7 +113,35 @@ void cmdBufferMoves(char *line, FILE *output) {
     bufferCommit();
   }
   
+  fiprintf(output, "Ok\r\n");
   printBufferState(output);
+  return;
+}
+
+void cmdMotorEnable(char *line, FILE *output) {
+  unsigned int axis, current, usm;
+  if (sscanf(line, "%d %d %d", &axis, &current, &usm) != 3) {
+    fprintf(output, "Error: Unable to parse motor enable parameters: %s\r\n", line);
+    return;
+  }
+
+  if (axis < 0 || axis > 3) {
+    fprintf(output, "Error: Invalid axis: %d, must be (0..3)\r\n", axis);
+    return;
+  }
+
+  if (usm < 0 || usm > 3) {
+    fprintf(output, "Error: Invalid microstepping: %d, must be 0..3\r\n", usm);
+    return;
+  }
+
+  if (current < 0 || current > STEPPER_MAX_CURRENT) {
+    fprintf(output, "Error: Invalid current: %d, must be (0 to %d)\r\n",
+	    current, STEPPER_MAX_CURRENT);
+    return;
+  }
+
+  axisMotorEnable(&axes[axis], current, usm);
   return;
 }
 
@@ -130,7 +156,6 @@ void commandRun(char *line, FILE *output) {
 
   if (!strncmp(line, "bm ", 3)) {
     cmdBufferMoves(line+3, output);
-    return;
     
   } else if (!strcmp(line, "bs")) {
     printBufferState(output);
@@ -150,6 +175,9 @@ void commandRun(char *line, FILE *output) {
 
   } else if (!strncmp(line, "ai ", 3)) {
     cmdAlarmIgnore(line+3, output);
+    
+  } else if (!strncmp(line, "me ", 3)) {
+    cmdMotorEnable(line+3, output);
     
   } else {
     respondSyntaxError(line, output);

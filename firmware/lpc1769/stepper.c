@@ -41,34 +41,38 @@ void stpDisable(Stepper *s) {
   R: Shunt resistor size
 
   R = 0.22 Ohm
-  V = 3.3*pwm/256
+  V = 3.3*pwm/255
 
-  pwm = (2048*r*I) / vdd
+  pwm = (2047*R*I) / vdd
 */
 void stpCurrent(Stepper *s, unsigned int ma) {
   /*
-   Trick: We're using mA on top and mV on the bottom, so the calculation still works,
-   even though it was made for A and V.
+   Trick: We're using mA on top and mV on the bottom, so the calculation
+   still works, even though it was made for A and V.
   */
   
-  unsigned int pwm = (2048*STEPPER_SHUNT*ma) / VDD_MV;
+  unsigned int pwm = (2047*STEPPER_SHUNT*ma) / VDD_MV;
+  if (pwm > 255) {
+    pwm = 255;
+  }
 
   setPWM(IO_CHAN(s->currentPin), pwm);
 }
 
 void stpMicrostep(Stepper *s, unsigned int n) {
-  if (n == 0) {
+  if (n == 0) { // full step
     GPIO_CLEAR(s->usm0Pin);
     GPIO_CLEAR(s->usm1Pin);
 
-  } else if (n == 1) {
+  } else if (n == 1) { // half step
     GPIO_SET(s->usm0Pin);
     GPIO_CLEAR(s->usm1Pin);
 
-  } else if (n == 2) {
+  } else if (n == 2) { // quarter step
     GPIO_CLEAR(s->usm0Pin);
     GPIO_SET(s->usm1Pin);
-  } else {
+
+  } else { // 1/8 step
     GPIO_SET(s->usm0Pin);
     GPIO_SET(s->usm1Pin);
   } 

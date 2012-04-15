@@ -23,4 +23,7 @@ void stpDisable(Stepper *s);
 void stpCurrent(Stepper *s, unsigned int ma);
 void stpMicrostep(Stepper *s, unsigned int n);
 
+// I = V / (8*R)
+#define STEPPER_MAX_CURRENT (int)(VDD_MV/ (8*STEPPER_SHUNT))
+
 #endif

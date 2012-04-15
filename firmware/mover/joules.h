@@ -27,7 +27,6 @@ unsigned int getCoolantAlarm();
 
 double joulesLastInTemp();
 double joulesLastOutTemp();
-
-
-
+double joulesLastInternalTemp();
+       
 #endif

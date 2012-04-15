@@ -12,3 +12,12 @@ void axisInit(Axis *a,
   a->position = a->moveError = a->moveSpeed = a->moveDirection = a->moveAccel = 0;
 }
 
+void axisMotorEnable(Axis *a, unsigned int current, unsigned int usm) {
+  if (current) {
+    stpCurrent(&a->stepper, current);
+    stpMicrostep(&a->stepper, usm);
+    stpEnable(&a->stepper);
+  } else {
+    stpDisable(&a->stepper);
+  }
+}

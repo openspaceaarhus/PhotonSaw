@@ -8,7 +8,7 @@
   it is also the maximum time the IRQ routine is allowed to take.
 */
 
-#define STEPPER_TIMER_INTERVAL_US 50
+#define STEPPER_TIMER_INTERVAL_US 20
 #define MOVE_BUFFER_ORDER 12
 
 void shakerInit();

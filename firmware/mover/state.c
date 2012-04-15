@@ -42,10 +42,10 @@ void printState(FILE *file) {
   printInt(file, "exhaust.airflow", airflow(), "%");
   //printInt(file, "exhaust.airflow.adc", readADC(IO_CHAN(IO_AIRFLOW)), "adc");
 
-  printDouble(file, "board.temperature", readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL)), "C" );
-  printInt(file, "board.inputvoltage", supplyVoltage(), "mv");        
+  printDouble(file, "board.temperature", joulesLastInternalTemp(), "C" );
+  printInt(   file, "board.inputvoltage", supplyVoltage(), "mv");        
 
-  printHex(file, "cooling.alarm", getCoolantAlarm());
+  printHex(   file, "cooling.alarm", getCoolantAlarm());
   printDouble(file, "cooling.flow",joulesWaterFlow(),"gram/s");        
   printDouble(file, "cooling.power", joulesCurrentPower(), "W");        
   printDouble(file, "cooling.temp.in", joulesLastInTemp(), "C");
@@ -64,6 +64,7 @@ void printState(FILE *file) {
     printHex(file, "chiller.uart.error", err0);
   }
 
+  printInt(file, "sys.irq.interval", STEPPER_TIMER_INTERVAL_US, "us");
   printInt(file, "sys.irq.max", stepperIRQMax, "us");
   printDouble(file, "sys.irq.avg", (stepperIRQAvg >> 8) / 255.0, "us");
   printInt(file, "sys.time", systick, "ms");
@@ -98,7 +99,7 @@ void printAlarmState(FILE *file) {
 }
 
 void printBufferState(FILE *file) {
-  printInt(file, "buffer.size", 1<<MOVE_BUFFER_ORDER, "moves");
+  printInt(file, "buffer.size", (1<<MOVE_BUFFER_ORDER)-1, "moves");
   printInt(file, "buffer.free", bufferAvailable(), "moves");
   printInt(file, "buffer.inuse", bufferInUse(), "moves");  
   printBool(file, "buffer.empty", bufferIsEmpty());  

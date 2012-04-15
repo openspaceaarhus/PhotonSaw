@@ -163,7 +163,7 @@ inline void startNewMove() {
   axisNewMove(&axes[AXIS_Z]);
   axisNewMove(&axes[AXIS_A]);
   
-  // Load the speeds needed
+  // Load the speeds needed  
   if (MOVE_HAS_XS(head)) axisSetSpeed(&axes[AXIS_X], bufferPop());
   if (MOVE_HAS_YS(head)) axisSetSpeed(&axes[AXIS_Y], bufferPop());
   if (MOVE_HAS_ZS(head)) axisSetSpeed(&axes[AXIS_Z], bufferPop());
@@ -175,6 +175,12 @@ inline void startNewMove() {
   if (MOVE_HAS_ZA(head)) axisSetAccel(&axes[AXIS_Z], bufferPop());
   if (MOVE_HAS_AA(head)) axisSetAccel(&axes[AXIS_A], bufferPop());
 
+  // Do some pre-calculations on the move
+  if (MOVE_HAS_XA(head) || MOVE_HAS_XS(head)) axisPrepareMove(&axes[AXIS_X]);
+  if (MOVE_HAS_YA(head) || MOVE_HAS_YS(head)) axisPrepareMove(&axes[AXIS_Y]);
+  if (MOVE_HAS_ZA(head) || MOVE_HAS_ZS(head)) axisPrepareMove(&axes[AXIS_Z]);
+  if (MOVE_HAS_AA(head) || MOVE_HAS_AS(head)) axisPrepareMove(&axes[AXIS_A]);
+  
   // See if we should be running the LASER and at what power:
   if (MOVE_HAS_LASER(head)) {
     unsigned int lc = bufferPop();
@@ -257,7 +263,7 @@ inline void continueCurrentMove() {
   axisTock(&axes[AXIS_Z]);
   axisTock(&axes[AXIS_A]);
 
-  if (!--cuDuration || alarms) {
+  if (!cuDuration-- || alarms) {
     // TODO: Add check against left over pixel words.
 
     cuActive = 0; // Done with this move, let startNewMove pop another one.

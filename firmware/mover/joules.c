@@ -23,6 +23,7 @@ unsigned int joulesRawFlowCount() {
 SYSTICK_TYPE lastTime;
 double lastInTemp;
 double lastOutTemp;
+double lastInternalTemp;
 unsigned int lastPulseCount;
 double totalWaterMass;
 double totalJoules;
@@ -39,6 +40,13 @@ void joulesUpdateTotals100Hz() {
     div20 = 0;    
   } else {
     return;
+  }
+
+  coolantAlarm = 0;
+
+  lastInternalTemp = readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL));
+  if (lastInternalTemp > 100) {
+    coolantAlarm |= ALARM_MOTOR_DRIVER_OVERTEMP;
   }
 
   double it = readNTCcelcius(IO_CHAN(IO_TEMP_IN)); 
@@ -69,7 +77,7 @@ void joulesUpdateTotals100Hz() {
     double waterFlow = (1000*mass/deltaTime); // gram / second
     avgWaterFlow += (waterFlow-avgWaterFlow) * 0.01;
 
-    coolantAlarm = (avgWaterFlow < MINIMUM_WATER_FLOW_GS ? ALARM_COOLANT_FLOW : 0) |
+    coolantAlarm |= (avgWaterFlow < MINIMUM_WATER_FLOW_GS ? ALARM_COOLANT_FLOW : 0) |
       ((ot > MAXIMUM_WATER_TEMP || it < MINIMUM_WATER_TEMP) ? ALARM_COOLANT_TEMP : 0);
   }  
   
@@ -108,4 +116,8 @@ double joulesLastInTemp() {
 
 double joulesLastOutTemp() {
   return lastOutTemp;
+}
+
+double joulesLastInternalTemp() {
+  return lastInternalTemp;
 }

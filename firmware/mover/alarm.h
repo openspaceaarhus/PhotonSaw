@@ -47,6 +47,9 @@ unsigned int checkAlarmInputs();
 // LASER is not ready
 #define ALARM_LASER 14
 
+// Motor drivers too hot.
+#define ALARM_MOTOR_DRIVER_OVERTEMP 15
+
 #define ALARM_MAX_LENGTH 80
 typedef struct {
   SYSTICK_TYPE timestamp; // The milisecond systick value when the fault occured

@@ -85,6 +85,11 @@ unsigned int checkAlarmInputs() {
   if (!GPIO_GET(IO_LASER_READY)) sw |= 1<<ALARM_LASER;
 
   unsigned int csw = getCoolantAlarm();  
+  if (alarmsIgnored) {
+    csw &=~ alarmsIgnored;
+    sw &=~ alarmsIgnored;
+  }
+
   if (sw || csw) {
     if (sw && csw) {
       alarmSet(sw|csw, "Switches triggered and cooling failure");
