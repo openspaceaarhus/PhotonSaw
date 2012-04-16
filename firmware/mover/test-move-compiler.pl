@@ -36,7 +36,12 @@ sub encodeMove {
 
     $head |= 1<<7 if $as;
     $head |= 1<<8 if $aa;
-    
+
+    $head |= 1<<9;  # LASER
+    if ($ticks > 5000) {
+	$head |= 1<<11; # Pixels
+    }
+
     mout($head);
     mout($ticks);
 
@@ -51,6 +56,26 @@ sub encodeMove {
 
     mout($as) if $as;
     mout($aa) if $aa;
+
+    if ($head & (1<<9)) {
+	mout(0x1A5E0000 | 127); # Full power
+
+	if ($head & (1<<11)) {
+	    my $ps = int(((4*32-10)*$OS/$ticks));
+	    die "Pixel speed too high: $ps" if $ps > $OS;
+
+	    my $pc = ($ps * $ticks) / $OS;
+
+	    print "Pixel speed: $ps for $ticks check: $pc\n";
+
+	    mout($ps); # Pixel speed
+	    mout(4); # Pixel word count
+	    mout(0xaaaaaaaa); 
+	    mout(0xf0f0f0f0); 
+	    mout(0x55aa55aa); 
+	    mout(0xffff0000); 
+	}
+    }
 }
 
 # X delta steps, Y delta steps, start speed (steps / second), end speed
@@ -150,6 +175,7 @@ sub strMoves {
     @moves = ();
     return $res;
 }
+portCmd("br");
 
 portCmd("ai 10c");
 portCmd(sprintf("me %d %d %d", 0, 350, 3));
@@ -159,6 +185,7 @@ portCmd(sprintf("me %d %d %d", 3, 0, 3));
 
 
 while (1) {
+#for my $loops (1..1) {
     for my $i (0..0) {
 	for my $j (1..8) {
 	    linexys(200, 2*200, $j*1600*1.5);
@@ -189,20 +216,16 @@ while (1) {
 }
 
     
-my $res = '';
-    while (1) {
-	if ($res =~ /buffer\.inuse\s+(\d+)\s+words/) {
-	    my $moves = $1;
-	    if (!$moves) {
-		last;
-	    }
-	    sleep(1);	    
-	    $res = portCmd("bs");
-	} else {
-	    die "Unable to find buffer.inuse in $res\n";
-	}
+while (1) {
+    my $res = portCmd("st");
+    if ($res =~ /motion.active\s+No/) {
+	last;
+    } else {
+	sleep(1);	    
     }
+}
 
-    portCmd(sprintf("me %d %d %d", 0, 0, 3));
-    portCmd(sprintf("me %d %d %d", 1, 0, 3));
-    die "Done";
+portCmd(sprintf("me %d %d %d", 0, 0, 3));
+portCmd(sprintf("me %d %d %d", 1, 0, 3));
+portCmd(sprintf("me %d %d %d", 2, 0, 3));
+die "Done";

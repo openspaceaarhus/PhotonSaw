@@ -106,7 +106,7 @@ unsigned int cuPV;
 
 inline void bufferPopPixels() {
   if (!cuPixelWords) {
-    codeError("Truncated pixels");
+    codeError("Too few pixel words/pixel speed too high");
     return;
   }
   cuPixelWords--;
@@ -118,7 +118,7 @@ inline void nextPixel() {
   if (cuPP > 31) {
     bufferPopPixels();
   }
-  cuPV = cuPixelWord & 1<<cuPP++;
+  cuPV = cuPixelWord & (1<<cuPP++);
 }
 
 unsigned int cuMoveCodeOffset;
@@ -176,29 +176,6 @@ inline void startNewMove() {
     }
   }
     
-      /*
-  axisNewMove(&axes[AXIS_X]);
-  axisNewMove(&axes[AXIS_Y]);
-  axisNewMove(&axes[AXIS_Z]);
-  axisNewMove(&axes[AXIS_A]);
-
-  if (MOVE_HAS_XS(head)) axisSetSpeed(&axes[AXIS_X], bufferPop());
-  if (MOVE_HAS_XA(head)) axisSetAccel(&axes[AXIS_X], bufferPop());
-
-  if (MOVE_HAS_YS(head)) axisSetSpeed(&axes[AXIS_Y], bufferPop());
-  if (MOVE_HAS_YA(head)) axisSetAccel(&axes[AXIS_Y], bufferPop());
-  if (MOVE_HAS_ZS(head)) axisSetSpeed(&axes[AXIS_Z], bufferPop());
-  if (MOVE_HAS_ZA(head)) axisSetAccel(&axes[AXIS_Z], bufferPop());
-  if (MOVE_HAS_AS(head)) axisSetSpeed(&axes[AXIS_A], bufferPop());
-  if (MOVE_HAS_AA(head)) axisSetAccel(&axes[AXIS_A], bufferPop());
-
-  // Do some pre-calculations on the move
-  if (MOVE_HAS_XA(head) || MOVE_HAS_XS(head)) axisPrepareMove(&axes[AXIS_X]);
-  if (MOVE_HAS_YA(head) || MOVE_HAS_YS(head)) axisPrepareMove(&axes[AXIS_Y]);
-  if (MOVE_HAS_ZA(head) || MOVE_HAS_ZS(head)) axisPrepareMove(&axes[AXIS_Z]);
-  if (MOVE_HAS_AA(head) || MOVE_HAS_AS(head)) axisPrepareMove(&axes[AXIS_A]);
-      */
-
   // See if we should be running the LASER and at what power:
   if (MOVE_HAS_LASER(head)) {
     unsigned int lc = bufferPop();
@@ -282,9 +259,12 @@ inline void continueCurrentMove() {
   axisTock(&axes[AXIS_A]);
 
   if (!cuDuration-- || alarms) {
-    // TODO: Add check against left over pixel words.
-
     cuActive = 0; // Done with this move, let startNewMove pop another one.
+
+    // Only check for extra pixel words if we're not being stopped by another alarm
+    if (cuHasPixels && cuPixelWords && !alarms) { 
+      codeError("Too many pixel words/pixel speed too low");
+    }
   }
 }
 
@@ -383,7 +363,7 @@ void shakerInit() {
   timerMatch.ExtMatchOutputType = TIM_EXTMATCH_NOTHING;
   timerMatch.MatchValue   = STEPPER_TIMER_INTERVAL_US-1;
   TIM_ConfigMatch(LPC_TIM2,&timerMatch);
-
   NVIC_EnableIRQ(TIMER2_IRQn);
+
   TIM_Cmd(LPC_TIM2,ENABLE);
 }

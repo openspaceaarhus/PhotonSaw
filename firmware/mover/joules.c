@@ -107,7 +107,7 @@ double joulesWaterFlow() {
 }
 
 unsigned int getCoolantAlarm() {
-  return coolantAlarm;
+  return coolantAlarm & (~alarmsIgnored);
 }
 
 double joulesLastInTemp() {
