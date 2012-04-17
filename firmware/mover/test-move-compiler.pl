@@ -37,9 +37,9 @@ sub encodeMove {
     $head |= 1<<7 if $as;
     $head |= 1<<8 if $aa;
 
-    $head |= 1<<9;  # LASER
-    if ($ticks > 5000) {
-	$head |= 1<<11; # Pixels
+#    $head |= 1<<9;  # LASER
+    if ($ticks > 15000) {
+#	$head |= 1<<11; # Pixels
     }
 
     mout($head);
@@ -191,8 +191,8 @@ while (1) {
 	    linexys(200, 2*200, $j*1600*1.5);
 	    linexys(-200, -2*200, $j*1600*1.5);
 	}
-	linexys(2*4*200, 2*8*200, 17*1600);
-	linexys(-2*4*200, -2*8*200, 1*1600);
+	linexys(2*4*200, 20*8*200, 17*1600);
+	linexys(-2*4*200, -20*8*200, 17*1600);
     }
 
 #    linexys(400, 400, 10*1600);

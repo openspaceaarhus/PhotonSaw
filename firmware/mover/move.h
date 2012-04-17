@@ -33,7 +33,7 @@ the ID is used to provide a progress indication to the controlling host and to a
 debugging, it's not otherwise significant.
 
 The speed and acceleration values are fixed point, signed values with 30 bits to the
-right of the period or fx2.32.
+right of the period or Q2.30.
 
 To get the actual speed in steps / tick do: speed >> 30
 

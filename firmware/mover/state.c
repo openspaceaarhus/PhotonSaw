@@ -66,7 +66,15 @@ void printState(FILE *file) {
 
   printInt(file, "sys.irq.interval", STEPPER_TIMER_INTERVAL_US, "us");
   printInt(file, "sys.irq.max", stepperIRQMax, "us");
-  printDouble(file, "sys.irq.avg", (stepperIRQAvg >> 8) / 255.0, "us");
+  printHex(file, "sys.irq.max.0", stepperLongTime[0]);
+
+  for (int i=0;i<stepperLongTimeIndex;i++) {
+    int us = (stepperLongTime[i >> 2] >> ((i & 3) << 3)) & 0xff;
+    if (us) {
+      printInt(file, "sys.irq.max.n", us, "us");
+    }
+  }
+  printDouble(file, "sys.irq.avg", (stepperIRQAvg >> 8) / 255.0, "us");  
   printInt(file, "sys.time", systick, "ms");
 
   printAlarmState(file);

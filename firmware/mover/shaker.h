@@ -16,6 +16,12 @@ void shakerInit();
 extern unsigned int stepperIRQMax;
 extern int stepperIRQAvg;
 
+#define STEPPER_LONGTIME_WORDS 4
+
+extern unsigned int stepperLongLimit;
+extern unsigned int stepperLongTime[STEPPER_LONGTIME_WORDS];
+extern unsigned int stepperLongTimeIndex;
+
 int motionActive();
 unsigned int motionDuration();
 unsigned int motionMoveID();
