@@ -39,8 +39,7 @@ void inline axisSetAccel(Axis *a, int accel) {
   a->moveAccel = accel;
 }
 
-void inline axisPrepareMove(Axis *a) {
-  
+void inline axisPrepareMove(Axis *a) {  
   if (a->moveSpeed < 0 || (a->moveSpeed == 0 && a->moveAccel < 0)) {
     a->moveSpeed = -a->moveSpeed;
     a->moveAccel = -a->moveAccel;

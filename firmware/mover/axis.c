@@ -23,3 +23,4 @@ void axisMotorEnable(Axis *a, unsigned int current, unsigned int usm) {
     stpDisable(&a->stepper);
   }
 }
+

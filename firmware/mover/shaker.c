@@ -16,7 +16,6 @@ unsigned int cuMoveCodeOffset;
 
 Axis axes[4];
 
-
 RING_BUFFER(moves, MOVE_BUFFER_ORDER, unsigned int) IN_IRAM1;
 
 inline char bufferIsFull() {
@@ -165,6 +164,8 @@ inline void startNewMove() {
     cuID++;
   }
 
+  // Max time elapsed here: 4-5 us
+
   // Load the speeds needed  
   for (int ax=0;ax<4;ax++) {
     if (MOVE_HAS_ACCEL_OR_SPEED(head, ax)) {
@@ -176,6 +177,8 @@ inline void startNewMove() {
     }
   }
     
+  // Max time elapsed here: 10 us
+
   // See if we should be running the LASER and at what power:
   if (MOVE_HAS_LASER(head)) {
     unsigned int lc = bufferPop();
@@ -278,6 +281,7 @@ void TIMER2_IRQHandler(void) {
 #ifdef IO_STEPPER_ACTIVE
   GPIO_SET(IO_STEPPER_ACTIVE); // Allow easy timing on oscilioscope
 #endif
+
   /*
     Done with the initial setup, let's get down to business.
    */
@@ -289,8 +293,7 @@ void TIMER2_IRQHandler(void) {
 
     TODO: A later revision of the board will rectify this mistake.
   */    
-  joulesPollFlow();
-  
+  joulesPollFlow();  
   if (alarmCount()) {
     cuActive = 0;
     setLaserFire(0); // Make really sure the laser is off if there are any alarms!
@@ -302,6 +305,7 @@ void TIMER2_IRQHandler(void) {
     */
     if (cuActive) {
       continueCurrentMove();
+      // Max time elapsed here: 4 us
     }
 
     /*
@@ -312,6 +316,7 @@ void TIMER2_IRQHandler(void) {
     if (!cuActive) { 
       if (!alarmCount()) {
 	startNewMove();
+	// Max time elapsed at this point: 11 us
       }
     }
   }
@@ -356,7 +361,7 @@ void shakerInit() {
   stepperIRQAvg = 0;
   alarmInit();
 
-  stepperLongLimit = 10;
+  stepperLongLimit = 8;
   stepperResetLongTime();
 
   AXIS_INIT(&axes[AXIS_X], X);
