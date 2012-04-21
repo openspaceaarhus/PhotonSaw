@@ -19,12 +19,12 @@ void respondReady(FILE *output) {
 }
 
 void respondError(char *msg, FILE *output) {
-  fiprintf(output, "Error %s\r\n", msg);
+  fiprintf(output, "result Error %s\r\n", msg);
   respondReady(output);
 }
 
 void respondSyntaxError(char *msg, FILE *output) {
-  fiprintf(output, "Error, unknown command: %s\r\n", msg);
+  fiprintf(output, "result Error, unknown command: %s\r\n", msg);
   if (output != stderr) {
     fiprintf(stderr, "Got invalid command from USB: %s\r\n", msg);
   }
@@ -48,14 +48,14 @@ void cmdHelp(FILE *output) {
 void cmdAlarmClear(char *line, FILE *output) {
   int id;
   if (sscanf(line, "%d", &id) != 1) {
-    fiprintf(output, "Error: Unable to parse alarm id: %s\r\n", line);    
+    fiprintf(output, "result  Error: Unable to parse alarm id: %s\r\n", line);    
     return;
   } 
 
   if (alarmClear(id)) {
-    fiprintf(output, "Error: Alarm id not valid: %d\r\n", id);      
+    fiprintf(output, "result  Error: Alarm id not valid: %d\r\n", id);      
   } else {
-    fiprintf(output, "OK: Alarm %d cleared\r\n", id);      
+    fiprintf(output, "result  OK: Alarm %d cleared\r\n", id);      
   }
 
   printAlarmState(output);
@@ -64,12 +64,12 @@ void cmdAlarmClear(char *line, FILE *output) {
 void cmdAlarmIgnore(char *line, FILE *output) {
   unsigned int flags; 
   if (sscanf(line, "%x", &flags) != 1) {
-    fiprintf(output, "Error: Unable to parse alarm mask as hex: %s\r\n", line);    
+    fiprintf(output, "result  Error: Unable to parse alarm mask as hex: %s\r\n", line);    
     return;
   }
 
   alarmsIgnored = flags;
-  fiprintf(output, "OK: New alarm mask: %x\r\n", alarmsIgnored);
+  fiprintf(output, "result  OK: New alarm mask: %x\r\n", alarmsIgnored);
 
   printAlarmState(output);
 }
@@ -92,19 +92,19 @@ void cmdBufferMoves(char *line, FILE *output) {
   
   unsigned int moves = 0;
   if (parseHex(&line, &moves) < 1) {
-    fprintf(output, "Error: Unable to parse the number of moves int at char %d\r\n", (line-lineStart));
+    fprintf(output, "result  Error: Unable to parse the number of moves int at char %d\r\n", (line-lineStart));
     return;
   }
 
   if (moves > bufferAvailable()) {
-    fprintf(output, "Error: Not enough room in buffer for %d moves (only %d words free)\r\n", moves, bufferAvailable());
+    fprintf(output, "result  Error: Not enough room in buffer for %d moves (only %d words free)\r\n", moves, bufferAvailable());
     return;
   }
 
   while (*line) {
     unsigned int mc;
     if (parseHex(&line, &mc) < 1) {
-      fiprintf(output, "Error: Unable to parse the move code at char %d\r\n", (line-lineStart));
+      fiprintf(output, "result  Error: Unable to parse the move code at char %d\r\n", (line-lineStart));
       bufferRollback();
       return;
     }
@@ -115,7 +115,7 @@ void cmdBufferMoves(char *line, FILE *output) {
     bufferCommit();
   }
   
-  fiprintf(output, "Ok\r\n");
+  fiprintf(output, "result  OK\r\n");
   printBufferState(output);
   return;
 }
@@ -123,22 +123,22 @@ void cmdBufferMoves(char *line, FILE *output) {
 void cmdMotorEnable(char *line, FILE *output) {
   unsigned int axis, current, usm;
   if (sscanf(line, "%d %d %d", &axis, &current, &usm) != 3) {
-    fprintf(output, "Error: Unable to parse motor enable parameters: %s\r\n", line);
+    fprintf(output, "result  Error: Unable to parse motor enable parameters: %s\r\n", line);
     return;
   }
 
   if (axis < 0 || axis > 3) {
-    fprintf(output, "Error: Invalid axis: %d, must be (0..3)\r\n", axis);
+    fprintf(output, "result  Error: Invalid axis: %d, must be (0..3)\r\n", axis);
     return;
   }
 
   if (usm < 0 || usm > 3) {
-    fprintf(output, "Error: Invalid microstepping: %d, must be 0..3\r\n", usm);
+    fprintf(output, "result  Error: Invalid microstepping: %d, must be 0..3\r\n", usm);
     return;
   }
 
   if (current < 0 || current > STEPPER_MAX_CURRENT) {
-    fprintf(output, "Error: Invalid current: %d, must be (0 to %d)\r\n",
+    fprintf(output, "result  Error: Invalid current: %d, must be (0 to %d)\r\n",
 	    current, STEPPER_MAX_CURRENT);
     return;
   }
@@ -160,9 +160,11 @@ void commandRun(char *line, FILE *output) {
     cmdBufferMoves(line+3, output);
     
   } else if (!strcmp(line, "bs")) {
+    fprintf(output, "result  OK\r\n");
     printBufferState(output);
 
   } else if (!strcmp(line, "br")) {
+    fprintf(output, "result  OK\r\n");
     shakerResetBuffer();
     printBufferState(output);
 
@@ -170,9 +172,11 @@ void commandRun(char *line, FILE *output) {
     cmdHelp(output);
 
   } else if (!strcmp(line, "st")) {
+    fprintf(output, "result  OK\r\n");
     printState(output);
 
   } else if (!strcmp(line, "pf")) {
+    fprintf(output, "result  OK\r\n");
     checkAlarmInputs();
     printState(output);
 
