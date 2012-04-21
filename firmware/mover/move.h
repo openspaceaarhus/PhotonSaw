@@ -46,10 +46,10 @@ If LASER intensity is present then the laser will be on and it is a packed word 
 0x1A5E00ii
 
 Where ii is the LASER PWM power value, if the LASER is not supposed to be on, do not
-set ii to zero, simply ommit the LASER intensity word.
+set ii to zero, simply omit the LASER intensity word.
 
 
-If pixel speed is present then it's used to count throug the pixels, just like the
+If pixel speed is present then it's used to count through the pixels, just like the
 other speeds count though steps.
 
 The pixel word count is only there to allow parsing though the moves without doing
