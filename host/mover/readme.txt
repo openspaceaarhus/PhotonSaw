@@ -5,10 +5,11 @@ This is the host-side API for operating the Photon Saw.
 
 The stack looks like this:
 
-* gcode and svn parser, which outputs Paths to the PathBuffer, each path is a series of points.
-* Path optimizer (merge segments that are very short and sort so the shortest paths are run first)
-* Speed planner, operates on the paths and figures out the acceleration ramps and speeds along the path 
-* Move calculator, turns paths into 1..3 moves per segment and place them in the MoveBuffer
+* gcode and svn parser, which outputs LinePaths and EngraveableImages to the JobList.
+* Gui or command line options are used to set up the Job transformation (translation, axis-mapping, rotation, scaling) 
+* Planner which enqueues each Job from the JobList to the LineBuffer.
+* Speed planner, operates on the Lines in the LineBuffer and figures out the acceleration ramps and speeds along the path 
+* Move calculator, turns paths into 1..3 moves per segment and places them in the MoveBuffer
 * Commander (run command and parse output)
 * Rxtx -> USB -> Hardware
 
