@@ -66,8 +66,10 @@ public class Planner {
 		}
 		
 		// And a forward pass as well...
+		Line prev = null;
 		for (Line line : lineBuffer) {
-			line.forwardPass();
+			line.forwardPass(prev);
+			prev = line;
 		}
 		
 		// Recalculates the trapezoid speed profiles for flagged blocks in the plan according to the

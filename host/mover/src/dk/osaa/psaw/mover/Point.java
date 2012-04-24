@@ -9,6 +9,5 @@ import lombok.Data;
  */
 @Data
 public class Point {
-	
-	double axes[] = new double[Move.AXES];	
-}
+	double axes[] = new double[Move.AXES];
+ }

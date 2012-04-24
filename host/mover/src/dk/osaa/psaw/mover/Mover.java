@@ -22,23 +22,14 @@ public class Mover {
 		}
 		
 		try {
-			val r = commander.run("st");
+			val r = commander.run("ai 10c");
 			if (r.get("result").isOk()) {
 				log.info("command worked: "+r);
 			} else {
 				log.info("command gave error: "+r);
 			}
 			
-			int id = 0;
-			while (true) {
-				val m = new ArrayList<Move>();
-				for (int i=0;i<100;i++) {
-					m.add(new Move(id++, 500));
-					m.add(new Move(id++, 5000));
-					m.add(new Move(id++, 100));
-				}
-				commander.bufferMovesAtomic(m);
-			}
+			Planner p = new Planner(commander);
 			
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Failed while running command", e);

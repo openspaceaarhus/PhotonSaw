@@ -3,7 +3,6 @@ package dk.osaa.psaw.mover;
 import java.util.ArrayList;
 
 import lombok.Data;
-import lombok.val;
 
 /**
  * A line in 2d space
@@ -23,9 +22,7 @@ import lombok.val;
  */
 @Data
 public class Line {
-	
-	Line prev;
-	
+		
 	class LineAxis {
 		double endPos; // Where this axis must end up when done
 		int direction; // The direction this axis moves in, basically the sign for the speed.
@@ -43,7 +40,6 @@ public class Line {
 	
 	public Line(MovementConstraints mc, Line prev, Point endPoint, double maxSpeed) {
 		this.mc = mc;
-		this.prev=prev;
 		this.maxSpeed=maxSpeed;
 		
 		// Calculate the unity vector for this line, because it's handy for calculating the maximum speed of each axis during the move.
@@ -144,7 +140,7 @@ public class Line {
 	}
 	
 	// Called by Planner::recalculate() when scanning the plan from first to last entry.
-	public void forwardPass() {
+	public void forwardPass(Line prev) {
 	    if (prev == null) return; // This is the very first line  
 
 	    // If the previous block is an acceleration block, but it is not long enough to complete the
@@ -201,11 +197,12 @@ public class Line {
 	
 	double accelerateDistance;
 	double plateauDistance;
+	double decelerateDistance;
 	void calculateTrapezoid(Line next) {
 		double exitSpeed = next==null ? 0 : next.entrySpeed;
 		
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
-	    double decelerateDistance = estimateAccelerationDistance(maxSpeed, next.entrySpeed, -acceleration);
+	    decelerateDistance = estimateAccelerationDistance(maxSpeed, next.entrySpeed, -acceleration);
 	    plateauDistance = length-accelerateDistance-decelerateDistance;
 
 	    if (plateauDistance < 0) {
@@ -216,9 +213,40 @@ public class Line {
 	    }
 	}
 		
+	static long moveId = 0;	
 	public void toMoves(ArrayList<Move> output) {
-		// TODO: Generate the moves needed.
+		// Acceleration move
+		double topSpeed = entrySpeed;	
+		long aTicks = (long)Math.ceil(Math.sqrt(accelerateDistance/acceleration) * mc.tickHZ);
+		if (aTicks > 0) {
+			Move m = new Move(moveId++, aTicks);
+			for (int i=0;i<Move.AXES;i++) {
+				m.setAxisSpeed(i, entrySpeed   * unityVector[i] / mc.axes[i].mmPerStep);
+				m.setAxisAccel(i, acceleration * unityVector[i] / mc.axes[i].mmPerStep);
+			}
+			output.add(m);
+			topSpeed = entrySpeed+(acceleration*aTicks)/mc.tickHZ;
+		}
 		
+		// Cruise move
+		long cTicks = (long)Math.floor(plateauDistance / topSpeed * mc.tickHZ);
+		if (cTicks > 0) {
+			Move m = new Move(moveId++, cTicks);
+			for (int i=0;i<Move.AXES;i++) {
+				m.setAxisSpeed(i, topSpeed * unityVector[i] / mc.axes[i].mmPerStep);
+			}
+			output.add(m);
+		}		
 		
+		// Braking 
+		long bTicks = (long)Math.ceil(Math.sqrt(decelerateDistance/acceleration) * mc.tickHZ);
+		if (bTicks > 0) {
+			Move m = new Move(moveId++, bTicks);
+			for (int i=0;i<Move.AXES;i++) {
+				m.setAxisSpeed(i,  topSpeed     * unityVector[i] / mc.axes[i].mmPerStep);
+				m.setAxisAccel(i, -acceleration * unityVector[i] / mc.axes[i].mmPerStep);
+			}			
+			output.add(m);
+		}
 	}
 }

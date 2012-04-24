@@ -29,6 +29,25 @@ public class Move {
 	Integer laserIntensity;	
 	Q16 laserAcceleration;
 	Scanline scanline;
+	
+	MoveAxis getAxis(int axis) {
+		if (axes[axis] == null) {
+			axes[axis] = new MoveAxis();			
+		}
+		return axes[axis];
+	}
+	
+	void setAxisSpeed(int axis, double speed) {
+		if (speed != 0) {
+			getAxis(axis).speed = new Q30(speed);
+		}
+	}
+
+	void setAxisAccel(int axis, double accel) {
+		if (accel != 0) {
+			getAxis(axis).accel = new Q30(accel);
+		}
+	}
 
 	/**
 	 * Start creating a move with the only two mandatory parameters 

@@ -32,6 +32,7 @@ public class MovementConstraints {
 		junctionDeviation = 0.1;
 		
 		for (int i=0;i<Move.AXES;i++) {
+			axes[i] = new MovementContstraintAxis();
 			axes[i].acceleration = 100;
 			axes[i].maxSpeed = 1000;
 			axes[i].minSpeed = 100;
