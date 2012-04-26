@@ -22,15 +22,7 @@ public class Mover {
 		}
 		
 		try {
-			val r = commander.run("ai 10c");
-			if (r.get("result").isOk()) {
-				log.info("command worked: "+r);
-			} else {
-				log.info("command gave error: "+r);
-			}
-			
-			Planner p = new Planner(commander);
-			
+			PhotonSaw ps = new PhotonSaw(commander);
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Failed while running command", e);
 			System.exit(2);

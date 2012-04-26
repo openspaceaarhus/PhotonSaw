@@ -21,6 +21,8 @@ public class Planner {
 	
 	Point lastBufferedLocation = new Point();
 	boolean homed[] = new boolean[Move.AXES];
+	Commander commander;
+	private PhotonSaw photonSaw;
 
 	void addLine(Point endPoint, double maxSpeed) {
 		Line line = new Line(mc, 
@@ -31,26 +33,8 @@ public class Planner {
 	}
 	
 	
-	public Planner(Commander commander) throws IOException, ReplyTimeout {
-		// TODO: Implement homing.		
-		homed[0] = true;
-		homed[1] = true;
-	
-		final int N = 100;
-		for (int i=0;i<N*4;i++) {
-			Point p = new Point();
-			p.axes[0] = 100*Math.sin(i*Math.PI*2/N);
-			p.axes[1] = 100*Math.cos(i*Math.PI*2/N);
-			addLine(p, 1000);
-		}
-		
-		recalculate();
-		
-		for (Line line : lineBuffer) {
-			line.toMoves(moveBuffer);			
-		}
-		
-		commander.bufferMoves(moveBuffer);
+	public Planner(PhotonSaw photonSaw) {
+		this.photonSaw = photonSaw;
 	}
 	
 	void recalculate() {
@@ -87,5 +71,40 @@ public class Planner {
 			current = next;
 		}
 		current.calculateTrapezoid(null); // Stop when this is done.
+	}
+
+
+	public void runTest() throws IOException, ReplyTimeout {
+		// TODO: Implement homing.		
+		homed[0] = true;
+		homed[1] = true;
+	
+		Point p1 = new Point();
+		p1.axes[0] = 0;
+		p1.axes[1] = 0;
+
+		Point p2 = new Point();
+		p2.axes[0] = 0;
+		p2.axes[1] = 60;
+		for (int i=0;i<10;i++) {
+			addLine(p1, 1000);
+			addLine(p2, 1000);
+		}
+/*
+		
+		final int N = 20;
+		for (int i=0;i<N;i++) {
+			Point p = new Point();
+			p.axes[0] = 30*Math.sin((i*Math.PI*2)/N);
+			p.axes[1] = 30*Math.cos((i*Math.PI*2)/N);
+			addLine(p, 1000);
+		}
+	*/	
+		recalculate();
+		
+		for (Line line : lineBuffer) {
+			line.toMoves(moveBuffer);
+		}		
+		photonSaw.getCommander().bufferMoves(moveBuffer);		
 	}
 }

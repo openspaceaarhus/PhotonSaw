@@ -35,7 +35,7 @@ public class MovementConstraints {
 			axes[i] = new MovementContstraintAxis();
 			axes[i].acceleration = 100;
 			axes[i].maxSpeed = 1000;
-			axes[i].minSpeed = 100;
+			axes[i].minSpeed = 50;
 			axes[i].microSteppingMode = 3;
 		}
 		

@@ -3,6 +3,8 @@ package dk.osaa.psaw.mover;
 import java.util.ArrayList;
 
 import lombok.Data;
+import lombok.ToString;
+import lombok.extern.java.Log;
 
 /**
  * A line in 2d space
@@ -20,7 +22,9 @@ import lombok.Data;
  * 
  * @author ff
  */
+@ToString
 @Data
+@Log
 public class Line {
 		
 	class LineAxis {
@@ -41,6 +45,24 @@ public class Line {
 	public Line(MovementConstraints mc, Line prev, Point endPoint, double maxSpeed) {
 		this.mc = mc;
 		this.maxSpeed=maxSpeed;
+
+		// Initialise each axis.
+		for (int a=0;a<Move.AXES;a++) {
+			axes[a] = new LineAxis();
+ 			axes[a].endPos = endPoint.getAxes()[a];
+		}
+		
+        if (prev == null) {
+        	entrySpeed = 0;
+        	maxEntrySpeed = 0;
+        	acceleration = 0;
+        	return;
+        }
+		
+		for (int a=0;a<Move.AXES;a++) {
+			axes[a].direction = prev.axes[a].endPos == axes[a].endPos ? 0 :
+			    prev.axes[a].endPos <  axes[a].endPos ? 1 : -1;
+		}
 		
 		// Calculate the unity vector for this line, because it's handy for calculating the maximum speed of each axis during the move.
 		length = 0;		
@@ -52,16 +74,9 @@ public class Line {
 			unityVector[a] = (endPoint.getAxes()[a]-prev.axes[a].endPos)/length;
 		}
 		
-		// Initialize each axis.
-		for (int a=0;a<Move.AXES;a++) {
-			axes[a].endPos = endPoint.getAxes()[a];
-			axes[a].direction = prev.axes[a].endPos == axes[a].endPos ? 0 :
-							    prev.axes[a].endPos <  axes[a].endPos ? 1 : -1;
-		}
-		
 		// Set default max junction speed, to the minimum speed of the slowest of the axes:
 		maxEntrySpeed = 0;
-		for (int a=0;a<Move.AXES;a++) {		
+		for (int a=0;a<Move.AXES;a++) {
 			if (mc.axes[a].minSpeed < Math.abs(maxEntrySpeed * unityVector[a]) || maxEntrySpeed == 0) {
 				maxEntrySpeed = Math.abs(mc.axes[a].minSpeed / unityVector[a]);	
 			}
@@ -73,6 +88,9 @@ public class Line {
 			if (mc.axes[a].acceleration < Math.abs(acceleration * unityVector[a]) || acceleration == 0) {
 				acceleration = Math.abs(mc.axes[a].acceleration / unityVector[a]);	
 			}
+		}
+		if (acceleration == 0) {
+			throw new RuntimeException("Accleration ended up being 0 for line to "+endPoint);
 		}
 		
 		// Compute cosine of angle between previous and current path. (prev_unit_vec is negative)
@@ -108,6 +126,7 @@ public class Line {
 	    // the reverse and forward planners, the corresponding block junction speed will always be at the
 	    // the maximum junction speed and may always be ignored for any speed reduction checks.
 	    nominalLength = maxSpeed <= allowableSpeed;
+	    recalculate = true;
 	}
 	
 	// Calculates the maximum allowable speed at this point when you must be able to reach target_velocity
@@ -200,40 +219,55 @@ public class Line {
 	double decelerateDistance;
 	void calculateTrapezoid(Line next) {
 		double exitSpeed = next==null ? 0 : next.entrySpeed;
+		if (acceleration == 0) { // This is a point, not a line.
+			return;
+		}
 		
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
-	    decelerateDistance = estimateAccelerationDistance(maxSpeed, next.entrySpeed, -acceleration);
+	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
 	    plateauDistance = length-accelerateDistance-decelerateDistance;
+	    log.info("Length:"+length+" a:"+accelerateDistance+" d:"+decelerateDistance+" p:"+plateauDistance);
 
 	    if (plateauDistance < 0) {
 	    	accelerateDistance = intersectionDistance(entrySpeed, exitSpeed, acceleration, length);
 	    	accelerateDistance = Math.max(accelerateDistance, 0); 
 	    	accelerateDistance = Math.min(accelerateDistance, length);
+	    	decelerateDistance = length-accelerateDistance;
 	    	plateauDistance = 0;
+	    }
+	    
+	    if (accelerateDistance == 0 && decelerateDistance == 0 && plateauDistance == 0) {
+	    	throw new RuntimeException("Line has no length");	    	
 	    }
 	}
 		
 	static long moveId = 0;	
 	public void toMoves(ArrayList<Move> output) {
+		if (acceleration == 0) { // This is not a move, but a point
+			return;
+		}
+
+		int mbf = output.size();
+		
 		// Acceleration move
 		double topSpeed = entrySpeed;	
-		long aTicks = (long)Math.ceil(Math.sqrt(accelerateDistance/acceleration) * mc.tickHZ);
+		long aTicks = (long)Math.floor(Math.sqrt(accelerateDistance/acceleration) * mc.tickHZ);
 		if (aTicks > 0) {
 			Move m = new Move(moveId++, aTicks);
 			for (int i=0;i<Move.AXES;i++) {
-				m.setAxisSpeed(i, entrySpeed   * unityVector[i] / mc.axes[i].mmPerStep);
-				m.setAxisAccel(i, acceleration * unityVector[i] / mc.axes[i].mmPerStep);
+				m.setAxisSpeed(i, entrySpeed   * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ);
+				m.setAxisAccel(i, acceleration * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ / mc.tickHZ);
 			}
 			output.add(m);
 			topSpeed = entrySpeed+(acceleration*aTicks)/mc.tickHZ;
 		}
 		
 		// Cruise move
-		long cTicks = (long)Math.floor(plateauDistance / topSpeed * mc.tickHZ);
+		long cTicks = (long)Math.floor((plateauDistance / topSpeed) * mc.tickHZ);
 		if (cTicks > 0) {
 			Move m = new Move(moveId++, cTicks);
 			for (int i=0;i<Move.AXES;i++) {
-				m.setAxisSpeed(i, topSpeed * unityVector[i] / mc.axes[i].mmPerStep);
+				m.setAxisSpeed(i, topSpeed * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ);
 			}
 			output.add(m);
 		}		
@@ -243,10 +277,14 @@ public class Line {
 		if (bTicks > 0) {
 			Move m = new Move(moveId++, bTicks);
 			for (int i=0;i<Move.AXES;i++) {
-				m.setAxisSpeed(i,  topSpeed     * unityVector[i] / mc.axes[i].mmPerStep);
-				m.setAxisAccel(i, -acceleration * unityVector[i] / mc.axes[i].mmPerStep);
+				m.setAxisSpeed(i,  topSpeed     * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ);
+				m.setAxisAccel(i, -acceleration * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ / mc.tickHZ);
 			}			
 			output.add(m);
+		}
+		
+		if (mbf == output.size() && length > 0) {
+			log.warning("No moves emitted for line with length: "+length+" and accel: "+acceleration);
 		}
 	}
 }
