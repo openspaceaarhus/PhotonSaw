@@ -50,6 +50,20 @@ public class Move {
 	}
 
 	/**
+	 * @param a the axis
+	 * @return the number of steps taken in this move
+	 */
+	public long getAxisLength(int axis) {
+		double v = getAxis(axis).speed != null ? getAxis(axis).speed.toDouble() : 0;
+		double a = getAxis(axis).accel != null ? getAxis(axis).accel.toDouble() : 0;
+		double d = duration*v + duration*duration*a;
+		if (d > duration) {
+			throw new RuntimeException("distance traveled in a move can never be more than one step per tick v:"+v+" a:"+a+" d:"+d+" ticks:"+duration);
+		}
+		return (long)Math.floor(d);
+	}
+
+	/**
 	 * Start creating a move with the only two mandatory parameters 
 	 * @param id The ID of the move, to make debugging possible
 	 * @param duration Number of timer ticks this move lasts
@@ -105,11 +119,11 @@ public class Move {
 				continue;
 			}
 			if (axes[i].speed != null && axes[i].speed.getValue() != 0) {
-				encoded.add(axes[i].speed.getValue()); 
+				encoded.add((long)axes[i].speed.getValue()); 
 				header |= axisSpeedFlag(i);
 			}
 			if (axes[i].accel != null && axes[i].accel.getValue() != 0) {
-				encoded.add(axes[i].accel.getValue()); 
+				encoded.add((long)axes[i].accel.getValue()); 
 				header |= axisAccelFlag(i);
 			}
 		}
@@ -127,7 +141,7 @@ public class Move {
 		}
 		
 		if (scanline != null) {
-			encoded.add(scanline.getPixelSpeed().getValue()); // 11: Pixel speed
+			encoded.add((long)scanline.getPixelSpeed().getValue()); // 11: Pixel speed
 			encoded.add((long)scanline.getPixelWords().length); // 11: Pixel word count
 			for (long pw : scanline.getPixelWords()) {
 				encoded.add(pw);
@@ -138,5 +152,6 @@ public class Move {
 		encoded.set(headerIndex, header);
 		
 		return encoded;
-	}		
+	}
+
 }

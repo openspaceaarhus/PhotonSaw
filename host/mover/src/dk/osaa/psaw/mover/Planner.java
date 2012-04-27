@@ -82,24 +82,24 @@ public class Planner {
 		Point p1 = new Point();
 		p1.axes[0] = 0;
 		p1.axes[1] = 0;
+		addLine(p1, 1000);
 
-		Point p2 = new Point();
-		p2.axes[0] = 0;
-		p2.axes[1] = 60;
-		for (int i=0;i<10;i++) {
-			addLine(p1, 1000);
+		for (int i=0;i<60;i++) {
+			Point p2 = new Point();
+			p2.axes[0] = 2*i;
+			p2.axes[1] = 5*i;
 			addLine(p2, 1000);
 		}
-/*
-		
-		final int N = 20;
-		for (int i=0;i<N;i++) {
+		addLine(p1, 1000);
+/*		
+		final int N = 10;
+		for (int i=0;i<N+1;i++) {
 			Point p = new Point();
 			p.axes[0] = 30*Math.sin((i*Math.PI*2)/N);
 			p.axes[1] = 30*Math.cos((i*Math.PI*2)/N);
 			addLine(p, 1000);
 		}
-	*/	
+	*/
 		recalculate();
 		
 		for (Line line : lineBuffer) {

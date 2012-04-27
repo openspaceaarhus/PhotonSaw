@@ -28,6 +28,7 @@ import lombok.extern.java.Log;
 public class Line {
 		
 	class LineAxis {
+		double startPos;
 		double endPos; // Where this axis must end up when done
 		int direction; // The direction this axis moves in, basically the sign for the speed.
 	};
@@ -37,7 +38,8 @@ public class Line {
 	double entrySpeed;
 	double acceleration;
 	double length;
-	double unityVector[] = new double[Move.AXES];
+	MoveVector unitVector = new MoveVector();
+	MoveVector moveVector = new MoveVector();
 	double maxEntrySpeed;  // The highest speed we can allow when starting this line
 	boolean nominalLength; // This line is long enough to allow full acceleration from 0 to nominalSpeed. 
 	boolean recalculate;
@@ -46,10 +48,18 @@ public class Line {
 		this.mc = mc;
 		this.maxSpeed=maxSpeed;
 
-		// Initialise each axis.
+		// Initialize each axis.
 		for (int a=0;a<Move.AXES;a++) {
 			axes[a] = new LineAxis();
- 			axes[a].endPos = endPoint.getAxes()[a];
+			
+			// Round off to whole steps
+			long stepPos = (long)Math.round(endPoint.getAxes()[a]/mc.getAxes()[a].mmPerStep);
+ 			axes[a].endPos = stepPos*mc.getAxes()[a].mmPerStep;
+
+ 			if (prev != null) {
+ 				long prevPos = (long)Math.round(prev.axes[a].endPos/mc.getAxes()[a].mmPerStep);
+ 				axes[a].startPos = prevPos*mc.getAxes()[a].mmPerStep;
+ 			}
 		}
 		
         if (prev == null) {
@@ -65,28 +75,26 @@ public class Line {
 		}
 		
 		// Calculate the unity vector for this line, because it's handy for calculating the maximum speed of each axis during the move.
-		length = 0;		
 		for (int a=0;a<Move.AXES;a++) {
-			length += Math.pow(endPoint.getAxes()[a]-prev.axes[a].endPos, 2);
+			moveVector.setAxis(a, endPoint.getAxes()[a]-prev.axes[a].endPos);
 		}
-		length = Math.sqrt(length);		
-		for (int a=0;a<Move.AXES;a++) {
-			unityVector[a] = (endPoint.getAxes()[a]-prev.axes[a].endPos)/length;
-		}
+
+		length = moveVector.length();
+		unitVector = moveVector.unit();
 		
 		// Set default max junction speed, to the minimum speed of the slowest of the axes:
 		maxEntrySpeed = 0;
 		for (int a=0;a<Move.AXES;a++) {
-			if (mc.axes[a].minSpeed < Math.abs(maxEntrySpeed * unityVector[a]) || maxEntrySpeed == 0) {
-				maxEntrySpeed = Math.abs(mc.axes[a].minSpeed / unityVector[a]);	
+			if (mc.axes[a].minSpeed < Math.abs(maxEntrySpeed * unitVector.getAxis(a)) || maxEntrySpeed == 0) {
+				maxEntrySpeed = Math.abs(mc.axes[a].minSpeed / unitVector.getAxis(a));	
 			}
 		}
 		
 		// Find the largest acceleration we can use for this line, by letting the most active*slowest axis set the limit 
 		acceleration = 0;
 		for (int a=0;a<Move.AXES;a++) {		
-			if (mc.axes[a].acceleration < Math.abs(acceleration * unityVector[a]) || acceleration == 0) {
-				acceleration = Math.abs(mc.axes[a].acceleration / unityVector[a]);	
+			if (mc.axes[a].acceleration < Math.abs(acceleration * unitVector.getAxis(a)) || acceleration == 0) {
+				acceleration = Math.abs(mc.axes[a].acceleration / unitVector.getAxis(a));	
 			}
 		}
 		if (acceleration == 0) {
@@ -97,7 +105,7 @@ public class Line {
 		// NOTE: Max junction velocity is computed without sin() or acos() by trig half angle identity.
 		double cosTheta = 0;
 		for (int a=0;a<Move.AXES;a++) {
-			cosTheta -= prev.unityVector[a]*unityVector[a];
+			cosTheta -= prev.unitVector.getAxis(a)*unitVector.getAxis(a);
 		}
 		                       
 		// Skip and use default max junction speed for 0 degree acute junction.
@@ -213,12 +221,14 @@ public class Line {
 	//	                              |             + <- nominal_rate*exit_factor
 	//	                              +-------------+
 	//	                                  time -->
-	
+
+
 	double accelerateDistance;
 	double plateauDistance;
 	double decelerateDistance;
+	double exitSpeed;
 	void calculateTrapezoid(Line next) {
-		double exitSpeed = next==null ? 0 : next.entrySpeed;
+		exitSpeed = next==null ? 0 : next.entrySpeed;
 		if (acceleration == 0) { // This is a point, not a line.
 			return;
 		}
@@ -240,48 +250,73 @@ public class Line {
 	    	throw new RuntimeException("Line has no length");	    	
 	    }
 	}
-		
+
 	static long moveId = 0;	
+	long stepsMoved[] = new long[Move.AXES];
+	Move endcodeMove(MoveVector mv, double startSpeed, double endSpeed) {
+		startSpeed /= mc.tickHZ;
+		endSpeed /= mc.tickHZ;
+		
+		double dist = mv.length();
+		MoveVector mu = mv.unit();
+
+		long ticks;
+		double accel;
+		if (endSpeed != startSpeed) {
+			// distance = (1/2)*acceleration*time^2
+			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
+			// t = 2*d/(s1+s0)    and a = (s1^2-s0^2)/(2*d) 
+			accel = ((Math.pow(endSpeed,2)-Math.pow(startSpeed,2))/(2*dist));
+			ticks = (long)Math.round(2*dist/(endSpeed+startSpeed));
+		} else {
+			ticks = (long)Math.round(dist / startSpeed);
+			accel = 0;
+		}
+		
+		Move move = new Move(moveId++, ticks);
+		for (int a=0; a < Move.AXES; a++) {
+			move.setAxisSpeed(a, mu.getAxis(a)*startSpeed/mc.getAxes()[a].mmPerStep);	
+			move.setAxisAccel(a, mu.getAxis(a)*accel/mc.getAxes()[a].mmPerStep);
+			
+			stepsMoved[a] += move.getAxisLength(a);
+		}	
+		
+		return move;
+	}
+	
 	public void toMoves(ArrayList<Move> output) {
 		if (acceleration == 0) { // This is not a move, but a point
 			return;
 		}
 
 		int mbf = output.size();
-		
-		// Acceleration move
-		double topSpeed = entrySpeed;	
-		long aTicks = (long)Math.floor(Math.sqrt(accelerateDistance/acceleration) * mc.tickHZ);
-		if (aTicks > 0) {
-			Move m = new Move(moveId++, aTicks);
-			for (int i=0;i<Move.AXES;i++) {
-				m.setAxisSpeed(i, entrySpeed   * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ);
-				m.setAxisAccel(i, acceleration * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ / mc.tickHZ);
-			}
-			output.add(m);
-			topSpeed = entrySpeed+(acceleration*aTicks)/mc.tickHZ;
+		for (int i=0;i<Move.AXES;i++) {
+			stepsMoved[i] = 0;
+		}
+		double topSpeed = entrySpeed;		
+		if (accelerateDistance > 0) {
+			topSpeed = entrySpeed+acceleration*Math.sqrt(accelerateDistance/acceleration);
+			output.add(endcodeMove(unitVector.mul(accelerateDistance), entrySpeed, topSpeed));			
 		}
 		
-		// Cruise move
-		long cTicks = (long)Math.floor((plateauDistance / topSpeed) * mc.tickHZ);
-		if (cTicks > 0) {
-			Move m = new Move(moveId++, cTicks);
-			for (int i=0;i<Move.AXES;i++) {
-				m.setAxisSpeed(i, topSpeed * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ);
+		Move pMove;
+		if (plateauDistance > 0) {
+			pMove = endcodeMove(unitVector.mul(plateauDistance), topSpeed, topSpeed);
+			output.add(pMove);
+		}
+		
+		if (decelerateDistance > 0) {
+			output.add(endcodeMove(unitVector.mul(decelerateDistance), topSpeed, exitSpeed));			
+		}
+		
+		for (int i=0;i<Move.AXES;i++) {
+			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/mc.axes[i].mmPerStep); 
+			long diffSteps = stepsMoved[i] - stepsWanted;
+			
+			if (diffSteps > 0) {
+				log.severe("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]);
 			}
-			output.add(m);
 		}		
-		
-		// Braking 
-		long bTicks = (long)Math.ceil(Math.sqrt(decelerateDistance/acceleration) * mc.tickHZ);
-		if (bTicks > 0) {
-			Move m = new Move(moveId++, bTicks);
-			for (int i=0;i<Move.AXES;i++) {
-				m.setAxisSpeed(i,  topSpeed     * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ);
-				m.setAxisAccel(i, -acceleration * unityVector[i] / mc.axes[i].mmPerStep / mc.tickHZ / mc.tickHZ);
-			}			
-			output.add(m);
-		}
 		
 		if (mbf == output.size() && length > 0) {
 			log.warning("No moves emitted for line with length: "+length+" and accel: "+acceleration);

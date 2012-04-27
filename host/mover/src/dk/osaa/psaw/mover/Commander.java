@@ -60,6 +60,7 @@ public class Commander {
 			throw new RuntimeException("The command line is too long: "+cmd);			
 		}
 		
+		log.info("Running: "+cmd);
 		serialPort.getOutputStream().write(cmd.getBytes());
 		serialPort.getOutputStream().flush();
 		

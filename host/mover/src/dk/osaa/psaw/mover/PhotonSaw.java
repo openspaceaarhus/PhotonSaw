@@ -39,6 +39,7 @@ public class PhotonSaw {
 		
 	private void configureMotors() {
 		runOrDie("ai 10c"); // TODO: Ignore alarms while testing
+		runOrDie("ai 10c"); // TODO: Ignore alarms while testing
 
 		for (int i=0;i<Move.AXES;i++) {
 			runOrDie("me "+i+" "+mc.axes[i].coilCurrent+" "+mc.axes[i].microSteppingMode);
