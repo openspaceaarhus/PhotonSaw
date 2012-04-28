@@ -9,16 +9,10 @@ import lombok.extern.java.Log;
 /**
  * A line in 2d space
  * 
- * Notice that we keep track of the x and y speed and acceleration independently, because x and y are orthogonal and
- * the acceleration of one has no bearing on the other, this leads to 1.4 times higher acceleration when both axes
- * are doing full acceleration, compared to a global acceleration limit.
- * 
- * As the weight of the axes are different they are bound to have different physical capabilities.
- * 
- * Units used at this point: mm, mm/s and mm/s/s translation to steps, steps/tick and steps/tick/tick
+ * Units used  this point: mm, mm/s and mm/s/s translation to steps, steps/tick and steps/tick/tick
  * happens later when Moves are generated.
  * 
- * The algorithms are inspired by Smoothie and GRBL, but significantly rewritten/molested to do 4D.
+ * The algorithms are inspired by Smoothie and GRBL, but somewhat rewritten/molested to do 4D.
  * 
  * @author ff
  */
@@ -278,9 +272,25 @@ public class Line {
 			move.setAxisSpeed(a, mu.getAxis(a)*startSpeed/mc.getAxes()[a].mmPerStep);	
 			move.setAxisAccel(a, mu.getAxis(a)*accel/mc.getAxes()[a].mmPerStep);
 			
-			stepsMoved[a] += move.getAxisLength(a);
+			// Check that we got exactly the movement in steps that we wanted,
+			// if not adjust the speed until the error is gone.
+			long steps = move.getAxisLength(a);
+
+			long stepsWanted = (long)Math.round(mv.getAxis(a)/mc.axes[a].mmPerStep); 
+			long diffSteps = steps - stepsWanted;
+			if (diffSteps != 0) {
+				move.nudgeSpeed(a, -diffSteps);
+				steps = move.getAxisLength(a);
+				diffSteps = steps - stepsWanted;
+			}
+
+			if (diffSteps != 0) {
+				log.severe("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);				
+			}
+			stepsMoved[a] += steps;
 		}	
 		
+
 		return move;
 	}
 	
@@ -299,10 +309,8 @@ public class Line {
 			output.add(endcodeMove(unitVector.mul(accelerateDistance), entrySpeed, topSpeed));			
 		}
 		
-		Move pMove;
 		if (plateauDistance > 0) {
-			pMove = endcodeMove(unitVector.mul(plateauDistance), topSpeed, topSpeed);
-			output.add(pMove);
+			output.add(endcodeMove(unitVector.mul(plateauDistance), topSpeed, topSpeed));
 		}
 		
 		if (decelerateDistance > 0) {
@@ -313,8 +321,11 @@ public class Line {
 			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/mc.axes[i].mmPerStep); 
 			long diffSteps = stepsMoved[i] - stepsWanted;
 			
-			if (diffSteps > 0) {
+			if (diffSteps != 0) {
 				log.severe("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]);
+				output.get(output.size()-1).nudgeSpeed(i, -diffSteps);
+			} else {
+				//log.severe("Step difference on axis "+i+": none, got:"+stepsMoved[i]);				
 			}
 		}		
 		

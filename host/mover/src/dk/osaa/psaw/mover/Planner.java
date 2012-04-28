@@ -84,14 +84,20 @@ public class Planner {
 		p1.axes[1] = 0;
 		addLine(p1, 1000);
 
-		for (int i=0;i<60;i++) {
+		Point p2 = new Point();
+		p2.axes[0] = 60;
+		p2.axes[1] = 60;
+		addLine(p2, 1000);
+		/*
+		for (int i=0;i<60/4;i++) {
 			Point p2 = new Point();
 			p2.axes[0] = 2*i;
-			p2.axes[1] = 5*i;
+			p2.axes[1] = 4*i;
 			addLine(p2, 1000);
 		}
+		*/
 		addLine(p1, 1000);
-/*		
+/*
 		final int N = 10;
 		for (int i=0;i<N+1;i++) {
 			Point p = new Point();
@@ -103,8 +109,9 @@ public class Planner {
 		recalculate();
 		
 		for (Line line : lineBuffer) {
-			line.toMoves(moveBuffer);
+			line.toMoves(moveBuffer);	
 		}		
+		
 		photonSaw.getCommander().bufferMoves(moveBuffer);		
 	}
 }

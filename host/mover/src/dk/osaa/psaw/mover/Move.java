@@ -56,7 +56,7 @@ public class Move {
 	public long getAxisLength(int axis) {
 		double v = getAxis(axis).speed != null ? getAxis(axis).speed.toDouble() : 0;
 		double a = getAxis(axis).accel != null ? getAxis(axis).accel.toDouble() : 0;
-		double d = duration*v + duration*duration*a;
+		double d = duration*v + duration*duration*(a/2);
 		if (d > duration) {
 			throw new RuntimeException("distance traveled in a move can never be more than one step per tick v:"+v+" a:"+a+" d:"+d+" ticks:"+duration);
 		}
@@ -118,11 +118,11 @@ public class Move {
 			if (axes[i] == null) {
 				continue;
 			}
-			if (axes[i].speed != null && axes[i].speed.getValue() != 0) {
+			if (axes[i].speed != null && Math.abs(axes[i].speed.getValue()*duration) >= Q30.ONE) {
 				encoded.add((long)axes[i].speed.getValue()); 
 				header |= axisSpeedFlag(i);
 			}
-			if (axes[i].accel != null && axes[i].accel.getValue() != 0) {
+			if (axes[i].accel != null && Math.abs(axes[i].accel.getValue()*duration) >= Q30.ONE) {
 				encoded.add((long)axes[i].accel.getValue()); 
 				header |= axisAccelFlag(i);
 			}
@@ -154,4 +154,11 @@ public class Move {
 		return encoded;
 	}
 
+	public void nudgeSpeed(int a, long diffSteps) {
+		if (getAxis(a).speed == null) {
+			setAxisSpeed(a, ((double)diffSteps)/duration);
+		} else {
+			getAxis(a).speed.addDouble(((double)diffSteps)/duration);
+		}
+	}
 }
