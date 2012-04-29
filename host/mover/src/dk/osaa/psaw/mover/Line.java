@@ -267,30 +267,40 @@ public class Line {
 	long stepsMoved[] = new long[Move.AXES];
 	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {
 		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
-		val unitVector = stepVector.unit();
-		MoveVector startSpeedVector = unitVector.div(mc.mmPerStep()).mul(startSpeedMMS/mc.tickHZ); // convert from scalar mm/s to vector step/tick
+		val unitVector = mmMoveVector.unit();
+		MoveVector startSpeedVector = unitVector.mul(startSpeedMMS/mc.tickHZ).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
+
+		// Find the longest axis, so we can use it for calculating the duration of the move, this way we get better accuracy.
+		int longAxis = 0;
+		double longAxisLength = -1;
+		for (int i=0;i<Move.AXES;i++) {
+			if (Math.abs(stepVector.getAxis(i)) > longAxisLength) {
+				longAxisLength = Math.abs(stepVector.getAxis(i));
+				longAxis = i;
+			}
+		}
 				
 		MoveVector accel = null;
 		long ticks;
 		if (startSpeedMMS == endSpeedMMS) {			
-			ticks = (long)Math.ceil(stepVector.length() / startSpeedVector.length());
-			startSpeedVector = startSpeedVector.mul(ticks).round().mul(1.0/ticks);
+			ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
 			
 		} else {
-			MoveVector endSpeedVector   = unitVector.div(mc.mmPerStep()).mul(endSpeedMMS/mc.tickHZ);
+			MoveVector endSpeedVector   = unitVector.mul(endSpeedMMS/mc.tickHZ).div(mc.mmPerStep());
 			
 			// distance = (1/2)*acceleration*time^2
 			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
 			// t = 2*d/(s1+s0)    and a = (s1^2-s0^2)/(2*d)
-			ticks = (long)Math.ceil(2*stepVector.length()/(endSpeedVector.length()+startSpeedVector.length()));
-			startSpeedVector = startSpeedVector.mul(ticks).round().mul(1.0/ticks);
-			endSpeedVector = endSpeedVector.mul(ticks).round().mul(1.0/ticks);
-			ticks = (long)Math.round(2*stepVector.length()/(endSpeedVector.length()+startSpeedVector.length()));
+			ticks = (long)Math.ceil(2*stepVector.getAxis(longAxis)/(endSpeedVector.getAxis(longAxis)+startSpeedVector.getAxis(longAxis)));
 
 			accel = new MoveVector();
 			for (int axis=0;axis<Move.AXES;axis++) {
 				//accel.setAxis(axis, (endSpeedVector.getAxis(axis)-startSpeedVector.getAxis(axis)) / ticks);
-				accel.setAxis(axis, ((Math.pow(endSpeedVector.getAxis(axis),2)-Math.pow(startSpeedVector.getAxis(axis),2))/(2*stepVector.getAxis(axis))));
+				if (stepVector.getAxis(axis) != 0) {
+					accel.setAxis(axis, ((Math.pow(endSpeedVector.getAxis(axis),2)-Math.pow(startSpeedVector.getAxis(axis),2))/(2*stepVector.getAxis(axis))));
+				} else {
+					accel.setAxis(axis, 0);
+				}
 			}
 		}
 	
@@ -308,14 +318,18 @@ public class Line {
 			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
-				log.info("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
+				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
 				move.nudgeSpeed(a, -diffSteps);
-				if (TRUST_NUDGE_SPEED) {
-					steps = stepsWanted;
-				} else {
+					
+				// TODO: This is a ghastly hack, I know it, but damn it, it works and I don't know what else to do.
+				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
+				// rather than have to rely on nudging the speed parameter up and down after the inaccuacy has been detected.
+				while (diffSteps != 0) {
 					steps = move.getAxisLength(a);
-					if (steps != stepsWanted) {
-						throw new RuntimeException("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);
+					diffSteps = steps - stepsWanted;
+					if (diffSteps != 0) {
+						move.nudgeSpeed(a, -diffSteps/2.0);
+						log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
 					}
 				}
 			}

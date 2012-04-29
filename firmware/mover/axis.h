@@ -59,10 +59,10 @@ void inline axisStartMove(Axis *a, int speed, int accel) { // Notice: update Mov
 }
 
 void inline axisTick(Axis *a) { // Notice: update Move.java: getAxisLength if this is changed
+  a->moveError += a->moveSpeed;
   if (a->moveAccel) {
     a->moveSpeed += a->moveAccel;
   } 
-  a->moveError += a->moveSpeed;
 
   if (a->moveError >= ONE_STEP) {
     GPIO_SET(a->stepper.stepPin);

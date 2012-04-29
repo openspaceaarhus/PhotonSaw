@@ -145,8 +145,9 @@ public class Move {
 		int d = 0; // steps traveled
 		int e = 0; // Error
 		while (true) {
-			v += a; // See axis.h: axisTick
 			e += v; 
+			v += a; // See axis.h: axisTick
+			
 			if (e >= Q30.ONE) {
 				d += dir;
 				e -= Q30.ONE;
@@ -261,12 +262,14 @@ public class Move {
 	}
 
 	static long nudgeSpeedCalls = 0;
-	public void nudgeSpeed(int axis, long diffSteps) {
+	public void nudgeSpeed(int axis, double diffSteps) {
 		nudgeSpeedCalls++;
 		if (getAxis(axis).speed == null) {
 			setAxisSpeed(axis, ((double)diffSteps)/duration);
 		} else {
-			getAxis(axis).speed.addDouble(((double)diffSteps)/duration);
+//			long steps = (getAxis(axis).speed.getLong()*duration) / Q30.ONE;
+//			getAxis(axis).speed.setLong(((steps+diffSteps)*Q30.ONE) / duration);
+			getAxis(axis).speed.addDouble(diffSteps/duration);
 		}
 	}
 }

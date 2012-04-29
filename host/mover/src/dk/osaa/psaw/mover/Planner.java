@@ -25,6 +25,7 @@ public class Planner {
 	private PhotonSaw photonSaw;
 
 	void addLine(Point endPoint, double maxSpeed) {
+		endPoint.axes[2] = endPoint.axes[1]/200 + endPoint.axes[2]/200;  
 		double l = lastBufferedLocation != null ? Math.sqrt(Math.pow(endPoint.axes[0]-lastBufferedLocation.axes[0], 2) + Math.pow(endPoint.axes[1]-lastBufferedLocation.axes[1], 2)) : 1000;
 		if (l > 0.025) { // Discard all lines that are too small to actually cause a move.	
 			Line line = new Line(mc, 
@@ -112,6 +113,7 @@ public class Planner {
 		for (Line line : lineBuffer) {
 			line.toMoves(moveBuffer);	
 		}
+		Move.dumpProfile();
 			
 		//for (int i=0;i<10;i++) {
 			photonSaw.getCommander().bufferMoves(moveBuffer);

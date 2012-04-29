@@ -36,5 +36,14 @@ public class Q30 {
 
 	public void addDouble(double d) {
 		setDouble(toDouble()+d);
+	}
+
+	public long getLong() {
+		return intValue;
+	}	
+
+	public void setLong(long l) {
+		intValue = (int)l;
+		value = 0xffffffffL & l;		
 	}	
 }
