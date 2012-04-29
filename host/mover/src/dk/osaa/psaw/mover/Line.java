@@ -1,9 +1,10 @@
 package dk.osaa.psaw.mover;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import lombok.Data;
-import lombok.ToString;
+import lombok.val;
 import lombok.extern.java.Log;
 
 /**
@@ -16,11 +17,19 @@ import lombok.extern.java.Log;
  * 
  * @author ff
  */
-@ToString
 @Data
 @Log
 public class Line {
-		
+	
+	/**
+	 * Enable to avoid recalculating Move step length after using nudgeSpeed to correct it.
+	 * 
+	 * Current numbers suggest that about 30% of the axis moves need a call to nudgeSpeed,
+	 * so the cost of setting this to false is 30% more calls to getAxisLength, each of which
+	 * takes about 800 ns on average.
+	 */
+	private static final boolean TRUST_NUDGE_SPEED = false;
+
 	class LineAxis {
 		double startPos;
 		double endPos; // Where this axis must end up when done
@@ -28,7 +37,8 @@ public class Line {
 	};
 	LineAxis axes[] = new LineAxis[Move.AXES];
 	MovementConstraints mc;
-	double maxSpeed;	
+	double maxSpeed;
+	double minSpeed;
 	double entrySpeed;
 	double acceleration;
 	double length;
@@ -41,18 +51,18 @@ public class Line {
 	public Line(MovementConstraints mc, Line prev, Point endPoint, double maxSpeed) {
 		this.mc = mc;
 		this.maxSpeed=maxSpeed;
+		
+		endPoint.roundToWholeSteps(mc);
 
 		// Initialize each axis.
 		for (int a=0;a<Move.AXES;a++) {
 			axes[a] = new LineAxis();
 			
 			// Round off to whole steps
-			long stepPos = (long)Math.round(endPoint.getAxes()[a]/mc.getAxes()[a].mmPerStep);
- 			axes[a].endPos = stepPos*mc.getAxes()[a].mmPerStep;
+ 			axes[a].endPos = endPoint.getAxes()[a];
 
  			if (prev != null) {
- 				long prevPos = (long)Math.round(prev.axes[a].endPos/mc.getAxes()[a].mmPerStep);
- 				axes[a].startPos = prevPos*mc.getAxes()[a].mmPerStep;
+ 				axes[a].startPos = prev.axes[a].endPos;
  			}
 		}
 		
@@ -77,12 +87,13 @@ public class Line {
 		unitVector = moveVector.unit();
 		
 		// Set default max junction speed, to the minimum speed of the slowest of the axes:
-		maxEntrySpeed = 0;
+		minSpeed = 0;
 		for (int a=0;a<Move.AXES;a++) {
-			if (mc.axes[a].minSpeed < Math.abs(maxEntrySpeed * unitVector.getAxis(a)) || maxEntrySpeed == 0) {
-				maxEntrySpeed = Math.abs(mc.axes[a].minSpeed / unitVector.getAxis(a));	
+			if (mc.axes[a].minSpeed < Math.abs(minSpeed * unitVector.getAxis(a)) || minSpeed == 0) {
+				minSpeed = Math.abs(mc.axes[a].minSpeed / unitVector.getAxis(a));	
 			}
 		}
+		maxEntrySpeed = minSpeed;
 		
 		// Find the largest acceleration we can use for this line, by letting the most active*slowest axis set the limit 
 		acceleration = 0;
@@ -114,6 +125,7 @@ public class Line {
 						Math.sqrt(acceleration * mc.junctionDeviation * sin_theta_d2/(1.0-sin_theta_d2))); 
 		    }
 		}
+		maxEntrySpeed = Math.max(minSpeed, maxEntrySpeed); 
 				   
 	    // Initialize Line entry speed. Compute based on deceleration to user-defined MINIMUM_PLANNER_SPEED.
 	    double allowableSpeed = maxAllowableSpeed(-acceleration,0.0,length); 
@@ -222,15 +234,18 @@ public class Line {
 	double decelerateDistance;
 	double exitSpeed;
 	void calculateTrapezoid(Line next) {
-		exitSpeed = next==null ? 0 : next.entrySpeed;
+		exitSpeed = Math.max(minSpeed, next==null ? 0 : next.entrySpeed);
 		if (acceleration == 0) { // This is a point, not a line.
 			return;
 		}
+		entrySpeed = Math.max(minSpeed, entrySpeed);
 		
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
 	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
 	    plateauDistance = length-accelerateDistance-decelerateDistance;
-	    log.info("Length:"+length+" a:"+accelerateDistance+" d:"+decelerateDistance+" p:"+plateauDistance);
+	    if (log.isLoggable(Level.FINE)) {
+	    	log.fine("Length:"+length+" a:"+accelerateDistance+" d:"+decelerateDistance+" p:"+plateauDistance);
+	    }
 
 	    if (plateauDistance < 0) {
 	    	accelerateDistance = intersectionDistance(entrySpeed, exitSpeed, acceleration, length);
@@ -248,22 +263,22 @@ public class Line {
 	static long moveId = 0;	
 	long stepsMoved[] = new long[Move.AXES];
 	Move endcodeMove(MoveVector mv, double startSpeed, double endSpeed) {
-		startSpeed /= mc.tickHZ;
-		endSpeed /= mc.tickHZ;
+		startSpeed /= mc.tickHZ; // step / tick
+		endSpeed /= mc.tickHZ;   // step / tick
 		
-		double dist = mv.length();
-		MoveVector mu = mv.unit();
+		double dist = mv.length(); // mm
+		MoveVector mu = mv.unit(); // 1
 
 		long ticks;
-		double accel;
+		double accel; // steps / tick / tick
 		if (endSpeed != startSpeed) {
 			// distance = (1/2)*acceleration*time^2
 			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
 			// t = 2*d/(s1+s0)    and a = (s1^2-s0^2)/(2*d) 
 			accel = ((Math.pow(endSpeed,2)-Math.pow(startSpeed,2))/(2*dist));
-			ticks = (long)Math.round(2*dist/(endSpeed+startSpeed));
+			ticks = (long)Math.ceil(2*dist/(endSpeed+startSpeed));
 		} else {
-			ticks = (long)Math.round(dist / startSpeed);
+			ticks = (long)Math.ceil(dist / startSpeed);
 			accel = 0;
 		}
 		
@@ -279,14 +294,18 @@ public class Line {
 			long stepsWanted = (long)Math.round(mv.getAxis(a)/mc.axes[a].mmPerStep); 
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
+				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
 				move.nudgeSpeed(a, -diffSteps);
-				steps = move.getAxisLength(a);
-				diffSteps = steps - stepsWanted;
+				if (TRUST_NUDGE_SPEED) {
+					steps = stepsWanted;
+				} else {
+					steps = move.getAxisLength(a);
+					if (steps != stepsWanted) {
+						throw new RuntimeException("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);
+					}
+				}
 			}
 
-			if (diffSteps != 0) {
-				log.severe("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);				
-			}
 			stepsMoved[a] += steps;
 		}	
 		
@@ -317,20 +336,34 @@ public class Line {
 			output.add(endcodeMove(unitVector.mul(decelerateDistance), topSpeed, exitSpeed));			
 		}
 		
+		if (length > 0) {
+			if (mbf == output.size()) {
+				log.warning("No moves emitted for line with length: "+length+" and accel: "+acceleration);
+			} else {
+				if (log.isLoggable(Level.FINE)) {
+					val sb = new StringBuilder();
+					sb.append("Converted line: "+this);
+					sb.append(" to "+(output.size()-mbf)+" moves:");
+					for (int i=mbf;i<output.size();i++) {
+						sb.append("\n     "+output.get(i));
+					}				
+					log.fine(sb.toString());
+				}
+			}
+		}
+
 		for (int i=0;i<Move.AXES;i++) {
 			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/mc.axes[i].mmPerStep); 
 			long diffSteps = stepsMoved[i] - stepsWanted;
 			
 			if (diffSteps != 0) {
-				log.severe("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]);
-				output.get(output.size()-1).nudgeSpeed(i, -diffSteps);
-			} else {
-				//log.severe("Step difference on axis "+i+": none, got:"+stepsMoved[i]);				
+				log.fine("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]);				
+				output.get(output.size()-1).nudgeSpeed(i, -diffSteps); // Modify speed of the last move, whatever it is
 			}
-		}		
-		
-		if (mbf == output.size() && length > 0) {
-			log.warning("No moves emitted for line with length: "+length+" and accel: "+acceleration);
-		}
+		}				
+	}
+	
+	public String toString() {
+		return "Line(a:"+acceleration+", ad:"+accelerateDistance+", pd:"+plateauDistance+", dd:"+decelerateDistance+", "+moveVector.toString()+")";
 	}
 }

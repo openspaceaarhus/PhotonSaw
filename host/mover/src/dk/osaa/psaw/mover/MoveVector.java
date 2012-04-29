@@ -1,5 +1,8 @@
 package dk.osaa.psaw.mover;
 
+import lombok.ToString;
+import lombok.val;
+
 public class MoveVector {
 	double axes[] = new double[Move.AXES];
 
@@ -29,5 +32,19 @@ public class MoveVector {
 	
 	public MoveVector unit() {
 		return mul(1/length());
+	}
+	
+	public String toString() {
+		val sb = new StringBuilder();
+		sb.append("MoveVector(");
+		String sep = "";
+		for (int a=0;a<Move.AXES;a++) {
+			if (axes[a] != 0) {
+				sb.append(sep+a+":"+axes[a]);
+				sep = ", ";
+			}
+		}
+		sb.append(sep+"l:"+length()+")");
+		return sb.toString();
 	}
 }

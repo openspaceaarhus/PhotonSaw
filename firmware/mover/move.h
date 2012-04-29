@@ -12,18 +12,21 @@ Duration: Number of ticks this move lasts
 0: ID 
 1: X speed
 2: X accel
+12&&(1|2): X end pos
 3: Y speed
 4: Y accel
+12&&(3|4): Y end pos
 5: Z speed
 6: Z accel
+12&&(5|6): Z end pos
 7: A speed
 8: A accel
+12&&(7|8): A end pos
 9: LASER intensity 
 10: LASER intensity acceleration
 11: Pixel speed
 11: Pixel word count
 ... pixel word count pixels
-
 
 The lower 16 bits of the header word (ffff above) signal that the corrosponding
 optional word is present in the following data.
@@ -40,6 +43,11 @@ To get the actual speed in steps / tick do: speed >> 30
 If a speed is omitted, then it is 0 at the start of the move.
 
 If an acceleration is omitted, then it's 0.
+
+
+When bit 12 is set, then an extra word is emitted for each axis with movement (speed or acceleration) and
+the firmware checks that the position after the move matches the supplied position, if the position doesn't match,
+an alarm is triggered, this mechanism is used to validate that the host controllers algorithms match the firmware.
 
 
 If LASER intensity is present then the laser will be on and it is a packed word consisting of:

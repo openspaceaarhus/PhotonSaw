@@ -27,7 +27,8 @@ public class Mover {
 			log.log(Level.SEVERE, "Failed while running command", e);
 			System.exit(2);
 		}
-		
+	
+		Move.dumpProfile();
 		System.exit(0);
 	}
 

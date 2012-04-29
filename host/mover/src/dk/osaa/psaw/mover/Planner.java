@@ -75,43 +75,44 @@ public class Planner {
 
 
 	public void runTest() throws IOException, ReplyTimeout {
-		// TODO: Implement homing.		
-		homed[0] = true;
-		homed[1] = true;
 	
 		Point p1 = new Point();
 		p1.axes[0] = 0;
 		p1.axes[1] = 0;
 		addLine(p1, 1000);
 
-		Point p2 = new Point();
-		p2.axes[0] = 60;
-		p2.axes[1] = 60;
-		addLine(p2, 1000);
-		/*
-		for (int i=0;i<60/4;i++) {
+		Point p3 = new Point();
+		p3.axes[0] = 30;
+		p3.axes[1] = 60;
+		addLine(p3, 1000);
+		
+		for (int i=1;i<600+1;i++) {
 			Point p2 = new Point();
-			p2.axes[0] = 2*i;
-			p2.axes[1] = 4*i;
+			p2.axes[0] = 0.2*i;
+			p2.axes[1] = 0.4*i;
 			addLine(p2, 1000);
 		}
-		*/
-		addLine(p1, 1000);
-/*
-		final int N = 10;
+		
+		
+		final int N = 300;
 		for (int i=0;i<N+1;i++) {
 			Point p = new Point();
 			p.axes[0] = 30*Math.sin((i*Math.PI*2)/N);
-			p.axes[1] = 30*Math.cos((i*Math.PI*2)/N);
+			p.axes[1] = 70*Math.cos((i*Math.PI*2)/N);
 			addLine(p, 1000);
 		}
-	*/
+
+		addLine(p1, 1000);
+		
+
 		recalculate();
 		
 		for (Line line : lineBuffer) {
 			line.toMoves(moveBuffer);	
-		}		
-		
-		photonSaw.getCommander().bufferMoves(moveBuffer);		
+		}
+			
+		for (int i=0;i<10;i++) {
+			photonSaw.getCommander().bufferMoves(moveBuffer);
+		}
 	}
 }
