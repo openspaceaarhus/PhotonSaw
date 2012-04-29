@@ -26,7 +26,7 @@ public class Planner {
 
 	void addLine(Point endPoint, double maxSpeed) {
 		double l = lastBufferedLocation != null ? Math.sqrt(Math.pow(endPoint.axes[0]-lastBufferedLocation.axes[0], 2) + Math.pow(endPoint.axes[1]-lastBufferedLocation.axes[1], 2)) : 1000;
-		if (l > 0.1) { // Discard all lines that are too small.	
+		if (l > 0.025) { // Discard all lines that are too small to actually cause a move.	
 			Line line = new Line(mc, 
 								lineBuffer.size()>0 ? lineBuffer.get(lineBuffer.size()-1) : null,
 								endPoint, maxSpeed);
@@ -96,11 +96,11 @@ public class Planner {
 			addLine(p2, 1000);
 		}
 				
-		final int N = 100;
-		for (int i=0;i<N*5;i++) {
+		final int N = 50;
+		for (int i=0;i<N*10;i++) {
 			Point p = new Point();
-			p.axes[0] = ((10+i)/N)*30*Math.sin((i*Math.PI*2)/N);
-			p.axes[1] = ((10+i)/N)*60*Math.cos((i*Math.PI*2)/N);
+			p.axes[0] = ((i)/N)*30*Math.sin((i*Math.PI*2)/N);
+			p.axes[1] = ((i)/N)*60*Math.cos((i*Math.PI*2)/N);
 			addLine(p, 1000);
 		}
 		

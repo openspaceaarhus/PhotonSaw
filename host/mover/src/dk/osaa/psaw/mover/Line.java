@@ -268,23 +268,28 @@ public class Line {
 	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {
 		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
 		val unitVector = stepVector.unit();
-		val startSpeedVector = unitVector.div(mc.mmPerStep()).mul(startSpeedMMS/mc.tickHZ); // convert from scalar mm/s to vector step/tick 
-		
+		MoveVector startSpeedVector = unitVector.div(mc.mmPerStep()).mul(startSpeedMMS/mc.tickHZ); // convert from scalar mm/s to vector step/tick
+				
 		MoveVector accel = null;
 		long ticks;
 		if (startSpeedMMS == endSpeedMMS) {			
 			ticks = (long)Math.ceil(stepVector.length() / startSpeedVector.length());
+			startSpeedVector = startSpeedVector.mul(ticks).round().mul(1.0/ticks);
 			
 		} else {
-			val endSpeedVector   = unitVector.div(mc.mmPerStep()).mul(endSpeedMMS/mc.tickHZ);
+			MoveVector endSpeedVector   = unitVector.div(mc.mmPerStep()).mul(endSpeedMMS/mc.tickHZ);
 			
 			// distance = (1/2)*acceleration*time^2
 			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
 			// t = 2*d/(s1+s0)    and a = (s1^2-s0^2)/(2*d)
 			ticks = (long)Math.ceil(2*stepVector.length()/(endSpeedVector.length()+startSpeedVector.length()));
+			startSpeedVector = startSpeedVector.mul(ticks).round().mul(1.0/ticks);
+			endSpeedVector = endSpeedVector.mul(ticks).round().mul(1.0/ticks);
+			ticks = (long)Math.round(2*stepVector.length()/(endSpeedVector.length()+startSpeedVector.length()));
 
 			accel = new MoveVector();
 			for (int axis=0;axis<Move.AXES;axis++) {
+				//accel.setAxis(axis, (endSpeedVector.getAxis(axis)-startSpeedVector.getAxis(axis)) / ticks);
 				accel.setAxis(axis, ((Math.pow(endSpeedVector.getAxis(axis),2)-Math.pow(startSpeedVector.getAxis(axis),2))/(2*stepVector.getAxis(axis))));
 			}
 		}

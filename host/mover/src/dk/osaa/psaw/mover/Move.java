@@ -76,7 +76,7 @@ public class Move {
 		for (int i=0;i<AXES;i++) {
 			double v = getAxis(i).speed != null ? getAxis(i).speed.toDouble() : 0;
 			double a = getAxis(i).accel != null ? getAxis(i).accel.toDouble() : 0;
-			double l = getAxisLength(i);
+			long l = getAxisLength(i);
 			if (v != 0) {
 				sb.append(", "+i+"s:"+String.format("%04f", v));
 			}
@@ -84,7 +84,7 @@ public class Move {
 				sb.append(", "+i+"a:"+String.format("%04f", a));
 			}
 			if (l != 0) {
-				sb.append(", "+i+"l:"+String.format("%04f", l));
+				sb.append(", "+i+"l:"+l);
 			}
 			if (laserIntensity != null && laserIntensity != 0) {
 				sb.append(", Li:"+laserIntensity);				
