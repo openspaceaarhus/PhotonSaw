@@ -1,6 +1,7 @@
 package dk.osaa.psaw.mover;
 
 import lombok.Data;
+import lombok.val;
 
 /**
  * A class for holding the constraints and capabilities of the physical system.
@@ -24,6 +25,13 @@ public class MovementConstraints {
 	MovementContstraintAxis axes[] = new MovementContstraintAxis[Move.AXES];
 	public double junctionDeviation;
 	int tickHZ;
+	public MoveVector mmPerStep() {
+		val v = new MoveVector();
+		for (int ax=0;ax<Move.AXES;ax++) {
+			v.setAxis(ax, axes[ax].mmPerStep);
+		}
+		return v;
+	}
 	
 	public MovementConstraints() {
 		tickHZ = 50000; // TODO: Read this value from the hardware at setup (1s / sys.irq.interval)
@@ -34,8 +42,8 @@ public class MovementConstraints {
 		
 		for (int i=0;i<Move.AXES;i++) {
 			axes[i] = new MovementContstraintAxis();
-			axes[i].acceleration = i == 1 ? 2000 : 1000;
-			axes[i].maxSpeed     = i == 1 ? 200 : 200;
+			axes[i].acceleration = i == 1 ? 2500 : 5000;
+			axes[i].maxSpeed     = i == 1 ? 1000 : 500;
 			axes[i].minSpeed = 150;
 			axes[i].microSteppingMode = 3;
 		}

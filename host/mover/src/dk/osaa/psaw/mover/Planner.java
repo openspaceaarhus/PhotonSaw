@@ -19,17 +19,20 @@ public class Planner {
 	ArrayList<Line> lineBuffer = new ArrayList<Line>();
 	ArrayList<Move> moveBuffer = new ArrayList<Move>();
 	
-	Point lastBufferedLocation = new Point();
+	Point lastBufferedLocation;
 	boolean homed[] = new boolean[Move.AXES];
 	Commander commander;
 	private PhotonSaw photonSaw;
 
 	void addLine(Point endPoint, double maxSpeed) {
-		Line line = new Line(mc, 
-							lineBuffer.size()>0 ? lineBuffer.get(lineBuffer.size()-1) : null,
-							endPoint, maxSpeed);
-		lineBuffer.add(line);
-		lastBufferedLocation = endPoint;
+		double l = lastBufferedLocation != null ? Math.sqrt(Math.pow(endPoint.axes[0]-lastBufferedLocation.axes[0], 2) + Math.pow(endPoint.axes[1]-lastBufferedLocation.axes[1], 2)) : 1000;
+		if (l > 0.1) { // Discard all lines that are too small.	
+			Line line = new Line(mc, 
+								lineBuffer.size()>0 ? lineBuffer.get(lineBuffer.size()-1) : null,
+								endPoint, maxSpeed);
+			lineBuffer.add(line);
+			lastBufferedLocation = endPoint;
+		}
 	}
 	
 	
@@ -92,18 +95,17 @@ public class Planner {
 			p2.axes[1] = 0.4*i;
 			addLine(p2, 1000);
 		}
-		
-		
-		final int N = 300;
-		for (int i=0;i<N+1;i++) {
+				
+		final int N = 100;
+		for (int i=0;i<N*5;i++) {
 			Point p = new Point();
-			p.axes[0] = 30*Math.sin((i*Math.PI*2)/N);
-			p.axes[1] = 70*Math.cos((i*Math.PI*2)/N);
+			p.axes[0] = ((10+i)/N)*30*Math.sin((i*Math.PI*2)/N);
+			p.axes[1] = ((10+i)/N)*60*Math.cos((i*Math.PI*2)/N);
 			addLine(p, 1000);
 		}
-
-		addLine(p1, 1000);
 		
+
+		addLine(p1, 1000);		
 
 		recalculate();
 		
@@ -111,8 +113,8 @@ public class Planner {
 			line.toMoves(moveBuffer);	
 		}
 			
-		for (int i=0;i<10;i++) {
+		//for (int i=0;i<10;i++) {
 			photonSaw.getCommander().bufferMoves(moveBuffer);
-		}
+		//}
 	}
 }

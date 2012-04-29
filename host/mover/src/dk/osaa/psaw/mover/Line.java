@@ -24,9 +24,12 @@ public class Line {
 	/**
 	 * Enable to avoid recalculating Move step length after using nudgeSpeed to correct it.
 	 * 
-	 * Current numbers suggest that about 30% of the axis moves need a call to nudgeSpeed,
-	 * so the cost of setting this to false is 30% more calls to getAxisLength, each of which
-	 * takes about 800 ns on average.
+	 * Current numbers suggest that about 0.45% of the axis moves need a call to nudgeSpeed,
+	 * so the cost of setting this to false is 0.45% more calls to getAxisLength, each of which
+	 * takes about 350-600 ns depending on other load on the host.
+	 * 
+	 * false: getAxisLength calls: 3601 total time: 2032917 ns, avg: 564 ns
+	 * true:  getAxisLength calls: 3585 total time: 1242401 ns, avg: 346 ns
 	 */
 	private static final boolean TRUST_NUDGE_SPEED = false;
 
@@ -262,39 +265,45 @@ public class Line {
 
 	static long moveId = 0;	
 	long stepsMoved[] = new long[Move.AXES];
-	Move endcodeMove(MoveVector mv, double startSpeed, double endSpeed) {
-		startSpeed /= mc.tickHZ; // step / tick
-		endSpeed /= mc.tickHZ;   // step / tick
+	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {
+		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
+		val unitVector = stepVector.unit();
+		val startSpeedVector = unitVector.div(mc.mmPerStep()).mul(startSpeedMMS/mc.tickHZ); // convert from scalar mm/s to vector step/tick 
 		
-		double dist = mv.length(); // mm
-		MoveVector mu = mv.unit(); // 1
-
+		MoveVector accel = null;
 		long ticks;
-		double accel; // steps / tick / tick
-		if (endSpeed != startSpeed) {
+		if (startSpeedMMS == endSpeedMMS) {			
+			ticks = (long)Math.ceil(stepVector.length() / startSpeedVector.length());
+			
+		} else {
+			val endSpeedVector   = unitVector.div(mc.mmPerStep()).mul(endSpeedMMS/mc.tickHZ);
+			
 			// distance = (1/2)*acceleration*time^2
 			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
-			// t = 2*d/(s1+s0)    and a = (s1^2-s0^2)/(2*d) 
-			accel = ((Math.pow(endSpeed,2)-Math.pow(startSpeed,2))/(2*dist));
-			ticks = (long)Math.ceil(2*dist/(endSpeed+startSpeed));
-		} else {
-			ticks = (long)Math.ceil(dist / startSpeed);
-			accel = 0;
+			// t = 2*d/(s1+s0)    and a = (s1^2-s0^2)/(2*d)
+			ticks = (long)Math.ceil(2*stepVector.length()/(endSpeedVector.length()+startSpeedVector.length()));
+
+			accel = new MoveVector();
+			for (int axis=0;axis<Move.AXES;axis++) {
+				accel.setAxis(axis, ((Math.pow(endSpeedVector.getAxis(axis),2)-Math.pow(startSpeedVector.getAxis(axis),2))/(2*stepVector.getAxis(axis))));
+			}
 		}
-		
+	
 		Move move = new Move(moveId++, ticks);
 		for (int a=0; a < Move.AXES; a++) {
-			move.setAxisSpeed(a, mu.getAxis(a)*startSpeed/mc.getAxes()[a].mmPerStep);	
-			move.setAxisAccel(a, mu.getAxis(a)*accel/mc.getAxes()[a].mmPerStep);
+			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
+			if (accel != null) {
+				move.setAxisAccel(a, accel.getAxis(a));
+			}
 			
 			// Check that we got exactly the movement in steps that we wanted,
 			// if not adjust the speed until the error is gone.
 			long steps = move.getAxisLength(a);
-
-			long stepsWanted = (long)Math.round(mv.getAxis(a)/mc.axes[a].mmPerStep); 
+			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/mc.axes[a].mmPerStep);
+			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
-				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
+				log.info("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
 				move.nudgeSpeed(a, -diffSteps);
 				if (TRUST_NUDGE_SPEED) {
 					steps = stepsWanted;
@@ -307,8 +316,7 @@ public class Line {
 			}
 
 			stepsMoved[a] += steps;
-		}	
-		
+		}		
 
 		return move;
 	}

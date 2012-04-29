@@ -165,6 +165,7 @@ public class Move {
 	static long lengthTime = 0;
 	static void dumpProfile() {
 		log.info("getAxisLength calls: "+lengthCount+" total time: "+lengthTime+" ns, avg: "+lengthTime/lengthCount+" ns");
+		log.info("nudgeSpeed  calls: "+nudgeSpeedCalls);
 	}
 
 
@@ -259,7 +260,9 @@ public class Move {
 		return encoded;
 	}
 
+	static long nudgeSpeedCalls = 0;
 	public void nudgeSpeed(int axis, long diffSteps) {
+		nudgeSpeedCalls++;
 		if (getAxis(axis).speed == null) {
 			setAxisSpeed(axis, ((double)diffSteps)/duration);
 		} else {
