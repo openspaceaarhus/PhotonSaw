@@ -323,7 +323,7 @@ public class Line {
 					
 				// TODO: This is a ghastly hack, I know it, but damn it, it works and I don't know what else to do.
 				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
-				// rather than have to rely on nudging the speed parameter up and down after the inaccuacy has been detected.
+				// rather than have to rely on nudging the speed parameter up and down after the inaccuracy has been detected.
 				while (diffSteps != 0) {
 					steps = move.getAxisLength(a);
 					diffSteps = steps - stepsWanted;
