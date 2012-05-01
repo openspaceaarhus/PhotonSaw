@@ -249,7 +249,7 @@ inline void continueCurrentMove() {
   axisTick(&axes[AXIS_Z]);
   axisTick(&axes[AXIS_A]);
 
-  // Check limit switches and emergency stop to seee if any if them is triggered.
+  // Check limit switches and emergency stop to see if any if them is triggered.
   unsigned int alarms = checkAlarmInputs();
 
   /*
