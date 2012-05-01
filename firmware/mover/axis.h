@@ -39,7 +39,7 @@ void inline axisSetAccel(Axis *a, int accel) {
   a->moveAccel = accel;
 }
 
-void inline axisPrepareMove(Axis *a) {  
+void inline axisPrepareMove(Axis *a) {  // Notice: update Move.java: getAxisLength if this is changed
   if (a->moveSpeed < 0 || (a->moveSpeed == 0 && a->moveAccel < 0)) {
     a->moveSpeed = -a->moveSpeed;
     a->moveAccel = -a->moveAccel;
@@ -51,15 +51,18 @@ void inline axisPrepareMove(Axis *a) {
   }
 }
 
-void inline axisStartMove(Axis *a, int speed, int accel) {
+void inline axisStartMove(Axis *a, int speed, int accel) { // Notice: update Move.java: getAxisLength if this is changed
   a->moveError = a->moveDirection = 0;
   a->moveSpeed = speed;
   a->moveAccel = accel;
   axisPrepareMove(a);
 }
 
-void inline axisTick(Axis *a) {
+void inline axisTick(Axis *a) { // Notice: update Move.java: getAxisLength if this is changed
   a->moveError += a->moveSpeed;
+  if (a->moveAccel) {
+    a->moveSpeed += a->moveAccel;
+  } 
 
   if (a->moveError >= ONE_STEP) {
     GPIO_SET(a->stepper.stepPin);
@@ -71,10 +74,6 @@ void inline axisTick(Axis *a) {
       a->position++;
     }
   }
-
-  if (a->moveAccel) {
-    a->moveSpeed += a->moveAccel;
-  } 
 }
 
 void inline axisTock(Axis *a) {

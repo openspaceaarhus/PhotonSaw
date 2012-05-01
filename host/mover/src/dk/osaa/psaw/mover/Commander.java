@@ -199,6 +199,10 @@ public class Commander {
     	val cc = new StringBuilder();    	
     	int wordsInCommand = 0;
     	for (Move m : moves) {
+    		
+    		if (log.isLoggable(Level.FINE)) {
+    			log.fine("Sending move: "+m.id+" length: "+m.getAxisLength(0)+" x "+m.getAxisLength(1));
+    		}
 
         	val ms = new StringBuilder();    	
         	for (long w : m.encode()) {

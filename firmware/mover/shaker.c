@@ -261,7 +261,7 @@ inline void continueCurrentMove() {
   axisTock(&axes[AXIS_Z]);
   axisTock(&axes[AXIS_A]);
 
-  if (!cuDuration-- || alarms) {
+  if (!cuDuration-- || alarms) { // Notice: update Move.java: getAxisLength if this is changed
     cuActive = 0; // Done with this move, let startNewMove pop another one.
 
     // Only check for extra pixel words if we're not being stopped by another alarm

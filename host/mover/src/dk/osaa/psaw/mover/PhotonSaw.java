@@ -23,7 +23,7 @@ public class PhotonSaw {
 	
 	private CommandReply runOrDie(String cmd) {		
 		try {
-			log.info("Running: "+cmd);
+			//log.info("Running: "+cmd);
 			val r = commander.run(cmd);
 			if (r.get("result").isOk()) {
 				log.info("command '"+cmd+"' worked: "+r);

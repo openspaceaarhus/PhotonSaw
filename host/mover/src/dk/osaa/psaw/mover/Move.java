@@ -3,6 +3,8 @@ package dk.osaa.psaw.mover;
 import java.util.ArrayList;
 
 import lombok.Data;
+import lombok.val;
+import lombok.extern.java.Log;
 
 /**
  * A Move ready to be sent to the hardware, see firmware/mover/move.h for a specification of how this works
@@ -13,6 +15,7 @@ import lombok.Data;
  * @author ff
  */
 @Data
+@Log
 public class Move {
 	public static final int AXES = 4;
 	public static final String AXIS_NAMES[] = {"X", "Y", "Z", "A"};
@@ -43,17 +46,69 @@ public class Move {
 		}
 	}
 
+	int getAxisSpeed(int axis) {
+		if (axes[axis] != null && axes[axis].speed != null) {
+			return axes[axis].speed.intValue;
+		} else {
+			return 0;
+		}
+	}
+	
 	void setAxisAccel(int axis, double accel) {
 		if (accel != 0) {
 			getAxis(axis).accel = new Q30(accel);
 		}
 	}
 
+	int getAxisAccel(int axis) {
+		if (axes[axis] != null && axes[axis].accel != null) {
+			return axes[axis].accel.intValue;
+		} else {
+			return 0;
+		}
+	}
+	
+
+	public String toString() {
+		val sb = new StringBuilder();
+		sb.append("Move(");
+		sb.append("t:"+duration);
+		for (int i=0;i<AXES;i++) {
+			double v = getAxis(i).speed != null ? getAxis(i).speed.toDouble() : 0;
+			double a = getAxis(i).accel != null ? getAxis(i).accel.toDouble() : 0;
+			long l = getAxisLength(i);
+			if (v != 0) {
+				sb.append(", "+i+"s:"+String.format("%04f", v));
+			}
+			if (a != 0) {
+				sb.append(", "+i+"a:"+String.format("%04f", a));
+			}
+			if (l != 0) {
+				sb.append(", "+i+"l:"+l);
+			}
+			if (laserIntensity != null && laserIntensity != 0) {
+				sb.append(", Li:"+laserIntensity);				
+			}
+			if (laserAcceleration != null && laserAcceleration.value != 0) {
+				sb.append(", La:"+laserAcceleration);				
+			}
+			if (scanline != null) {
+				sb.append(", p:"+scanline.toString());
+			}
+		}
+		sb.append(")");
+		return sb.toString();
+	}
+
 	/**
+	 * Uses simple Newtonian physics to calculate the length of the move, this doesn't
+	 * yield the correct result as the quantification that comes from the distinct ticks
+	 * and the algorithm used isn't ideal.
+	 * 
 	 * @param a the axis
 	 * @return the number of steps taken in this move
 	 */
-	public long getAxisLength(int axis) {
+	public long getAxisLengthNewtonian(int axis) {
 		double v = getAxis(axis).speed != null ? getAxis(axis).speed.toDouble() : 0;
 		double a = getAxis(axis).accel != null ? getAxis(axis).accel.toDouble() : 0;
 		double d = duration*v + duration*duration*(a/2);
@@ -62,6 +117,58 @@ public class Move {
 		}
 		return (long)Math.floor(d);
 	}
+
+	/**
+	 * This is an exact replication of the algorithm used by the shaker.c and axis.h to move
+	 * the motor, it's slow as it iterates exactly like the hardware does to ensure absolute fidelity.
+	 * 
+	 * @param axis The axis to calculate
+	 * @return
+	 */	
+	public long getAxisLength(int axis) {
+		int v = getAxisSpeed(axis);
+		int a = getAxisAccel(axis);
+		
+		// This should save about half the time spent in this routine as Z and A are still most of the time.
+		if (v == 0 && a == 0) { 
+			return 0;
+		}
+		
+		long t0 = System.nanoTime();
+		int ticks = (int)duration;
+		int dir = 1;
+		if (v < 0 || (v==0 && a < 0)) { // See axis.h: axisPrepareMove
+			v = -v;
+			a = -a;
+			dir = -1;
+		}
+		int d = 0; // steps traveled
+		int e = 0; // Error
+		while (true) {
+			e += v; 
+			v += a; // See axis.h: axisTick
+			
+			if (e >= Q30.ONE) {
+				d += dir;
+				e -= Q30.ONE;
+			}
+			
+			if (ticks-- == 0) { // See shaker.c: Bottom of continueCurrentMove
+				break;
+			}
+		}
+		long t1 = System.nanoTime();
+		lengthTime += t1-t0;
+		lengthCount++;
+		return d;
+	}
+	static long lengthCount = 0;
+	static long lengthTime = 0;
+	static void dumpProfile() {
+		log.info("getAxisLength calls: "+lengthCount+" total time: "+lengthTime+" ns, avg: "+lengthTime/lengthCount+" ns");
+		log.info("nudgeSpeed calls: "+nudgeSpeedCalls);
+	}
+
 
 	/**
 	 * Start creating a move with the only two mandatory parameters 
@@ -118,11 +225,11 @@ public class Move {
 			if (axes[i] == null) {
 				continue;
 			}
-			if (axes[i].speed != null && Math.abs(axes[i].speed.getValue()*duration) >= Q30.ONE) {
+			if (axes[i].speed != null && Math.abs(axes[i].speed.getValue()*duration) > 10) {
 				encoded.add((long)axes[i].speed.getValue()); 
 				header |= axisSpeedFlag(i);
 			}
-			if (axes[i].accel != null && Math.abs(axes[i].accel.getValue()*duration) >= Q30.ONE) {
+			if (axes[i].accel != null && Math.abs(axes[i].accel.getValue()*duration) > 10) {
 				encoded.add((long)axes[i].accel.getValue()); 
 				header |= axisAccelFlag(i);
 			}
@@ -154,11 +261,15 @@ public class Move {
 		return encoded;
 	}
 
-	public void nudgeSpeed(int a, long diffSteps) {
-		if (getAxis(a).speed == null) {
-			setAxisSpeed(a, ((double)diffSteps)/duration);
+	static long nudgeSpeedCalls = 0;
+	public void nudgeSpeed(int axis, double diffSteps) {
+		nudgeSpeedCalls++;
+		if (getAxis(axis).speed == null) {
+			setAxisSpeed(axis, ((double)diffSteps)/duration);
 		} else {
-			getAxis(a).speed.addDouble(((double)diffSteps)/duration);
+//			long steps = (getAxis(axis).speed.getLong()*duration) / Q30.ONE;
+//			getAxis(axis).speed.setLong(((steps+diffSteps)*Q30.ONE) / duration);
+			getAxis(axis).speed.addDouble(diffSteps/duration);
 		}
 	}
 }

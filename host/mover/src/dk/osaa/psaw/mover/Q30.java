@@ -18,7 +18,7 @@ public class Q30 {
 	}
 	
 	public void setDouble(double floating) {
-		double f = Math.round(floating * ONE);
+		double f = Math.ceil(floating * ONE);
 		if (Math.abs(f) > ONE) {
 			throw new RuntimeException("Overflow, Q30 cannot contain values larger than 1: "+floating);
 		}
@@ -36,5 +36,14 @@ public class Q30 {
 
 	public void addDouble(double d) {
 		setDouble(toDouble()+d);
+	}
+
+	public long getLong() {
+		return intValue;
+	}	
+
+	public void setLong(long l) {
+		intValue = (int)l;
+		value = 0xffffffffL & l;		
 	}	
 }

@@ -19,17 +19,21 @@ public class Planner {
 	ArrayList<Line> lineBuffer = new ArrayList<Line>();
 	ArrayList<Move> moveBuffer = new ArrayList<Move>();
 	
-	Point lastBufferedLocation = new Point();
+	Point lastBufferedLocation;
 	boolean homed[] = new boolean[Move.AXES];
 	Commander commander;
 	private PhotonSaw photonSaw;
 
 	void addLine(Point endPoint, double maxSpeed) {
-		Line line = new Line(mc, 
-							lineBuffer.size()>0 ? lineBuffer.get(lineBuffer.size()-1) : null,
-							endPoint, maxSpeed);
-		lineBuffer.add(line);
-		lastBufferedLocation = endPoint;
+		endPoint.axes[2] = endPoint.axes[1]/200 + endPoint.axes[2]/200;  
+		double l = lastBufferedLocation != null ? Math.sqrt(Math.pow(endPoint.axes[0]-lastBufferedLocation.axes[0], 2) + Math.pow(endPoint.axes[1]-lastBufferedLocation.axes[1], 2)) : 1000;
+		if (l > 0.025) { // Discard all lines that are too small to actually cause a move.	
+			Line line = new Line(mc, 
+								lineBuffer.size()>0 ? lineBuffer.get(lineBuffer.size()-1) : null,
+								endPoint, maxSpeed);
+			lineBuffer.add(line);
+			lastBufferedLocation = endPoint;
+		}
 	}
 	
 	
@@ -75,43 +79,44 @@ public class Planner {
 
 
 	public void runTest() throws IOException, ReplyTimeout {
-		// TODO: Implement homing.		
-		homed[0] = true;
-		homed[1] = true;
 	
 		Point p1 = new Point();
 		p1.axes[0] = 0;
 		p1.axes[1] = 0;
 		addLine(p1, 1000);
 
-		Point p2 = new Point();
-		p2.axes[0] = 60;
-		p2.axes[1] = 60;
-		addLine(p2, 1000);
-		/*
-		for (int i=0;i<60/4;i++) {
+		Point p3 = new Point();
+		p3.axes[0] = 30;
+		p3.axes[1] = 60;
+		addLine(p3, 1000);
+		
+		for (int i=1;i<600+1;i++) {
 			Point p2 = new Point();
-			p2.axes[0] = 2*i;
-			p2.axes[1] = 4*i;
+			p2.axes[0] = 0.2*i;
+			p2.axes[1] = 0.4*i;
 			addLine(p2, 1000);
 		}
-		*/
-		addLine(p1, 1000);
-/*
-		final int N = 10;
-		for (int i=0;i<N+1;i++) {
+				
+		final int N = 50;
+		for (int i=0;i<N*10;i++) {
 			Point p = new Point();
-			p.axes[0] = 30*Math.sin((i*Math.PI*2)/N);
-			p.axes[1] = 30*Math.cos((i*Math.PI*2)/N);
+			p.axes[0] = ((i)/N)*30*Math.sin((i*Math.PI*2)/N);
+			p.axes[1] = ((i)/N)*60*Math.cos((i*Math.PI*2)/N);
 			addLine(p, 1000);
 		}
-	*/
+		
+
+		addLine(p1, 1000);		
+
 		recalculate();
 		
 		for (Line line : lineBuffer) {
 			line.toMoves(moveBuffer);	
-		}		
-		
-		photonSaw.getCommander().bufferMoves(moveBuffer);		
+		}
+		Move.dumpProfile();
+			
+		//for (int i=0;i<10;i++) {
+			photonSaw.getCommander().bufferMoves(moveBuffer);
+		//}
 	}
 }
