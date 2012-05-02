@@ -10,6 +10,7 @@ import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
@@ -261,7 +262,74 @@ public class Commander {
     	
     	return result;    	
     }
-    
-    
+
+	public CommandReply bufferMoves(ArrayBlockingQueue<Move> moveQueue) throws InterruptedException, IOException, ReplyTimeout {   	
+    	CommandReply result = null;
+    	val cc = new StringBuilder();    	
+    	int wordsInCommand = 0;
+    	while (!moveQueue.isEmpty()) {
+    		Move m = moveQueue.take();
+    		
+    		if (log.isLoggable(Level.FINE)) {
+    			log.fine("Sending move: "+m.id+" length: "+m.getAxisLength(0)+" x "+m.getAxisLength(1));
+    		}
+
+        	val ms = new StringBuilder();    	
+        	for (long w : m.encode()) {
+        		ms.append(" ");
+        		ms.append(Long.toHexString(w).toLowerCase());
+        	}
+        	int wordsInMove = m.encode().size();
+
+        	// Fire off the previously accumulated command if adding this move would overflow the line buffer size or the move buffer. 
+    		if (cc.length()+ms.length() > USB_LINE_BUFFER_SIZE-10 || wordsInCommand+wordsInMove > lastBufferFree) {
+            	while (lastBufferFree < wordsInCommand) {    		
+            		result = run("st");
+            		if (!result.get("result").isOk()) {
+            			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+result);
+            			return result;    			
+            		}
+            		if (lastBufferFree < wordsInCommand) {
+            			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
+            			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
+            		}
+            	}
+
+            	StringBuffer cb = new StringBuffer();
+            	cb.append("bm ");
+            	cb.append(Long.toHexString(wordsInCommand));
+            	cb.append(cc);
+        		result = run(cb.toString());    		
+        		    	
+            	cc.setLength(0);
+            	wordsInCommand = 0;
+    		}
+    		
+			cc.append(ms);
+			wordsInCommand += wordsInMove;
+    	}
+    	
+    	if (wordsInCommand > 0) {
+        	while (lastBufferFree < wordsInCommand) {    		
+        		result = run("st");
+        		if (!result.get("result").isOk()) {
+        			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+result);
+        			return result;    			
+        		}
+        		if (lastBufferFree < wordsInCommand) {
+        			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
+        			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
+        		}
+        	}
+
+        	StringBuffer cb = new StringBuffer();
+        	cb.append("bm ");
+        	cb.append(Long.toHexString(wordsInCommand));
+        	cb.append(cc);
+        	result = run(cb.toString());    		
+    	}
+    	
+    	return result;    			
+	}    
 }
  

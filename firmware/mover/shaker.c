@@ -271,10 +271,6 @@ inline void continueCurrentMove() {
   }
 }
 
-unsigned int stepperLongLimit;
-unsigned int stepperLongTime[STEPPER_LONGTIME_WORDS];
-unsigned int stepperLongTimeIndex;
-
 // This routine gets called at 20 kHz, don't fiddle about!
 void TIMER2_IRQHandler(void) {
   TIM_ClearIntPending(LPC_TIM2, TIM_MR0_INT); // Must be done first thing
@@ -333,22 +329,9 @@ void TIMER2_IRQHandler(void) {
   if (tc > stepperIRQMax) {
     stepperIRQMax = tc;
   }
-  if (tc > stepperLongLimit) {
-    if (stepperLongTimeIndex < (STEPPER_LONGTIME_WORDS << 2)-1) {
-      stepperLongTime[stepperLongTimeIndex >> 2] |= tc << ((stepperLongTimeIndex & 3) << 3);
-      stepperLongTimeIndex++;
-    }    
-  }
 
   int delta = (tc<<16)-stepperIRQAvg;
   stepperIRQAvg += delta >> 8;
-}
-
-void stepperResetLongTime() {
-  for (int i=0;i<STEPPER_LONGTIME_WORDS;i++) {
-    stepperLongTime[i] = 0;
-  }
-  stepperLongTimeIndex = 0;
 }
 
 void shakerInit() {
@@ -360,9 +343,6 @@ void shakerInit() {
   stepperIRQMax = 0;
   stepperIRQAvg = 0;
   alarmInit();
-
-  stepperLongLimit = 8;
-  stepperResetLongTime();
 
   AXIS_INIT(&axes[AXIS_X], X);
   AXIS_INIT(&axes[AXIS_Y], Y);

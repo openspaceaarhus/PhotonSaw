@@ -1,48 +1,75 @@
 package dk.osaa.psaw.mover;
 
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import gnu.io.UnsupportedCommOperationException;
+
 import java.io.IOException;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
 import lombok.val;
 import lombok.extern.java.Log;
 
 @Log
-public class PhotonSaw {
-
+public class PhotonSaw extends Thread {
 	MovementConstraints mc;
 	Commander commander;
 	Planner planner;
 	
-	public PhotonSaw(Commander commander) throws IOException, ReplyTimeout  {
-		this.commander = commander;
+	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(2000); // TODO: Read from config
+	
+	public PhotonSaw() throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
 		mc = new MovementConstraints();
 		planner = new Planner(this);
+		commander = new Commander();
+		commander.connect("/dev/ttyACM0"); // TODO: Read from config
+		
+		setDaemon(true);
+		setName("PhotonSaw thread, keeps the hardware fed");				
+		
 		configureMotors();
-		planner.runTest();
+
+		this.start();	
 	}
+
+	public void putMove(Move move) throws InterruptedException {
+		moveQueue.put(move);
+	}	
 	
-	private CommandReply runOrDie(String cmd) {		
-		try {
-			//log.info("Running: "+cmd);
-			val r = commander.run(cmd);
-			if (r.get("result").isOk()) {
-				log.info("command '"+cmd+"' worked: "+r);
-			} else {
-				log.severe("command '"+cmd+"' gave error: "+r);
+	public void run() {
+		while (true) {
+			try {
+				CommandReply bufferReply = commander.bufferMoves(moveQueue);
+				if (bufferReply.get("result").isOk()) {
+					log.fine("Buffered all possible moves");
+				} else {
+					// TODO: How do we handle errors at this level?
+				}
+			} catch (Exception e) {
+				log.log(Level.SEVERE, "Caught exception while buffering moves", e);
 			}
-			return r;
-		} catch (Exception e) {
-			log.log(Level.SEVERE, "Caught exception while running command: "+cmd, e);
-			throw new RuntimeException(e);
 		}
 	}
 		
-	private void configureMotors() {
-		runOrDie("ai 10c"); // TODO: Ignore alarms while testing
-		runOrDie("ai 10c"); // TODO: Ignore alarms while testing
+	public synchronized CommandReply run(String cmd) throws IOException, ReplyTimeout, PhotonSawCommandFailed {		
+		log.fine("Running: "+cmd);
+		val r = commander.run(cmd);
+		if (r.get("result").isOk()) {
+			log.fine("command '"+cmd+"' worked: "+r);
+		} else {
+			log.severe("command '"+cmd+"' gave error: "+r);
+			throw new PhotonSawCommandFailed("command '"+cmd+"' gave error: "+r);
+		}
+		return r;
+	}
+		
+	private void configureMotors() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+		run("ai 10c"); // TODO: Ignore alarms while testing
+		run("ai 10c"); // TODO: Ignore alarms while testing
 
 		for (int i=0;i<Move.AXES;i++) {
-			runOrDie("me "+i+" "+mc.axes[i].coilCurrent+" "+mc.axes[i].microSteppingMode);
+			run("me "+i+" "+mc.axes[i].coilCurrent+" "+mc.axes[i].microSteppingMode);
 		}
 	}
 
