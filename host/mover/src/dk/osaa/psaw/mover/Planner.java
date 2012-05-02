@@ -3,6 +3,7 @@ package dk.osaa.psaw.mover;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 import lombok.extern.java.Log;
 
@@ -13,7 +14,7 @@ import lombok.extern.java.Log;
  * @author ff
  */
 @Log
-public class Planner {
+public class Planner extends Thread {
 	
 	MovementConstraints mc = new MovementConstraints(); // TODO: Load from a config file in stead.
 	ArrayList<Line> lineBuffer = new ArrayList<Line>();
@@ -24,6 +25,13 @@ public class Planner {
 	Commander commander;
 	private PhotonSaw photonSaw;
 
+	public Planner(PhotonSaw photonSaw) {
+		this.photonSaw = photonSaw;
+		
+		setDaemon(true);
+		setName("Planner thread");				
+	}
+	
 	void addLine(Point endPoint, double maxSpeed) {
 		endPoint.axes[2] = endPoint.axes[1]/200 + endPoint.axes[2]/200;  
 		double l = lastBufferedLocation != null ? Math.sqrt(Math.pow(endPoint.axes[0]-lastBufferedLocation.axes[0], 2) + Math.pow(endPoint.axes[1]-lastBufferedLocation.axes[1], 2)) : 1000;
@@ -35,12 +43,7 @@ public class Planner {
 			lastBufferedLocation = endPoint;
 		}
 	}
-	
-	
-	public Planner(PhotonSaw photonSaw) {
-		this.photonSaw = photonSaw;
-	}
-	
+		
 	void recalculate() {
 		
 		// Reverse pass, with a reference to the next move:
@@ -77,8 +80,7 @@ public class Planner {
 		current.calculateTrapezoid(null); // Stop when this is done.
 	}
 
-
-	public void runTest() throws IOException, ReplyTimeout {
+	public void runTest() throws IOException, ReplyTimeout, InterruptedException {
 	
 		Point p1 = new Point();
 		p1.axes[0] = 0;
@@ -90,10 +92,10 @@ public class Planner {
 		p3.axes[1] = 60;
 		addLine(p3, 1000);
 		
-		for (int i=1;i<600+1;i++) {
+		for (int i=1;i<60+1;i++) {
 			Point p2 = new Point();
 			p2.axes[0] = 0.2*i;
-			p2.axes[1] = 0.4*i;
+			p2.axes[1] = 1.4*i;
 			addLine(p2, 1000);
 		}
 				
@@ -105,18 +107,21 @@ public class Planner {
 			addLine(p, 1000);
 		}
 		
-
 		addLine(p1, 1000);		
 
 		recalculate();
 		
 		for (Line line : lineBuffer) {
-			line.toMoves(moveBuffer);	
+			line.toMoves(photonSaw);	
 		}
-		Move.dumpProfile();
-			
-		//for (int i=0;i<10;i++) {
-			photonSaw.getCommander().bufferMoves(moveBuffer);
-		//}
+		Move.dumpProfile();	
+	}
+	
+	public void run() {
+		try {
+			runTest();
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "Failed while planning moves", e);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package dk.osaa.psaw.mover;
 
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
 import lombok.Data;
@@ -340,10 +341,12 @@ public class Line {
 		return move;
 	}
 	
-	public void toMoves(ArrayList<Move> output) {
+	public void toMoves(PhotonSaw photonSaw) throws InterruptedException {
 		if (acceleration == 0) { // This is not a move, but a point
 			return;
 		}
+		
+		ArrayList<Move> output = new ArrayList<Move>(); 
 
 		int mbf = output.size();
 		for (int i=0;i<Move.AXES;i++) {
@@ -387,7 +390,11 @@ public class Line {
 				log.fine("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]);				
 				output.get(output.size()-1).nudgeSpeed(i, -diffSteps); // Modify speed of the last move, whatever it is
 			}
-		}				
+		}
+		
+		for (Move m : output) {
+			photonSaw.putMove(m);			
+		}
 	}
 	
 	public String toString() {

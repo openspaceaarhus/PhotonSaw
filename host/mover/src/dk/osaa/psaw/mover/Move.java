@@ -165,7 +165,9 @@ public class Move {
 	static long lengthCount = 0;
 	static long lengthTime = 0;
 	static void dumpProfile() {
-		log.info("getAxisLength calls: "+lengthCount+" total time: "+lengthTime+" ns, avg: "+lengthTime/lengthCount+" ns");
+		if (lengthCount != 0) {
+			log.info("getAxisLength calls: "+lengthCount+" total time: "+lengthTime+" ns, avg: "+lengthTime/lengthCount+" ns");
+		}
 		log.info("nudgeSpeed calls: "+nudgeSpeedCalls);
 	}
 

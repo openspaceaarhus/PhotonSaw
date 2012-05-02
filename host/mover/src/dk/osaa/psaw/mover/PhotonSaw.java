@@ -30,6 +30,7 @@ public class PhotonSaw extends Thread {
 		
 		configureMotors();
 
+		planner.start();
 		this.start();	
 	}
 
@@ -40,19 +41,15 @@ public class PhotonSaw extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				CommandReply bufferReply = commander.bufferMoves(moveQueue);
-				if (bufferReply.get("result").isOk()) {
-					log.fine("Buffered all possible moves");
-				} else {
-					// TODO: How do we handle errors at this level?
-				}
+				commander.bufferMoves(moveQueue);
+				Thread.sleep(250); // Wait and see if another move becomes available
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Caught exception while buffering moves", e);
 			}
 		}
 	}
 		
-	public synchronized CommandReply run(String cmd) throws IOException, ReplyTimeout, PhotonSawCommandFailed {		
+	public CommandReply run(String cmd) throws IOException, ReplyTimeout, PhotonSawCommandFailed {		
 		log.fine("Running: "+cmd);
 		val r = commander.run(cmd);
 		if (r.get("result").isOk()) {

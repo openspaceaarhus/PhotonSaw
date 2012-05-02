@@ -50,7 +50,7 @@ public class Commander {
 	
 	public static final int USB_LINE_BUFFER_SIZE = 1<<12;
 		
-	CommandReply run(String cmd) throws IOException, ReplyTimeout {
+	public synchronized CommandReply run(String cmd) throws IOException, ReplyTimeout {
 		synchronized (reply) {
 			reply.clear();
 			replyReady = false;
@@ -61,7 +61,7 @@ public class Commander {
 			throw new RuntimeException("The command line is too long: "+cmd);			
 		}
 		
-		log.info("Running: "+cmd);
+		log.fine("Running: "+cmd);
 		serialPort.getOutputStream().write(cmd.getBytes());
 		serialPort.getOutputStream().flush();
 		
@@ -78,6 +78,13 @@ public class Commander {
 		throw new ReplyTimeout();
     }
 
+	CommandReply lastReplyValues = new CommandReply();
+	public ReplyValue getLastReplyValue(String name) {
+		synchronized (lastReplyValues) {
+			return lastReplyValues.get(name);
+		}
+	}
+		
 	long lastBufferFree;
 	
 	static final String READY = "\r\nReady\r\n";
@@ -96,6 +103,9 @@ public class Commander {
 			for (String line : rs.split("[\r\n]+")) {
 				ReplyValue value = new ReplyValue(line);
 				reply.put(value.getName(), value);
+				synchronized (lastReplyValues) {
+					lastReplyValues.put(value.getName(), value);
+				}
 				if (value.getName().equals("buffer.free")) {
 					lastBufferFree = value.getInteger();
 				}
@@ -191,145 +201,131 @@ public class Commander {
     	return result;    	
     }
 
+    
+    CommandReply lastBufferMoveReply;
+    StringBuilder encodedMoves = new StringBuilder();
+    int wordsInCommand = 0;
+
+    public CommandReply bufferMoveResult() {
+    	return lastBufferMoveReply;
+    }
+    
+    /**
+     * Flushes the buffered commands to the hardware 
+     * @throws PhotonSawCommandFailed 
+     */
+    public void flushMoves() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+    	if (wordsInCommand <= 0) {
+    		return;
+    	}
+
+    	if (log.isLoggable(Level.FINE)) {
+    		log.fine("Flushing the last "+wordsInCommand+" words");
+        }
+    		
+    	while (lastBufferFree < wordsInCommand) {    		
+    		lastBufferMoveReply = run("st");
+    		if (!lastBufferMoveReply.get("result").isOk()) {
+    			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+lastBufferMoveReply);
+    			throw new PhotonSawCommandFailed("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+lastBufferMoveReply);    			
+    		}
+    		if (lastBufferFree < wordsInCommand) {
+    			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
+    			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
+    		}
+    	}
+
+    	StringBuffer cb = new StringBuffer();
+    	cb.append("bm ");
+    	cb.append(Long.toHexString(wordsInCommand));
+    	cb.append(encodedMoves);
+    	lastBufferMoveReply = run(cb.toString());    		
+    	encodedMoves.setLength(0);
+    	wordsInCommand = 0;
+		if (!lastBufferMoveReply.get("result").isOk()) {
+			log.severe("Failed to buffer move words: "+wordsInCommand+" "+lastBufferMoveReply);
+			throw new PhotonSawCommandFailed("Failed to buffer move words: "+wordsInCommand+" "+lastBufferMoveReply);    			
+		}
+    }
+    
+    /**
+     * Buffers the move, possibly sending it and the previous commands to the hardware, if command line length limit is reached
+     * Remember to call flushMoves() when all moves have been buffered 
+     * @throws PhotonSawCommandFailed 
+     */
+    public void bufferMove(Move move) throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+    	
+    	if (log.isLoggable(Level.FINE)) {
+    		log.fine("Buffering move: "+move.id+" length: "+move.getAxisLength(0)+" x "+move.getAxisLength(1));
+    	}
+    	
+    	val ms = new StringBuilder();
+    	int wordsInMove = 0;
+		for (long w : move.encode()) {
+			ms.append(" ");
+			ms.append(Long.toHexString(w).toLowerCase());
+		}
+		wordsInMove = move.encode().size();
+
+    	// Fire off the previously accumulated command if adding this move would overflow the line buffer size or the move buffer. 
+		if (encodedMoves.length()+ms.length() > USB_LINE_BUFFER_SIZE-10 || wordsInCommand+wordsInMove > lastBufferFree) {
+
+        	while (lastBufferFree < wordsInCommand) {    		
+        		lastBufferMoveReply = run("st");
+        		if (!lastBufferMoveReply.get("result").isOk()) {
+        			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+lastBufferMoveReply);
+        			throw new PhotonSawCommandFailed("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+lastBufferMoveReply);    			
+        		}
+        		if (lastBufferFree < wordsInCommand) {
+        			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
+        			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
+        		}
+        	}
+
+        	StringBuffer cb = new StringBuffer();
+        	cb.append("bm ");
+        	cb.append(Long.toHexString(wordsInCommand));
+        	cb.append(encodedMoves);
+    		lastBufferMoveReply = run(cb.toString());    		
+    		if (!lastBufferMoveReply.get("result").isOk()) {
+    			log.severe("Failed to buffer move words: "+wordsInCommand+" "+lastBufferMoveReply);
+    			throw new PhotonSawCommandFailed("Failed to buffer move words: "+wordsInCommand+" "+lastBufferMoveReply);    			
+    		}
+    		    	
+        	encodedMoves.setLength(0);
+        	wordsInCommand = 0;
+		}
+
+		encodedMoves.append(ms);
+		wordsInCommand += wordsInMove;    	
+    }
+   
+   
     /**
      * Buffers the moves as soon as possible with as few commands as possible. 
+     * @throws PhotonSawCommandFailed 
      */
-    public CommandReply bufferMoves(ArrayList<Move> moves) throws IOException, ReplyTimeout {
-    	
-    	CommandReply result = null;
-    	val cc = new StringBuilder();    	
-    	int wordsInCommand = 0;
+    public void bufferMoves(ArrayList<Move> moves) throws IOException, ReplyTimeout, PhotonSawCommandFailed {
     	for (Move m : moves) {
-    		
-    		if (log.isLoggable(Level.FINE)) {
-    			log.fine("Sending move: "+m.id+" length: "+m.getAxisLength(0)+" x "+m.getAxisLength(1));
-    		}
-
-        	val ms = new StringBuilder();    	
-        	for (long w : m.encode()) {
-        		ms.append(" ");
-        		ms.append(Long.toHexString(w).toLowerCase());
-        	}
-        	int wordsInMove = m.encode().size();
-
-        	// Fire off the previously accumulated command if adding this move would overflow the line buffer size or the move buffer. 
-    		if (cc.length()+ms.length() > USB_LINE_BUFFER_SIZE-10 || wordsInCommand+wordsInMove > lastBufferFree) {
-            	while (lastBufferFree < wordsInCommand) {    		
-            		result = run("st");
-            		if (!result.get("result").isOk()) {
-            			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+result);
-            			return result;    			
-            		}
-            		if (lastBufferFree < wordsInCommand) {
-            			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
-            			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
-            		}
-            	}
-
-            	StringBuffer cb = new StringBuffer();
-            	cb.append("bm ");
-            	cb.append(Long.toHexString(wordsInCommand));
-            	cb.append(cc);
-        		result = run(cb.toString());    		
-        		    	
-            	cc.setLength(0);
-            	wordsInCommand = 0;
-    		}
-    		
-			cc.append(ms);
-			wordsInCommand += wordsInMove;
+    		bufferMove(m);
     	}
-    	
-    	if (wordsInCommand > 0) {
-        	while (lastBufferFree < wordsInCommand) {    		
-        		result = run("st");
-        		if (!result.get("result").isOk()) {
-        			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+result);
-        			return result;    			
-        		}
-        		if (lastBufferFree < wordsInCommand) {
-        			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
-        			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
-        		}
-        	}
-
-        	StringBuffer cb = new StringBuffer();
-        	cb.append("bm ");
-        	cb.append(Long.toHexString(wordsInCommand));
-        	cb.append(cc);
-        	result = run(cb.toString());    		
-    	}
-    	
-    	return result;    	
+    	flushMoves();
     }
 
-	public CommandReply bufferMoves(ArrayBlockingQueue<Move> moveQueue) throws InterruptedException, IOException, ReplyTimeout {   	
-    	CommandReply result = null;
-    	val cc = new StringBuilder();    	
-    	int wordsInCommand = 0;
+    /**
+     * Buffers all the moves in the queue, returns when the queue is empty.
+     *  
+     * @param moveQueue
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws ReplyTimeout
+     * @throws PhotonSawCommandFailed
+     */
+	public void bufferMoves(ArrayBlockingQueue<Move> moveQueue) throws InterruptedException, IOException, ReplyTimeout, PhotonSawCommandFailed {
     	while (!moveQueue.isEmpty()) {
-    		Move m = moveQueue.take();
-    		
-    		if (log.isLoggable(Level.FINE)) {
-    			log.fine("Sending move: "+m.id+" length: "+m.getAxisLength(0)+" x "+m.getAxisLength(1));
-    		}
-
-        	val ms = new StringBuilder();    	
-        	for (long w : m.encode()) {
-        		ms.append(" ");
-        		ms.append(Long.toHexString(w).toLowerCase());
-        	}
-        	int wordsInMove = m.encode().size();
-
-        	// Fire off the previously accumulated command if adding this move would overflow the line buffer size or the move buffer. 
-    		if (cc.length()+ms.length() > USB_LINE_BUFFER_SIZE-10 || wordsInCommand+wordsInMove > lastBufferFree) {
-            	while (lastBufferFree < wordsInCommand) {    		
-            		result = run("st");
-            		if (!result.get("result").isOk()) {
-            			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+result);
-            			return result;    			
-            		}
-            		if (lastBufferFree < wordsInCommand) {
-            			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
-            			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
-            		}
-            	}
-
-            	StringBuffer cb = new StringBuffer();
-            	cb.append("bm ");
-            	cb.append(Long.toHexString(wordsInCommand));
-            	cb.append(cc);
-        		result = run(cb.toString());    		
-        		    	
-            	cc.setLength(0);
-            	wordsInCommand = 0;
-    		}
-    		
-			cc.append(ms);
-			wordsInCommand += wordsInMove;
+    		bufferMove(moveQueue.take());
     	}
-    	
-    	if (wordsInCommand > 0) {
-        	while (lastBufferFree < wordsInCommand) {    		
-        		result = run("st");
-        		if (!result.get("result").isOk()) {
-        			log.severe("Failed to get buffer status while waiting for room for move words: "+wordsInCommand+" "+result);
-        			return result;    			
-        		}
-        		if (lastBufferFree < wordsInCommand) {
-        			//log.info("Waiting for room in the buffer for "+wordsInCommand+" words, current free: "+lastBufferFree);
-        			try { Thread.sleep(FULL_BUFFER_POLL_INTERVAL); } catch (InterruptedException e) { }    			
-        		}
-        	}
-
-        	StringBuffer cb = new StringBuffer();
-        	cb.append("bm ");
-        	cb.append(Long.toHexString(wordsInCommand));
-        	cb.append(cc);
-        	result = run(cb.toString());    		
-    	}
-    	
-    	return result;    			
-	}    
+    	flushMoves();
+	}	
 }
  
