@@ -16,13 +16,12 @@ import lombok.extern.java.Log;
 @Log
 public class Planner extends Thread {
 	
-	MovementConstraints mc = new MovementConstraints(); // TODO: Load from a config file in stead.
-	ArrayList<Line> lineBuffer = new ArrayList<Line>();
-	ArrayList<Move> moveBuffer = new ArrayList<Move>();
-	
+	Job currentJob;
+		
+	LineBuffer lineBuffer = new LineBuffer();
 	Point lastBufferedLocation;
 	boolean homed[] = new boolean[Move.AXES];
-	Commander commander;
+	Commander commander;	
 	private PhotonSaw photonSaw;
 
 	public Planner(PhotonSaw photonSaw) {
@@ -32,14 +31,29 @@ public class Planner extends Thread {
 		setName("Planner thread");				
 	}
 	
+	/**
+	 * Starts a new job, will fail if 
+	 * @param newJob The job to start.
+	 */
+	public void startJob(Job newJob) {
+		if (currentJob != null) {
+			throw new RuntimeException("Cannot start new job while another one is running");
+		}
+		currentJob = newJob;
+	}
+	
+	public Job getCurrentJob() {
+		return currentJob;
+	}
+	
 	void addLine(Point endPoint, double maxSpeed) {
 		endPoint.axes[2] = endPoint.axes[1]/200 + endPoint.axes[2]/200;  
 		double l = lastBufferedLocation != null ? Math.sqrt(Math.pow(endPoint.axes[0]-lastBufferedLocation.axes[0], 2) + Math.pow(endPoint.axes[1]-lastBufferedLocation.axes[1], 2)) : 1000;
 		if (l > 0.025) { // Discard all lines that are too small to actually cause a move.	
-			Line line = new Line(mc, 
-								lineBuffer.size()>0 ? lineBuffer.get(lineBuffer.size()-1) : null,
+			Line line = new Line(photonSaw.mc, 
+								lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 								endPoint, maxSpeed);
-			lineBuffer.add(line);
+			lineBuffer.push(line);
 			lastBufferedLocation = endPoint;
 		}
 	}
@@ -49,8 +63,8 @@ public class Planner extends Thread {
 		// Reverse pass, with a reference to the next move:
 		{
 			Line next = null;
-			for (int i=lineBuffer.size()-1;i>=0;i--) {
-				Line line = lineBuffer.get(i);
+			for (int i=lineBuffer.getList().size()-1;i>=0;i--) {
+				Line line = lineBuffer.getList().get(i);
 				line.reversePass(next);
 				next = line; 
 			}
@@ -58,7 +72,7 @@ public class Planner extends Thread {
 		
 		// And a forward pass as well...
 		Line prev = null;
-		for (Line line : lineBuffer) {
+		for (Line line : lineBuffer.getList()) {
 			line.forwardPass(prev);
 			prev = line;
 		}
@@ -69,7 +83,7 @@ public class Planner extends Thread {
 		// compute the two adjacent trapezoids to the junction, since the junction speed corresponds
 		// to exit speed and entry speed of one another.
 		Line current = null;
-		for (Line next: lineBuffer) {
+		for (Line next: lineBuffer.getList()) {
 			if (current != null) {
 				if (current.recalculate || next.recalculate) {
 					current.calculateTrapezoid(next);
@@ -111,7 +125,7 @@ public class Planner extends Thread {
 
 		recalculate();
 		
-		for (Line line : lineBuffer) {
+		for (Line line : lineBuffer.getList()) {
 			line.toMoves(photonSaw);	
 		}
 		Move.dumpProfile();	
