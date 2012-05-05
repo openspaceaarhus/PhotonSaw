@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import java.util.TreeMap;
 

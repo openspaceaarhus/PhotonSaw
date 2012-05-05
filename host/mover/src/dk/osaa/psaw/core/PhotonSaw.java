@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.core;
 
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
@@ -8,6 +8,14 @@ import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
+import dk.osaa.psaw.machine.CommandReply;
+import dk.osaa.psaw.machine.Commander;
+import dk.osaa.psaw.machine.Move;
+import dk.osaa.psaw.machine.MovementConstraints;
+import dk.osaa.psaw.machine.PhotonSawCommandFailed;
+import dk.osaa.psaw.machine.ReplyTimeout;
+
+import lombok.Getter;
 import lombok.val;
 import lombok.extern.java.Log;
 
@@ -15,8 +23,10 @@ import lombok.extern.java.Log;
 public class PhotonSaw extends Thread {
 	MovementConstraints mc;
 	Commander commander;
+	@Getter
 	Planner planner;
 	
+	@Getter
 	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(2000); // TODO: Read from config
 	
 	public PhotonSaw() throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
@@ -66,11 +76,16 @@ public class PhotonSaw extends Thread {
 		run("ai 10c"); // TODO: Ignore alarms while testing
 
 		for (int i=0;i<Move.AXES;i++) {
-			run("me "+i+" "+mc.axes[i].coilCurrent+" "+mc.axes[i].microSteppingMode);
+			run("me "+i+" "+mc.getAxes()[i].coilCurrent+" "+mc.getAxes()[i].microSteppingMode);
 		}
 	}
 
 	public Commander getCommander() {
 		return commander;
+	}
+
+	public boolean active() throws IOException, ReplyTimeout, PhotonSawCommandFailed {		
+		CommandReply r = run("st");
+		return r.get("motion.active").getBoolean();
 	}
 }

@@ -1,9 +1,9 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import lombok.Data;
 
 /**
- * A Q16.16 integer
+ * A Q16.16 integer which fits in a 32 bit word
  * 
  * @author ff
  */

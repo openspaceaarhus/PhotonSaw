@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import lombok.Data;
 import lombok.ToString;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class Point {
-	double axes[] = new double[Move.AXES];
+	public double axes[] = new double[Move.AXES];
 	
 	public void roundToWholeSteps(MovementConstraints mc) {
 		for (int i=0;i<Move.AXES;i++) {

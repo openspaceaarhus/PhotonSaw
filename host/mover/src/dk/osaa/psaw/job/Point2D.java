@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.job;
 
 import lombok.Data;
 
@@ -6,8 +6,13 @@ import lombok.Data;
  * A point in Job space.
  * 
  * Notice that we're working in mm, but not necessarily in machine space,
- * as a transformation (axis-mapping, translation, rotation and scaling)
- * happens when the Planner adds the job to the LineBuffer.   
+ * as a transformation (axis-mapping, translation, rotation and possibly scaling)
+ * happens when the job is rendered into the Planners LineBuffer.
+ * 
+ * Lower left corner is 0,0
+ * Right is +X
+ * Up is +Y
+ *    
  * @author ff
  */
 @Data

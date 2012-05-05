@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
+
 
 import lombok.extern.java.Log;
 import lombok.val;

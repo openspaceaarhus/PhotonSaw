@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import java.math.BigInteger;
 
@@ -42,5 +42,9 @@ public class ReplyValue {
 		} else {
 			return parts[0]+" = "+parts[1];
 		}
+	}
+
+	public boolean getBoolean() {
+		return parts[1].equals("Yes");
 	}
 }

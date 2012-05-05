@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,11 +21,19 @@ public class LineBuffer {
 	}
 
 	/**
-	 * Answers the question: Do we have enough lines buffered?
+	 * Answers the question: Do we have enough lines buffered to do effective planning?
+	 * It's possible to add more lines even after this returns true, but it only impacts performance negatively.
 	 * @return true if no more lines are needed
 	 */
 	public boolean isFull() {
 		return bufferLength > 1000 && buffer.size() > 100;
+	}
+
+	/**
+	 * @return True if no lines are buffered
+	 */
+	public boolean isEmpty() {
+		return buffer.isEmpty();
 	}
 	
 	/**

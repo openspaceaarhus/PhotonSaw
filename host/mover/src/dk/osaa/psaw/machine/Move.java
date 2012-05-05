@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class Move {
 		return axes[axis];
 	}
 	
-	void setAxisSpeed(int axis, double speed) {
+	public void setAxisSpeed(int axis, double speed) {
 		if (speed != 0) {
 			getAxis(axis).speed = new Q30(speed);
 		}
@@ -54,7 +54,7 @@ public class Move {
 		}
 	}
 	
-	void setAxisAccel(int axis, double accel) {
+	public void setAxisAccel(int axis, double accel) {
 		if (accel != 0) {
 			getAxis(axis).accel = new Q30(accel);
 		}
@@ -164,7 +164,7 @@ public class Move {
 	}
 	static long lengthCount = 0;
 	static long lengthTime = 0;
-	static void dumpProfile() {
+	public static void dumpProfile() {
 		if (lengthCount != 0) {
 			log.info("getAxisLength calls: "+lengthCount+" total time: "+lengthTime+" ns, avg: "+lengthTime/lengthCount+" ns");
 		}

@@ -1,10 +1,16 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.core;
 
 import java.util.ArrayList;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
+import dk.osaa.psaw.machine.Move;
+import dk.osaa.psaw.machine.MoveVector;
+import dk.osaa.psaw.machine.MovementConstraints;
+import dk.osaa.psaw.machine.Point;
+
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import lombok.extern.java.Log;
 
@@ -21,18 +27,6 @@ import lombok.extern.java.Log;
 @Data
 @Log
 public class Line {
-	
-	/**
-	 * Enable to avoid recalculating Move step length after using nudgeSpeed to correct it.
-	 * 
-	 * Current numbers suggest that about 0.45% of the axis moves need a call to nudgeSpeed,
-	 * so the cost of setting this to false is 0.45% more calls to getAxisLength, each of which
-	 * takes about 350-600 ns depending on other load on the host.
-	 * 
-	 * false: getAxisLength calls: 3601 total time: 2032917 ns, avg: 564 ns
-	 * true:  getAxisLength calls: 3585 total time: 1242401 ns, avg: 346 ns
-	 */
-	private static final boolean TRUST_NUDGE_SPEED = false;
 
 	class LineAxis {
 		double startPos;
@@ -51,8 +45,11 @@ public class Line {
 	double maxEntrySpeed;  // The highest speed we can allow when starting this line
 	boolean nominalLength; // This line is long enough to allow full acceleration from 0 to nominalSpeed. 
 	boolean recalculate;
+
+	@Getter @Setter
+	double laserIntensity;
 	
-	public Line(MovementConstraints mc, Line prev, Point endPoint, double maxSpeed) {
+	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double maxSpeed) {
 		this.mc = mc;
 		this.maxSpeed=maxSpeed;
 		
@@ -64,27 +61,17 @@ public class Line {
 			
 			// Round off to whole steps
  			axes[a].endPos = endPoint.getAxes()[a];
-
- 			if (prev != null) {
- 				axes[a].startPos = prev.axes[a].endPos;
- 			}
+			axes[a].startPos = startPoint.getAxes()[a];
 		}
 		
-        if (prev == null) {
-        	entrySpeed = 0;
-        	maxEntrySpeed = 0;
-        	acceleration = 0;
-        	return;
-        }
-		
 		for (int a=0;a<Move.AXES;a++) {
-			axes[a].direction = prev.axes[a].endPos == axes[a].endPos ? 0 :
-			    prev.axes[a].endPos <  axes[a].endPos ? 1 : -1;
+			axes[a].direction = axes[a].startPos == axes[a].endPos ? 0 :
+				axes[a].startPos <  axes[a].endPos ? 1 : -1;
 		}
 		
 		// Calculate the unity vector for this line, because it's handy for calculating the maximum speed of each axis during the move.
 		for (int a=0;a<Move.AXES;a++) {
-			moveVector.setAxis(a, endPoint.getAxes()[a]-prev.axes[a].endPos);
+			moveVector.setAxis(a, endPoint.getAxes()[a]-axes[a].startPos);
 		}
 
 		length = moveVector.length();
@@ -93,8 +80,8 @@ public class Line {
 		// Set default max junction speed, to the minimum speed of the slowest of the axes:
 		minSpeed = 0;
 		for (int a=0;a<Move.AXES;a++) {
-			if (mc.axes[a].minSpeed < Math.abs(minSpeed * unitVector.getAxis(a)) || minSpeed == 0) {
-				minSpeed = Math.abs(mc.axes[a].minSpeed / unitVector.getAxis(a));	
+			if (mc.getAxes()[a].minSpeed < Math.abs(minSpeed * unitVector.getAxis(a)) || minSpeed == 0) {
+				minSpeed = Math.abs(mc.getAxes()[a].minSpeed / unitVector.getAxis(a));	
 			}
 		}
 		maxEntrySpeed = minSpeed;
@@ -102,13 +89,31 @@ public class Line {
 		// Find the largest acceleration we can use for this line, by letting the most active*slowest axis set the limit 
 		acceleration = 0;
 		for (int a=0;a<Move.AXES;a++) {		
-			if (mc.axes[a].acceleration < Math.abs(acceleration * unitVector.getAxis(a)) || acceleration == 0) {
-				acceleration = Math.abs(mc.axes[a].acceleration / unitVector.getAxis(a));	
+			if (mc.getAxes()[a].acceleration < Math.abs(acceleration * unitVector.getAxis(a)) || acceleration == 0) {
+				acceleration = Math.abs(mc.getAxes()[a].acceleration / unitVector.getAxis(a));	
 			}
 		}
 		if (acceleration == 0) {
 			throw new RuntimeException("Accleration ended up being 0 for line to "+endPoint);
 		}
+	    double allowableSpeed = maxAllowableSpeed(-acceleration,0.0,length); 
+
+	    // Initialize planner efficiency flags
+	    // Set flag if block will always reach maximum junction speed regardless of entry/exit speeds.
+	    // If a block can de/ac-celerate from nominal speed to zero within the length of the block, then
+	    // the current block and next block junction speeds are guaranteed to always be at their maximum
+	    // junction speeds in deceleration and acceleration, respectively. This is due to how the current
+	    // block nominal speed limits both the current and next maximum junction speeds. Hence, in both
+	    // the reverse and forward planners, the corresponding block junction speed will always be at the
+	    // the maximum junction speed and may always be ignored for any speed reduction checks.
+	    nominalLength = maxSpeed <= allowableSpeed;
+	    recalculate = true;
+
+	    // The rest of this code is here to figure out how much speed the the previous line left us with, if any.
+        if (prev == null) {
+        	entrySpeed = 0; // We start at a standstill.
+        	return;
+        }	
 		
 		// Compute cosine of angle between previous and current path. (prev_unit_vec is negative)
 		// NOTE: Max junction velocity is computed without sin() or acos() by trig half angle identity.
@@ -132,19 +137,15 @@ public class Line {
 		maxEntrySpeed = Math.max(minSpeed, maxEntrySpeed); 
 				   
 	    // Initialize Line entry speed. Compute based on deceleration to user-defined MINIMUM_PLANNER_SPEED.
-	    double allowableSpeed = maxAllowableSpeed(-acceleration,0.0,length); 
 	    entrySpeed = Math.min(maxEntrySpeed, allowableSpeed);
+	}
 
-	    // Initialize planner efficiency flags
-	    // Set flag if block will always reach maximum junction speed regardless of entry/exit speeds.
-	    // If a block can de/ac-celerate from nominal speed to zero within the length of the block, then
-	    // the current block and next block junction speeds are guaranteed to always be at their maximum
-	    // junction speeds in deceleration and acceleration, respectively. This is due to how the current
-	    // block nominal speed limits both the current and next maximum junction speeds. Hence, in both
-	    // the reverse and forward planners, the corresponding block junction speed will always be at the
-	    // the maximum junction speed and may always be ignored for any speed reduction checks.
-	    nominalLength = maxSpeed <= allowableSpeed;
-	    recalculate = true;
+	public Point getEndPoint() {
+		Point ep = new Point();
+		for (int i=0;i<Move.AXES;i++) {
+			ep.axes[i] = axes[i].endPos;
+		}
+		return ep;
 	}
 	
 	// Calculates the maximum allowable speed at this point when you must be able to reach target_velocity
@@ -269,7 +270,7 @@ public class Line {
 	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {
 		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
 		val unitVector = mmMoveVector.unit();
-		MoveVector startSpeedVector = unitVector.mul(startSpeedMMS/mc.tickHZ).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
+		MoveVector startSpeedVector = unitVector.mul(startSpeedMMS/mc.getTickHZ()).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
 
 		// Find the longest axis, so we can use it for calculating the duration of the move, this way we get better accuracy.
 		int longAxis = 0;
@@ -287,7 +288,7 @@ public class Line {
 			ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
 			
 		} else {
-			MoveVector endSpeedVector   = unitVector.mul(endSpeedMMS/mc.tickHZ).div(mc.mmPerStep());
+			MoveVector endSpeedVector   = unitVector.mul(endSpeedMMS/mc.getTickHZ()).div(mc.mmPerStep());
 			
 			// distance = (1/2)*acceleration*time^2
 			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
@@ -306,6 +307,10 @@ public class Line {
 		}
 	
 		Move move = new Move(moveId++, ticks);
+		
+		// TODO: handle laser acceleration too in stead of just setting it to max: 
+		move.setLaserIntensity((int)Math.round(Math.max(0, Math.min(255, 255*laserIntensity))));
+		
 		for (int a=0; a < Move.AXES; a++) {
 			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
 			if (accel != null) {
@@ -315,14 +320,14 @@ public class Line {
 			// Check that we got exactly the movement in steps that we wanted,
 			// if not adjust the speed until the error is gone.
 			long steps = move.getAxisLength(a);
-			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/mc.axes[a].mmPerStep);
+			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/mc.getAxes()[a].mmPerStep);
 			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
 				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
 				move.nudgeSpeed(a, -diffSteps);
 					
-				// TODO: This is a ghastly hack, I know it, but damn it, it works and I don't know what else to do.
+				// TODO: This is a ghastly hack, I know, but damn it, it works and I don't know what else to do.
 				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
 				// rather than have to rely on nudging the speed parameter up and down after the inaccuracy has been detected.
 				while (diffSteps != 0) {
@@ -383,7 +388,7 @@ public class Line {
 		}
 
 		for (int i=0;i<Move.AXES;i++) {
-			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/mc.axes[i].mmPerStep); 
+			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/mc.getAxes()[i].mmPerStep); 
 			long diffSteps = stepsMoved[i] - stepsWanted;
 			
 			if (diffSteps != 0) {

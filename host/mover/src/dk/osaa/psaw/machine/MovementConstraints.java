@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.machine;
 
 import lombok.Data;
 import lombok.val;
@@ -12,19 +12,21 @@ import lombok.val;
 @Data
 public class MovementConstraints {
 	
-	static class MovementContstraintAxis {
-		double acceleration; // mm/s/s
-		double maxSpeed;     // mm/s
-		double minSpeed;     // mm/s
+	public static class MovementContstraintAxis {
+		public double acceleration; // mm/s/s
+		public double maxSpeed;     // mm/s
+		public double minSpeed;     // mm/s
 
-		double mmPerStep;    // mm / step
-		int coilCurrent;     // mA
-		int microSteppingMode; // 0=fullstep, 1=halfstep, 2=1/4 step, 3=1/8 step
+		public double mmPerStep;    // mm / step
+		public int coilCurrent;     // mA
+		public int microSteppingMode; // 0=fullstep, 1=halfstep, 2=1/4 step, 3=1/8 step
 	};
 	
 	MovementContstraintAxis axes[] = new MovementContstraintAxis[Move.AXES];
 	public double junctionDeviation;
+	double rapidMoveSpeed;
 	int tickHZ;
+	double shortestMove;
 	public MoveVector mmPerStep() {
 		val v = new MoveVector();
 		for (int ax=0;ax<Move.AXES;ax++) {
@@ -63,5 +65,7 @@ public class MovementConstraints {
 		axes[3].mmPerStep = 60.0/(200*8);
 		axes[3].coilCurrent = 350; 
 
+		rapidMoveSpeed = 5000; // Just go!
+		shortestMove = 0.025; // Any move shorter than this gets rounded off to 0 and dropped
 	}
 }
