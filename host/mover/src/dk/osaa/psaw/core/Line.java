@@ -166,7 +166,7 @@ public class Line {
 	    
 	    // This method is borrowed from Smoothie and thus GRBL, I have no idea why they use such a complicated method though	    
         
-/*        
+        
 		// Compute cosine of angle between previous and current path. (prev_unit_vec is negative)
 		// NOTE: Max junction velocity is computed without sin() or acos() by trig half angle identity.
 		double cosTheta = 0;
@@ -189,8 +189,8 @@ public class Line {
 		maxEntrySpeed = Math.max(minSpeed, maxEntrySpeed); 
 				   
 	    // Initialize Line entry speed. Compute based on deceleration to user-defined MINIMUM_PLANNER_SPEED.
-	    entrySpeed = Math.min(maxEntrySpeed, allowableSpeed);
-	    */
+//	    entrySpeed = Math.min(maxEntrySpeed, allowableSpeed);
+	    entrySpeed = maxEntrySpeed;
 	}
 
 	public Point getEndPoint() {
