@@ -60,8 +60,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import com.kitfox.svg.SVGGraphics2D;
-
 /**
  * Base for classed that want to implement vector export.
  * @author Erich Seifert

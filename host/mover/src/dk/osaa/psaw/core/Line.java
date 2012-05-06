@@ -262,7 +262,7 @@ public class Line {
         // If entry speed is already at the maximum entry speed, no need to recheck. Block is cruising.
         // If not, block in state of acceleration or deceleration. Reset entry speed to maximum and
         // check for maximum allowable speed reductions to ensure maximum possible planned speed.
-		updateMaxEntrySpeed(next.entrySpeed);
+		//updateMaxEntrySpeed(next.entrySpeed);
         if (entrySpeed != maxEntrySpeed) {
 
             // If nominal length true, max junction speed is guaranteed to be reached. Only compute

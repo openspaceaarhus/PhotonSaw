@@ -51,13 +51,13 @@ public class MovementConstraints {
 		}
 		
 		axes[0].mmPerStep = 60.0/(200*8);
-		axes[0].coilCurrent = 350; 
+		axes[0].coilCurrent = 350/2; 
 
 		axes[1].mmPerStep = 60.0/(200*8);
-		axes[1].coilCurrent = 1870; 
+		axes[1].coilCurrent = 1870/2; 
 
 		// Z-lift
-		axes[2].coilCurrent = 350; //350*4; // 4 motors for Z-lift 
+		axes[2].coilCurrent = 350/2; //350*4; // 4 motors for Z-lift 
 		axes[2].mmPerStep = 1.25/200; // M8x1.25 @full stepping
 		axes[2].microSteppingMode = 0; // Full steps
 		axes[2].maxSpeed = 100; // 16000 steps/second

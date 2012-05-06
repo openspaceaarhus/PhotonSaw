@@ -25,7 +25,9 @@ public class Mover {
 			Job testJob = new Job();
 			//testJob.loadTest();
 			
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 			testJob.loadSVG(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
 			ps.getPlanner().startJob(testJob);			
 
