@@ -100,8 +100,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				if (getCurrentJob() != null) {
 
 					// Unlock only the axes that are used by this job.
+					Point startPoint = lastBufferedLocation;
 					usedAxes = getCurrentJob().getUsedAxes();
 					getCurrentJob().render(this);
+					moveTo(startPoint); // Go back to where we were before the job.
 					
 					log.info("Job has finished rendering, waiting for buffer to empty");
 					// Let the line buffer empty out before we continue

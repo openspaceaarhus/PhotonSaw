@@ -1,7 +1,10 @@
 package dk.osaa.psaw.job;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+
+import com.kitfox.svg.SVGException;
 
 import dk.osaa.psaw.machine.Move;
 
@@ -82,8 +85,10 @@ public class Job {
 	 * @param name The name of the SVG, used to generate an ID and an initial name for it.
 	 * @param svgStream The actual data
 	 * @return The id of the created node
+	 * @throws SVGException 
+	 * @throws IOException 
 	 */
-	public JobNodeID loadSVG(String name, InputStream svgStream) {
+	public JobNodeID loadSVG(String name, InputStream svgStream) throws IOException, SVGException {
 		JobNode svg = SvgLoader.load(this, name, svgStream);
 		getRootNode().addChild(svg);
 		return svg.getNodeID();

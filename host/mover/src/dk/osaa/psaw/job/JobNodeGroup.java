@@ -19,7 +19,7 @@ public class JobNodeGroup implements JobNode {
 
 	@Getter @Setter
 	JobNodeGroup parent;
-
+	
 	ArrayList<JobNode> children = new ArrayList<JobNode>();
 	
 	public JobNodeGroup(String id) {

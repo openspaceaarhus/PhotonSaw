@@ -25,7 +25,7 @@ public class LineBuffer {
 	 * @return true if no more lines are needed
 	 */
 	public boolean isFull() {
-		return bufferLength > 1000 && buffer.size() > 100;
+		return bufferLength > 200 && buffer.size() > 100;
 	}
 
 	/**

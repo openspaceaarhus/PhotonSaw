@@ -27,7 +27,7 @@ public class PhotonSaw extends Thread {
 	Planner planner;
 	
 	@Getter
-	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(2000); // TODO: Read from config
+	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(100); // TODO: Read from config
 	
 	public PhotonSaw() throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
 		mc = new MovementConstraints();
