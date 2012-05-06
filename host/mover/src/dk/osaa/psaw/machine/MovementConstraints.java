@@ -44,20 +44,20 @@ public class MovementConstraints {
 		
 		for (int i=0;i<Move.AXES;i++) {
 			axes[i] = new MovementContstraintAxis();
-			axes[i].acceleration = i == 1 ? 521 : 1000;
-			axes[i].maxSpeed     = i == 1 ? 2000 : 600;
-			axes[i].minSpeed = 150;
+			axes[i].acceleration = i == 1 ? 200 : 200;
+			axes[i].maxSpeed     = i == 1 ? 400 : 200;
+			axes[i].minSpeed = 50;
 			axes[i].microSteppingMode = 3;
 		}
 		
 		axes[0].mmPerStep = 60.0/(200*8);
-		axes[0].coilCurrent = 350/2; 
+		axes[0].coilCurrent = 350; 
 
 		axes[1].mmPerStep = 60.0/(200*8);
 		axes[1].coilCurrent = 1870; 
 
 		// Z-lift
-		axes[2].coilCurrent = 350/2; //350*4; // 4 motors for Z-lift 
+		axes[2].coilCurrent = 350; //350*4; // 4 motors for Z-lift 
 		axes[2].mmPerStep = 1.25/200; // M8x1.25 @full stepping
 		axes[2].microSteppingMode = 0; // Full steps
 		axes[2].maxSpeed = 100; // 16000 steps/second
@@ -66,6 +66,6 @@ public class MovementConstraints {
 		axes[3].coilCurrent = 350; 
 
 		rapidMoveSpeed = 5000; // Just go!
-		shortestMove = 0.025; // Any move shorter than this gets rounded off to 0 and dropped
+		shortestMove = 0.1; // Any move shorter than this gets rounded off to 0 and dropped
 	}
 }

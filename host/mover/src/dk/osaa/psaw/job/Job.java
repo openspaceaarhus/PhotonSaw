@@ -2,7 +2,6 @@ package dk.osaa.psaw.job;
 
 import java.io.InputStream;
 import java.util.HashSet;
-import java.util.TreeMap;
 
 import dk.osaa.psaw.machine.Move;
 

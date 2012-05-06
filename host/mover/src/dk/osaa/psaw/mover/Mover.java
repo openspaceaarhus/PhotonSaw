@@ -1,15 +1,14 @@
 package dk.osaa.psaw.mover;
 
-import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.logging.Level;
 
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.machine.Move;
-import dk.osaa.psaw.machine.PhotonSawCommandFailed;
-import dk.osaa.psaw.machine.ReplyTimeout;
 
-import lombok.val;
 import lombok.extern.java.Log;
 
 /**
@@ -22,9 +21,12 @@ public class Mover {
 		PhotonSaw ps = null;
 		try {
 			ps = new PhotonSaw();
-
+			
 			Job testJob = new Job();
-			testJob.loadTest();
+			//testJob.loadTest();
+			
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths.svg");
+			testJob.loadSVG(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
 			ps.getPlanner().startJob(testJob);			
 
 			// Wait for the job to finish

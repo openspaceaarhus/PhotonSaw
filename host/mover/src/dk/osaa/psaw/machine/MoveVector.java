@@ -1,6 +1,5 @@
 package dk.osaa.psaw.machine;
 
-import lombok.ToString;
 import lombok.val;
 
 public class MoveVector {

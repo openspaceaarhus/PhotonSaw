@@ -1,5 +1,9 @@
 package dk.osaa.psaw.core;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -15,12 +19,17 @@ import lombok.val;
 import lombok.extern.java.Log;
 
 /**
- * A line in 2d space
+ * A line in n-dimensional space, this is the basic building block for all motion and where speed and
+ * acceleration optimization happens.
  * 
  * Units used  this point: mm, mm/s and mm/s/s translation to steps, steps/tick and steps/tick/tick
  * happens later when Moves are generated.
  * 
  * The algorithms are inspired by Smoothie and GRBL, but somewhat rewritten/molested to do 4D.
+ * 
+ * I want to mostly get rid of the scalar speed calculations and switch to vectors so each axis 
+ * gets optimized individually in stead of the current approach of mixing scalar speeds in different
+ * directions in the same calculation, which is a horrible mess. 
  * 
  * @author ff
  */
@@ -48,10 +57,13 @@ public class Line {
 
 	@Getter @Setter
 	double laserIntensity;
+
+	MoveVector prevUnitVector;
 	
-	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double maxSpeed) {
+	
+	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
 		this.mc = mc;
-		this.maxSpeed=maxSpeed;
+		this.maxSpeed=targetMaxSpeed;
 		
 		endPoint.roundToWholeSteps(mc);
 
@@ -71,32 +83,49 @@ public class Line {
 		
 		// Calculate the unity vector for this line, because it's handy for calculating the maximum speed of each axis during the move.
 		for (int a=0;a<Move.AXES;a++) {
-			moveVector.setAxis(a, endPoint.getAxes()[a]-axes[a].startPos);
+			moveVector.setAxis(a, axes[a].endPos-axes[a].startPos);
 		}
 
 		length = moveVector.length();
+		if (length == 0) {
+			return;
+		}
+		
 		unitVector = moveVector.unit();
+
+		// Limit maxSpeed to the speed obtainable with the motors
+		for (int a=0;a<Move.AXES;a++) {
+			if (unitVector.getAxis(a) == 0) {
+				continue;
+			}
+			if (mc.getAxes()[a].maxSpeed < Math.abs(maxSpeed * unitVector.getAxis(a))) {
+				maxSpeed = Math.abs(mc.getAxes()[a].maxSpeed / unitVector.getAxis(a));	
+			}
+		}
+		log.fine("Calculated maxSpeed for line to: "+maxSpeed);
 		
 		// Set default max junction speed, to the minimum speed of the slowest of the axes:
-		minSpeed = 0;
+		minSpeed = Double.NaN;
 		for (int a=0;a<Move.AXES;a++) {
-			if (mc.getAxes()[a].minSpeed < Math.abs(minSpeed * unitVector.getAxis(a)) || minSpeed == 0) {
+			if (mc.getAxes()[a].minSpeed < Math.abs(minSpeed * unitVector.getAxis(a)) || (Double.isNaN(minSpeed) && unitVector.getAxis(a) != 0)) {
 				minSpeed = Math.abs(mc.getAxes()[a].minSpeed / unitVector.getAxis(a));	
 			}
 		}
+		if (Double.isNaN(minSpeed)){
+			throw new RuntimeException("Failed to calculate minimum speed for: mc:"+mc+" unit vector: "+unitVector);
+		} 
 		maxEntrySpeed = minSpeed;
 		
 		// Find the largest acceleration we can use for this line, by letting the most active*slowest axis set the limit 
-		acceleration = 0;
+		acceleration = Double.NaN;
 		for (int a=0;a<Move.AXES;a++) {		
-			if (mc.getAxes()[a].acceleration < Math.abs(acceleration * unitVector.getAxis(a)) || acceleration == 0) {
+			if (mc.getAxes()[a].acceleration < Math.abs(acceleration * unitVector.getAxis(a)) || Double.isNaN(acceleration)) {
 				acceleration = Math.abs(mc.getAxes()[a].acceleration / unitVector.getAxis(a));	
 			}
 		}
-		if (acceleration == 0) {
-			throw new RuntimeException("Accleration ended up being 0 for line to "+endPoint);
+		if (Double.isNaN(acceleration) || acceleration == 0) {
+			throw new RuntimeException("Failed to calculate accleration for line from "+startPoint+" to "+endPoint);
 		}
-	    double allowableSpeed = maxAllowableSpeed(-acceleration,0.0,length); 
 
 	    // Initialize planner efficiency flags
 	    // Set flag if block will always reach maximum junction speed regardless of entry/exit speeds.
@@ -106,15 +135,38 @@ public class Line {
 	    // block nominal speed limits both the current and next maximum junction speeds. Hence, in both
 	    // the reverse and forward planners, the corresponding block junction speed will always be at the
 	    // the maximum junction speed and may always be ignored for any speed reduction checks.
-	    nominalLength = maxSpeed <= allowableSpeed;
+	    nominalLength = maxSpeed <= maxAllowableSpeed(-acceleration, minSpeed, length);
 	    recalculate = true;
 
+	    //log.info("a:"+acceleration + "s:"+ allowableSpeed + " for line from " + startPoint+" to "+endPoint);
+	    
 	    // The rest of this code is here to figure out how much speed the the previous line left us with, if any.
         if (prev == null) {
-        	entrySpeed = 0; // We start at a standstill.
+        	maxEntrySpeed = entrySpeed = minSpeed; // We start at a standstill.
         	return;
-        }	
-		
+        }
+        
+        prevUnitVector = prev.unitVector;
+        updateMaxEntrySpeed(minSpeed);
+        entrySpeed = maxEntrySpeed;
+        
+        
+        // Verify that we have not exceeded the limits for each axis
+	    MoveVector accelerationVector = unitVector.mul(acceleration);
+	    MoveVector speedVector = unitVector.mul(maxSpeed);
+	    for (int i=0;i<Move.AXES;i++) {
+	    	if (Math.abs(accelerationVector.getAxis(i)) > mc.getAxes()[i].acceleration+10) {
+	    	    log.severe("Too high acceleration:"+acceleration + " is too great for axis:"+ i + " aa: "+ Math.abs(accelerationVector.getAxis(i))+ " for line from " + startPoint+" to "+endPoint);
+	    	} 	    	
+	    	if (Math.abs(speedVector.getAxis(i)) > mc.getAxes()[i].maxSpeed+10) {
+	    	    log.severe("Too high speed:"+ maxSpeed + " is too great for axis:"+ i + " as: "+ Math.abs(speedVector.getAxis(i)) + " for line from " + startPoint+" to "+endPoint);
+	    	} 	    	
+	    }
+	    
+	    
+	    // This method is borrowed from Smoothie and thus GRBL, I have no idea why they use such a complicated method though	    
+        
+/*        
 		// Compute cosine of angle between previous and current path. (prev_unit_vec is negative)
 		// NOTE: Max junction velocity is computed without sin() or acos() by trig half angle identity.
 		double cosTheta = 0;
@@ -138,6 +190,7 @@ public class Line {
 				   
 	    // Initialize Line entry speed. Compute based on deceleration to user-defined MINIMUM_PLANNER_SPEED.
 	    entrySpeed = Math.min(maxEntrySpeed, allowableSpeed);
+	    */
 	}
 
 	public Point getEndPoint() {
@@ -156,6 +209,52 @@ public class Line {
 			  2*acceleration*distance);
 	}
 
+	double exitSpeedFormaxAllowableSpeed = -1;
+	private void updateMaxEntrySpeed(double exitSpeed) {
+		if (exitSpeedFormaxAllowableSpeed == exitSpeed) {
+			return;
+		}
+		exitSpeedFormaxAllowableSpeed = exitSpeed;
+		
+		double maxAllowableSpeed = Line.maxAllowableSpeed(-acceleration, exitSpeed, length);
+		maxAllowableSpeed = Math.min(maxAllowableSpeed, maxSpeed);
+		
+        maxEntrySpeed = Double.NaN;
+        if (prevUnitVector == null) {
+        	maxEntrySpeed = minSpeed;
+        	return;
+        }
+        
+        for (int i=0;i<Move.AXES;i++) { 
+        	if ((prevUnitVector.getAxis(i) == 0 && unitVector.getAxis(i) == 0)) {
+        		continue;
+        	}
+        	
+        	// Calculate the axis-allowable speed in the direction of the previous line   
+        	double aa = (unitVector.getAxis(i) / prevUnitVector.getAxis(i)) * maxAllowableSpeed;
+        	if (aa < 0) { 
+        		aa = mc.getAxes()[i].minSpeed/3; // Direction change, so stop almost completely
+        	} else {
+        		aa = Math.max(mc.getAxes()[i].minSpeed, aa);
+        	}        	
+        	
+        	// Figure out what the max entry speed would be if this was the limiting axis
+        	double mes = unitVector.getAxis(i) == 0 
+        				? minSpeed 
+        				: Math.abs(aa / unitVector.getAxis(i));
+        	
+        	if (Double.isNaN(maxEntrySpeed) || maxEntrySpeed > mes) {
+        		maxEntrySpeed = mes;
+        	}        	
+        }
+        
+        if (Double.isNaN(maxEntrySpeed)) {
+        	maxEntrySpeed = minSpeed;
+        } else {
+        	maxEntrySpeed = Math.min(maxEntrySpeed, maxAllowableSpeed);
+        }
+	}
+	
 	// Called by Planner::recalculate() when scanning the plan from last to first entry.
 	public void reversePass(Line next) {
 		if (next == null) return; // This is the last line.
@@ -163,6 +262,7 @@ public class Line {
         // If entry speed is already at the maximum entry speed, no need to recheck. Block is cruising.
         // If not, block in state of acceleration or deceleration. Reset entry speed to maximum and
         // check for maximum allowable speed reductions to ensure maximum possible planned speed.
+		updateMaxEntrySpeed(next.entrySpeed);
         if (entrySpeed != maxEntrySpeed) {
 
             // If nominal length true, max junction speed is guaranteed to be reached. Only compute
@@ -179,7 +279,7 @@ public class Line {
 	
 	// Called by Planner::recalculate() when scanning the plan from first to last entry.
 	public void forwardPass(Line prev) {
-	    if (prev == null) return; // This is the very first line  
+	    if (prev == null) return; // This is the very first line or the previous line is no longer available, because it has been processed 
 
 	    // If the previous block is an acceleration block, but it is not long enough to complete the
 	    // full speed change within the block, we need to adjust the entry speed accordingly. Entry
@@ -239,11 +339,10 @@ public class Line {
 	double decelerateDistance;
 	double exitSpeed;
 	void calculateTrapezoid(Line next) {
-		exitSpeed = Math.max(minSpeed, next==null ? 0 : next.entrySpeed);
+		exitSpeed = next==null ? 0 : next.entrySpeed;
 		if (acceleration == 0) { // This is a point, not a line.
 			return;
 		}
-		entrySpeed = Math.max(minSpeed, entrySpeed);
 		
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
 	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
@@ -264,10 +363,27 @@ public class Line {
 	    	throw new RuntimeException("Line has no length");	    	
 	    }
 	}
+	
+	 
+	static Writer logWriter;
+	static void logLine(String l) {
+		try {
+			if (logWriter == null) {
+				logWriter = new BufferedWriter(new FileWriter("/tmp/Line.log"));
+			}
+			logWriter.append(l);
+			logWriter.append("\n");
+			logWriter.flush();
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "Failed to write data to log file", e);
+		}
+	}
 
 	static long moveId = 0;	
 	long stepsMoved[] = new long[Move.AXES];
-	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {
+	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {		
+		logLine(mmMoveVector+"\t"+startSpeedMMS+"\t"+endSpeedMMS);
+		
 		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
 		val unitVector = mmMoveVector.unit();
 		MoveVector startSpeedVector = unitVector.mul(startSpeedMMS/mc.getTickHZ()).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
