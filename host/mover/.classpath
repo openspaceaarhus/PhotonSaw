@@ -8,6 +8,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="PhotonSaw host mover/lib/x86_64-unknown-linux-gnu"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/svg-salamander.jar"/>
+	<classpathentry kind="lib" path="lib/svg-salamander.jar" sourcepath="lib/svg-salamander.src/main/java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

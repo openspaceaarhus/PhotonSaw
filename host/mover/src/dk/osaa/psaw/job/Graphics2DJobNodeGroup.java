@@ -9,9 +9,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 
 import javax.management.RuntimeErrorException;
+
+import com.kitfox.svg.RenderableElement;
+import com.kitfox.svg.SVGGraphics2D;
+import com.kitfox.svg.xml.StyleAttribute;
 
 import lombok.val;
 import lombok.extern.java.Log;
@@ -19,24 +24,51 @@ import lombok.extern.java.Log;
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 
 @Log
-public class Graphics2DJobNodeGroup extends VectorGraphics2D {
+public class Graphics2DJobNodeGroup extends VectorGraphics2D  implements SVGGraphics2D {
 	
 	public static final double PIXELS_PER_MM = 90/25.4;
 	private Job job;
 	private JobNodeGroup jobNodeGroup;
-	private SvgLoader svgLoader;
-	private double curveFlatness; // The length of lines that make up curves 
+	private double curveFlatness; // The length of lines that make up curves
+	private double defaultPower;
+	private double defaultSpeed;
+	private double maximumPower;
 
-	public Graphics2DJobNodeGroup(Job job, JobNodeGroup jobNodeGroup, SvgLoader svgLoader) {
+	public Graphics2DJobNodeGroup(Job job, JobNodeGroup jobNodeGroup) {
 		super(0, 0, 2000*PIXELS_PER_MM, 1000*PIXELS_PER_MM);
 		this.job = job;
 		this.jobNodeGroup = jobNodeGroup;
-		this.svgLoader = svgLoader;
 		curveFlatness = 0.1;
+		defaultPower = 80;
+		maximumPower = 80;
+		defaultSpeed = 100;
+	}
+	
+	RenderableElement element;
+	@Override
+	public void startRendering(RenderableElement element) {
+		this.element = element; 
 	}
 
 	void addCutPath(ArrayList<Point2D> points) {
-		CutPath path = new CutPath(job.getNodeId("svg-path"), points, 1.0, 1000.0);
+		
+		double power = defaultPower;
+		double speed = defaultSpeed;
+		String id = "svg-node";
+		if (element != null) {
+			StyleAttribute powerAttr = element.getStyleAbsolute("photonsaw-power");
+			if (powerAttr != null) {
+				power = Math.max(maximumPower, Math.min(0, powerAttr.getDoubleValue()));				
+			}
+			StyleAttribute speedAttr = element.getStyleAbsolute("photonsaw-speed");
+			if (speedAttr != null) {
+				speed = Math.max(1000, Math.min(1, speedAttr.getDoubleValue()));
+			}
+			
+			id = element.getId();
+		}	
+		
+		CutPath path = new CutPath(job.getNodeId(id), points, power / maximumPower, speed);
 		jobNodeGroup.addChild(path);
 	}
 	
