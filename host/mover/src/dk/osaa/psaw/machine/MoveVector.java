@@ -2,6 +2,11 @@ package dk.osaa.psaw.machine;
 
 import lombok.val;
 
+/**
+ * A vector in n-dimensional space as defined by Move.AXES
+ * 
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 public class MoveVector {
 	double axes[] = new double[Move.AXES];
 	

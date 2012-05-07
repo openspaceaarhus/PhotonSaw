@@ -22,6 +22,11 @@ import lombok.extern.java.Log;
 
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 
+/**
+ * A graphics context that can be passed to SVGSalamander to have it render the svg primitives into a JobNodeGroup
+ * 
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 @Log
 public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		SVGGraphics2D {

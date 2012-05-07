@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * A group of JobNodes that make up the documetn tree that make up a Job. 
+ * 
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 public class JobNodeGroup implements JobNode {
 	
 	@Getter	@Setter

@@ -2,6 +2,11 @@ package dk.osaa.psaw.job;
 
 import java.util.ArrayList;
 
+/**
+ * Loads a test path into the Job
+ * 
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 public class TestLoader {
 
 	ArrayList<Point2D> path = new ArrayList<Point2D>();

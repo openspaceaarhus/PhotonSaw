@@ -19,6 +19,11 @@ import lombok.Getter;
 import lombok.val;
 import lombok.extern.java.Log;
 
+/**
+ * The main machine interface class that all the other bits hang off of. 
+ * 
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 @Log
 public class PhotonSaw extends Thread {
 	MovementConstraints mc;

@@ -12,9 +12,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A 2D Job, consisting of a JobNodeGroup.
+ * A 2D Job, consisting of a JobNodeGroup and a rootTransformation which always specifies the axis mapping for
+ * all the 2D mapping that's needed for the entire job.
  * 
- * @author ff
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
 public class Job {
 	

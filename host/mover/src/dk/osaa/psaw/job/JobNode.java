@@ -1,6 +1,5 @@
 package dk.osaa.psaw.job;
 
-
 /**
  * The JobNode and JobNodeGroups both render onto a target, so they both implement this.
  * 

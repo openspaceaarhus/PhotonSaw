@@ -2,7 +2,11 @@ package dk.osaa.psaw.job;
 
 import lombok.Data;
 import dk.osaa.psaw.machine.Point;
-
+/**
+ * Takes care of mapping the 2D points from a job into 4D space as understood by the machine.
+ * 
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 @Data
 public class PointTransformation {
 	enum Rotation {
