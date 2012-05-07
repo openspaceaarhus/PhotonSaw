@@ -1,20 +1,14 @@
 package dk.osaa.psaw.job;
 
 import java.awt.Image;
-import java.awt.Paint;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
-import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.logging.Level;
-
-import javax.management.RuntimeErrorException;
 
 import com.kitfox.svg.RenderableElement;
 import com.kitfox.svg.SVGException;
@@ -87,8 +81,6 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		double speed = defaultSpeed;
 		String id = "svg-node";
 		if (element != null) {
-			
-			
 			StyleAttribute powerAttr = new StyleAttribute("photonsaw-power");
 			try {
 				element.getStyle(powerAttr, true);
@@ -120,8 +112,19 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 
 	@Override
-	protected void writeShape(Shape s) {
+	public FontRendering getFontRendering() {
+		return FontRendering.VECTORS; // We don't want to handle text so get it as vectors
+	}
+			
+	public void fill(Shape s) {
+		// TODO: Add some sort of handling for filling shapes in stead of ignoring them
+		log.warning("Going to cut outline of shape in stead of filling it");
+		writeClosingDraw(s);
+		// writeClosingFill(s);
+	}
 
+	@Override
+	protected void writeClosingDraw(Shape s) {
 		if (s instanceof Line2D) {
 			Line2D l = (Line2D) s;
 			val points = new ArrayList<Point2D>();
@@ -213,22 +216,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 
 	@Override
-	public FontRendering getFontRendering() {
-		return FontRendering.VECTORS; // We don't want to handle text so get it as vectors
-	}
-			
-	public void fill(Shape s) {
-		
-		writeShape(s);
-
-		// TODO: Add some sort of handling for filling shapes in stead of
-		// ignoring them
-		// writeClosingFill(s);
-	}
-
-	@Override
-	protected void writeClosingDraw(Shape s) {
-		writeShape(s);
+	protected void writeShape(Shape s) {
+		// Do noting.
 	}
 
 	@Override
@@ -251,6 +240,11 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	@Override
 	protected String getFooter() {
 		return null; // Don't care.
+	}
+
+	@Override
+	public boolean useDrawInSteadOfFillForStroke() {
+		return true;
 	}
 
 }
