@@ -31,6 +31,8 @@ public class CutPath implements JobNode {
 	@Getter
 	double maxSpeed;
 
+	private CutPath() {}
+	
 	CutPath(String id, ArrayList<Point2D> path, double intensity, double maxSpeed) {
 		this.name = id;
 		this.id = id;

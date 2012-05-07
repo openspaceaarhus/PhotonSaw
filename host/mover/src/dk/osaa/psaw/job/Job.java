@@ -2,9 +2,17 @@ package dk.osaa.psaw.job;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.HashSet;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import com.kitfox.svg.SVGException;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.XStreamer;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import dk.osaa.psaw.machine.Move;
 
@@ -39,7 +47,72 @@ public class Job {
 	PointTransformation rootTransformation = new PointTransformation();
 
 	HashSet<String> ids = new HashSet<String>();
+
+	/**
+	 * Simply create an empty job.
+	 */
+	public Job() {
+		
+	}
 	
+	/**
+	 * Loads a job which was previously stored using storeJob 
+	 * @param reader
+	 * @throws ClassNotFoundException 
+	 * @throws IOException 
+	 */
+	static public Job loadJob(InputStream inputStream) throws IOException, ClassNotFoundException {
+		Job job = (Job)getXStream().fromXML(new GZIPInputStream(inputStream));
+		if (job.rootNode != null) {
+			job.ids = job.rootNode.rebuildAndGetIds();
+		}		
+		return job;
+	}
+
+	/**
+	 * Stores the job as xml, so it can be loaded using loadJob.
+	 * @param writer
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public void storeJob(OutputStream outputStream) throws IOException, ClassNotFoundException {
+		GZIPOutputStream zipper = new GZIPOutputStream(outputStream);
+		getXStream().toXML(this, zipper);
+		zipper.finish();
+		zipper.close();
+	}
+	
+	static XStream xstreamInstance = null;
+	private static XStream getXStream() {
+		if (xstreamInstance == null) {
+			xstreamInstance = new XStream(new StaxDriver());
+			xstreamInstance.setMode(XStream.NO_REFERENCES);
+			
+			xstreamInstance.alias("job", Job.class);
+			xstreamInstance.omitField(Job.class, "ids");
+			xstreamInstance.useAttributeFor(Job.class, "name");
+			
+			xstreamInstance.alias("group", JobNodeGroup.class);
+			xstreamInstance.addImplicitCollection(JobNodeGroup.class, "children");
+			xstreamInstance.useAttributeFor(JobNodeGroup.class, "name");
+			xstreamInstance.useAttributeFor(JobNodeGroup.class, "id");
+			xstreamInstance.omitField(JobNodeGroup.class, "parent");
+			
+			xstreamInstance.alias("cut", CutPath.class);
+			xstreamInstance.addImplicitCollection(CutPath.class, "path");
+			xstreamInstance.useAttributeFor(CutPath.class, "name");
+			xstreamInstance.useAttributeFor(CutPath.class, "id");
+			xstreamInstance.useAttributeFor(CutPath.class, "intensity");
+			xstreamInstance.useAttributeFor(CutPath.class, "maxSpeed");
+			xstreamInstance.omitField(CutPath.class, "parent");
+
+			xstreamInstance.alias("point", Point2D.class);
+			xstreamInstance.useAttributeFor(Point2D.class, "x");
+			xstreamInstance.useAttributeFor(Point2D.class, "y");			
+		}
+		return xstreamInstance;
+	}
+
 	/**
 	 * Use this method to ensure that all IDs used in the document tree are unique, 
 	 * @param hint null if you don't have a good idea for an id or the id you'd like

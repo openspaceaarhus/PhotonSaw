@@ -1,13 +1,14 @@
 package dk.osaa.psaw.job;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A group of JobNodes that make up the documetn tree that make up a Job. 
+ * A group of JobNodes that make up the document tree that make up a Job. 
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
@@ -26,6 +27,8 @@ public class JobNodeGroup implements JobNode {
 	JobNodeGroup parent;
 	
 	ArrayList<JobNode> children = new ArrayList<JobNode>();
+	
+	private JobNodeGroup() {}
 	
 	public JobNodeGroup(String id) {
 		this.name = id;
@@ -61,5 +64,22 @@ public class JobNodeGroup implements JobNode {
 		return getParent() != null 
 					? new JobNodeID(getParent().getNodeID(), this.getId())
 					: new JobNodeID(this.getId());
+	}
+
+	/**
+	 * @return all the ids of all children and this group.
+	 */
+	public HashSet<String> rebuildAndGetIds() {
+		HashSet<String> res = new HashSet<String>();
+		res.add(id);
+		for (JobNode ch : children) {
+			ch.setParent(this);
+			if (ch instanceof JobNodeGroup) {
+				res.addAll(((JobNodeGroup)ch).rebuildAndGetIds());
+			} else {
+				res.add(ch.getId());
+			}
+		}
+		return res;
 	}
 }
