@@ -25,7 +25,8 @@ public class Mover {
 			Job testJob = new Job();
 			//testJob.loadTest();
 			
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths-stroke.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/engraving.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths-stroke.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple-stroke.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 			testJob.loadSVG(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));

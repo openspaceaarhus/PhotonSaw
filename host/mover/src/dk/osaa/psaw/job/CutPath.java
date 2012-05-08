@@ -31,6 +31,7 @@ public class CutPath implements JobNode {
 	@Getter
 	double maxSpeed;
 
+	@SuppressWarnings("unused")
 	private CutPath() {}
 	
 	CutPath(String id, ArrayList<Point2D> path, double intensity, double maxSpeed) {

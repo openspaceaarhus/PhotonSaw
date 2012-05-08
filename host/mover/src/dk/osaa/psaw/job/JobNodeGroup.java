@@ -28,6 +28,7 @@ public class JobNodeGroup implements JobNode {
 	
 	ArrayList<JobNode> children = new ArrayList<JobNode>();
 	
+	@SuppressWarnings("unused")
 	private JobNodeGroup() {}
 	
 	public JobNodeGroup(String id) {

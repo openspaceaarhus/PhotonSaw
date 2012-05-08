@@ -51,10 +51,10 @@ public class MovementConstraints {
 		}
 		
 		axes[0].mmPerStep = 60.0/(200*8);
-		axes[0].coilCurrent = 350/2; 
+		axes[0].coilCurrent = 350; 
 
 		axes[1].mmPerStep = 60.0/(200*8);
-		axes[1].coilCurrent = 1870/2; 
+		axes[1].coilCurrent = 350; 
 
 		// Z-lift
 		axes[2].coilCurrent = 350/2; //350*4; // 4 motors for Z-lift 

@@ -3,15 +3,12 @@ package dk.osaa.psaw.job;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
 import java.util.HashSet;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import com.kitfox.svg.SVGException;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.XStreamer;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import dk.osaa.psaw.machine.Move;

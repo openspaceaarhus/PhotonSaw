@@ -231,10 +231,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 
 	@Override
-	protected void writeImage(Image img, int imgWidth, int imgHeight, double x,
-			double y, double width, double height) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Engraving not supported, sorry");
+	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
+		log.severe("Ignoring image: "+element.getId());
 	}
 
 	@Override
