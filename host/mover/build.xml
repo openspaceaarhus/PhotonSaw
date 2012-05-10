@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="photonsaw-host" default="jar" basedir=".">
+    <description>Builds the host part of the PhotonSaw software.</description>
+
+    <path id="classpath">
+        <fileset dir="lib" includes="**/*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" debug="true">
+	  <classpath>
+	    <path refid="classpath"/>
+	  </classpath>
+	</javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/photonsaw-host.jar">
+		  <fileset dir="build/classes"/> 
+		</jar>
+    </target>
+
+</project>
