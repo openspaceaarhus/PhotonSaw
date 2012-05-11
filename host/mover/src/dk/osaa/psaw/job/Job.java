@@ -15,6 +15,7 @@ import dk.osaa.psaw.machine.Move;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 /**
  * A 2D Job, consisting of a JobNodeGroup and a rootTransformation which always specifies the axis mapping for
@@ -22,6 +23,7 @@ import lombok.Setter;
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
+@Log
 public class Job {
 	
 	/**
@@ -83,26 +85,36 @@ public class Job {
 	private static XStream getXStream() {
 		if (xstreamInstance == null) {
 			xstreamInstance = new XStream(new StaxDriver());
+			
+			//xstreamInstance.registerConverter((SingleValueConverter)new EncodedByteArrayConverter());
 			xstreamInstance.setMode(XStream.NO_REFERENCES);
 			
 			xstreamInstance.alias("job", Job.class);
 			xstreamInstance.omitField(Job.class, "ids");
 			xstreamInstance.useAttributeFor(Job.class, "name");
+
+			xstreamInstance.omitField(AbstractJobNode.class, "parent");
+			xstreamInstance.useAttributeFor(AbstractJobNode.class, "name");
+			xstreamInstance.useAttributeFor(AbstractJobNode.class, "id");
+			xstreamInstance.useAttributeFor(LaserNode.class, "intensity");
+			xstreamInstance.useAttributeFor(LaserNode.class, "maxSpeed");
+
 			
 			xstreamInstance.alias("group", JobNodeGroup.class);
 			xstreamInstance.addImplicitCollection(JobNodeGroup.class, "children");
-			xstreamInstance.useAttributeFor(JobNodeGroup.class, "name");
-			xstreamInstance.useAttributeFor(JobNodeGroup.class, "id");
-			xstreamInstance.omitField(JobNodeGroup.class, "parent");
 			
 			xstreamInstance.alias("cut", CutPath.class);
 			xstreamInstance.addImplicitCollection(CutPath.class, "path");
-			xstreamInstance.useAttributeFor(CutPath.class, "name");
-			xstreamInstance.useAttributeFor(CutPath.class, "id");
-			xstreamInstance.useAttributeFor(CutPath.class, "intensity");
-			xstreamInstance.useAttributeFor(CutPath.class, "maxSpeed");
-			xstreamInstance.omitField(CutPath.class, "parent");
 
+			xstreamInstance.alias("engrave", EngraveRaster.class);
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "xOffset");
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "yOffset");
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "width");
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "height");
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "rasterHeight");
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "rasterWidth");
+			xstreamInstance.useAttributeFor(EngraveRaster.class, "bytesPerLine");
+			
 			xstreamInstance.alias("point", Point2D.class);
 			xstreamInstance.useAttributeFor(Point2D.class, "x");
 			xstreamInstance.useAttributeFor(Point2D.class, "y");			
@@ -142,7 +154,11 @@ public class Job {
 		String path[] = id.getPath();
 		JobNode node = getRootNode();
 		for (String i : path) {
-			node = node.getChildById(i);
+			if (node instanceof JobNodeGroup) {
+				node = ((JobNodeGroup)node).getChildById(i);
+			} else {
+				return null;
+			}
 			if (node == null) {
 				return null;
 			}
@@ -200,5 +216,11 @@ public class Job {
 			throw new RuntimeException("Axis mapping not known");			
 		}		
 		return res;
+	}
+	
+	public void logStructure() {		
+		StringBuilder sb = new StringBuilder();
+		getRootNode().getStructure(sb, " ");
+		log.info("Structure of job "+name+":\n"+sb);	
 	}
 }

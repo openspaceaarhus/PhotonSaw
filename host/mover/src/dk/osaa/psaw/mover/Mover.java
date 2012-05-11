@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.util.logging.Level;
 
 import dk.osaa.psaw.core.PhotonSaw;
@@ -30,10 +29,10 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple-stroke.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 			testJob.loadSVG(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
-
+			testJob.logStructure();
+			
 			testJob.storeJob(new FileOutputStream("/tmp/"+svgFile.getName()+".psjob"));
-			
-			
+				
 			ps = new PhotonSaw();
 			ps.getPlanner().startJob(testJob);			
 

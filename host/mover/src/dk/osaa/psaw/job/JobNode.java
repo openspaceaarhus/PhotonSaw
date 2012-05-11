@@ -8,7 +8,6 @@ package dk.osaa.psaw.job;
 public interface JobNode {
 	public void render(JobRenderTarget target, PointTransformation transformation);
 	public String getId();
-	public JobNode getChildById(String id);
 	public void setParent(JobNodeGroup parent);
 	public JobNodeID getNodeID();
 }

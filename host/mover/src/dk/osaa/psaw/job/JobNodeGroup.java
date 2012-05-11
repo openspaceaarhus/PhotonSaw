@@ -3,7 +3,6 @@ package dk.osaa.psaw.job;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,28 +11,15 @@ import lombok.Setter;
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
-public class JobNodeGroup implements JobNode {
+public class JobNodeGroup extends AbstractJobNode {
 	
-	@Getter	@Setter
-	String name;
-	
-	@Getter
-	String id;
-
 	@Getter @Setter
 	PointTransformation nodeTransformation;
-
-	@Getter @Setter
-	JobNodeGroup parent;
 	
 	ArrayList<JobNode> children = new ArrayList<JobNode>();
 	
-	@SuppressWarnings("unused")
-	private JobNodeGroup() {}
-	
 	public JobNodeGroup(String id) {
-		this.name = id;
-		this.id = id;
+		super(id);
 	}
 
 	public void render(JobRenderTarget target,
@@ -50,7 +36,6 @@ public class JobNodeGroup implements JobNode {
 		children.add(newChild);
 	}
 
-	@Override
 	public JobNode getChildById(String id) {
 		for (JobNode ch : children) {
 			if (ch.getId().equals(id)) {
@@ -60,13 +45,22 @@ public class JobNodeGroup implements JobNode {
 		return null; // Not found.
 	}
 	
-	@Override
-	public JobNodeID getNodeID() {		
-		return getParent() != null 
-					? new JobNodeID(getParent().getNodeID(), this.getId())
-					: new JobNodeID(this.getId());
+	public void getStructure(StringBuilder sb, String indent) {		
+		sb.append(indent);
+		sb.append(id); 
+		sb.append(" ("+this.getClass()+")\n"); 
+		indent = indent+" ";
+		for (JobNode ch : children) {
+			if (ch instanceof JobNodeGroup) {
+				((JobNodeGroup) ch).getStructure(sb, indent);
+			} else {
+				sb.append(indent);
+				sb.append(ch.getId());
+				sb.append(" ("+ch.getClass()+")\n"); 
+			}
+		}
 	}
-
+	
 	/**
 	 * @return all the ids of all children and this group.
 	 */

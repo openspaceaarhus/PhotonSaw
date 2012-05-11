@@ -3,8 +3,6 @@ package dk.osaa.psaw.job;
 import java.util.ArrayList;
 
 import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
 
 /**
  * A path that needs to be moved, while the LASER is on as part of a job.
@@ -12,34 +10,17 @@ import lombok.extern.java.Log;
  * 
  * @author ff
  */
-@Log
-public class CutPath implements JobNode {
+public class CutPath extends LaserNode {
 
-	@Getter
-	String id;
-	
-	@Getter @Setter
-	String name;
-	
-	@Getter @Setter
-	JobNodeGroup parent;
-	
 	@Getter
 	ArrayList<Point2D> path;
-	@Getter
-	double intensity;
-	@Getter
-	double maxSpeed;
-
+/*
 	@SuppressWarnings("unused")
-	private CutPath() {}
-	
-	CutPath(String id, ArrayList<Point2D> path, double intensity, double maxSpeed) {
-		this.name = id;
-		this.id = id;
+	private CutPath() { super(); }
+	*/
+	CutPath(String id, double intensity, double maxSpeed, ArrayList<Point2D> path) {
+		super(id,intensity,maxSpeed);
 		this.path = path;
-		this.intensity = intensity;
-		this.maxSpeed = maxSpeed;
 	}
 
 	@Override
@@ -55,16 +36,5 @@ public class CutPath implements JobNode {
 				target.cutTo(transformation.transform(p2d), intensity, maxSpeed);
 			}
 		}		
-	}
-
-	@Override
-	public JobNode getChildById(String id) {
-		log.warning(this.getClass().getName()+ " can't have children");
-		return null;
-	}
-
-	@Override
-	public JobNodeID getNodeID() {		
-		return new JobNodeID(getParent().getNodeID(), this.getId());
 	}
 }

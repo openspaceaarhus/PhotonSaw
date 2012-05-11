@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -111,7 +112,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			id = element.getId();
 		}
 
-		CutPath path = new CutPath(job.getNodeId(id), points, power/maximumPower, speed);
+		CutPath path = new CutPath(job.getNodeId(id), power/maximumPower, speed, points);
 		log.info("Appending CutPath: "+path.getId());
 		jobNodeGroup.addChild(path);
 	}
@@ -172,6 +173,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			 * (e.getArcType() == Arc2D.PIE) { write(" ", x, " ", y, " L Z"); }
 			 * return;
 			 */
+			
 		} else {
 			PathIterator segments = s.getPathIterator(null, curveFlatness);
 			double[] coordsCur = new double[6];
@@ -207,9 +209,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 					points = null;
 
 				} else {
-					throw new RuntimeException(
-							"Unimplemented segment type for path: "
-									+ segmentType);
+					throw new RuntimeException("Unimplemented segment type for path: "+ segmentType);
 				}
 
 				segments.next();
@@ -221,18 +221,54 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 
 	@Override
+	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
+		double power = defaultPower;
+		double speed = defaultSpeed;
+		String id = "svg-node";
+		if (element != null) {
+			StyleAttribute powerAttr = new StyleAttribute("photonsaw-power");
+			try {
+				element.getStyle(powerAttr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get power attribute from svg element", e);
+				powerAttr = null;
+			}
+			if (powerAttr != null && !powerAttr.getStringValue().equals("")) {
+				power = Math.min(maximumPower,Math.max(0, powerAttr.getDoubleValue()));
+			}
+			
+			StyleAttribute speedAttr = new StyleAttribute("photonsaw-speed");
+			try {
+				element.getStyle(speedAttr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get speed attribute from svg element", e);
+				speedAttr = null;
+			}			
+			if (speedAttr != null && !speedAttr.getStringValue().equals("")) {
+				speed = Math.min(1000, Math.max(1, speedAttr.getDoubleValue()));
+			}
+
+			id = element.getId();
+		}
+		
+		if (!(img instanceof BufferedImage)) {
+			throw new RuntimeException("The Image passed to writeImage was not a BufferedImage: "+img.getClass().getName());
+		}
+		
+		EngraveRaster engraving = new EngraveRaster(job.getNodeId(id), power/maximumPower, speed, 
+													(BufferedImage) img, x, y, width, height);
+		log.info("Appending EngraveRaster: "+engraving.getId());
+		jobNodeGroup.addChild(engraving);		
+	}
+
+	@Override
 	protected void writeShape(Shape s) {
-		// Do noting.
+		// Do nothing.
 	}
 
 	@Override
 	protected void writeString(String str, double x, double y) {
-		log.warning("Ignoring text: " + str); // This should never happen
-	}
-
-	@Override
-	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
-		log.severe("Ignoring image: "+element.getId());
+		// This never gets called.
 	}
 
 	@Override
@@ -249,5 +285,4 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	public boolean useDrawInSteadOfFillForStroke() {
 		return true;
 	}
-
 }
