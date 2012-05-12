@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.DataBufferByte;
 
+import lombok.val;
+
 /**
  * Engraves (or cuts depending on speed and power setting, but that would be silly) a raster image
  * 
@@ -89,33 +91,108 @@ public class EngraveRaster extends LaserNode {
         this.width = width;
         this.height = height;
 	}	
+	
+	/**
+	 * 
+	 * @param x0 The start of the engraving line
+	 * @param x1 The end of the engraving line
+	 * @param y The line to engrave on
+	 * @param leadin The length to leave on either side of the engraving line for acceleration
+	 * @param yStep The height of the line, the deceleration line will move down this amount  
+	 * @param pixels The pixels to smear across the x0 to x1 stretch, in the order they are needed
+	 */
+	void renderScanline(JobRenderTarget target, PointTransformation transformation,
+			boolean reverse, double y, double leadin, double yStep, boolean[] pixels) {
+		
+		double x0 = xOffset;
+		double x1 = xOffset+width;
+		
+		if (reverse) {
+			double x = x1; x1 = x0; x0 = x;
+			leadin *= -1;
+			
+			for(int i = 0; i < pixels.length/2; i++) {
+			    val temp = pixels[i];
+			    pixels[i] = pixels[pixels.length - i - 1];
+			    pixels[pixels.length - i - 1] = temp;
+			}
+		}
+		
+		/* Note: We use cutTo for the lead-in/out lines, this is because we need to hit the desired maxSpeed,
+		 * not the maximum speed of the machine as moveTo would do. 
+		 */
+		
+		target.moveTo(transformation.transform(new Point2D(x0-leadin, y))); // Will be optimized out for every line except the first.
+		target.cutTo(transformation.transform(new Point2D(x0, y)), 0, maxSpeed);
+		target.engraveTo(transformation.transform(new Point2D(x1, y)), intensity, maxSpeed, pixels);
+		target.cutTo(transformation.transform(new Point2D(x1+leadin, y+yStep)), 0, maxSpeed);
+	}
+	
 
 	@Override
 	public void render(JobRenderTarget target, PointTransformation transformation) {
 
 		double yStep = target.getEngravingYStepSize();
-		double lead = target.getEngravingXAccelerationDistance(maxSpeed);
+		double leadin = target.getEngravingXAccelerationDistance(maxSpeed);
 		
 		/*
 		 * Note: We always scan in the X direction at the speed wanted, acceleration moves
 		 * are appended to each end of the scan, so enough room must be available.
 		 */
 
-		if (transformation.rotation == PointTransformation.Rotation.NORMAL) {
-			int scanlines = (int)Math.round(height / yStep);
+		int scanlines = (int)Math.round(height / yStep);
+
+		if (transformation.rotation == PointTransformation.Rotation.NORMAL || 
+			transformation.rotation == PointTransformation.Rotation.DOWN) {
+
 			double rasterLinesPerScanLine = rasterHeight / scanlines;
+			double rasterLine;
+			if (transformation.rotation == PointTransformation.Rotation.DOWN) {
+				rasterLine = rasterHeight-1;
+				rasterLinesPerScanLine *= -1;
+			} else {
+				rasterLine = 0;
+			}			
 			
-			double rasterLine = 0;
 			double y = yOffset;
 			for (int yc=0;yc<scanlines;yc++) {
 				
-				// TODO: do some scanning across the raster and output a scanline and two leads
+				val pixels = new boolean[rasterWidth];				
+				for (int xc=0;xc<rasterWidth;xc++) {
+					pixels[xc] = getPixel(xc, (int)Math.round(rasterLine));  
+				}				
+				
+				renderScanline(target, transformation, (yc & 1) == 1, y, leadin, yStep, pixels);
 				
 				y += yStep;
-				rasterLine += rasterLinesPerScanLine;
+				rasterLine += rasterLinesPerScanLine; 
+			}
+
+		} else /* if (transformation.rotation == PointTransformation.Rotation.LEFT 
+		           || transformation.rotation == PointTransformation.Rotation.RIGHT) */ {
+			
+			double rasterPixelsPerScanLine = rasterWidth / scanlines;
+			double rasterPixel;
+			if (transformation.rotation == PointTransformation.Rotation.LEFT) {
+				rasterPixel = rasterWidth-1;
+				rasterPixelsPerScanLine *= -1;
+			} else {
+				rasterPixel = 0;
+			}			
+			
+			double y = yOffset;
+			for (int xc=0;xc<scanlines;xc++) {
+				
+				val pixels = new boolean[rasterHeight];				
+				for (int yc=0;yc<rasterHeight;yc++) {
+					pixels[xc] = getPixel((int)Math.round(rasterPixel), yc);  
+				}				
+				
+				renderScanline(target, transformation, (xc & 1) == 1, y, leadin, yStep, pixels);
+				
+				y += yStep;
+				rasterPixel += rasterPixelsPerScanLine; 
 			}
 		}		
-				
-		// TODO: Something, anything!
 	}
 }

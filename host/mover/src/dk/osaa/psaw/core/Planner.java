@@ -8,7 +8,6 @@ import dk.osaa.psaw.job.JobRenderTarget;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.Point;
-import dk.osaa.psaw.machine.Scanline;
 
 import lombok.extern.java.Log;
 
@@ -183,9 +182,21 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void engraveTo(Point p, double intensity, double maxSpeed,
-			Scanline scanline) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Engraving not implemented, sorry");
+			boolean[] pixels) {
+
+		for (int i=0;i<Move.AXES;i++) {
+			if (!usedAxes[i]) {
+				p.axes[i] = lastBufferedLocation.axes[i]; 
+			}
+		}
+		Line line = new Line(photonSaw.mc, 
+				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
+				lastBufferedLocation, p, maxSpeed);
+		if (line.getLength() > photonSaw.mc.getShortestMove()) {
+			line.setLaserIntensity(intensity);
+			//line.setPixels(pixels); TODO: Do something different for engraving.
+			addLine(line);
+		}
 	}
 
 	@Override

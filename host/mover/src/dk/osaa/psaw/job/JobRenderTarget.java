@@ -29,9 +29,9 @@ public interface JobRenderTarget {
 	 * @param p the point to move to
 	 * @param intensity The intensity (0..1) of the LASER during the move
 	 * @param maxSpeed The desired speed
-	 * @param scanline The pixels to engrave over this line.
+	 * @param pixels The pixels to engrave over this line.
 	 */
-	void engraveTo(Point p, double intensity, double maxSpeed, Scanline scanline);
+	void engraveTo(Point p, double intensity, double maxSpeed, boolean[] pixels);
 	
 	/**
 	 * Calculates the distance in mm needed to accelerate the X axis from 0 to the desired speed.
