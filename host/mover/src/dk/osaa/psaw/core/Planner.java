@@ -3,6 +3,7 @@ package dk.osaa.psaw.core;
 import java.util.logging.Level;
 
 import dk.osaa.psaw.job.Job;
+import dk.osaa.psaw.job.PointTransformation;
 import dk.osaa.psaw.job.JobRenderTarget;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
@@ -185,6 +186,25 @@ public class Planner extends Thread implements JobRenderTarget {
 			Scanline scanline) {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("Engraving not implemented, sorry");
+	}
+
+	@Override
+	public double getEngravingXAccelerationDistance(double speed) {
+		// This doesn't take minSpeed into account, so there should be some head room.
+		return Line.estimateAccelerationDistance(0, speed, photonSaw.mc.getAxes()[0].acceleration);
+	}
+
+	@Override
+	public double getEngravingYStepSize() {
+		if (getCurrentJob().getRootTransformation().getAxisMapping() == PointTransformation.AxisMapping.XY) {
+			return photonSaw.mc.getAxes()[1].mmPerStep;
+
+		} else if (getCurrentJob().getRootTransformation().getAxisMapping() == PointTransformation.AxisMapping.XA) {
+			return photonSaw.mc.getAxes()[3].mmPerStep;
+			
+		} else {
+			throw new RuntimeException("New AxisMapping not implemented");			
+		}
 	}
 
 }

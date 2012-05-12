@@ -302,7 +302,7 @@ public class Line {
 	
 	// Calculates the distance (not time) it takes to accelerate from initial_rate to target_rate using the
 	// given acceleration:
-	double estimateAccelerationDistance(double initialrate, double targetrate, double acceleration) {
+	static public double estimateAccelerationDistance(double initialrate, double targetrate, double acceleration) {
 	      return (Math.pow(targetrate, 2) - Math.pow(initialrate, 2))/(2*acceleration);
 	}
 
@@ -320,7 +320,7 @@ public class Line {
 	                            ^ ^
 	                            | |
 	        intersection_distance distance */
-	double intersectionDistance(double initialrate, double finalrate, double acceleration, double distance) {
+	static double intersectionDistance(double initialrate, double finalrate, double acceleration, double distance) {
 	   return (2*acceleration*distance - Math.pow(initialrate, 2) + Math.pow(finalrate, 2))/(4*acceleration);
 	}	
 	

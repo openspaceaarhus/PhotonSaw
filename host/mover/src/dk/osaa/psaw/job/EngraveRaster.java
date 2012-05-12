@@ -92,6 +92,30 @@ public class EngraveRaster extends LaserNode {
 
 	@Override
 	public void render(JobRenderTarget target, PointTransformation transformation) {
+
+		double yStep = target.getEngravingYStepSize();
+		double lead = target.getEngravingXAccelerationDistance(maxSpeed);
+		
+		/*
+		 * Note: We always scan in the X direction at the speed wanted, acceleration moves
+		 * are appended to each end of the scan, so enough room must be available.
+		 */
+
+		if (transformation.rotation == PointTransformation.Rotation.NORMAL) {
+			int scanlines = (int)Math.round(height / yStep);
+			double rasterLinesPerScanLine = rasterHeight / scanlines;
+			
+			double rasterLine = 0;
+			double y = yOffset;
+			for (int yc=0;yc<scanlines;yc++) {
+				
+				// TODO: do some scanning across the raster and output a scanline and two leads
+				
+				y += yStep;
+				rasterLine += rasterLinesPerScanLine;
+			}
+		}		
+				
 		// TODO: Something, anything!
 	}
 }

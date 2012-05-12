@@ -1,6 +1,7 @@
 package dk.osaa.psaw.job;
 
 import lombok.Data;
+import dk.osaa.psaw.machine.MovementConstraints;
 import dk.osaa.psaw.machine.Point;
 /**
  * Takes care of mapping the 2D points from a job into 4D space as understood by the machine.
@@ -9,7 +10,7 @@ import dk.osaa.psaw.machine.Point;
  */
 @Data
 public class PointTransformation {
-	enum Rotation {
+	public enum Rotation {
 		NORMAL, 
 		LEFT,  
 		DOWN,  
@@ -42,7 +43,7 @@ public class PointTransformation {
 		}
 	}
 	
-	enum AxisMapping {
+	public enum AxisMapping {
 		XY,
 		XA
 	};

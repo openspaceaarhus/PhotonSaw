@@ -85,8 +85,6 @@ public class Job {
 	private static XStream getXStream() {
 		if (xstreamInstance == null) {
 			xstreamInstance = new XStream(new StaxDriver());
-			
-			//xstreamInstance.registerConverter((SingleValueConverter)new EncodedByteArrayConverter());
 			xstreamInstance.setMode(XStream.NO_REFERENCES);
 			
 			xstreamInstance.alias("job", Job.class);
@@ -98,7 +96,6 @@ public class Job {
 			xstreamInstance.useAttributeFor(AbstractJobNode.class, "id");
 			xstreamInstance.useAttributeFor(LaserNode.class, "intensity");
 			xstreamInstance.useAttributeFor(LaserNode.class, "maxSpeed");
-
 			
 			xstreamInstance.alias("group", JobNodeGroup.class);
 			xstreamInstance.addImplicitCollection(JobNodeGroup.class, "children");
