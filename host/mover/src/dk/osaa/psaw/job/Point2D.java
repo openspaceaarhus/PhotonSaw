@@ -1,5 +1,7 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.AffineTransform;
+
 import lombok.Data;
 
 /**
@@ -22,5 +24,13 @@ public class Point2D {
 	public Point2D(double x, double y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public void transform(AffineTransform transform) {
+		double[] old = {x,y};
+		double[] nc = new double[2];
+		transform.transform(old, 0, nc, 0, 1);
+		x = nc[0];
+		y = nc[1];		
 	}
 }

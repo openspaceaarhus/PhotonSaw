@@ -44,8 +44,8 @@ public class MovementConstraints {
 		
 		for (int i=0;i<Move.AXES;i++) {
 			axes[i] = new MovementContstraintAxis();
-			axes[i].acceleration = i == 1 ? 200 : 200;
-			axes[i].maxSpeed     = i == 1 ? 400 : 200;
+			axes[i].acceleration = 5000;
+			axes[i].maxSpeed     = 300;
 			axes[i].minSpeed = 50;
 			axes[i].microSteppingMode = 3;
 		}

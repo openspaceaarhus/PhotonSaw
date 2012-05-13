@@ -1,7 +1,6 @@
 package dk.osaa.psaw.job;
 
 import dk.osaa.psaw.machine.Point;
-import dk.osaa.psaw.machine.Scanline;
 
 /**
  * This is the interface that a job renders its output to, this is implemented by the Planner

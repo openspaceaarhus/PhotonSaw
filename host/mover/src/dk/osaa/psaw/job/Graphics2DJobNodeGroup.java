@@ -73,7 +73,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		curveFlatness = 0.1;
 		defaultPower = 80;
 		maximumPower = 80;
-		defaultSpeed = 100;
+		defaultSpeed = 300;
 	}
 
 	@Override
@@ -81,38 +81,13 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		this.element = element;
 		log.info("Rendering SVG element: "+element.getId());
 	}
-
+	
 	void addCutPath(ArrayList<Point2D> points) {
-		double power = defaultPower;
-		double speed = defaultSpeed;
-		String id = "svg-node";
-		if (element != null) {
-			StyleAttribute powerAttr = new StyleAttribute("photonsaw-power");
-			try {
-				element.getStyle(powerAttr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get power attribute from svg element", e);
-				powerAttr = null;
-			}
-			if (powerAttr != null && !powerAttr.getStringValue().equals("")) {
-				power = Math.min(maximumPower,Math.max(0, powerAttr.getDoubleValue()));
-			}
-			
-			StyleAttribute speedAttr = new StyleAttribute("photonsaw-speed");
-			try {
-				element.getStyle(speedAttr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get speed attribute from svg element", e);
-				speedAttr = null;
-			}			
-			if (speedAttr != null && !speedAttr.getStringValue().equals("")) {
-				speed = Math.min(1000, Math.max(1, speedAttr.getDoubleValue()));
-			}
-
-			id = element.getId();
+		for (Point2D p : points) {
+			p.transform(getTransform());
 		}
-
-		CutPath path = new CutPath(job.getNodeId(id), power/maximumPower, speed, points);
+		
+		CutPath path = new CutPath(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), points);
 		log.info("Appending CutPath: "+path.getId());
 		jobNodeGroup.addChild(path);
 	}
@@ -219,12 +194,9 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			}
 		}
 	}
-
-	@Override
-	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
+	
+	double getPower() {
 		double power = defaultPower;
-		double speed = defaultSpeed;
-		String id = "svg-node";
 		if (element != null) {
 			StyleAttribute powerAttr = new StyleAttribute("photonsaw-power");
 			try {
@@ -236,7 +208,13 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			if (powerAttr != null && !powerAttr.getStringValue().equals("")) {
 				power = Math.min(maximumPower,Math.max(0, powerAttr.getDoubleValue()));
 			}
-			
+		}
+		return power;
+	}
+	
+	double getSpeed() {
+		double speed = defaultSpeed;
+		if (element != null) {
 			StyleAttribute speedAttr = new StyleAttribute("photonsaw-speed");
 			try {
 				element.getStyle(speedAttr, true);
@@ -247,16 +225,34 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			if (speedAttr != null && !speedAttr.getStringValue().equals("")) {
 				speed = Math.min(1000, Math.max(1, speedAttr.getDoubleValue()));
 			}
-
+		}
+		return speed;
+	}
+	
+	String getId() {
+		String id = "svg-node";
+		if (element != null) {
 			id = element.getId();
 		}
+		return id;		
+	}
+	
+
+	@Override
+	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
+
+		// Note: We do not support rotation of rasters at this point.
+		Point2D pos = new Point2D(x, y);
+		pos.transform(getTransform());
+		width  = width *getTransform().getScaleX(); 
+		height = height*getTransform().getScaleY(); 
 		
 		if (!(img instanceof BufferedImage)) {
 			throw new RuntimeException("The Image passed to writeImage was not a BufferedImage: "+img.getClass().getName());
 		}
 		
-		EngraveRaster engraving = new EngraveRaster(job.getNodeId(id), power/maximumPower, speed, 
-													(BufferedImage) img, x, y, width, height);
+		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), 
+													(BufferedImage) img, pos.x, pos.y, width, height);
 		log.info("Appending EngraveRaster: "+engraving.getId());
 		jobNodeGroup.addChild(engraving);		
 	}

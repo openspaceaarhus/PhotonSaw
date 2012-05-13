@@ -1,8 +1,8 @@
 package dk.osaa.psaw.job;
 
 import lombok.Data;
-import dk.osaa.psaw.machine.MovementConstraints;
 import dk.osaa.psaw.machine.Point;
+
 /**
  * Takes care of mapping the 2D points from a job into 4D space as understood by the machine.
  * 
