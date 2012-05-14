@@ -41,7 +41,7 @@ public class EngraveRaster extends LaserNode {
 	}
 
 	boolean getPixel(int x, int y) {
-		return 0 != (raster[y*bytesPerLine + (x >> 3)] & 1<<(x & 7));
+		return 0 != (raster[y*bytesPerLine + (x >> 3)] & (1<<(x & 7)));
 	}
 	
 	void setRaster(BufferedImage image) {
@@ -145,7 +145,7 @@ public class EngraveRaster extends LaserNode {
 		if (transformation.rotation == PointTransformation.Rotation.NORMAL || 
 			transformation.rotation == PointTransformation.Rotation.DOWN) {
 
-			double rasterLinesPerScanLine = rasterHeight / scanlines;
+			double rasterLinesPerScanLine = ((double)rasterHeight) / scanlines;
 			double rasterLine;
 			if (transformation.rotation == PointTransformation.Rotation.DOWN) {
 				rasterLine = rasterHeight-1;
@@ -171,7 +171,7 @@ public class EngraveRaster extends LaserNode {
 		} else /* if (transformation.rotation == PointTransformation.Rotation.LEFT 
 		           || transformation.rotation == PointTransformation.Rotation.RIGHT) */ {
 			
-			double rasterPixelsPerScanLine = rasterWidth / scanlines;
+			double rasterPixelsPerScanLine = ((double)rasterWidth) / scanlines;
 			double rasterPixel;
 			if (transformation.rotation == PointTransformation.Rotation.LEFT) {
 				rasterPixel = rasterWidth-1;

@@ -194,7 +194,7 @@ public class Planner extends Thread implements JobRenderTarget {
 				lastBufferedLocation, p, maxSpeed);
 		if (line.getLength() > photonSaw.mc.getShortestMove()) {
 			line.setLaserIntensity(intensity);
-			//line.setPixels(pixels); TODO: Do something different for engraving.
+			line.setPixels(pixels);
 			addLine(line);
 		}
 	}

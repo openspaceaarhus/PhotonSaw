@@ -31,7 +31,25 @@ public class Move {
 	MoveAxis axes[] = new MoveAxis[AXES];
 	Integer laserIntensity;	
 	Q16 laserAcceleration;
-	Scanline scanline;
+
+	Q30 pixelSpeed;
+	long[] pixelWords;
+
+	public void setScanline(boolean[] pixels) {
+		pixelSpeed = new Q30(((double)pixels.length)/duration);
+		//log.info("id: "+id+" Speed: "+pixelSpeed.toDouble()+" duration:"+duration);
+		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
+		for (int pc=0;pc<pixels.length;pc++) {
+			if (pixels[pc]) {
+				pixelWords[pc >> 5] |= 1<<(pc & 31);
+			}
+/*			if ((pc & 31) == 31) {
+				log.info((pc>>5)+": "+pixelWords[pc >> 5]);
+			}
+			*/
+		}
+		
+	}
 	
 	MoveAxis getAxis(int axis) {
 		if (axes[axis] == null) {
@@ -92,8 +110,8 @@ public class Move {
 			if (laserAcceleration != null && laserAcceleration.value != 0) {
 				sb.append(", La:"+laserAcceleration);				
 			}
-			if (scanline != null) {
-				sb.append(", p:"+scanline.toString());
+			if (pixelSpeed != null) {
+				sb.append(", p:"+pixelWords.length);
 			}
 		}
 		sb.append(")");
@@ -249,10 +267,10 @@ public class Move {
 			header |= LASER_ACCEL_FLAG;
 		}
 		
-		if (scanline != null) {
-			encoded.add((long)scanline.getPixelSpeed().getValue()); // 11: Pixel speed
-			encoded.add((long)scanline.getPixelWords().length); // 11: Pixel word count
-			for (long pw : scanline.getPixelWords()) {
+		if (pixelWords != null) {
+			encoded.add((long)pixelSpeed.getValue()); // 11: Pixel speed
+			encoded.add((long)pixelWords.length); // 11: Pixel word count
+			for (long pw : pixelWords) {
 				encoded.add(pw);
 			}
 			header |= PIXEL_FLAG;

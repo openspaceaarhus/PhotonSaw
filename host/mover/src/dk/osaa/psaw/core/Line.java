@@ -11,6 +11,7 @@ import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.MovementConstraints;
 import dk.osaa.psaw.machine.Point;
+import dk.osaa.psaw.machine.Q16;
 
 import lombok.Data;
 import lombok.Getter;
@@ -58,10 +59,14 @@ public class Line {
 	@Getter @Setter
 	double laserIntensity;
 
+	@Getter @Setter
+	boolean[] pixels;
+
 	MoveVector prevUnitVector;
-	
+
 	
 	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
+		this.pixels = null;
 		this.mc = mc;
 		this.maxSpeed=targetMaxSpeed;
 		
@@ -424,9 +429,15 @@ public class Line {
 	
 		Move move = new Move(moveId++, ticks);
 		
-		// TODO: handle laser acceleration too in stead of just setting it to max: 
-		move.setLaserIntensity((int)Math.round(Math.max(0, Math.min(255, 255*laserIntensity))));
+		int startIntensity = (int)Math.round(Math.max(0, Math.min(255,255*startSpeedMMS/maxSpeed)));
+		int endIntensity   = (int)Math.round(Math.max(0, Math.min(255,255*endSpeedMMS  /maxSpeed)));
+		move.setLaserIntensity(startIntensity);
+		move.setLaserAcceleration(new Q16((endIntensity/startIntensity)/ticks));
 		
+		if (pixels != null) {			
+			move.setScanline(pixels);
+		}
+				
 		for (int a=0; a < Move.AXES; a++) {
 			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
 			if (accel != null) {
@@ -473,7 +484,12 @@ public class Line {
 		for (int i=0;i<Move.AXES;i++) {
 			stepsMoved[i] = 0;
 		}
-		double topSpeed = entrySpeed;		
+		double topSpeed = entrySpeed;
+		
+		if ((accelerateDistance > 0 || decelerateDistance > 0) && pixels != null) {
+			throw new RuntimeException("Engraving line contains acceleration or deceleration ramps. ad="+accelerateDistance+" dd="+decelerateDistance);
+		}
+		
 		if (accelerateDistance > 0) {
 			topSpeed = entrySpeed+acceleration*Math.sqrt(accelerateDistance/acceleration);
 			output.add(endcodeMove(unitVector.mul(accelerateDistance), entrySpeed, topSpeed));			
