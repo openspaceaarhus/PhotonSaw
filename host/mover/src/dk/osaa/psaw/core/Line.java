@@ -429,10 +429,10 @@ public class Line {
 	
 		Move move = new Move(moveId++, ticks);
 		
-		int startIntensity = (int)Math.round(Math.max(0, Math.min(255,255*startSpeedMMS/maxSpeed)));
-		int endIntensity   = (int)Math.round(Math.max(0, Math.min(255,255*endSpeedMMS  /maxSpeed)));
+		int startIntensity = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*startSpeedMMS/maxSpeed)));
+		int endIntensity   = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*endSpeedMMS  /maxSpeed)));
 		move.setLaserIntensity(startIntensity);
-		move.setLaserAcceleration(new Q16((endIntensity/startIntensity)/ticks));
+		move.setLaserAcceleration(new Q16((endIntensity-startIntensity)/ticks));
 		
 		if (pixels != null) {			
 			move.setScanline(pixels);

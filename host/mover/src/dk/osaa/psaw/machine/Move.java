@@ -41,14 +41,14 @@ public class Move {
 		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
 		for (int pc=0;pc<pixels.length;pc++) {
 			if (pixels[pc]) {
-				pixelWords[pc >> 5] |= 1<<(pc & 31);
+				pixelWords[pc >> 5] |= 1L<<(pc & 31);
 			}
-/*			if ((pc & 31) == 31) {
+			/*
+			if ((pc & 31) == 31) {
 				log.info((pc>>5)+": "+pixelWords[pc >> 5]);
 			}
 			*/
 		}
-		
 	}
 	
 	MoveAxis getAxis(int axis) {
@@ -256,7 +256,11 @@ public class Move {
 		}
 
 		// 9: LASER (start) intensity
-		if (laserIntensity != null && laserIntensity != 0) {
+		if ((laserIntensity    != null && laserIntensity != 0) || 
+			(laserAcceleration != null && laserAcceleration.getValue() != 0)) {
+			if (laserIntensity == null) {
+				laserIntensity = 0; // This is needed when there is an acceleration from 0.
+			}
 			encoded.add(LASER_MAGIC | laserIntensity);
 			header |= LASER_FLAG;
 		}
@@ -277,7 +281,17 @@ public class Move {
 		}		
 		
 		encoded.set(headerIndex, header);
-		
+		/*
+		// Log the encoded words for debugging.
+		val sb = new StringBuilder();
+		sb.append("Encoding move id: ");
+		sb.append(id);
+		for (val w : encoded) { 
+			sb.append(" ");
+			sb.append(Long.toHexString(w).toLowerCase());	
+		}
+		log.info(sb.toString());
+		*/
 		return encoded;
 	}
 
