@@ -156,10 +156,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.mc, 
+		Line line = new Line(photonSaw.cfg.movementConstraints, 
 							lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-							lastBufferedLocation, p, photonSaw.mc.getRapidMoveSpeed());
-		if (line.getLength() > photonSaw.mc.getShortestMove()) {
+							lastBufferedLocation, p, photonSaw.cfg.movementConstraints.getRapidMoveSpeed());
+		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
 			addLine(line);
 		}
 	}
@@ -171,10 +171,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.mc, 
+		Line line = new Line(photonSaw.cfg.movementConstraints, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 				lastBufferedLocation, p, maxSpeed);
-		if (line.getLength() > photonSaw.mc.getShortestMove()) {
+		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
 			line.setLaserIntensity(intensity);
 			addLine(line);
 		}
@@ -189,10 +189,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.mc, 
+		Line line = new Line(photonSaw.cfg.movementConstraints, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 				lastBufferedLocation, p, maxSpeed);
-		if (line.getLength() > photonSaw.mc.getShortestMove()) {
+		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
 			line.setLaserIntensity(intensity);
 			line.setPixels(pixels);
 			addLine(line);
@@ -202,16 +202,16 @@ public class Planner extends Thread implements JobRenderTarget {
 	@Override
 	public double getEngravingXAccelerationDistance(double speed) {
 		// This doesn't take minSpeed into account, so there should be some head room.
-		return Line.estimateAccelerationDistance(0, speed, photonSaw.mc.getAxes()[0].acceleration);
+		return Line.estimateAccelerationDistance(0, speed, photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
 	}
 
 	@Override
 	public double getEngravingYStepSize() {
 		if (getCurrentJob().getRootTransformation().getAxisMapping() == PointTransformation.AxisMapping.XY) {
-			return photonSaw.mc.getAxes()[1].mmPerStep;
+			return photonSaw.cfg.movementConstraints.getAxes()[1].mmPerStep;
 
 		} else if (getCurrentJob().getRootTransformation().getAxisMapping() == PointTransformation.AxisMapping.XA) {
-			return photonSaw.mc.getAxes()[3].mmPerStep;
+			return photonSaw.cfg.movementConstraints.getAxes()[3].mmPerStep;
 			
 		} else {
 			throw new RuntimeException("New AxisMapping not implemented");			

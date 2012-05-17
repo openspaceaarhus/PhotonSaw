@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
-import dk.osaa.psaw.machine.MovementConstraints;
+import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.machine.PhotonSawCommandFailed;
 import dk.osaa.psaw.machine.ReplyTimeout;
 
@@ -26,7 +26,7 @@ import lombok.extern.java.Log;
  */
 @Log
 public class PhotonSaw extends Thread {
-	MovementConstraints mc;
+	Configuration cfg;
 	Commander commander;
 	@Getter
 	Planner planner;
@@ -34,11 +34,11 @@ public class PhotonSaw extends Thread {
 	@Getter
 	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(100); // TODO: Read from config
 	
-	public PhotonSaw() throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
-		mc = new MovementConstraints();
+	public PhotonSaw(Configuration cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
+		this.cfg = cfg;
 		planner = new Planner(this);
 		commander = new Commander();
-		commander.connect("/dev/ttyACM0"); // TODO: Read from config
+		commander.connect(cfg.hostConfig.getSerialPort());
 		
 		setDaemon(true);
 		setName("PhotonSaw thread, keeps the hardware fed");				
@@ -81,7 +81,9 @@ public class PhotonSaw extends Thread {
 		run("ai 10c"); // TODO: Ignore alarms while testing
 
 		for (int i=0;i<Move.AXES;i++) {
-			run("me "+i+" "+mc.getAxes()[i].coilCurrent+" "+mc.getAxes()[i].microSteppingMode);
+			run("me "+i+" "+
+					cfg.movementConstraints.getAxes()[i].coilCurrent+" "+
+					cfg.movementConstraints.getAxes()[i].microSteppingMode);
 		}
 	}
 

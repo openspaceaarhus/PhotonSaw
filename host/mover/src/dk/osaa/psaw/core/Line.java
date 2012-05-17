@@ -7,9 +7,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import dk.osaa.psaw.config.MovementConstraints;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
-import dk.osaa.psaw.machine.MovementConstraints;
 import dk.osaa.psaw.machine.Point;
 import dk.osaa.psaw.machine.Q16;
 

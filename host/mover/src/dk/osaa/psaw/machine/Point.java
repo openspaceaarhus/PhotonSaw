@@ -1,5 +1,6 @@
 package dk.osaa.psaw.machine;
 
+import dk.osaa.psaw.config.MovementConstraints;
 import lombok.Data;
 import lombok.ToString;
 
@@ -9,7 +10,7 @@ import lombok.ToString;
  * @author ff
  */
 @Data
-@ToString
+@ToString 
 public class Point {
 	public double axes[] = new double[Move.AXES];
 	

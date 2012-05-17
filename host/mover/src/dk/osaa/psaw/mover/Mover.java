@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
 
+import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.machine.Move;
@@ -33,7 +34,18 @@ public class Mover {
 			
 			testJob.storeJob(new FileOutputStream("/tmp/"+svgFile.getName()+".psjob"));
 				
-			ps = new PhotonSaw();
+	    	File cfgFile = new File("test-config.xml");
+	    	Configuration cfg;
+	    	if (cfgFile.exists()) {
+	    		cfg = Configuration.load(cfgFile);
+	    	} else {
+	    		cfg = new Configuration();	
+	    		cfg.store(cfgFile);
+	    	}
+	    	//cfg.store();
+
+			
+			ps = new PhotonSaw(cfg);
 			ps.getPlanner().startJob(testJob);			
 
 			// Wait for the job to finish
