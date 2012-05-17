@@ -3,6 +3,7 @@
 #define USART_BAUDRATE 9600
 #define BAUD_PRESCALE (((F_CPU / (USART_BAUDRATE * 16UL))) - 1)
 
+#define ADC_MV_BIT 4.88
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -37,6 +38,12 @@ uint16_t ReadADC(uint8_t ADCchannel)
         return ADC;
 }
 
+uint16_t ReadADCMV(uint8_t ADCchannel)
+{
+	uint16_t raw = ReadADC(ADCchannel);
+
+	return ADC_MV_BIT * raw;
+}
 
 int main(void)
 {
