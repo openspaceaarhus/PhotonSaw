@@ -19,7 +19,7 @@ public class Main {
 	
 	public static void main(String args[]) {
 		if (args.length != 1) {
-			System.err.println("Need config file argument, if it doesn't exist it will be created");
+			System.err.println("Need config file argument, if the file doesn't exist it will be created");
 			System.exit(1);
 		}
 				
