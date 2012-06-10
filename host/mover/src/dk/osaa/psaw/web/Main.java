@@ -13,6 +13,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
+import dk.osaa.psaw.core.PhotonSawAPI;
 
 @Log
 public class Main {
@@ -28,13 +29,18 @@ public class Main {
 	    	Configuration cfg;
 	    	if (cfgFile.exists()) {
 	    		cfg = Configuration.load(cfgFile);
+		    	cfg.store();
 	    	} else {
 	    		cfg = new Configuration();	
 	    		cfg.store(cfgFile);
 	    	}
-	    	//cfg.store();
 	    	
-	    	PhotonSaw photonSaw = new PhotonSaw(cfg);
+	    	PhotonSawAPI api;
+	    	if (cfg.hostConfig.isSimulating()) {
+	    		api = new SimulatedPhotonSaw(cfg);	    		
+	    	} else {
+	    		api = new PhotonSaw(cfg);
+	    	}    	
 	    	
 	    	Server server = new Server(cfg.jettyConfig.getPort());
 	    
@@ -48,7 +54,7 @@ public class Main {
 	        HandlerList handlers = new HandlerList();
 	        handlers.setHandlers(new Handler[] {
 	        			resource_handler,
-	        			new StatusHandler(photonSaw),
+	        			new StatusHandler(api),
 	        			new DefaultHandler()
 	        			});
 	        server.setHandler(handlers);

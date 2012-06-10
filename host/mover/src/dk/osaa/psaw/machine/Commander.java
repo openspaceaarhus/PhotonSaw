@@ -85,7 +85,13 @@ public class Commander {
 			return lastReplyValues.get(name);
 		}
 	}
-		
+	
+	public CommandReply getLastReplyValues() {
+		synchronized (lastReplyValues) {
+			return lastReplyValues.clone();
+		}
+	}
+			
 	long lastBufferFree;
 	
 	static final String READY = "\r\nReady\r\n";
@@ -327,6 +333,6 @@ public class Commander {
     		bufferMove(moveQueue.take());
     	}
     	flushMoves();
-	}	
+	}
 }
  

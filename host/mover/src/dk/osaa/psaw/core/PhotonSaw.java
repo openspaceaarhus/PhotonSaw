@@ -4,9 +4,15 @@ import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
@@ -25,14 +31,16 @@ import lombok.extern.java.Log;
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
 @Log
-public class PhotonSaw extends Thread {
+public class PhotonSaw extends Thread implements PhotonSawAPI {
 	Configuration cfg;
 	Commander commander;
 	@Getter
 	Planner planner;
 	
+	public static final int MOVE_QUEUE_SIZE = 100;
+	
 	@Getter
-	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(100); // TODO: Read from config
+	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(MOVE_QUEUE_SIZE);
 	
 	public PhotonSaw(Configuration cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
 		this.cfg = cfg;
@@ -94,5 +102,48 @@ public class PhotonSaw extends Thread {
 	public boolean active() throws IOException, ReplyTimeout, PhotonSawCommandFailed {		
 		CommandReply r = run("st");
 		return r.get("motion.active").getBoolean();
+	}
+	
+	static XStream xstreamInstance = null;
+	public static XStream getStatusXStream() {
+		if (xstreamInstance == null) {
+			xstreamInstance = new XStream(new StaxDriver());
+			xstreamInstance.setMode(XStream.NO_REFERENCES);
+			
+			xstreamInstance.alias("status", PhotonSawStatus.class);
+		}
+		return xstreamInstance;
+	}
+
+	@Override
+	public PhotonSawStatus getStatus() {
+		PhotonSawStatus r = new PhotonSawStatus();
+		
+		r.setTimestamp(System.currentTimeMillis());
+		r.setHardwareStatus(commander.getLastReplyValues());
+		r.setLineBufferLength(planner.getLineBufferLength());
+		r.setLineBufferLengthTarget(LineBuffer.BUFFER_LENGTH);
+		r.setLineBufferSize(planner.getLineBufferCount());
+		r.setLineBufferSizeTarget(LineBuffer.BUFFER_SIZE);
+		r.setMoveBufferInUse(moveQueue.size());
+		r.setMoveBufferSize(MOVE_QUEUE_SIZE);
+		r.setJobLength(planner.getCurrentJobLength());
+		r.setJobSize(planner.getCurrentJobSize());
+		r.setJobRenderingProgressLineCount(planner.getRenderedLines());
+		
+		File rd = cfg.hostConfig.getRecordDir();
+		if (cfg.hostConfig.isRecording() && rd != null) {
+			File f = new File(rd, r.getTimestamp()+".psawstate");
+
+			try {
+				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(f));
+				getStatusXStream().toXML(r, bos);
+				bos.close();
+			} catch (IOException e) {
+				log.log(Level.SEVERE, "Failed to store recorded status", e);
+			}
+		}		
+		
+		return r;
 	}
 }

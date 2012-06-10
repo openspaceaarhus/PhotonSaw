@@ -10,11 +10,12 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import dk.osaa.psaw.core.PhotonSaw;
+import dk.osaa.psaw.core.PhotonSawAPI;
 
 public class StatusHandler extends AbstractHandler {	
-	PhotonSaw photonSaw;
+	PhotonSawAPI photonSaw;
 	
-	StatusHandler (PhotonSaw ps) {
+	StatusHandler (PhotonSawAPI ps) {
 		photonSaw = ps;
 	}
 

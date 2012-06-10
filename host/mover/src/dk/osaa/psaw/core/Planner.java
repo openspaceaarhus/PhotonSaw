@@ -9,6 +9,7 @@ import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.Point;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 
 /**
@@ -28,6 +29,15 @@ public class Planner extends Thread implements JobRenderTarget {
 	boolean usedAxes[] = new boolean[Move.AXES];
 	Commander commander;	
 	private PhotonSaw photonSaw;
+	
+	@Getter
+	double currentJobLength;
+	
+	@Getter
+	int currentJobSize;
+	
+	@Getter
+	int renderedLines;
 
 	public Planner(PhotonSaw photonSaw) {
 		this.photonSaw = photonSaw;
@@ -49,8 +59,13 @@ public class Planner extends Thread implements JobRenderTarget {
 	public void startJob(Job newJob) {
 		if (currentJob != null) {
 			throw new RuntimeException("Cannot start new job while another one is running");
-		}
+		}	
 		
+		JobSize js = new JobSize(this);
+		newJob.render(js);
+	
+		currentJobLength = js.lineLength;
+		currentJobSize = js.lineCount;		
 		currentJob = newJob;
 	}
 	
@@ -102,6 +117,7 @@ public class Planner extends Thread implements JobRenderTarget {
 					// Unlock only the axes that are used by this job.
 					Point startPoint = lastBufferedLocation;
 					usedAxes = getCurrentJob().getUsedAxes();
+					renderedLines = 0;
 					getCurrentJob().render(this);
 					moveTo(startPoint); // Go back to where we were before the job.
 					
@@ -162,6 +178,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
 			addLine(line);
 		}
+		renderedLines++;
 	}
 
 	@Override
@@ -178,6 +195,7 @@ public class Planner extends Thread implements JobRenderTarget {
 			line.setLaserIntensity(intensity);
 			addLine(line);
 		}
+		renderedLines++;
 	}
 
 	@Override
@@ -197,6 +215,7 @@ public class Planner extends Thread implements JobRenderTarget {
 			line.setPixels(pixels);
 			addLine(line);
 		}
+		renderedLines++;
 	}
 
 	@Override
@@ -218,4 +237,11 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 	}
 
+	public double getLineBufferLength() {
+		return lineBuffer.getBufferLength();
+	}
+
+	public int getLineBufferCount() {
+		return lineBuffer.getBufferSize();
+	}
 }

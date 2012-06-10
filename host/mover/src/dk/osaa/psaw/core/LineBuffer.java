@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class LineBuffer {
 
+	public static final int BUFFER_SIZE = 100;
+	public static final int BUFFER_LENGTH = 200;
+	
 	private ArrayList<Line> buffer = new ArrayList<Line>();	
 	private double bufferLength = 0;
 	
@@ -25,8 +28,23 @@ public class LineBuffer {
 	 * @return true if no more lines are needed
 	 */
 	public boolean isFull() {
-		return bufferLength > 200 && buffer.size() > 100;
+		return bufferLength > BUFFER_LENGTH && buffer.size() > BUFFER_SIZE;
 	}
+	
+	/**
+	 * @return The length in mm of the buffered lines
+	 */
+	public double getBufferLength() {
+		return bufferLength;
+	}
+
+	/**
+	 * @return The length in mm of the buffered lines
+	 */
+	public int getBufferSize() {
+		return buffer.size();
+	}
+	
 
 	/**
 	 * @return True if no lines are buffered
