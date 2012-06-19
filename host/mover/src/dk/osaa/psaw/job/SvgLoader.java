@@ -21,7 +21,7 @@ import com.kitfox.svg.xml.StyleAttribute;
 @Log
 public class SvgLoader {
 	
-	public static JobNodeGroup load(Job job, String name, InputStream svgStream) throws IOException, SVGException {
+	public static JobNodeGroup load(Job job, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
 
 		SVGUniverse su = new SVGUniverse();
 		URI svgURI = su.loadSVG(svgStream, name);
@@ -44,7 +44,11 @@ public class SvgLoader {
 		double pixelsSizeX = 25.4/96; // Default to 96 DPI, perhaps we should default to 2540 DPI, just to make uncertainty very obvious.
 		double pixelsSizeY = pixelsSizeX;
 		
-		if (e.hasAttribute("photonsaw-dpi", AnimationElement.AT_XML)) {
+		if (forcedDPI > 0) {
+			pixelsSizeX = pixelsSizeY = 25.4/forcedDPI;
+			log.info("Explicit DPI set by SVG loader: "+forcedDPI);			
+			
+		} else if (e.hasAttribute("photonsaw-dpi", AnimationElement.AT_XML)) {
 			StyleAttribute dpiAttr = new StyleAttribute("photonsaw-dpi");
 			e.getPres(dpiAttr);
 			pixelsSizeX = pixelsSizeY = 25.4/dpiAttr.getDoubleValue();

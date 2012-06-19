@@ -61,11 +61,6 @@ public class Planner extends Thread implements JobRenderTarget {
 			throw new RuntimeException("Cannot start new job while another one is running");
 		}	
 		
-		JobSize js = new JobSize(this);
-		newJob.render(js);
-	
-		currentJobLength = js.lineLength;
-		currentJobSize = js.lineCount;		
 		currentJob = newJob;
 	}
 	
@@ -118,6 +113,12 @@ public class Planner extends Thread implements JobRenderTarget {
 					Point startPoint = lastBufferedLocation;
 					usedAxes = getCurrentJob().getUsedAxes();
 					renderedLines = 0;
+					
+					JobSize js = new JobSize(this);
+					getCurrentJob().render(js);	
+					currentJobLength = js.lineLength;
+					currentJobSize = js.lineCount;
+										
 					getCurrentJob().render(this);
 					moveTo(startPoint); // Go back to where we were before the job.
 					

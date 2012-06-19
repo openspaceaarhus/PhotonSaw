@@ -30,6 +30,7 @@ public class Configuration {
 			xstreamInstance = new XStream(new StaxDriver());
 			xstreamInstance.setMode(XStream.NO_REFERENCES);
 			xstreamInstance.omitField(Configuration.class, "configFile");
+			xstreamInstance.aliasType("movementconstraint", MovementConstraints.MovementContstraintAxis.class);
 		}
 		return xstreamInstance;
 	}

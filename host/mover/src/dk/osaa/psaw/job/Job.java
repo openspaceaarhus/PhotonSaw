@@ -173,7 +173,24 @@ public class Job {
 	 * @throws IOException 
 	 */
 	public JobNodeID loadSVG(String name, InputStream svgStream) throws IOException, SVGException {
-		JobNode svg = SvgLoader.load(this, name, svgStream);
+		JobNode svg = SvgLoader.load(this, name, svgStream, 0);
+		getRootNode().addChild(svg);
+		return svg.getNodeID();
+	}
+	
+	/**
+	 * Loads an SVG into the Job, the SVG itself is placed as a node group under the root nodegroup
+	 * and force the DPI of the SVG to the forcedDPI.
+	 * 
+	 * @param name The name of the SVG, used to generate an ID and an initial name for it.
+	 * @param svgStream The actual data
+	 * @param forcedDPI The DPI to use for converting the SVG pixels to mm
+	 * @return The id of the created node
+	 * @throws SVGException 
+	 * @throws IOException 
+	 */
+	public JobNodeID loadSVG(String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
+		JobNode svg = SvgLoader.load(this, name, svgStream, forcedDPI);
 		getRootNode().addChild(svg);
 		return svg.getNodeID();
 	}

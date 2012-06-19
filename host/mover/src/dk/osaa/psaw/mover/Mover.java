@@ -46,6 +46,7 @@ public class Mover {
 
 			
 			ps = new PhotonSaw(cfg);
+			
 			ps.getPlanner().startJob(testJob);			
 
 			// Wait for the job to finish

@@ -19,3 +19,18 @@ having to generate all of the moves up front.
 
 
 
+
+--- UI TODO ---
+
+Server:
+
+1) Get job list
+1.1) Create job
+2) Import svg into job
+3) Export job as xml
+4) Export job as compressed xml
+5) Import compressed xml job
+6) Set JobNode transformation  
+7) 
+
+
