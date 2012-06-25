@@ -11,17 +11,17 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import dk.osaa.psaw.core.PhotonSawAPI;
 
-public class StatusHandler extends AbstractHandler {	
+public class JobHandler extends AbstractHandler {	
 	PhotonSawAPI photonSaw;
 	
-	StatusHandler (PhotonSawAPI ps) {
+	JobHandler (PhotonSawAPI ps) {
 		photonSaw = ps;
 	}
 
 	@Override
 	public void handle(String arg0, Request baseRequest, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-    	if (request.getPathInfo().equals("/status.json")) {
+    	if (request.getPathInfo().equals("/job")) {
     		// TODO: Output the machine status as json
     		    		
 	        response.setContentType("application/json");

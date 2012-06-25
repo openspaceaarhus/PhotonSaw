@@ -10,10 +10,14 @@ public class HostConfig {
 	File recordDir;
 	boolean simulating;
 	boolean recording;
-	
+	File jobsDir;
+	int jobsInMemory;
+		
 	HostConfig() {
 		serialPort = "/dev/ttyACM0";
 		recordDir = null;
+		jobsDir = null;
+		jobsInMemory = 10;
 		simulating = false;
 		recording = false;
 	}

@@ -12,6 +12,8 @@ public interface PhotonSawAPI {
 	 */
 	PhotonSawStatus getStatus();
 
+	
+	
 	// TODO: Add Job control (start job)
 	
 	// TODO: Add controller to directly jog the axes, command zeroing and stop/start the system.
