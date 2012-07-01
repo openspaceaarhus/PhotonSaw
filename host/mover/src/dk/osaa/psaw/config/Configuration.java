@@ -3,11 +3,13 @@ package dk.osaa.psaw.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import lombok.Getter;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 public class Configuration {
@@ -31,6 +33,7 @@ public class Configuration {
 			xstreamInstance.setMode(XStream.NO_REFERENCES);
 			xstreamInstance.omitField(Configuration.class, "configFile");
 			xstreamInstance.aliasType("movementconstraint", MovementConstraints.MovementContstraintAxis.class);
+			xstreamInstance.aliasType("photonsaw-config", Configuration.class);
 		}
 		return xstreamInstance;
 	}
@@ -50,18 +53,18 @@ public class Configuration {
 	/**
 	 * Store the configuration in a new file.
 	 * @param configFile The file to store to
-	 * @throws FileNotFoundException
+	 * @throws IOException if anything goes wrong with the file.
 	 */
-	public void store(File configFile) throws FileNotFoundException {
+	public void store(File configFile) throws IOException {
 		this.configFile = configFile;
-		getXStream().toXML(this, new FileOutputStream(configFile));
+		getXStream().marshal(this, new PrettyPrintWriter(new FileWriter(configFile)));
 	}
 
 	/**
 	 * Stores the configuration to the file it was originally loaded from
-	 * @throws FileNotFoundException
+	 * @throws IOException 
 	 */
-	public void store() throws FileNotFoundException {
+	public void store() throws IOException {
 		store(configFile);
 	}
 }

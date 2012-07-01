@@ -11,6 +11,7 @@ import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.core.PhotonSawAPI;
 import dk.osaa.psaw.core.PhotonSawStatus;
+import dk.osaa.psaw.job.JobManager;
 
 public class SimulatedPhotonSaw implements PhotonSawAPI {
 	Configuration cfg;
@@ -19,10 +20,13 @@ public class SimulatedPhotonSaw implements PhotonSawAPI {
 	int currentStatus;
 	long offsetTime;
 	
+	JobManager jobManager;
+	
 	@SuppressWarnings("unchecked")
 	public SimulatedPhotonSaw(Configuration cfg) throws FileNotFoundException {
 		this.cfg = cfg;
 		currentStatus = 0;
+		jobManager = new JobManager(cfg);
 		
 		if (!cfg.hostConfig.isSimulating()) {
 			throw new RuntimeException("This class can only be used when simulating");
@@ -74,5 +78,10 @@ public class SimulatedPhotonSaw implements PhotonSawAPI {
 		PhotonSawStatus s = status.get(currentStatus);
 		s.setTimestamp(s.getTimestamp()+offsetTime);
 		return s;
+	}
+
+	@Override
+	public JobManager getJobManager() {
+		return jobManager;
 	}
 }

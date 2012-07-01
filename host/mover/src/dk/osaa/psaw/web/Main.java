@@ -55,6 +55,7 @@ public class Main {
 	        handlers.setHandlers(new Handler[] {
 	        			resource_handler,
 	        			new StatusHandler(api),
+	        			new JobHandler(api),
 	        			new DefaultHandler()
 	        			});
 	        server.setHandler(handlers);

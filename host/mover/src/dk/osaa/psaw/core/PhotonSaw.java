@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import dk.osaa.psaw.job.JobManager;
 import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
@@ -34,6 +35,7 @@ import lombok.extern.java.Log;
 public class PhotonSaw extends Thread implements PhotonSawAPI {
 	Configuration cfg;
 	Commander commander;
+	JobManager jobManager;
 	@Getter
 	Planner planner;
 	
@@ -47,6 +49,7 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		planner = new Planner(this);
 		commander = new Commander();
 		commander.connect(cfg.hostConfig.getSerialPort());
+		jobManager = new JobManager(cfg);
 		
 		setDaemon(true);
 		setName("PhotonSaw thread, keeps the hardware fed");				
@@ -145,5 +148,10 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		}		
 		
 		return r;
+	}
+
+	@Override
+	public JobManager getJobManager() {
+		return jobManager;
 	}
 }

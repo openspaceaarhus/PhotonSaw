@@ -21,12 +21,13 @@ public class JobHandler extends AbstractHandler {
 	@Override
 	public void handle(String arg0, Request baseRequest, HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-    	if (request.getPathInfo().equals("/job")) {
-    		// TODO: Output the machine status as json
-    		    		
+
+		if (request.getPathInfo().equals("/job")) {
+    		
 	        response.setContentType("application/json");
 	        response.setStatus(HttpServletResponse.SC_OK);	        
 	        //ImageIO.write(image, "png", response.getOutputStream());
+	        
 	        baseRequest.setHandled(true);
     	}
 	}
