@@ -3,5 +3,6 @@
 
        <hole cx="10" cy="15" d="5"/>
        <hole cx="30" cy="15" d="5"/>
-       <hole cx="60" cy="15" d="13"/>
+<!--       <hole cx="60" cy="15" d="13"/> -->
+       <import from="nut" cx="60" cy="15" rotate="45"/>
 </plate>
