@@ -15,13 +15,14 @@ import lombok.val;
 public class MovementConstraints {
 	
 	public static class MovementContstraintAxis {
+		public String axis; // Just a name for the axis
 		public double acceleration; // mm/s/s
 		public double maxSpeed;     // mm/s
 		public double minSpeed;     // mm/s
 
 		public double mmPerStep;    // mm / step
 		public int coilCurrent;     // mA
-		public int microSteppingMode; // 0=fullstep, 1=halfstep, 2=1/4 step, 3=1/8 step
+		public int microSteppingMode; // 0=fullstep, 1=halfstep, 2=1/4 step, 3=1/8 step		
 	};
 	
 	MovementContstraintAxis axes[] = new MovementContstraintAxis[Move.AXES];
@@ -38,9 +39,7 @@ public class MovementConstraints {
 	}
 	
 	public MovementConstraints() {
-		tickHZ = 50000; // TODO: Read this value from the hardware at setup (1s / sys.irq.interval)
-
-		// TODO: Read this configuration from a config file in stead.
+		tickHZ = 50000;
 		
 		junctionDeviation = 0.1;
 		
@@ -50,6 +49,7 @@ public class MovementConstraints {
 			axes[i].maxSpeed     = 300;
 			axes[i].minSpeed = 50;
 			axes[i].microSteppingMode = 3;
+			axes[i].axis = Move.AXIS_NAMES[i];
 		}
 		
 		axes[0].mmPerStep = 60.0/(200*8);
@@ -69,5 +69,11 @@ public class MovementConstraints {
 
 		rapidMoveSpeed = 5000; // Just go!
 		shortestMove = 0.1; // Any move shorter than this gets rounded off to 0 and dropped
+	}
+	
+	public void fixAfterLoad() {
+		for (int i=0;i<Move.AXES;i++) {
+			axes[i].axis = Move.AXIS_NAMES[i];
+		}
 	}
 }

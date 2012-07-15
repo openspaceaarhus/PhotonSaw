@@ -12,6 +12,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import dk.osaa.psaw.config.MovementConstraints.MovementContstraintAxis;
+
 public class Configuration {
 	public MovementConstraints movementConstraints;
 	public JettyConfig jettyConfig;
@@ -34,6 +36,7 @@ public class Configuration {
 			xstreamInstance.omitField(Configuration.class, "configFile");
 			xstreamInstance.aliasType("movementconstraint", MovementConstraints.MovementContstraintAxis.class);
 			xstreamInstance.aliasType("photonsaw-config", Configuration.class);
+			xstreamInstance.useAttributeFor(MovementConstraints.MovementContstraintAxis.class, "axis");
 		}
 		return xstreamInstance;
 	}
@@ -47,6 +50,7 @@ public class Configuration {
 	static public Configuration load(File configFile) throws FileNotFoundException {
 		Configuration cfg = (Configuration)getXStream().fromXML(new FileInputStream(configFile));
 		cfg.configFile = configFile;
+		cfg.movementConstraints.fixAfterLoad();
 		return cfg;
 	}
 	

@@ -1,7 +1,7 @@
 <photonsaw-config>
   <movementConstraints>
     <axes>
-      <movementconstraint>
+      <movementconstraint axis="X">
         <acceleration>5000.0</acceleration>
         <maxSpeed>300.0</maxSpeed>
         <minSpeed>50.0</minSpeed>
@@ -9,7 +9,7 @@
         <coilCurrent>350</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
-      <movementconstraint>
+      <movementconstraint axis="Y">
         <acceleration>5000.0</acceleration>
         <maxSpeed>300.0</maxSpeed>
         <minSpeed>50.0</minSpeed>
@@ -17,7 +17,7 @@
         <coilCurrent>350</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
-      <movementconstraint>
+      <movementconstraint axis="Z">
         <acceleration>5000.0</acceleration>
         <maxSpeed>100.0</maxSpeed>
         <minSpeed>50.0</minSpeed>
@@ -25,7 +25,7 @@
         <coilCurrent>175</coilCurrent>
         <microSteppingMode>0</microSteppingMode>
       </movementconstraint>
-      <movementconstraint>
+      <movementconstraint axis="A">
         <acceleration>5000.0</acceleration>
         <maxSpeed>300.0</maxSpeed>
         <minSpeed>50.0</minSpeed>
