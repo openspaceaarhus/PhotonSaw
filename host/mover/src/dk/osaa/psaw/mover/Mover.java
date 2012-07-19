@@ -34,7 +34,7 @@ public class Mover {
 			
 			testJob.storeJob(new FileOutputStream("/tmp/"+svgFile.getName()+".psjob"));
 				
-	    	File cfgFile = new File("test-config.xml");
+	    	File cfgFile = new File("test.psconfig");
 	    	Configuration cfg;
 	    	if (cfgFile.exists()) {
 	    		cfg = Configuration.load(cfgFile);

@@ -44,7 +44,7 @@ public class AbstractAPI extends AbstractHandler {
 			Method method;
 			try {
 				method = this.getClass().getMethod(methodName, RESTCallParameters.class);
-			} catch (NoSuchMethodException | SecurityException e) {
+			} catch (Exception e) {
 				log.log(Level.SEVERE, "Unknown REST method requested: "+this.getClass().getCanonicalName()+"+"+methodName, e);
 				response.sendError(501, "Unknown REST method requested: "+this.getClass().getCanonicalName()+"+"+methodName);							
 				return; 
@@ -55,8 +55,7 @@ public class AbstractAPI extends AbstractHandler {
 			RESTCallResult result; 
 			try {
 				result = (RESTCallResult)method.invoke(parameters);
-			} catch (IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
+			} catch (Exception e) {
 				log.log(Level.SEVERE, "Failed while calling REST method "+this.getClass().getCanonicalName()+"+"+methodName, e);
 				
 				response.sendError(500, "Failed while processing request, check server logs");							

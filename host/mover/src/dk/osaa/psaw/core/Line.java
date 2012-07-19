@@ -426,6 +426,10 @@ public class Line {
 				}
 			}
 		}
+		
+		if (ticks == 0) {
+			return null;			
+		}
 	
 		Move move = new Move(moveId++, ticks);
 		
@@ -502,6 +506,16 @@ public class Line {
 		if (decelerateDistance > 0) {
 			output.add(endcodeMove(unitVector.mul(decelerateDistance), topSpeed, exitSpeed));			
 		}
+		
+		int index = 0;
+		while (index < output.size()) {
+			if (output.get(index) == null) {
+				output.remove(index);
+			} else {
+				index++;
+			}
+		}
+		
 		
 		if (length > 0) {
 			if (mbf == output.size()) {
