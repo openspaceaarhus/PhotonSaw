@@ -16,12 +16,19 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import dk.osaa.psaw.core.PhotonSawAPI;
 
+/**
+ * All the classes with methods that are callable by the client inherit from this class.
+ * Reflection is used by the handle method to find the actual method to call, which must implement the required signature.
+ * A default method is also implemented which will list all the methods of the classs that implement the signature. 
+ *  
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 @Log
 public class AbstractAPI extends AbstractHandler {
 	
 	PhotonSawAPI ps;
 	String prefix;
-	public AbstractAPI(PhotonSawAPI ps, String prefix) {
+	protected AbstractAPI(PhotonSawAPI ps, String prefix) {
 		this.ps = ps;
 		this.prefix = prefix;
 	}
@@ -41,6 +48,11 @@ public class AbstractAPI extends AbstractHandler {
 		String pathprefix = "/api/"+prefix+"/";
 		if (path.startsWith(pathprefix)) {
 			String methodName = path.substring(pathprefix.length());
+			
+			if (methodName.equals("") || methodName.equals("index.html")) {
+				methodName = "index";
+			}			
+			
 			Method method;
 			try {
 				method = this.getClass().getMethod(methodName, RESTCallParameters.class);
