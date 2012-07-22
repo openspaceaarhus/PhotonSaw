@@ -1,0 +1,192 @@
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = Mon 09 Jul 2012 07:48:15 PM CEST
+
+BeginCmp
+TimeStamp = /4FFAAB93;
+Reference = P1;
+ValeurCmp = x-in;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAAB8C;
+Reference = P2;
+ValeurCmp = x-motor;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAABC4;
+Reference = P3;
+ValeurCmp = z-in;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAABA8;
+Reference = P4;
+ValeurCmp = z-m0;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFA9D49;
+Reference = P5;
+ValeurCmp = input;
+IdModule  = pin_array_12x2;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAABFF;
+Reference = P6;
+ValeurCmp = x-max;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAB052;
+Reference = P7;
+ValeurCmp = z-m1;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAAC06;
+Reference = P8;
+ValeurCmp = x-min;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAB059;
+Reference = P9;
+ValeurCmp = z-m2;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAABB7;
+Reference = P10;
+ValeurCmp = y-in;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAAB9F;
+Reference = P11;
+ValeurCmp = y-right;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAB05D;
+Reference = P12;
+ValeurCmp = z-m3;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAFED0;
+Reference = P13;
+ValeurCmp = Airflow;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAFED3;
+Reference = P14;
+ValeurCmp = Temp-out;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAB0D7;
+Reference = P15;
+ValeurCmp = Z-max;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAAFEA;
+Reference = P16;
+ValeurCmp = y-left;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAFEE0;
+Reference = P17;
+ValeurCmp = Temp-in;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAB0DC;
+Reference = P18;
+ValeurCmp = Z-min;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAAF5F;
+Reference = P19;
+ValeurCmp = y-max;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAFEE6;
+Reference = P20;
+ValeurCmp = Waterflow;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAAF8F;
+Reference = P21;
+ValeurCmp = y-min;
+IdModule  = PIN_ARRAY_2X1;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAABCB;
+Reference = P22;
+ValeurCmp = A-in;
+IdModule  = SIL-4;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFAFE4B;
+Reference = P23;
+ValeurCmp = A-axis;
+IdModule  = DB9FD;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFB190F;
+Reference = P24;
+ValeurCmp = CONN_1;
+IdModule  = 3mm-hole;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFB1913;
+Reference = P25;
+ValeurCmp = CONN_1;
+IdModule  = 3mm-hole;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFB1915;
+Reference = P26;
+ValeurCmp = CONN_1;
+IdModule  = 3mm-hole;
+EndCmp
+
+BeginCmp
+TimeStamp = /4FFB1918;
+Reference = P27;
+ValeurCmp = CONN_1;
+IdModule  = 3mm-hole;
+EndCmp
+
+EndListe

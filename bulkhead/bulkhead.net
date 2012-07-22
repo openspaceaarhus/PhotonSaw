@@ -1,0 +1,305 @@
+# EESchema Netlist Version 1.1 created  Fri 20 Jul 2012 09:53:02 PM CEST
+(
+ ( /4FFB1918 $noname  P27 CONN_1 {Lib=CONN_1}
+  (    1 Chassis )
+ )
+ ( /4FFB1915 $noname  P26 CONN_1 {Lib=CONN_1}
+  (    1 Chassis )
+ )
+ ( /4FFB1913 $noname  P25 CONN_1 {Lib=CONN_1}
+  (    1 Chassis )
+ )
+ ( /4FFB190F $noname  P24 CONN_1 {Lib=CONN_1}
+  (    1 Chassis )
+ )
+ ( /4FFAFEE6 $noname  P20 Waterflow {Lib=CONN_2}
+  (    1 waterflow )
+  (    2 waterflow-gnd )
+ )
+ ( /4FFAFEE0 $noname  P17 Temp-in {Lib=CONN_2}
+  (    1 temp-in )
+  (    2 temp-in-gnd )
+ )
+ ( /4FFAFED3 $noname  P14 Temp-out {Lib=CONN_2}
+  (    1 temp-out )
+  (    2 temp-out-gnd )
+ )
+ ( /4FFAFED0 $noname  P13 Airflow {Lib=CONN_2}
+  (    1 airflow )
+  (    2 airflow-gnd )
+ )
+ ( /4FFAFE4B $noname  P23 A-axis {Lib=CONN_9}
+  (    1 N-000034 )
+  (    2 N-000035 )
+  (    3 N-000036 )
+  (    4 N-000037 )
+  (    5 ? )
+  (    6 A-max )
+  (    7 A-max-gnd )
+  (    8 A-min )
+  (    9 A-min-gnd )
+ )
+ ( /4FFAB0DC $noname  P18 Z-min {Lib=CONN_2}
+  (    1 Z-min )
+  (    2 Z-min-gnd )
+ )
+ ( /4FFAB0D7 $noname  P15 Z-max {Lib=CONN_2}
+  (    1 Z-max )
+  (    2 Z-max-gnd )
+ )
+ ( /4FFAB05D $noname  P12 z-m3 {Lib=CONN_4}
+  (    1 N-000005 )
+  (    2 N-000044 )
+  (    3 N-000003 )
+  (    4 N-000043 )
+ )
+ ( /4FFAB059 $noname  P9 z-m2 {Lib=CONN_4}
+  (    1 N-000005 )
+  (    2 N-000044 )
+  (    3 N-000003 )
+  (    4 N-000043 )
+ )
+ ( /4FFAB052 $noname  P7 z-m1 {Lib=CONN_4}
+  (    1 N-000005 )
+  (    2 N-000044 )
+  (    3 N-000003 )
+  (    4 N-000043 )
+ )
+ ( /4FFAAFEA $noname  P16 y-left {Lib=CONN_4}
+  (    1 N-000045 )
+  (    2 N-000002 )
+  (    3 N-000001 )
+  (    4 N-000042 )
+ )
+ ( /4FFAAF8F $noname  P21 y-min {Lib=CONN_2}
+  (    1 Y-min )
+  (    2 Y-min-gnd )
+ )
+ ( /4FFAAF5F $noname  P19 y-max {Lib=CONN_2}
+  (    1 Y-max )
+  (    2 Y-max-gnd )
+ )
+ ( /4FFAAC06 $noname  P8 x-min {Lib=CONN_2}
+  (    1 X-min )
+  (    2 X-min-gnd )
+ )
+ ( /4FFAABFF $noname  P6 x-max {Lib=CONN_2}
+  (    1 X-max )
+  (    2 X-max-gnd )
+ )
+ ( /4FFAABCB $noname  P22 A-in {Lib=CONN_4}
+  (    1 N-000034 )
+  (    2 N-000035 )
+  (    3 N-000036 )
+  (    4 N-000037 )
+ )
+ ( /4FFAABC4 $noname  P3 z-in {Lib=CONN_4}
+  (    1 N-000005 )
+  (    2 N-000044 )
+  (    3 N-000003 )
+  (    4 N-000043 )
+ )
+ ( /4FFAABB7 $noname  P10 y-in {Lib=CONN_4}
+  (    1 N-000038 )
+  (    2 N-000001 )
+  (    3 N-000039 )
+  (    4 N-000045 )
+ )
+ ( /4FFAABA8 $noname  P4 z-m0 {Lib=CONN_4}
+  (    1 N-000005 )
+  (    2 N-000044 )
+  (    3 N-000003 )
+  (    4 N-000043 )
+ )
+ ( /4FFAAB9F $noname  P11 y-right {Lib=CONN_4}
+  (    1 N-000038 )
+  (    2 N-000042 )
+  (    3 N-000039 )
+  (    4 N-000002 )
+ )
+ ( /4FFAAB93 $noname  P1 x-in {Lib=CONN_4}
+  (    1 N-000040 )
+  (    2 N-000041 )
+  (    3 N-000017 )
+  (    4 N-000007 )
+ )
+ ( /4FFAAB8C $noname  P2 x-motor {Lib=CONN_4}
+  (    1 N-000040 )
+  (    2 N-000041 )
+  (    3 N-000017 )
+  (    4 N-000007 )
+ )
+ ( /4FFA9D49 $noname  P5 input {Lib=CONN_12X2}
+  (    1 airflow )
+  (    2 airflow-gnd )
+  (    3 temp-out )
+  (    4 temp-out-gnd )
+  (    5 temp-in )
+  (    6 temp-in-gnd )
+  (    7 waterflow )
+  (    8 waterflow-gnd )
+  (    9 X-min )
+  (   10 X-min-gnd )
+  (   11 X-max )
+  (   12 X-max-gnd )
+  (   13 Y-min )
+  (   14 Y-min-gnd )
+  (   15 Y-max )
+  (   16 Y-max-gnd )
+  (   17 Z-min )
+  (   18 Z-min-gnd )
+  (   19 Z-max )
+  (   20 Z-max-gnd )
+  (   21 A-min )
+  (   22 A-min-gnd )
+  (   23 A-max )
+  (   24 A-max-gnd )
+ )
+)
+*
+{ Pin List by Nets
+Net 1 "" ""
+ P16 3
+ P10 2
+Net 2 "" ""
+ P11 4
+ P16 2
+Net 3 "" ""
+ P4 3
+ P12 3
+ P7 3
+ P9 3
+ P3 3
+Net 5 "" ""
+ P3 1
+ P4 1
+ P7 1
+ P9 1
+ P12 1
+Net 6 "X-min" "X-min"
+ P5 9
+ P8 1
+Net 7 "" ""
+ P1 4
+ P2 4
+Net 10 "airflow-gnd" "airflow-gnd"
+ P13 2
+ P5 2
+Net 11 "temp-out" "temp-out"
+ P5 3
+ P14 1
+Net 12 "temp-out-gnd" "temp-out-gnd"
+ P5 4
+ P14 2
+Net 13 "temp-in" "temp-in"
+ P5 5
+ P17 1
+Net 14 "temp-in-gnd" "temp-in-gnd"
+ P5 6
+ P17 2
+Net 15 "waterflow" "waterflow"
+ P20 1
+ P5 7
+Net 16 "waterflow-gnd" "waterflow-gnd"
+ P20 2
+ P5 8
+Net 17 "" ""
+ P2 3
+ P1 3
+Net 18 "X-min-gnd" "X-min-gnd"
+ P5 10
+ P8 2
+Net 19 "Z-max-gnd" "Z-max-gnd"
+ P15 2
+ P5 20
+Net 20 "X-max" "X-max"
+ P6 1
+ P5 11
+Net 21 "A-min" "A-min"
+ P23 8
+ P5 21
+Net 22 "X-max-gnd" "X-max-gnd"
+ P6 2
+ P5 12
+Net 23 "A-min-gnd" "A-min-gnd"
+ P23 9
+ P5 22
+Net 24 "Y-min" "Y-min"
+ P21 1
+ P5 13
+Net 25 "A-max" "A-max"
+ P5 23
+ P23 6
+Net 26 "Y-min-gnd" "Y-min-gnd"
+ P21 2
+ P5 14
+Net 27 "A-max-gnd" "A-max-gnd"
+ P23 7
+ P5 24
+Net 28 "Y-max" "Y-max"
+ P19 1
+ P5 15
+Net 29 "Y-max-gnd" "Y-max-gnd"
+ P5 16
+ P19 2
+Net 30 "Z-min" "Z-min"
+ P5 17
+ P18 1
+Net 31 "Z-min-gnd" "Z-min-gnd"
+ P5 18
+ P18 2
+Net 32 "Z-max" "Z-max"
+ P5 19
+ P15 1
+Net 33 "airflow" "airflow"
+ P13 1
+ P5 1
+Net 34 "" ""
+ P23 1
+ P22 1
+Net 35 "" ""
+ P22 2
+ P23 2
+Net 36 "" ""
+ P22 3
+ P23 3
+Net 37 "" ""
+ P22 4
+ P23 4
+Net 38 "" ""
+ P10 1
+ P11 1
+Net 39 "" ""
+ P10 3
+ P11 3
+Net 40 "" ""
+ P1 1
+ P2 1
+Net 41 "" ""
+ P1 2
+ P2 2
+Net 42 "" ""
+ P11 2
+ P16 4
+Net 43 "" ""
+ P3 4
+ P7 4
+ P4 4
+ P12 4
+ P9 4
+Net 44 "" ""
+ P12 2
+ P4 2
+ P7 2
+ P3 2
+ P9 2
+Net 45 "" ""
+ P16 1
+ P10 4
+Net 46 "Chassis" "Chassis"
+ P24 1
+ P25 1
+ P26 1
+ P27 1
+}
+#End
