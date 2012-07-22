@@ -2,14 +2,18 @@ package dk.osaa.psaw.core;
 
 import java.util.logging.Level;
 
+import dk.osaa.psaw.config.MovementConstraints;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.PointTransformation;
 import dk.osaa.psaw.job.JobRenderTarget;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
+import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
+import dk.osaa.psaw.machine.Q16;
 
 import lombok.Getter;
+import lombok.val;
 import lombok.extern.java.Log;
 
 /**
@@ -30,6 +34,10 @@ public class Planner extends Thread implements JobRenderTarget {
 	Commander commander;	
 	private PhotonSaw photonSaw;
 	
+	MoveVector jogDirection;
+	long jogTimeout;
+	long jogId;
+	
 	@Getter
 	double currentJobLength;
 	
@@ -49,7 +57,9 @@ public class Planner extends Thread implements JobRenderTarget {
 		lastBufferedLocation = new Point();
 		for (int i=0;i<Move.AXES;i++) {
 			lastBufferedLocation.getAxes()[i] = 0;
-		}	
+		}
+		
+		jogTimeout = 0;
 	}
 	
 	/**
@@ -104,6 +114,64 @@ public class Planner extends Thread implements JobRenderTarget {
 		current.calculateTrapezoid(null); // Stop when this is done.
 	}
 	
+	Move endcodeJogMove(MoveVector mmMoveVector, double speedMMS) {		
+		
+		MovementConstraints mc = photonSaw.cfg.movementConstraints;
+		
+		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
+		val unitVector = mmMoveVector.unit();
+		MoveVector startSpeedVector = unitVector.mul(speedMMS/mc.getTickHZ()).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
+
+		// Find the longest axis, so we can use it for calculating the duration of the move, this way we get better accuracy.
+		int longAxis = 0;
+		double longAxisLength = -1;
+		for (int i=0;i<Move.AXES;i++) {
+			if (Math.abs(stepVector.getAxis(i)) > longAxisLength) {
+				longAxisLength = Math.abs(stepVector.getAxis(i));
+				longAxis = i;
+			}
+		}
+				
+		MoveVector accel = null;
+		long ticks;
+		ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
+			
+		if (ticks == 0) {
+			return null;			
+		}
+	
+		Move move = new Move(jogId++, ticks);
+		
+		for (int a=0; a < Move.AXES; a++) {
+			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
+			
+			// Check that we got exactly the movement in steps that we wanted,
+			// if not adjust the speed until the error is gone.
+			long steps = move.getAxisLength(a);
+			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/mc.getAxes()[a].mmPerStep);
+			
+			long diffSteps = steps - stepsWanted;
+			if (diffSteps != 0) {
+				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
+				move.nudgeSpeed(a, -diffSteps);
+					
+				// TODO: This is a ghastly hack, I know, but damn it, it works and I don't know what else to do.
+				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
+				// rather than have to rely on nudging the speed parameter up and down after the inaccuracy has been detected.
+				while (diffSteps != 0) {
+					steps = move.getAxisLength(a);
+					diffSteps = steps - stepsWanted;
+					if (diffSteps != 0) {
+						move.nudgeSpeed(a, -diffSteps/2.0);
+						log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
+					}
+				}
+			}
+		}		
+
+		return move;
+	}
+	
 	public void run() {
 		try {
 			while (true) {
@@ -143,8 +211,50 @@ public class Planner extends Thread implements JobRenderTarget {
 					
 					log.info("Hardware idle, Job done");
 					currentJob = null;
+				
+				} else if (jogDirection != null && jogTimeout > System.currentTimeMillis()) {
+
+					for (int i=0;i<Move.AXES;i++) {
+						usedAxes[i] = true;
+					}
+					
+					while (jogTimeout > System.currentTimeMillis()) {
+						double duration =  (jogTimeout-System.currentTimeMillis())/1000.0;
+						if (duration > 0.1) {
+							duration = 0.1;
+						}
+						
+						double jogMaxSpeed = 150;
+						double speed = jogMaxSpeed*jogDirection.length();						
+						
+						Point nextLoc = new Point();
+						for (int i=0;i<Move.AXES;i++) {
+							nextLoc.axes[i] = lastBufferedLocation.axes[i] + jogDirection.getAxis(i) * speed * duration; 
+						}
+						nextLoc.roundToWholeSteps(photonSaw.cfg.movementConstraints);
+						
+						MoveVector step = new MoveVector();
+						for (int i=0;i<Move.AXES;i++) {
+							step.setAxis(i, nextLoc.axes[i]-lastBufferedLocation.axes[i]);
+						}
+						
+						lastBufferedLocation = nextLoc;
+												
+						Move m = endcodeJogMove(step, speed);
+						if (m != null) {
+							photonSaw.putMove(m);
+						}
+						while (!photonSaw.moveQueue.isEmpty()) {
+							Thread.sleep(1); // Don't burn all the CPU while waiting						
+						}					
+
+						if (duration > 0.015) {
+							Thread.sleep(Math.round(duration*1000-10));
+						}
+					}					
 				}
-				Thread.sleep(1000); // Don't burn all the CPU if idle.
+				
+				Thread.sleep(100); // Don't burn all the CPU if idle.
 			}					
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Failed while planning moves", e);
@@ -244,5 +354,16 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	public int getLineBufferCount() {
 		return lineBuffer.getBufferSize();
+	}
+
+	public void setJogSpeed(MoveVector direction) {
+		if (getCurrentJob() != null) {
+			throw new RuntimeException("Cannot start jogging while a job is running");
+		}
+		
+		// TOOD: Check for outstanding alarms too.
+		
+		jogDirection = direction;
+		jogTimeout = System.currentTimeMillis()+300;		
 	}
 }

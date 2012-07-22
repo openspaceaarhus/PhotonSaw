@@ -1,6 +1,7 @@
 package dk.osaa.psaw.core;
 
 import dk.osaa.psaw.job.JobManager;
+import dk.osaa.psaw.machine.MoveVector;
 
 /**
  * This is the interface that's used by the UI to operate the system.
@@ -22,6 +23,10 @@ public interface PhotonSawAPI {
 	// TODO: Add Job control (start job)
 	// boolean startJob(String id);
 	
-	// TODO: Add controller to directly jog the axes, command zeroing and stop/start the system.
-	// JogController getJogController();
+	/**
+	 * Sets a jog speed in all directions, the machine stops 250 ms after this call.
+	 * 
+	 * @param direction The speed in each direction
+	 */
+	void setJogSpeed(MoveVector direction);
 }

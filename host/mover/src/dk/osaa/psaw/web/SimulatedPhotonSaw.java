@@ -12,6 +12,7 @@ import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.core.PhotonSawAPI;
 import dk.osaa.psaw.core.PhotonSawStatus;
 import dk.osaa.psaw.job.JobManager;
+import dk.osaa.psaw.machine.MoveVector;
 
 public class SimulatedPhotonSaw implements PhotonSawAPI {
 	Configuration cfg;
@@ -83,5 +84,10 @@ public class SimulatedPhotonSaw implements PhotonSawAPI {
 	@Override
 	public JobManager getJobManager() {
 		return jobManager;
+	}
+
+	@Override
+	public void setJogSpeed(MoveVector direction) {
+		// TODO: Simulate jogging...		
 	}
 }

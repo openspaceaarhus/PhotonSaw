@@ -18,6 +18,7 @@ import dk.osaa.psaw.job.JobManager;
 import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
+import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.machine.PhotonSawCommandFailed;
 import dk.osaa.psaw.machine.ReplyTimeout;
@@ -60,15 +61,28 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		this.start();	
 	}
 
+	boolean idle;
+	
 	public void putMove(Move move) throws InterruptedException {
 		moveQueue.put(move);
+		if (idle) {
+			this.interrupt(); // Wake up from sleep.
+		}
 	}	
 	
 	public void run() {
 		while (true) {
 			try {
 				commander.bufferMoves(moveQueue);
-				Thread.sleep(250); // Wait and see if another move becomes available
+				if (moveQueue.isEmpty()) {
+					idle = true;
+					try {
+						Thread.sleep(250); // Wait and see if another move becomes available					
+					} catch (InterruptedException e) {
+						// Never mind.
+					}			
+					idle = false;
+				}
 			} catch (Exception e) {
 				log.log(Level.SEVERE, "Caught exception while buffering moves", e);
 			}
@@ -153,5 +167,10 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	@Override
 	public JobManager getJobManager() {
 		return jobManager;
+	}
+
+	@Override
+	public void setJogSpeed(MoveVector direction) {
+		planner.setJogSpeed(direction);		
 	}
 }

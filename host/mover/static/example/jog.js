@@ -71,7 +71,7 @@ function eventToVector(e) {
     return res;   
 }
 
-var JOG_INTERVAL = 250;
+var JOG_INTERVAL = 50;
 var jogInterval;
 var jogVector;
 
@@ -103,15 +103,22 @@ function jogStop(e){
 
 // Called every 100 ms to tell the server to jog in the direction of the jogVector
 function sendJogCommand() {
-	if (console) {
-		//console.log("Hit at:", jogVector);
-	}
-	
-	$.post("/api/jog", {
-		x: jogVector.x,
-		y: jogVector.y
-	}, function(xml) {
-//		currentJog = xml;
-		console.log("jogged: ", xml);
+	$.ajax({
+		url: "/api/jog/jog",
+		
+		data: JSON.stringify({
+			x: jogVector.x,
+			y: jogVector.y,
+		}, null, "\t"),
+		
+		success: function(json) {
+			if (console) {
+				console.log("jogged: ", json);
+			}
+		},
+		
+		type: "POST",
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",		
 	});	
 }

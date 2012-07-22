@@ -14,6 +14,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.core.PhotonSawAPI;
+import dk.osaa.psaw.web.handlers.JogHandler;
 
 @Log
 public class Main {
@@ -43,20 +44,21 @@ public class Main {
 	    	}    	
 	    	
 	    	Server server = new Server(cfg.jettyConfig.getPort());
-	    
+
+	    	// Create the resource handler which serves only static files from disk
+	        File root = new File(cfg.getConfigFile().getParentFile(), "static").getAbsoluteFile();
+	        log.info("Serving static files out of "+root);
 	        ResourceHandler resource_handler = new ResourceHandler();
 	        resource_handler.setDirectoriesListed(true);
 	        resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-	        File root = new File(cfg.getConfigFile().getParentFile(), "static").getAbsoluteFile();
-	        System.err.println("Serving files out of "+root);
 	        resource_handler.setResourceBase(root.getAbsolutePath());
 	        
+	        // Set up the handler stack, each request is passed to each handler in turn until one of them handles the request 
 	        HandlerList handlers = new HandlerList();
 	        handlers.setHandlers(new Handler[] {
-	        			resource_handler,
-	        			new StatusHandler(api),
-	        			new JobHandler(api),
-	        			new DefaultHandler()
+	        			resource_handler,    // Serves real files from disk.
+	        			new JogHandler(api), // Jogging the machine 
+	        			new DefaultHandler() // 404
 	        			});
 	        server.setHandler(handlers);
 	    	
