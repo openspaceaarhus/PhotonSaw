@@ -10,7 +10,6 @@ import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
-import dk.osaa.psaw.machine.Q16;
 
 import lombok.Getter;
 import lombok.val;
@@ -105,7 +104,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		Line current = null;
 		for (Line next: lineBuffer.getList()) {
 			if (current != null) {
-				if (current.recalculate || next.recalculate) {
+				if (current.isRecalculateNeeded() || next.isRecalculateNeeded()) {
 					current.calculateTrapezoid(next);
 				}
 			}			
@@ -132,7 +131,6 @@ public class Planner extends Thread implements JobRenderTarget {
 			}
 		}
 				
-		MoveVector accel = null;
 		long ticks;
 		ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
 			
