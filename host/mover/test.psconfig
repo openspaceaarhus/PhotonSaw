@@ -2,7 +2,7 @@
   <movementConstraints>
     <axes>
       <movementconstraint>
-        <acceleration>1700.0</acceleration>
+        <acceleration>2500.0</acceleration>
         <maxSpeed>1500.0</maxSpeed>
         <minSpeed>10.0</minSpeed>
         <mmPerStep>0.0375</mmPerStep>
