@@ -5,16 +5,16 @@
         <acceleration>2500.0</acceleration>
         <maxSpeed>1500.0</maxSpeed>
         <minSpeed>50.0</minSpeed>
-        <maxJerk>20.0</maxJerk>
+        <maxJerk>25.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
         <coilCurrent>200</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
       <movementconstraint axis="Y">
-        <acceleration>500.0</acceleration>
-        <maxSpeed>75.0</maxSpeed>
-        <minSpeed>5.0</minSpeed>
-        <maxJerk>5.0</maxJerk>
+        <acceleration>1500.0</acceleration>
+        <maxSpeed>1175.0</maxSpeed>
+        <minSpeed>10.0</minSpeed>
+        <maxJerk>10.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
         <coilCurrent>200</coilCurrent>
         <microSteppingMode>3</microSteppingMode>

@@ -46,6 +46,9 @@ char bufferIsEmpty();
 // Stop any action and purge the move buffer, do not call this from shaker itself or it will deadlock!
 void shakerResetBuffer();
 
+// Jog in the specified direction for one second.
+void setJogSpeed(int *axes);
+
 #define AXIS_X 0
 #define AXIS_Y 1
 #define AXIS_Z 2

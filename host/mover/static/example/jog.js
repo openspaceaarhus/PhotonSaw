@@ -11,7 +11,7 @@ $(window).resize(function(){
 // Ensure that the page is laid out correctly
 function resize() {
     var diameter = window.innerWidth * 0.8;
-    if (window.innerHeight < diameter) {
+    if (window.innerHeight * 0.8 < diameter) {
         diameter = window.innerHeight * 0.8;
     }
     if (diameter < 250) {
@@ -97,8 +97,13 @@ function jogStop(e){
 	if (jogInterval != null) {
 		clearInterval(jogInterval);
 		jogInterval = null;
-		drawJogger();
 	}	
+	jogVector.x = 0;
+	jogVector.y = 0;
+	jogVector.z = 0;
+	jogVector.a = 0;
+	sendJogCommand();
+	drawJogger();
 }
 
 // Called every 100 ms to tell the server to jog in the direction of the jogVector
@@ -109,6 +114,8 @@ function sendJogCommand() {
 		data: JSON.stringify({
 			x: jogVector.x,
 			y: jogVector.y,
+			z: jogVector.x,
+			a: jogVector.y,
 		}, null, "\t"),
 		
 		success: function(json) {

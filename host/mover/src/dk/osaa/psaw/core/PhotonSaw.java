@@ -19,6 +19,7 @@ import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
+import dk.osaa.psaw.machine.Q30;
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.machine.PhotonSawCommandFailed;
 import dk.osaa.psaw.machine.ReplyTimeout;
@@ -171,6 +172,20 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 
 	@Override
 	public void setJogSpeed(MoveVector direction) {
-		planner.setJogSpeed(direction);		
+		String cmd = "jv";
+		
+		for (int ax=0;ax<Move.AXES;ax++) {
+			double speed = cfg.movementConstraints.getAxes()[ax].maxSpeed;
+			if (speed > 100) {
+				speed = 100;
+			}
+			Q30 s = new Q30(speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ());
+			cmd += " "+s.getLong();
+		}
+		try {
+			commander.run(cmd);
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "Failed to run jog command '"+cmd+"': ", e);
+		}		
 	}
 }
