@@ -19,7 +19,8 @@ public class MovementConstraints {
 		public double acceleration; // mm/s/s
 		public double maxSpeed;     // mm/s
 		public double minSpeed;     // mm/s
-
+		public double maxJerk;      // mm/s 
+		
 		public double mmPerStep;    // mm / step
 		public int coilCurrent;     // mA
 		public int microSteppingMode; // 0=fullstep, 1=halfstep, 2=1/4 step, 3=1/8 step		
@@ -48,6 +49,7 @@ public class MovementConstraints {
 			axes[i].acceleration = 5000;
 			axes[i].maxSpeed     = 300;
 			axes[i].minSpeed = 50;
+			axes[i].maxJerk = 50;
 			axes[i].microSteppingMode = 3;
 			axes[i].axis = Move.AXIS_NAMES[i];
 		}
@@ -74,6 +76,20 @@ public class MovementConstraints {
 	public void fixAfterLoad() {
 		for (int i=0;i<Move.AXES;i++) {
 			axes[i].axis = Move.AXIS_NAMES[i];
+			if (axes[i].maxJerk == 0 || axes[i].maxJerk == Double.NaN) {
+				axes[i].maxJerk = axes[i].minSpeed;
+			}
 		}
+	}
+
+	/**
+	 * @return The minimum speed of the system, as a vector.
+	 */
+	public MoveVector getMinSpeed() {
+		MoveVector res = new MoveVector();
+		for (int i=0;i<Move.AXES;i++) {
+			res.setAxis(i, axes[i].minSpeed);
+		}
+		return res;
 	}
 }

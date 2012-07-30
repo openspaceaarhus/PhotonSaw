@@ -125,6 +125,21 @@ unsigned int motionMoveOffset() {
   return cuMoveCodeOffset;
 }
 
+int jogTimeout;
+int jogSpeed[4];
+
+void setJogSpeed(int *axes) {
+
+  char stop = 1;
+  for (int ax=0;ax<4;ax++) {
+    if ((jogSpeed[ax] = axes[ax])) {
+      stop = 0;
+    }
+  }  
+  jogTimeout = stop ? 0 : 20;
+}
+
+
 // Stop any action and purge the move buffer, do not call this from shaker itself or it will deadlock!
 void shakerResetBuffer() {
   int alarmIndex = alarmSet(ALARM_RESET, "Stopping");
@@ -146,8 +161,27 @@ inline void startNewMove() {
      TODO: If at least one axis is moving so fast it's impossible to stop it immediatly,
      produce a move to bring the machine to a graceful stop and set an alarm for the host to deal with.
     */
+    
+
+    if (jogTimeout > 0) {
+      jogTimeout--;
+      
+      for (int ax=0;ax<4;ax++) {
+	if (jogSpeed[ax]) {
+	  axisStartMove(&axes[ax], jogSpeed[ax], 0);
+	} else {
+	  axisNewMove(&axes[ax]);
+	}
+      }
+  
+      // 50 ms => 1000 ticks.
+      cuDuration = 1000;
+      cuActive = 1;
+    }
 
     return; // Well, never mind then.
+  } else {
+    jogTimeout = 0; // Don't keep jogging after the job is done.
   }
 
   cuMoveCodeOffset = 0;
@@ -343,6 +377,8 @@ void shakerInit() {
   stepperIRQMax = 0;
   stepperIRQAvg = 0;
   alarmInit();
+
+  jogTimeout = 0; // Not jogging.
 
   AXIS_INIT(&axes[AXIS_X], X);
   AXIS_INIT(&axes[AXIS_Y], Y);

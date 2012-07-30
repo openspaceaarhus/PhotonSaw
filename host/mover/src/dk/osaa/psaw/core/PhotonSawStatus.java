@@ -8,6 +8,7 @@ import dk.osaa.psaw.machine.CommandReply;
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
+@SuppressWarnings("rawtypes")
 @Data
 public class PhotonSawStatus implements Comparable {
 	

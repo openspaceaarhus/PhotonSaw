@@ -42,6 +42,7 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "bm (-nc) <moves> <code>... to buffer move codes\r\n");
     fiprintf(output, "bs: Buffer status\r\n");
     fiprintf(output, "br: Buffer reset\r\n");
+    fiprintf(output, "jv <x> <y> <z> <a> Jog speed vector\r\n");
     fiprintf(output, "me <axis> <current> <usm>: Motor Enable\r\n");
 }
 
@@ -147,6 +148,24 @@ void cmdMotorEnable(char *line, FILE *output) {
   return;
 }
 
+void cmdJog(char *line, FILE *output) {
+  int axes[4];
+  if (sscanf(line, "%d %d %d %d", axes+0, axes+1, axes+2, axes+3) != 4) {
+    fprintf(output, "result  Error: Unable to parse jog speed vector: %s\r\n", line);
+    return;
+  }
+
+  if (!bufferIsEmpty()) {
+    fprintf(output, "result Error: Cannot jog while moves are buffered\r\n");
+    return;
+  }
+
+  setJogSpeed(axes);
+  
+  fiprintf(output, "result  OK\r\n");
+  printMotionState(output);
+}
+
 void commandRun(char *line, FILE *output) {
   if (!*line) {
     fiprintf(output, "\x1b[2JPhotonSaw console\r\n");
@@ -188,6 +207,9 @@ void commandRun(char *line, FILE *output) {
     
   } else if (!strncmp(line, "me ", 3)) {
     cmdMotorEnable(line+3, output);
+    
+  } else if (!strncmp(line, "jv ", 3)) {
+    cmdJog(line+3, output);
     
   } else {
     respondSyntaxError(line, output);
