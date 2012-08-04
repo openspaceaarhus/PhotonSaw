@@ -115,13 +115,16 @@ function sendJogCommand() {
 			x: jogVector.x,
 			y: jogVector.y,
 			z: jogVector.x,
-			a: jogVector.y,
+			a: jogVector.a,
 		}, null, "\t"),
 		
 		success: function(json) {
+			// TODO: Maybe we should provide some sort indication that it worked, perhaps read out the current speed and position.
+			/*
 			if (console) {
 				console.log("jogged: ", json);
 			}
+			*/
 		},
 		
 		type: "POST",

@@ -179,12 +179,18 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 			if (speed > 100) {
 				speed = 100;
 			}
-			Q30 s = new Q30(speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ());
+			
+			double stepsPerTick = speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ();			
+			// We run for 5000 ticks per interval, so don't allow any partial steps to be taken or the motor will not run smoothly.
+			stepsPerTick = Math.round(stepsPerTick*5000)/5000.0;
+			Q30 s = new Q30(stepsPerTick);
+			
 			cmd += " "+s.getLong();
 		}
+		
 		try {
 			commander.run(cmd);
-		} catch (Exception e) {
+		} catch (Exception e) { // TODO: re-throw to tell the client about the problem.
 			log.log(Level.SEVERE, "Failed to run jog command '"+cmd+"': ", e);
 		}		
 	}
