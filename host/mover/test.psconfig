@@ -2,21 +2,21 @@
   <movementConstraints>
     <axes>
       <movementconstraint axis="X">
-        <acceleration>2500.0</acceleration>
-        <maxSpeed>1500.0</maxSpeed>
-        <minSpeed>50.0</minSpeed>
-        <maxJerk>25.0</maxJerk>
+        <acceleration>500.0</acceleration>
+        <maxSpeed>600.0</maxSpeed>
+        <minSpeed>2.0</minSpeed>
+        <maxJerk>2.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
-        <coilCurrent>200</coilCurrent>
+        <coilCurrent>350</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
       <movementconstraint axis="Y">
-        <acceleration>1500.0</acceleration>
-        <maxSpeed>1175.0</maxSpeed>
-        <minSpeed>10.0</minSpeed>
-        <maxJerk>10.0</maxJerk>
+        <acceleration>200.0</acceleration>
+        <maxSpeed>600.0</maxSpeed>
+        <minSpeed>2.0</minSpeed>
+        <maxJerk>2.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
-        <coilCurrent>200</coilCurrent>
+        <coilCurrent>1850</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
       <movementconstraint axis="Z">
@@ -25,7 +25,7 @@
         <minSpeed>50.0</minSpeed>
         <maxJerk>50.0</maxJerk>
         <mmPerStep>0.00625</mmPerStep>
-        <coilCurrent>175</coilCurrent>
+        <coilCurrent>350</coilCurrent>
         <microSteppingMode>0</microSteppingMode>
       </movementconstraint>
       <movementconstraint axis="A">

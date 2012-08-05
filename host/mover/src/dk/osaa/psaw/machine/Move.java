@@ -96,23 +96,23 @@ public class Move {
 			double a = getAxis(i).accel != null ? getAxis(i).accel.toDouble() : 0;
 			long l = getAxisLength(i);
 			if (v != 0) {
-				sb.append(", "+i+"s:"+String.format("%04f", v));
+				sb.append(", "+i+"s:"+String.format("%05f", v));
 			}
 			if (a != 0) {
-				sb.append(", "+i+"a:"+String.format("%04f", a));
+				sb.append(", "+i+"a:"+a);
 			}
 			if (l != 0) {
 				sb.append(", "+i+"l:"+l);
 			}
-			if (laserIntensity != null && laserIntensity != 0) {
-				sb.append(", Li:"+laserIntensity);				
-			}
-			if (laserAcceleration != null && laserAcceleration.value != 0) {
-				sb.append(", La:"+laserAcceleration);				
-			}
-			if (pixelSpeed != null) {
-				sb.append(", p:"+pixelWords.length);
-			}
+		}
+		if (laserIntensity != null && laserIntensity != 0) {
+			sb.append(", Li:"+laserIntensity);				
+		}
+		if (laserAcceleration != null && laserAcceleration.value != 0) {
+			sb.append(", La:"+laserAcceleration);				
+		}
+		if (pixelSpeed != null) {
+			sb.append(", p:"+pixelWords.length);
 		}
 		sb.append(")");
 		return sb.toString();

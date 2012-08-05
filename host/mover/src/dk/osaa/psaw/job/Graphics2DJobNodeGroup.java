@@ -83,11 +83,15 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 	
 	void addCutPath(ArrayList<Point2D> points) {
+		
+		ArrayList<Point2D> newpoints = new ArrayList<Point2D>(); 
 		for (Point2D p : points) {
-			p.transform(getTransform());
+			val newpoint = new Point2D(p.getX(), p.getY());
+			newpoint.transform(getTransform());
+			newpoints.add(newpoint);
 		}
 		
-		CutPath path = new CutPath(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), points);
+		CutPath path = new CutPath(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), newpoints);
 		log.info("Appending CutPath: "+path.getId());
 		jobNodeGroup.addChild(path);
 	}
