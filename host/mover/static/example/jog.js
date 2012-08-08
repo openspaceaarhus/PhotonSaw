@@ -46,7 +46,7 @@ function drawJogger() {
     // Draw the current jog speed indicator 
     if (jogInterval) {
     	var jx = center[0]+jogVector.x*radius;
-    	var jy = center[1]-jogVector.y*radius;
+    	var jy = center[1]+jogVector.y*radius;
 
     	ctx.beginPath();
         ctx.moveTo(jx-radius/10, jy);
@@ -66,7 +66,7 @@ function eventToVector(e) {
     
     var res = new Object();
     res.x = ((e.pageX-jogger.offset().left)-center[0]) / radius;
-    res.y = (center[1]-(e.pageY-jogger.offset().top)) / radius;
+    res.y = -(center[1]-(e.pageY-jogger.offset().top)) / radius;
     
     return res;   
 }
@@ -114,8 +114,8 @@ function sendJogCommand() {
 		data: JSON.stringify({
 			x: jogVector.x,
 			y: jogVector.y,
-			z: jogVector.x,
-			a: jogVector.y,
+			//z: jogVector.x,
+			//a: jogVector.y,
 		}, null, "\t"),
 		
 		success: function(json) {
