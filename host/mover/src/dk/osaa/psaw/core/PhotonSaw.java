@@ -6,7 +6,9 @@ import gnu.io.UnsupportedCommOperationException;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
@@ -65,11 +67,32 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	boolean idle;
 	
 	public void putMove(Move move) throws InterruptedException {
+		
+		logMove(move);
+		
 		moveQueue.put(move);
 		if (idle) {
 			this.interrupt(); // Wake up from sleep.
 		}
 	}	
+	
+	static FileWriter logWriter;
+	
+	private void logMove(Move move) {
+		try {
+
+			if (logWriter == null) {
+				logWriter = new FileWriter(new File("move.log"));			
+			}
+			
+			logWriter.write(move.toString());			
+			logWriter.write("\n");
+			logWriter.flush();
+		
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "Failed to log move", e);
+		}		
+	}
 	
 	public void run() {
 		while (true) {
@@ -179,12 +202,18 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 			if (speed > 100) {
 				speed = 100;
 			}
-			Q30 s = new Q30(speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ());
+			
+			double stepsPerTick = speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ();			
+			// We run for 5000 ticks per interval, so don't allow any partial steps to be taken or the motor will not run smoothly.
+			stepsPerTick = Math.round(stepsPerTick*5000)/5000.0;
+			Q30 s = new Q30(stepsPerTick);
+			
 			cmd += " "+s.getLong();
 		}
+		
 		try {
 			commander.run(cmd);
-		} catch (Exception e) {
+		} catch (Exception e) { // TODO: re-throw to tell the client about the problem.
 			log.log(Level.SEVERE, "Failed to run jog command '"+cmd+"': ", e);
 		}		
 	}

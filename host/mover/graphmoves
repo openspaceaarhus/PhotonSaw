@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my @COL = qw(0s 1s);
+
+my $df = "moves.data";
+open D, ">$df";
+
+my $t = 0;
+while (my $line = <>) {
+    # Move(t:495, 0s:-0.025574, 0a:0.000014, 0l:-11, 1s:-0.030224, 1a:0.000016, 1l:-13, Li:63)
+
+    my ($attr) = $line =~ /Move\((.+)\)$/ or next;
+
+    my @attr = split /,\s+/, $attr;
+    my %attr;
+    map { 
+	my ($k, $v) = /^([^:]+):(.+)$/;
+	$attr{$k} = $v;
+    } @attr;
+
+    for my $i (0..3) {
+	$attr{"${i}s"} = ($attr{"${i}s"}||0);
+	$attr{"${i}a"} = ($attr{"${i}a"}||0);
+    }
+
+    print D join("\t", $t, map {$attr{$_}||0} @COL), "\n";
+
+    my %es;
+    for my $i (0..3) {
+	$es{"${i}s"} = ($attr{"${i}s"}||0) + $attr{t}*$attr{"${i}a"};
+    }
+
+    $t += $attr{t};
+    print D join("\t", $t, map {$es{$_}||0} @COL), "\n";
+}
+close D;
+
+print "Total time: ".($t/50000)." s \n";
+
+#system("gnuplot", "plot-moves");

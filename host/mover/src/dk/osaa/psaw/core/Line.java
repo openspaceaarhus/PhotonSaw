@@ -1,6 +1,7 @@
 package dk.osaa.psaw.core;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -19,17 +20,14 @@ import lombok.val;
 import lombok.extern.java.Log;
 
 /**
- * A line in n-dimensional space, this is the basic building block for all motion and where speed and
+ * A line in n-dimensional space, this is the basic building block for all motion and where feed rate and
  * acceleration optimization happens.
  * 
- * Units used  this point: mm, mm/s and mm/s/s translation to steps, steps/tick and steps/tick/tick
- * happens later when Moves are generated.
+ * Units used this point: mm, mm/s and mm/s/s translation to steps, steps/tick and steps/tick/tick
+ * happens when Moves are generated.
  * 
- * The algorithms are inspired by Smoothie and GRBL, but somewhat rewritten/molested to do 4D.
- * 
- * I want to mostly get rid of the scalar speed calculations and switch to vectors so each axis 
- * gets optimized individually in stead of the current approach of mixing scalar speeds in different
- * directions in the same calculation, which is a horrible mess. 
+ * The algorithms are inspired by Smoothie and GRBL, but rewritten/molested to do 4D and do vector based
+ * feed rate optimization in stead of the more primitive angle based method needed on 8 bit controllers.
  * 
  * @author ff
  */
@@ -149,7 +147,7 @@ public class Line {
        	maxEntrySpeed = entrySpeed = minSpeed; // We start at a standstill.
        	
        	updateMaxEntrySpeed(null);       	
-                
+         /*       
         // Verify that we have not exceeded the limits for each axis
 	    MoveVector accelerationVector = unitVector.mul(acceleration);
 	    MoveVector speedVector = unitVector.mul(maxSpeed);
@@ -160,7 +158,8 @@ public class Line {
 	    	if (Math.abs(speedVector.getAxis(i)) > mc.getAxes()[i].maxSpeed+10) {
 	    	    log.severe("Too high speed:"+ maxSpeed + " is too great for axis:"+ i + " as: "+ Math.abs(speedVector.getAxis(i)) + " for line from " + startPoint+" to "+endPoint);
 	    	} 	    	
-	    }	    
+	    }	
+	    */    
 	}
 
 	public Point getEndPoint() {
@@ -204,16 +203,17 @@ public class Line {
         	double maxEndSpeedAxis     = unitVector.getAxis(i) * maxExitSpeed;
         	double nextStartSpeedAxis  = maxEndSpeeds.getAxis(i);
         	
-        	double jerk = maxEndSpeedAxis-nextStartSpeedAxis;
-        	double jerkFactor = jerk / mc.getAxes()[i].maxJerk;
+        	//double jerk = maxEndSpeedAxis-nextStartSpeedAxis;
         	
         	if (Math.signum(maxEndSpeedAxis) == Math.signum(nextStartSpeedAxis)) {
         		// We're going in the same direction as the next line, so just make sure we aren't going too fast.
-        		if (Math.signum(nextStartSpeedAxis) >= 0 && jerkFactor > 1) {
+    			double jerk = Math.abs(maxEndSpeedAxis) - Math.abs(nextStartSpeedAxis);
+
+    			if (jerk > mc.getAxes()[i].maxJerk) {
+    				double jerkFactor = Math.abs(maxEndSpeedAxis) / (Math.abs(nextStartSpeedAxis)+mc.getAxes()[i].maxJerk);
         			maxExitSpeed /= jerkFactor;
-        		} else if (Math.signum(nextStartSpeedAxis) <= 0 && jerkFactor < -1) {
-        			maxExitSpeed /= -jerkFactor;
         		}
+	        		
         	} else { // Direction change, so limit the end speed to a half jerk, thus leaving the other half of the jerk for the acceleration
         		if (unitVector.getAxis(i) != 0) {
         			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
@@ -256,17 +256,17 @@ public class Line {
         	double axisSpeed = unitVector.getAxis(i) * entrySpeed;
         	double prevSpeed = prevSpeeds.getAxis(i);
         	
-        	if (Math.signum(axisSpeed) != Math.signum(prevSpeed)) {
+        	if (Math.signum(axisSpeed) == Math.signum(prevSpeed)) {
+        		double overspeed = Math.abs(axisSpeed) / (Math.abs(prevSpeed)+mc.getAxes()[i].maxJerk);
+        		if (overspeed > 1) {
+        			entrySpeed /= overspeed;
+        		}
+        	} else {
         		if (unitVector.getAxis(i) != 0) {
         			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
         			if (entrySpeed > halfJerk) {
         				entrySpeed = halfJerk;        				
         			}
-        		}
-        	} else {
-        		double overspeed = Math.abs(axisSpeed) / (Math.abs(prevSpeed)+mc.getAxes()[i].maxJerk);
-        		if (overspeed > 1) {
-        			entrySpeed /= overspeed;
         		}
         	}        	
 		}
@@ -426,7 +426,7 @@ public class Line {
 	static void logLine(String l) {
 		try {
 			if (logWriter == null) {
-				logWriter = new BufferedWriter(new FileWriter("/tmp/Line.log"));
+				logWriter = new BufferedWriter(new FileWriter("line.log"));
 			}
 			logWriter.append(l);
 			logWriter.append("\n");
@@ -438,6 +438,8 @@ public class Line {
 
 	static long moveId = 0;	
 	long stepsMoved[] = new long[Move.AXES];
+	private static long stepCount = 0;
+	
 	Move endcodeMove(MoveVector mmMoveVector, double startSpeedMMS, double endSpeedMMS) {
 		if (startSpeedMMS < 0) {
 			throw new RuntimeException("start speed cannot be negative");
@@ -446,7 +448,7 @@ public class Line {
 			throw new RuntimeException("end speed cannot be negative");
 		}		
 		
-		logLine(mmMoveVector+"\t"+startSpeedMMS+"\t"+endSpeedMMS);
+		//logLine(mmMoveVector+"\t"+startSpeedMMS+"\t"+endSpeedMMS);
 		
 		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
 		
@@ -625,10 +627,13 @@ public class Line {
 				m.nudgeSpeed(i, -diffSteps); // Modify speed of the last, long move, whatever it is
 			}
 		}
-		
+				
 		for (Move m : output) {
+			stepCount += m.getDuration();
 			photonSaw.putMove(m);			
 		}
+		
+		logLine(stepCount+" "+maxSpeed+" "+maxEntrySpeed+" "+maxExitSpeed+" "+entrySpeed+" "+exitSpeed+" "+ accelerateDistance +" "+ plateauDistance +" "+ decelerateDistance);
 	}
 	
 	public String toString() {

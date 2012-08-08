@@ -174,8 +174,8 @@ inline void startNewMove() {
 	}
       }
   
-      // 50 ms => 1000 ticks.
-      cuDuration = 1000;
+      // Run for 100 ms per iteration, that gives a minimum speed of 10 steps per second.
+      cuDuration = 50000/10;
       cuActive = 1;
     }
 
