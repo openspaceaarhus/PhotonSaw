@@ -1,6 +1,6 @@
-update=Mon 07 Nov 2011 05:58:47 PM CET
+update=Sat 08 Sep 2012 03:53:53 PM CEST
 version=1
-last_client=eeschema
+last_client=kicad
 [cvpcb]
 version=1
 NetITyp=0
@@ -77,8 +77,6 @@ LibName7=display
 LibName8=valves
 LibName9=led
 LibName10=dip_sockets
-[general]
-version=1
 [eeschema]
 version=1
 LibDir=
@@ -109,6 +107,8 @@ offY_E=0
 RptD_X=0
 RptD_Y=100
 RptLab=1
+SimCmd=
+UseNetN=0
 LabSize=60
 [eeschema/libraries]
 LibName1=power
@@ -141,5 +141,5 @@ LibName27=opto
 LibName28=atmel
 LibName29=contrib
 LibName30=valves
-LibName31=/home/cazh/kicad/libs/cazh_atmel
-LibName32=/home/cazh/kicad/libs/dl_atmel
+[general]
+version=1
