@@ -223,7 +223,8 @@ if (xError & (1<<31)) {
 ---------------
 
 
-Stick this in /dev/udev/rules.d/jtag.rules:
+Stick this in /etc/udev/rules.d/jtag.rules:
 
 SUBSYSTEM=="usb", ATTR{idVendor}=="15ba", GROUP="adm"
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", GROUP="adm"
 
