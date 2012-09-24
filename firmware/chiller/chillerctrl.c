@@ -20,10 +20,12 @@
 
 #include "uart.h"
 
-#include "aux_globals.h"
-#include "HD44780.h"
+//#include "aux_globals.h"
+//#include "HD44780.h"
 #include "pwmvoltages.h"
 #include "adchelper.h"
+
+#include "lcd.h"
 
 
 // We don't really care about unhandled interrupts.
@@ -48,18 +50,6 @@ void led(char on) {
   } else {
     PORTB &=~ _BV(PB5);   
   }
-}
-
-void lcdInit() {
-  _delay_ms(10);
-  lcd_init();   // init the LCD screen
-  _delay_ms(10);
-  lcd_clrscr();	// initial screen cleanup
-  _delay_ms(10);
-  lcd_home();
-  _delay_ms(10);
-  lcd_instr(LCD_DISP_ON);
-  _delay_ms(10);
 }
 
 /*
@@ -119,12 +109,12 @@ int main(void) {
 
   _delay_ms(1500);
 
-  lcdInit();
-  _delay_ms(20);
-  lcd_setline(0);
-  lcd_string(PROGSTR("  Chillah ctrl"));
-  lcd_setline(1);
-  lcd_string(PROGSTR("    Stand by"));
+  lcd_init(LCD_DISP_ON);
+  //lcdInit();
+  lcd_gotoxy(0,0); //lcd_setline(0);
+  lcd_puts(PROGSTR("  Chillah ctrl")); //lcd_string(PROGSTR("  Chillah ctrl"));
+  lcd_gotoxy(0,1); //lcd_setline(1);
+  lcd_puts(PROGSTR("    Standby"));
     
   led(0);
 
@@ -133,7 +123,6 @@ int main(void) {
   setCirculationSpeed(100);
 
   setCoolingSpeed(100);
-
 
   while(1) {
 
