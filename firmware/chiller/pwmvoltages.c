@@ -7,13 +7,15 @@
 
 #define ADC_PER_VOLT ((4.7/(10+4.7)) / (4.650/1023))
 
-const float P = 0.07;
-const float I = 0.0001;
-const float D = 0.005;
+#define P 0.07
+#define I 0.0001
+#define D 0.005
 
-const float MAX_OUTPUT = 128;
-const float MIN_OUTPUT = 0;
-const float ADC_MAX = 780.0; // 100% in ADC output
+#define  MAX_OUTPUT 128
+#define  MIN_OUTPUT 0
+
+#define  ADC_MAX 780.0
+// 100% in ADC output
 
 float errorSumA = 0;
 float lastErrorA = 0;

@@ -364,13 +364,13 @@ Send data byte to LCD controller
 Input:   data to send to LCD controller, see HD44780 data sheet
 Returns: none
 *************************************************************************/
+/*
 void lcd_data(uint8_t data)
 {
     lcd_waitbusy();
     lcd_write(data,1);
 }
-
-
+*/
 
 /*************************************************************************
 Set cursor to specified position
@@ -405,11 +405,12 @@ void lcd_gotoxy(uint8_t x, uint8_t y)
 
 /*************************************************************************
 *************************************************************************/
+/*
 int lcd_getxy(void)
 {
     return lcd_waitbusy();
 }
-
+*/
 
 /*************************************************************************
 Clear display and set cursor to home position
@@ -423,11 +424,12 @@ void lcd_clrscr(void)
 /*************************************************************************
 Set cursor to home position
 *************************************************************************/
+/*
 void lcd_home(void)
 {
     lcd_command(1<<LCD_HOME);
 }
-
+*/
 
 /*************************************************************************
 Display character at current cursor position 
@@ -498,8 +500,9 @@ Display string from program memory without auto linefeed
 Input:     string from program memory be be displayed                                        
 Returns:   none
 *************************************************************************/
-void lcd_puts_p(const char *progmem_s)
 /* print string from program memory on lcd (no auto linefeed) */
+/*
+void lcd_puts_p(const char *progmem_s)
 {
     register char c;
 
@@ -507,7 +510,9 @@ void lcd_puts_p(const char *progmem_s)
         lcd_putc(c);
     }
 
-}/* lcd_puts_p */
+}
+*/
+/* lcd_puts_p */
 
 
 /*************************************************************************
