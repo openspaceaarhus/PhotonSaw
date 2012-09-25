@@ -58,24 +58,46 @@ void resetInputBuffer() {
   inputBufferEnd = inputBuffer;
 }
 
-char power = 0;
-int storeMaxTemp = 15;
-int storeMinTemp = -10;
-int circulationTemp = 20;
-int fanPostRun = 60;
+
+// Read/write parameters
+#define P_POWER 0
+#define P_STORE_MAX_TEMP 1
+#define P_STORE_MIN_TEMP 2
+#define P_CIRCULATION_TEMP 3
+#define P_FAN_POST_RUN 4
+
+
+// Read only parameters
+#define P_FIRST_READ_ONLY 5
+#define P_CURRENT_STATE 5
+
+
+#define P_COUNT 6
+
+int parameters[P_COUNT];
+
+PGM_P PARAMETER_NAMES[P_COUNT] PROGMEM = {
+ [P_POWER]            = "power",
+ [P_STORE_MAX_TEMP]   = "store-max",
+ [P_STORE_MIN_TEMP]   = "store-min",
+ [P_CIRCULATION_TEMP] = "circ-set",
+ [P_FAN_POST_RUN]     = "fan-run",
+ [P_CURRENT_STATE]    = "state",
+};
+
 
 #define STATE_OFF 0
 #define STATE_ON 1
 #define STATE_FAN_ON 2
 #define STATE_COMPRESSOR_ON 3
 
-char currentState = STATE_OFF;
+//char currentState = STATE_OFF;
 
 void setState(char state) {
-  currentState = state;
+  parameters[P_CURRENT_STATE] = state;
 
   if (state == STATE_OFF) { // Doing nothing
-    power = 0;
+    parameters[P_POWER] = 0;
 
     PORTC &=~ _BV(PC5);  // Compressor Relay
     PORTD &=~ _BV(PD7);  // Fan Relay
@@ -119,26 +141,26 @@ void handleInputLine() {
     *value = 0; // Zero terminate the key.
     value++;    
     int val = atoi(value);
-   
+	
     if (!strcmp(inputBuffer, "power")) {
-      power = val ? 1 : 0;
+      parameters[P_POWER] = val ? 1 : 0;
 
     } else if (!strcmp(inputBuffer, "store-max")) {
-      storeMaxTemp = val;
+      parameters[P_STORE_MAX_TEMP] = val;
 
     } else if (!strcmp(inputBuffer, "store-min")) {
-      storeMinTemp = val;
+      parameters[P_STORE_MIN_TEMP] = val;
 
     } else if (!strcmp(inputBuffer, "circ")) {
-      circulationTemp = val;
+      parameters[P_CIRCULATION_TEMP] = val;
 
-    } else if (!strcmp(inputBuffer, "post-run")) {
-      fanPostRun = val;
+	} else if (!strcmp(inputBuffer, "post-run")) {
+      parameters[P_FAN_POST_RUN] = val;
 
     } else { 
       printf(PROGSTR("ERROR: Cannot set %s = %s\r\n"), inputBuffer, value);
     }
-    
+	    
   } else if (!strcmp(inputBuffer, "status")) {
     // Do nothing.
 
@@ -147,39 +169,47 @@ void handleInputLine() {
     printf(PROGSTR("Try: status, or set one of: power, store-max, store-min, circ, post-run\r\n"));
   }
   
-  printf(PROGSTR("power: %d\r\n"), power); 
-  printf(PROGSTR("store-max: %d\r\n"), storeMaxTemp);
-  printf(PROGSTR("store-min: %d\r\n"),storeMinTemp);
-  printf(PROGSTR("circ: %d\r\n"), circulationTemp);
-  printf(PROGSTR("post-run: %d\r\n"), fanPostRun);
+  for (int i=0;i<P_COUNT;i++) {
+	printf("%s:%d\r\n", PARAMETER_NAMES[i], parameters[i]);
+  }
 
-  printf(PROGSTR("state: %d\r\n"), currentState); 
+  /*
+  printf(PROGSTR("power: %d\r\n"), parameters[P_POWER]); 
+  printf(PROGSTR("store-max: %d\r\n"), parameters[P_STORE_MAX_TEMP]);
+  printf(PROGSTR("store-min: %d\r\n"),parameters[P_STORE_MIN_TEMP]);
+  printf(PROGSTR("circ: %d\r\n"), parameters[P_CIRCULATION_TEMP]);
+  printf(PROGSTR("post-run: %d\r\n"), parameters[P_FAN_POST_RUN]);
+  
+  printf(PROGSTR("state: %d\r\n"), parameters[P_CURRENT_STATE]); 
   printf(PROGSTR("current-store: %.1f\r\n"), currentStore);
   printf(PROGSTR("current-circulation: %.f\r\n"), currentCirculation);
-  printf(PROGSTR("cooling-pwm: %d\r\n"), (int)round(getCurrentCoolingSpeed()));
-  printf(PROGSTR("circulation-pwm: %d\r\n"), (int)round(getCurrentCirculationSpeed()));
+  
+  printf(PROGSTR("cooling-pwm: %d\r\n"), (int)floor(getCurrentCoolingSpeed()));
+  printf(PROGSTR("circulation-pwm: %d\r\n"), (int)floor(getCurrentCirculationSpeed()));
   printf(PROGSTR("compressor: %d\r\n"), (PORTC & _BV(PC5)) ? 1 : 0); 
   printf(PROGSTR("fan: %d\r\n"), (PORTD & _BV(PD7)) ? 1 : 0); 
   printf(PROGSTR("tankpump: %d\r\n"), (PORTB & _BV(PB0)) ? 1 : 0); 
   printf(PROGSTR("fan-timer: %d\r\n"), fanTimer);
+  */
+  
 }
 
 void updateDisplay() {
 
   lcd_gotoxy(0,0);
-  if (currentState == STATE_OFF) {
+  if (parameters[P_CURRENT_STATE] == STATE_OFF) {
     lcd_puts(PROGSTR("  pSaw Chiller"));
     lcd_gotoxy(0,1);
     lcd_puts(PROGSTR("    Standby"));
     return;
 
-  } else if (currentState == STATE_ON) {
+  } else if (parameters[P_CURRENT_STATE] == STATE_ON) {
     lcd_puts(PROGSTR("Chiller online"));
 
-  } else if (currentState == STATE_FAN_ON) {
+  } else if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
     lcd_puts(PROGSTR("  Running fan"));
 
-  } else if (currentState == STATE_COMPRESSOR_ON) {
+  } else if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
     lcd_puts(PROGSTR(" Compressing!"));
   }
  
@@ -266,15 +296,15 @@ void updateStateMachine() {
   float thisCirculation = readNTCcelcius(1);
   currentCirculation += (thisCirculation-currentCirculation)*0.1;
 
-  if (currentState == STATE_OFF) {
-    if (power) {
+  if (parameters[P_CURRENT_STATE] == STATE_OFF) {
+    if (parameters[P_POWER]) {
       setState(STATE_ON);
     }
 
   } else {
 
     // This is the PID regulation of the circulation temperature
-    float error = currentCirculation - circulationTemp;
+    float error = currentCirculation - parameters[P_CIRCULATION_TEMP];
     errorSum += error;
   
     output = output
@@ -293,13 +323,13 @@ void updateStateMachine() {
     
     if (output < MIN_SPEED) {
       if (longpwm++ > LONG_PWM_TICK) {
-	longpwm = 0;
+		longpwm = 0;
       }
 
-      if (longpwm < (int)round(LONG_PWM_TICK*output/MIN_SPEED)) {
-	setCoolingSpeed(MIN_SPEED);
+      if (longpwm < (int)floor(LONG_PWM_TICK*output/MIN_SPEED)) {
+		setCoolingSpeed(MIN_SPEED);
       } else {
-	setCoolingSpeed(0);
+		setCoolingSpeed(0);
       }      
 
     } else {
@@ -307,10 +337,10 @@ void updateStateMachine() {
     }
   }
 
-  if (currentState == STATE_ON) {
-    if (power) {
+  if (parameters[P_CURRENT_STATE] == STATE_ON) {
+    if (parameters[P_POWER]) {
       
-      if (currentStore > storeMaxTemp) {
+      if (currentStore > parameters[P_STORE_MAX_TEMP]) {
 	setState(STATE_COMPRESSOR_ON);
       }      
 
@@ -319,17 +349,17 @@ void updateStateMachine() {
     }
   }
 
-  if (currentState == STATE_COMPRESSOR_ON) {
+  if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
    
-    if (currentStore < storeMinTemp || !power) {
+    if (currentStore < parameters[P_STORE_MIN_TEMP] || !parameters[P_POWER]) {
       setState(STATE_FAN_ON);
-      fanTimer = fanPostRun;
+      fanTimer = parameters[P_FAN_POST_RUN];
       timer = 0;
     }      
 
   }
 
-  if (currentState == STATE_FAN_ON) {
+  if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
     if (timer++ >= 100) {
       timer = 0;
       if (fanTimer > 0) {

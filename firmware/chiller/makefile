@@ -1,3 +1,3 @@
 PROJ=chiller
-AVR = atmega168
+AVR = atmega88
 include ../atmega8/makefile
