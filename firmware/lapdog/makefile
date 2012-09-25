@@ -1,2 +1,3 @@
 PROJ=lapdog
-include ../atmega328/makefile
+AVR = atmega328p
+include ../atmega8/makefile

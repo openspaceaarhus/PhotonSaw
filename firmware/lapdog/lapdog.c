@@ -19,7 +19,6 @@
 #include <avr/pgmspace.h>
 
 #include "uart.h"
-#include "sleep.h"
 
 // We don't really care about unhandled interrupts.
 EMPTY_INTERRUPT(__vector_default)
@@ -96,7 +95,7 @@ int main(void) {
       led2(!(frame & 1));
     }
     
-    sleepMs(50);
+    _delay_ms(50);
     wdt_reset();
     frame++;
   }	

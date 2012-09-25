@@ -32,11 +32,8 @@ void uart_init(void) {
 #else
   UBRRL = (F_CPU / (16UL * UART_BAUD)) - 1;
 #endif
-  //  UCSRB = _BV(TXEN) | _BV(RXEN); /* tx/rx enable */
-  UCSRB = _BV(TXEN); /* tx enable */
-
-  //DDRD |= 1<<PD0;
-  //PORTD |= 1<<PD0;
+  UCSRB = _BV(TXEN) | _BV(RXEN); /* tx/rx enable */
+  //UCSRB = _BV(TXEN); /* tx enable */
 }
 
 /*
@@ -45,16 +42,11 @@ void uart_init(void) {
  */
 int uart_putchar(char c, FILE *stream){
 
-  if (c == '\a')
-    {
-      fputs("*ring*\n", stderr);
-      return 0;
-    }
-
-  if (c == '\n')
-    uart_putchar('\r', stream);
+  //  if (c == '\n')
+  //uart_putchar('\r', stream);
   loop_until_bit_is_set(UCSRA, UDRE);
   UDR = c;
+  loop_until_bit_is_set(UCSRA, UDRE);
   
   return 0;
 }

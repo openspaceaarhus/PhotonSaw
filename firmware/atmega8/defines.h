@@ -27,7 +27,7 @@
 #error No CLOCK_ defined
 #endif
 
-#define UART_BAUD  19200
+#define UART_BAUD  9600
 
 //#define TWI_DELAY 500
 
