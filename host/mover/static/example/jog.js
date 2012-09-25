@@ -112,9 +112,9 @@ function sendJogCommand() {
 		url: "/api/jog/jog",
 		
 		data: JSON.stringify({
-			x: jogVector.x,
-			y: jogVector.y,
-			//z: jogVector.x,
+			//x: jogVector.x,
+			//y: jogVector.y,
+			z: -jogVector.y,
 			//a: jogVector.y,
 		}, null, "\t"),
 		

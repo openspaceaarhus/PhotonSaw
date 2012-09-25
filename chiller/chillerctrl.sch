@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Wed 12 Sep 2012 09:12:31 PM CEST
+EESchema Schematic File Version 2  date 2012-09-20T20:00:10 CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -29,14 +29,13 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:chillerctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 1 1
 Title ""
-Date "12 sep 2012"
+Date "20 sep 2012"
 Rev ""
 Comp ""
 Comment1 ""
@@ -45,9 +44,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 Wire Wire Line
-	4950 1300 4950 1250
-Wire Wire Line
-	4950 1250 4800 1250
+	4800 1250 4800 1300
 Wire Wire Line
 	4800 750  4950 750 
 Wire Wire Line
@@ -240,11 +237,11 @@ Wire Wire Line
 Wire Wire Line
 	9250 2100 9350 2100
 Wire Wire Line
-	4600 1500 4650 1500
+	4450 1500 4500 1500
 Wire Wire Line
-	4050 1500 4100 1500
+	3900 1500 3950 1500
 Wire Wire Line
-	4950 1700 4950 1750
+	4800 1700 4800 1750
 Wire Wire Line
 	9650 2900 9650 2950
 Wire Wire Line
@@ -289,11 +286,11 @@ Wire Wire Line
 Wire Wire Line
 	6300 3250 6300 3200
 Wire Wire Line
-	4950 3200 4950 3250
+	4800 3200 4800 3250
 Wire Wire Line
-	4050 3000 4100 3000
+	3900 3000 3950 3000
 Wire Wire Line
-	4600 3000 4650 3000
+	4450 3000 4500 3000
 Wire Wire Line
 	5450 2700 5600 2700
 Wire Wire Line
@@ -333,13 +330,11 @@ Wire Wire Line
 Wire Wire Line
 	4950 2500 4950 2250
 Wire Wire Line
-	4800 2750 4950 2750
-Wire Wire Line
-	4950 2750 4950 2800
-Wire Wire Line
 	4950 750  4950 1000
 Wire Wire Line
 	4950 1000 5150 1000
+Wire Wire Line
+	4800 2750 4800 2800
 $Comp
 L R R?
 U 1 1 5050DDDC
@@ -451,31 +446,31 @@ cooling-pump
 $Comp
 L NPN Q7
 U 1 1 504B5BBA
-P 4850 3000
-F 0 "Q7" H 4850 2850 50  0000 R CNN
-F 1 "BC547" H 4850 3150 50  0000 R CNN
-	1    4850 3000
+P 4700 3000
+F 0 "Q7" H 4700 2850 50  0000 R CNN
+F 1 "BC547" H 4700 3150 50  0000 R CNN
+	1    4700 3000
 	1    0    0    -1  
 $EndComp
 $Comp
 L R R9
 U 1 1 504B5BB9
-P 4350 3000
-F 0 "R9" V 4430 3000 50  0000 C CNN
-F 1 "4k7" V 4350 3000 50  0000 C CNN
-	1    4350 3000
+P 4200 3000
+F 0 "R9" V 4280 3000 50  0000 C CNN
+F 1 "4k7" V 4200 3000 50  0000 C CNN
+	1    4200 3000
 	0    1    1    0   
 $EndComp
 $Comp
 L GND #PWR16
 U 1 1 504B5BB8
-P 4950 3250
-F 0 "#PWR16" H 4950 3250 30  0001 C CNN
-F 1 "GND" H 4950 3180 30  0001 C CNN
-	1    4950 3250
+P 4800 3250
+F 0 "#PWR16" H 4800 3250 30  0001 C CNN
+F 1 "GND" H 4800 3180 30  0001 C CNN
+	1    4800 3250
 	1    0    0    -1  
 $EndComp
-Text GLabel 4050 3000 0    60   Input ~ 0
+Text GLabel 3900 3000 0    60   Input ~ 0
 cooling-pump
 $Comp
 L INDUCTOR L2
@@ -817,33 +812,33 @@ F 1 "GND" H 9650 2880 30  0001 C CNN
 $EndComp
 Text GLabel 8650 2700 0    60   Input ~ 0
 compressor
-Text GLabel 4050 1500 0    60   Input ~ 0
+Text GLabel 3900 1500 0    60   Input ~ 0
 circulation-pump
 $Comp
 L GND #PWR4
 U 1 1 504B5356
-P 4950 1750
-F 0 "#PWR4" H 4950 1750 30  0001 C CNN
-F 1 "GND" H 4950 1680 30  0001 C CNN
-	1    4950 1750
+P 4800 1750
+F 0 "#PWR4" H 4800 1750 30  0001 C CNN
+F 1 "GND" H 4800 1680 30  0001 C CNN
+	1    4800 1750
 	1    0    0    -1  
 $EndComp
 $Comp
 L R R2
 U 1 1 504B5355
-P 4350 1500
-F 0 "R2" V 4430 1500 50  0000 C CNN
-F 1 "4k7" V 4350 1500 50  0000 C CNN
-	1    4350 1500
+P 4200 1500
+F 0 "R2" V 4280 1500 50  0000 C CNN
+F 1 "4k7" V 4200 1500 50  0000 C CNN
+	1    4200 1500
 	0    1    1    0   
 $EndComp
 $Comp
 L NPN Q2
 U 1 1 504B5354
-P 4850 1500
-F 0 "Q2" H 4850 1350 50  0000 R CNN
-F 1 "BC547" H 4850 1650 50  0000 R CNN
-	1    4850 1500
+P 4700 1500
+F 0 "Q2" H 4700 1350 50  0000 R CNN
+F 1 "BC547" H 4700 1650 50  0000 R CNN
+	1    4700 1500
 	1    0    0    -1  
 $EndComp
 $Comp

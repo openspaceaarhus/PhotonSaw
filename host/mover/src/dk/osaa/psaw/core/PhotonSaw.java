@@ -126,8 +126,8 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	}
 		
 	private void configureMotors() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
-		run("ai 10c"); // TODO: Ignore alarms while testing
-		run("ai 10c"); // TODO: Ignore alarms while testing
+		run("ai 10f"); // TODO: Ignore alarms while testing
+		run("ai 10f"); // TODO: Ignore alarms while testing
 
 		for (int i=0;i<Move.AXES;i++) {
 			run("me "+i+" "+
@@ -196,6 +196,8 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	@Override
 	public void setJogSpeed(MoveVector direction) {
 		String cmd = "jv";
+		// full step: 0.00625
+		log.info("jog: "+direction);
 		
 		for (int ax=0;ax<Move.AXES;ax++) {
 			double speed = cfg.movementConstraints.getAxes()[ax].maxSpeed;
@@ -203,13 +205,16 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 				speed = 100;
 			}
 			
-			double stepsPerTick = speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ();			
+			double stepsPerTick = speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ();
+				
 			// We run for 5000 ticks per interval, so don't allow any partial steps to be taken or the motor will not run smoothly.
 			stepsPerTick = Math.round(stepsPerTick*5000)/5000.0;
 			Q30 s = new Q30(stepsPerTick);
 			
 			cmd += " "+s.getLong();
 		}
+		
+		log.info(cmd);
 		
 		try {
 			commander.run(cmd);

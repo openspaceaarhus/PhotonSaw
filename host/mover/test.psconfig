@@ -2,12 +2,11 @@
   <movementConstraints>
     <axes>
       <movementconstraint axis="X">
-        <acceleration>500.0</acceleration>
-        <maxSpeed>600.0</maxSpeed>
+        <acceleration>2500.0</acceleration>
+        <maxSpeed>1600.0</maxSpeed>
         <minSpeed>2.0</minSpeed>
         <maxJerk>2.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
-<<<<<<< HEAD
         <coilCurrent>1800</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
@@ -18,33 +17,16 @@
         <maxJerk>10.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
         <coilCurrent>1800</coilCurrent>
-=======
-        <coilCurrent>350</coilCurrent>
-        <microSteppingMode>3</microSteppingMode>
-      </movementconstraint>
-      <movementconstraint axis="Y">
-        <acceleration>200.0</acceleration>
-        <maxSpeed>600.0</maxSpeed>
-        <minSpeed>2.0</minSpeed>
-        <maxJerk>2.0</maxJerk>
-        <mmPerStep>0.0375</mmPerStep>
-        <coilCurrent>1850</coilCurrent>
->>>>>>> be9062ff67e36fe440ac17129657b6c0bb306dbf
         <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
       <movementconstraint axis="Z">
         <acceleration>0.1</acceleration>
-        <maxSpeed>5.0</maxSpeed>
+        <maxSpeed>10.0</maxSpeed>
         <minSpeed>0.2</minSpeed>
         <maxJerk>0.2</maxJerk>
-        <mmPerStep>0.00625</mmPerStep>
-<<<<<<< HEAD
+        <mmPerStep>0.003125</mmPerStep>
         <coilCurrent>1500</coilCurrent>
-        <microSteppingMode>1</microSteppingMode>
-=======
-        <coilCurrent>350</coilCurrent>
-        <microSteppingMode>0</microSteppingMode>
->>>>>>> be9062ff67e36fe440ac17129657b6c0bb306dbf
+        <microSteppingMode>3</microSteppingMode>
       </movementconstraint>
       <movementconstraint axis="A">
         <acceleration>5000.0</acceleration>
@@ -53,7 +35,7 @@
         <maxJerk>1.0</maxJerk>
         <mmPerStep>0.02</mmPerStep>
         <coilCurrent>350</coilCurrent>
-        <microSteppingMode>3</microSteppingMode>
+        <microSteppingMode>1</microSteppingMode>
       </movementconstraint>
     </axes>
     <junctionDeviation>0.1</junctionDeviation>
