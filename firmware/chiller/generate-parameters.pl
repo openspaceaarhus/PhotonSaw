@@ -68,9 +68,9 @@ close O;
 
 __DATA__
 POWER             power       1
-STORE_MAX_TEMP    store-max  15
-STORE_MIN_TEMP    store-min -10
-CIRCULATION_TEMP  circ-set   20
+STORE_MAX_TEMP    store-max  150
+STORE_MIN_TEMP    store-min -100
+CIRCULATION_TEMP  circ-set   200
 FAN_POST_RUN      fan-run    60
 _readonly_
 CURRENT_STATE     state

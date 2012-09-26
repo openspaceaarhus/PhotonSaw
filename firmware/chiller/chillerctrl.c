@@ -73,8 +73,8 @@ float currentStore = 0;
 float currentCirculation = 0;
 
 void printState() {  
-  parameters[P_CIRCULATION_CURRENT] = (int)floor(10*currentCirculation);
-  parameters[P_STORE_CURRENT]       = (int)floor(10*currentStore);
+  parameters[P_CIRCULATION_CURRENT] = (int)floor(currentCirculation);
+  parameters[P_STORE_CURRENT]       = (int)floor(currentStore);
   parameters[P_COOLING_PWM]         = getCurrentCoolingSpeed();
   parameters[P_CIRCULATION_PWM]     = getCurrentCirculationSpeed();
 
@@ -248,32 +248,26 @@ float readNTCcelcius(const int channel) {
   return r2c(readNTCres(channel));
 }
 
+#define P 10000
 
-#define P 0.07
-#define I 0.0001
-#define D 0.005
+#define MIN_OUTPUT ((long)0)
+#define MAX_OUTPUT ((long)1023<<PID_Q)
+#define MIN_SPEED 512
 
-#define MAX_OUTPUT 100
-#define MIN_OUTPUT 0
-
-float errorSum = 0;
-float lastError = 0;
-float output = 0;
+long circOutput;
 
 unsigned int longpwm = 0;
 unsigned char timer = 0;
 
-#define LONG_PWM_TICK 5*100
-#define MIN_SPEED 50
-
 #define TICKS_PER_SECOND 59
+#define LONG_PWM_TICK 5*TICKS_PER_SECOND
 
 void updateStateMachine() {
 
-  float thisStore = readNTCcelcius(0);
+  float thisStore = 10*readNTCcelcius(0);
   currentStore += (thisStore-currentStore)*0.1;
 
-  float thisCirculation = readNTCcelcius(1);
+  float thisCirculation = 10*readNTCcelcius(1);
   currentCirculation += (thisCirculation-currentCirculation)*0.1;
 
   if (parameters[P_CURRENT_STATE] == STATE_OFF) {
@@ -284,38 +278,31 @@ void updateStateMachine() {
   } else {
 	
     // This is the PID regulation of the circulation temperature
-    float error = currentCirculation - parameters[P_CIRCULATION_TEMP];
-    errorSum += error;
-  
-    output = output
-      - P*error 
-      - I*errorSum
-      - D*(error-lastError);
+    long error = parameters[P_CIRCULATION_TEMP]-currentCirculation;
+    circOutput -= error * P;
 
-    lastError = error;
-
-    if (output > MAX_OUTPUT) {
-      output = MAX_OUTPUT;
+    if (circOutput > MAX_OUTPUT) {
+      circOutput = MAX_OUTPUT;
       
-    } else if (output < MIN_OUTPUT) {
-      output = MIN_OUTPUT;
+    } else if (circOutput < MIN_OUTPUT) {
+      circOutput = MIN_OUTPUT;
     }
     
-    if (output < MIN_SPEED) {
+    int co = circOutput>>PID_Q;
+    if (co < MIN_SPEED) {
       if (longpwm++ > LONG_PWM_TICK) {
-		longpwm = 0;
+	longpwm = 0;
       }
-
-      if (longpwm < (int)floor(LONG_PWM_TICK*output/MIN_SPEED)) {
+      
+      if (longpwm < (LONG_PWM_TICK*co)/MIN_SPEED) {
 	setCoolingSpeed(MIN_SPEED);
       } else {
 	setCoolingSpeed(0);
       }      
 
     } else {
-      setCoolingSpeed(output);
+      setCoolingSpeed(co);
     }
-
 
 
     if (parameters[P_CURRENT_STATE] == STATE_ON) {

@@ -20,12 +20,6 @@ int getCurrentCoolingSpeed();
 
 #define PUMP_SPEED_MAX 1023
 
-struct PIDdata {
-  long current;
-  long output;
-  long target;
-};
-
 // The number of fractional bits 
 #define PID_Q 20
 

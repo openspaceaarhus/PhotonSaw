@@ -13,6 +13,13 @@ const long MIN_OUTPUT = 0;
 // 100% in ADC output
 #define P 50000
 
+struct PIDdata {
+  long current;
+  long output;
+  long target;
+};
+
+
 struct PIDdata pidA;
 struct PIDdata pidB;
 
