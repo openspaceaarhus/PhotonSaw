@@ -89,6 +89,7 @@ void printState() {
 #define STATE_ON 1
 #define STATE_FAN_ON 2
 #define STATE_COMPRESSOR_ON 3
+#define STATE_WARMUP 4
 
 void setState(char state) {
   parameters[P_CURRENT_STATE] = state;
@@ -106,6 +107,7 @@ void setState(char state) {
     PORTD &=~ _BV(PD7);  // Fan Relay
 	parameters[P_FAN_RELAY] = 0;
 
+  case STATE_WARMUP:
   case STATE_FAN_ON:
     PORTC &=~ _BV(PC5);  // Compressor Relay	
 	parameters[P_COMPRESSOR_RELAY] = 0;
@@ -118,6 +120,7 @@ void setState(char state) {
     PORTC |= _BV(PC5);  // Compressor Relay
 	parameters[P_COMPRESSOR_RELAY] = 1;
 	
+  case STATE_WARMUP:
   case STATE_FAN_ON:
     PORTD |=  _BV(PD7);  // Fan Relay
 	parameters[P_FAN_RELAY] = 1;
@@ -271,7 +274,7 @@ void updateStateMachine() {
     }
 
   } else {
-
+	
     // This is the PID regulation of the circulation temperature
     float error = currentCirculation - parameters[P_CIRCULATION_TEMP];
     errorSum += error;
@@ -304,42 +307,56 @@ void updateStateMachine() {
     } else {
       setCoolingSpeed(output);
     }
+	
   }
+
 
   if (parameters[P_CURRENT_STATE] == STATE_ON) {
-    if (parameters[P_POWER]) {
-      
-      if (currentStore > parameters[P_STORE_MAX_TEMP]) {
+	if (parameters[P_POWER]) {
+	  
+	  if (currentStore > parameters[P_STORE_MAX_TEMP]) {
+		setState(STATE_WARMUP);
+		parameters[P_FAN_TIMER] = 2; // This starts the fan a little while before the compressor to reduce the surge.
+		timer = 0;
+	  }      
+	  
+	} else {
+	  setState(STATE_OFF);
+	}
+
+
+  } else if (parameters[P_CURRENT_STATE] == STATE_WARMUP) {
+    if (++timer >= 100) {
+      timer = 0;
+	  parameters[P_FAN_TIMER]--;
+
+      if (parameters[P_FAN_TIMER] <= 0) {
 		setState(STATE_COMPRESSOR_ON);
-      }      
-
-    } else {
-      setState(STATE_OFF);
+      }
     }
-  }
 
-  if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
-   
+
+  } else if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
+
     if (currentStore < parameters[P_STORE_MIN_TEMP] || !parameters[P_POWER]) {
       setState(STATE_FAN_ON);
       parameters[P_FAN_TIMER] = parameters[P_FAN_POST_RUN];
       timer = 0;
     }      
 
-  }
 
-  if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
+  } else if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
+
     if (++timer >= 100) {
       timer = 0;
-      if (parameters[P_FAN_TIMER] > 0) {
-		parameters[P_FAN_TIMER]--;
-      }
+	  parameters[P_FAN_TIMER]--;
 
       if (parameters[P_FAN_TIMER] <= 0) {
 		setState(STATE_ON);
       }
     }
-  }
+   
+  }	
 
 }
 
