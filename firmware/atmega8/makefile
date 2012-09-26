@@ -2,7 +2,8 @@
 
 AVR ?= atmega88
 #PROG = -c usbtiny
-AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
+#AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
+AVR_ISP_PROGRAMMER = -c jtag2isp -P usb
 
 # Allow the user to have a different programmer.
 -include $(HOME)/.makefile
