@@ -3,7 +3,6 @@
 
 #include "pwmvoltages.h"
 #include "adchelper.h"
-#include <stdio.h>
 
 #define ADC_PER_VOLT ((4.7/(10+4.7)) / (4.650/1023))
 

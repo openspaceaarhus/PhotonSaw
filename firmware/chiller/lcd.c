@@ -501,7 +501,6 @@ Input:     string from program memory be be displayed
 Returns:   none
 *************************************************************************/
 /* print string from program memory on lcd (no auto linefeed) */
-/*
 void lcd_puts_p(const char *progmem_s)
 {
     register char c;
@@ -511,7 +510,6 @@ void lcd_puts_p(const char *progmem_s)
     }
 
 }
-*/
 /* lcd_puts_p */
 
 

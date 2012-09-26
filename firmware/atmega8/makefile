@@ -41,23 +41,28 @@ LDFLAGS += -Wl,--relax
 #LDFLAGS += -lm
 
 program : $(PROJ).hex
-	avr-objcopy -O ihex $(PROJ).elf $(PROJ).hex
 	avrdude $(AVR_ISP_PROGRAMMER) -p $(AVR) -B 1 -e -U flash:w:$(PROJ).hex
+
+bin : $(PROJ).hex
 
 # This builds each source file to an OBJ and then links it to a binary at the end.
 #$(PROJ).hex : $(OBJS)
 #	$(CC) $(LDFLAGS) $(OBJS) -o $(PROJ).elf
+#	avr-objcopy -O ihex $(PROJ).elf $(PROJ).hex
 #	$(SIZE) $(PROJ).elf
 
 # This uses whole-program optimization so there's only one compilation unit:
-$(PROJ).hex : $(CSRC) $(CPSRC)
+$(PROJ).hex : $(CSRC) $(CPSRC) $(INTERMEDIATE)
 	$(CC) $(CFLAGS) $(CPFLAGS) $(LDFLAGS) $(CSRC) $(CPSRC) /usr/lib/avr/lib/libm.a -o $(PROJ).elf
-	$(SIZE) $(PROJ).elf
+	avr-objcopy -O ihex $(PROJ).elf $(PROJ).hex
+	$(SIZE) --format=berkeley $(PROJ).elf
+	$(SIZE) --format=avr --mcu=$(AVR) $(PROJ).elf
 
 # Internal oscilator 8MHz, no prescaler, BOD=2.7V:
 fuses:
 	avrdude $(AVR_ISP_PROGRAMMER) -p $(AVR) -B 100 -U lfuse:w:0xe2:m -U hfuse:w:0xdc:m -U efuse:w:0xf9:m 
 
 clean :
-	rm -f $(PROJ).hex $(PROJ).elf $(PROJ).map $(OBJS) 
+	rm -f $(PROJ).hex $(PROJ).elf $(PROJ).map $(OBJS) $(INTERMEDIATE)
+
 
