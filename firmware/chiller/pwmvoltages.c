@@ -1,32 +1,45 @@
 #include <avr/io.h>
-#include <math.h>
 
 #include "pwmvoltages.h"
 #include "adchelper.h"
+#include "mprintf.h"
 
-#define ADC_PER_VOLT ((4.7/(10+4.7)) / (4.650/1023))
+// These are the PWM output limits.
+const long MAX_OUTPUT = ((long)128)<<PID_Q;
+const long MIN_OUTPUT = 0;
 
-#define P 0.07
-#define I 0.0001
-#define D 0.005
+#define ADC_MAX 780
 
-#define  MAX_OUTPUT 128
-#define  MIN_OUTPUT 0
-
-#define  ADC_MAX 780.0
 // 100% in ADC output
+#define P 50000
 
-float errorSumA = 0;
-float lastErrorA = 0;
-float outputA = 0;
-float targetA = 0;
-float currentA = 0;
+struct PIDdata pidA;
+struct PIDdata pidB;
 
-float errorSumB = 0;
-float lastErrorB = 0;
-float outputB = 0;
-float targetB = 0;
-float currentB = 0;
+void setPIDTarget(struct PIDdata *pid, int target) {
+  pid->target = target;
+  pid->target *= ADC_MAX;
+  pid->target >>= 10;
+  if (pid->target > 1023) {
+    pid->target = 1023;
+  } else if (pid->target < 0) {
+    pid->target = 0;
+  }
+}
+
+void updatePID(struct PIDdata *pid, int measurement) {
+
+  pid->current = measurement;
+  long error = pid->current - pid->target;
+  pid->output -= error * P;
+
+  if (pid->output > MAX_OUTPUT) {
+    pid->output = MAX_OUTPUT;
+      
+  } else if (pid->output < MIN_OUTPUT) {
+    pid->output = MIN_OUTPUT;
+  }
+}
 
 void setAPWM(unsigned char value) {
   if (value) {    
@@ -46,77 +59,27 @@ void setBPWM(unsigned char value) {
   }
 }
 
-void setCirculationSpeed(float percent) {
-  targetA = (percent * ADC_MAX) / 100;
-  if (targetA > 1023) {
-    targetA = 1023;
-  }
-  if (targetA < 0) {
-    targetA = 0;
-  }
+void setCirculationSpeed(int speed) {
+  setPIDTarget(&pidA, speed);
 }
 
-void setCoolingSpeed(float percent) {
-  targetB = (percent * ADC_MAX) / 100;
-  if (targetB > 1023) {
-    targetB = 1023;
-  }
-  if (targetB < 0) {
-    targetB = 0;
-  }
+void setCoolingSpeed(int speed) {
+  setPIDTarget(&pidB, speed);
 }
 
-float getCurrentCirculationSpeed() {
-  return 100*currentA / ADC_MAX;
+int getCurrentCirculationSpeed() {
+  return 1023*pidA.current / ADC_MAX;
 }
 
-float getCurrentCoolingSpeed() {
-  return 100*currentB / ADC_MAX;
+int getCurrentCoolingSpeed() {
+  return 1023*pidB.current / ADC_MAX;
 }
 
 void updatePWM() {
-  
-  currentA = getOsADC(2);
-
-  float errorA = currentA - targetA;
-  errorSumA += errorA;
-  
-  outputA = outputA
-      - P*errorA 
-      - I*errorSumA
-      - D*(errorA-lastErrorA);
-
-  lastErrorA = errorA;
-
-  if (outputA > MAX_OUTPUT) {
-    outputA = MAX_OUTPUT;
-      
-  } else if (outputA < MIN_OUTPUT) {
-    outputA = MIN_OUTPUT;
-  }
-    
-  setAPWM(floor(outputA));
-
-
-  currentB = getOsADC(3);
-  float errorB = currentB - targetB;
-  errorSumB += errorB;
-  
-  outputB = outputB
-      - P*errorB 
-      - I*errorSumB
-      - D*(errorB-lastErrorB);
-
-  lastErrorB = errorB;
-
-  if (outputB > MAX_OUTPUT) {
-    outputB = MAX_OUTPUT;
-      
-  } else if (outputB < MIN_OUTPUT) {
-    outputB = MIN_OUTPUT;
-  }
-    
-  setBPWM(floor(outputB));
+  updatePID(&pidA, getOsADC(2));
+  updatePID(&pidB, getOsADC(3));
+  setAPWM(pidA.output >> PID_Q);
+  setBPWM(pidB.output >> PID_Q);
 }
 
 void initPWM() {

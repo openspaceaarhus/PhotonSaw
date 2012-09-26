@@ -67,7 +67,7 @@ close O;
 #  default value for read/write values
 
 __DATA__
-POWER             power       0
+POWER             power       1
 STORE_MAX_TEMP    store-max  15
 STORE_MIN_TEMP    store-min -10
 CIRCULATION_TEMP  circ-set   20

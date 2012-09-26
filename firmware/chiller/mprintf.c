@@ -26,7 +26,7 @@ void mputchar(char c) {
 
 void mputs(char *c) {
   while (*c) {
-	mputchar(*(c++));
+    mputchar(*(c++));
   }
 }  
 
@@ -38,41 +38,48 @@ void mprintf(PGM_P format, ...) {
 
   char ch;
   while ((ch = pgm_read_byte(format))) {
-	if (ch == '%') {
-	  char type = pgm_read_byte(++format);
-	  if (type == 'd' || type == 'x') { // An integer from ram
-		int d = va_arg(ap, int);
-		char db[10];
-		db[0] = 0;
-		itoa(d, db, type=='d' ? 10 : 16);
-		mputs(db);
+    if (ch == '%') {
+      char type = pgm_read_byte(++format);
+      if (type == 'd' || type == 'x') { // An integer from ram
+	int d = va_arg(ap, int);
+	char db[10];
+	db[0] = 0;
+	itoa(d, db, type=='d' ? 10 : 16);
+	mputs(db);
 
-	  } else if (type == 's') { // A string from ram
-		char *s = va_arg(ap, char *);
-		mputs(s);
+      } else if (type == 'l') { // A long from ram
+	long d = va_arg(ap, long);
+	char db[10];
+	db[0] = 0;
+	itoa(d, db, 10);
+	mputs(db);
 
-	  } else if (type == 'p') { // A string from progmem
-		PGM_P *s = va_arg(ap, PGM_P *);
+      } else if (type == 's') { // A string from ram
+	char *s = va_arg(ap, char *);
+	mputs(s);
 
-		while ((ch = pgm_read_byte(s))) {
-		  mputchar(ch);
-		  ++s;
-		}
+      } else if (type == 'p') { // A string from progmem
+	PGM_P s = va_arg(ap, PGM_P);
 
-	  } else { // Fall back is to print the formatting code (so %% works normally)
-		mputchar('%');
-		mputchar(ch);		
-	  }	  
-
-	} else if (ch == '\n') {
-	  mputchar('\r');
+	while ((ch = pgm_read_byte(s))) {
 	  mputchar(ch);
-
-	} else {
-	  mputchar(ch);
+	  ++s;
 	}
 
-	++format;
+      } else { // Fall back is to print the formatting code (so %% works normally)
+	mputchar('%');
+	mputchar(ch);		
+      }	  
+
+    } else if (ch == '\n') {
+      mputchar('\r');
+      mputchar(ch);
+
+    } else {
+      mputchar(ch);
+    }
+
+    ++format;
   }
 
   va_end(ap);
@@ -105,7 +112,7 @@ void msprintf(char *out, PGM_P format, ...) {
 		}
 
 	  } else if (type == 'p') { // A string from progmem
-		PGM_P *s = va_arg(ap, PGM_P *);
+		PGM_P s = va_arg(ap, PGM_P);
 
 		while ((ch = pgm_read_byte(s))) {
 		  *(out++) = ch;
@@ -161,7 +168,7 @@ void lcd_printf(PGM_P format, ...) {
 		}
 
 	  } else if (type == 'p') { // A string from progmem
-		PGM_P *s = va_arg(ap, PGM_P *);
+		PGM_P s = va_arg(ap, PGM_P);
 
 		while ((ch = pgm_read_byte(s))) {
 		  lcd_putc(ch);

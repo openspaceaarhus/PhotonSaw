@@ -45,7 +45,7 @@ void led(char on) {
   }
 }
 
-char NL[] PROGMEM = "\r\n";
+char NL[] = "\r\n";
 
 
 #define INPUT_BUFFER_SIZE 40
@@ -74,9 +74,9 @@ float currentCirculation = 0;
 
 void printState() {  
   parameters[P_CIRCULATION_CURRENT] = (int)floor(10*currentCirculation);
-  parameters[P_COOLING_PWM]         = (int)floor(10*currentStore);
-  parameters[P_STORE_CURRENT]       = (int)floor(getCurrentCoolingSpeed());
-  parameters[P_CIRCULATION_CURRENT] = (int)floor(getCurrentCirculationSpeed());
+  parameters[P_STORE_CURRENT]       = (int)floor(10*currentStore);
+  parameters[P_COOLING_PWM]         = getCurrentCoolingSpeed();
+  parameters[P_CIRCULATION_PWM]     = getCurrentCirculationSpeed();
 
   for (int i=0;i<P_COUNT;i++) {
     mprintf(PSTR("p%d\t%d\t%p\n"), i, parameters[i], getParameterNamePGM(i));
@@ -128,7 +128,7 @@ void setState(char state) {
   case STATE_ON:
     PORTB |=  _BV(PB0);  // Tank circulation pump Relay
 	parameters[P_TANK_RELAY] = 1;
-    setCirculationSpeed(100);        
+    setCirculationSpeed(PUMP_SPEED_MAX);        
   }
 }
 
@@ -140,16 +140,16 @@ void handleInputLine() {
   led(ledToggle); 
   ledToggle = ledToggle ? 0 : 1;
 
-  char *value= strchr(inputBuffer, '=');
+  char *value = strchr(inputBuffer, '=');
   if (value) {
     *value = 0; // Zero terminate the key.
     value++;    
     int val = atoi(value);
 
     for (int i=0;i<P_RW_COUNT;i++) {
-      if (!strcmp(inputBuffer, getParameterName(i))) {
-		parameters[i] = val;
-		mprintf(PSTR("Ok: Set p%d = %d\n"), i, val);	
+      if (!strcmp_P(inputBuffer, getParameterNamePGM(i))) {
+	  parameters[i] = val;
+	  mprintf(PSTR("Ok: Set p%d = %d\n"), i, val);	
       }
     }
 	    
@@ -177,6 +177,9 @@ void updateDisplay() {
   } else if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
     lcd_puts_p(PSTR("   Running fan   "));
 
+  } else if (parameters[P_CURRENT_STATE] == STATE_WARMUP) {
+    lcd_puts_p(PSTR("   Huuuurnggh!   "));
+
   } else if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
     lcd_puts_p(PSTR("   Compressing!  "));
   }
@@ -191,17 +194,20 @@ void pollInput() {
     char ch = UDR0;
 
     if (ch == '\r') {
+      mputs(NL);
+
+      *inputBufferEnd = 0;
       handleInputLine();
       resetInputBuffer();
 
     } else {
       *inputBufferEnd = ch;
       inputBufferEnd++;
+      mputchar(ch);
 
-      if (inputBufferEnd == inputBuffer + INPUT_BUFFER_SIZE -1) {
-	
-		mprintf(PSTR("ERROR: linebuffer overflow\n"));
-		resetInputBuffer();
+      if (inputBufferEnd == inputBuffer + INPUT_BUFFER_SIZE -1) {	
+	mprintf(PSTR("ERROR: linebuffer overflow\n"));
+	resetInputBuffer();
       }      
     }  
   }
@@ -260,6 +266,8 @@ unsigned char timer = 0;
 #define LONG_PWM_TICK 5*100
 #define MIN_SPEED 50
 
+#define TICKS_PER_SECOND 59
+
 void updateStateMachine() {
 
   float thisStore = readNTCcelcius(0);
@@ -299,65 +307,68 @@ void updateStateMachine() {
       }
 
       if (longpwm < (int)floor(LONG_PWM_TICK*output/MIN_SPEED)) {
-		setCoolingSpeed(MIN_SPEED);
+	setCoolingSpeed(MIN_SPEED);
       } else {
-		setCoolingSpeed(0);
+	setCoolingSpeed(0);
       }      
 
     } else {
       setCoolingSpeed(output);
     }
-	
-  }
 
 
-  if (parameters[P_CURRENT_STATE] == STATE_ON) {
-	if (parameters[P_POWER]) {
-	  
-	  if (currentStore > parameters[P_STORE_MAX_TEMP]) {
-		setState(STATE_WARMUP);
-		parameters[P_FAN_TIMER] = 2; // This starts the fan a little while before the compressor to reduce the surge.
-		timer = 0;
-	  }      
-	  
-	} else {
-	  setState(STATE_OFF);
+
+    if (parameters[P_CURRENT_STATE] == STATE_ON) {
+
+      if (parameters[P_POWER]) {
+      
+	if (currentStore > parameters[P_STORE_MAX_TEMP]) {
+	  setState(STATE_WARMUP);
+	  parameters[P_FAN_TIMER] = 2; // This starts the fan a little while before the compressor to reduce the surge.
+	  timer = 0;
+	}      
+      
+      } else {
+	setState(STATE_OFF);
+      }
+
+
+    } else if (parameters[P_CURRENT_STATE] == STATE_WARMUP) {
+      if (++timer >= TICKS_PER_SECOND) {
+	timer = 0;
+	parameters[P_FAN_TIMER]--;
+
+	if (parameters[P_FAN_TIMER] <= 0) {
+	  setState(STATE_COMPRESSOR_ON);
 	}
-
-
-  } else if (parameters[P_CURRENT_STATE] == STATE_WARMUP) {
-    if (++timer >= 100) {
-      timer = 0;
-	  parameters[P_FAN_TIMER]--;
-
-      if (parameters[P_FAN_TIMER] <= 0) {
-		setState(STATE_COMPRESSOR_ON);
       }
-    }
 
 
-  } else if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
+    } else if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
 
-    if (currentStore < parameters[P_STORE_MIN_TEMP] || !parameters[P_POWER]) {
-      setState(STATE_FAN_ON);
-      parameters[P_FAN_TIMER] = parameters[P_FAN_POST_RUN];
-      timer = 0;
-    }      
+      if (currentStore < parameters[P_STORE_MIN_TEMP] || !parameters[P_POWER]) {
+	setState(STATE_FAN_ON);
+	parameters[P_FAN_TIMER] = parameters[P_FAN_POST_RUN];
+	timer = 0;
+      }      
 
 
-  } else if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
+    } else if (parameters[P_CURRENT_STATE] == STATE_FAN_ON) {
 
-    if (++timer >= 100) {
-      timer = 0;
-	  parameters[P_FAN_TIMER]--;
+      if (++timer >= TICKS_PER_SECOND) {
+	timer = 0;
+	parameters[P_FAN_TIMER]--;
 
-      if (parameters[P_FAN_TIMER] <= 0) {
-		setState(STATE_ON);
+	if (currentStore > parameters[P_STORE_MAX_TEMP]) {
+	  setState(STATE_COMPRESSOR_ON);
+
+	} else if (parameters[P_FAN_TIMER] <= 0) {
+	  setState(STATE_ON);
+	}
       }
-    }
    
-  }	
-
+    }	
+  }
 }
 
 
@@ -382,13 +393,15 @@ int main(void) {
 
   lcd_init(LCD_DISP_ON);
   led(0);
+  setState(STATE_OFF);
   memcpy_P(parameters, (PGM_VOID_P)DEFAULT_PARAMETERS, sizeof(DEFAULT_PARAMETERS));
 
   char frame = 0;
-  setState(STATE_OFF);
   updateDisplay();
 
   while(1) {
+    led(ledToggle); 
+    ledToggle = ledToggle ? 0 : 1;
 
     if ((frame & 15) == 0) {
       updateDisplay();
@@ -397,7 +410,7 @@ int main(void) {
     pollInput();
     updateStateMachine();
     updatePWM();
-    _delay_ms(10);
+    //_delay_ms(10);
     wdt_reset();
     frame++;
   }	

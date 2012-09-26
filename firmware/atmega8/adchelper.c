@@ -1,7 +1,6 @@
 #include "defines.h"
 #include "adchelper.h"
 #include <avr/io.h>
-#include <util/delay.h>
 
 void initADC() {
   ADCSRA |= 1<<ADEN; // Enable ADC
