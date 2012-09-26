@@ -69,12 +69,7 @@ char *getParameterName(int index) {
 }
 
 
-float currentStore = 0;
-float currentCirculation = 0;
-
 void printState() {  
-  parameters[P_CIRCULATION_CURRENT] = (int)floor(currentCirculation);
-  parameters[P_STORE_CURRENT]       = (int)floor(currentStore);
   parameters[P_COOLING_PWM]         = getCurrentCoolingSpeed();
   parameters[P_CIRCULATION_PWM]     = getCurrentCirculationSpeed();
 
@@ -185,7 +180,7 @@ void updateDisplay() {
   }
   
   lcd_gotoxy(0,1);
-  lcd_printf(PSTR("s=%d \xdf" "C o=%d \xdf" "C"), (int)floor(currentStore), (int)floor(currentCirculation));
+  lcd_printf(PSTR("s=%d \xdf" "C o=%d \xdf" "C"), parameters[P_STORE_CURRENT], parameters[P_CIRCULATION_CURRENT]);
 }
 
 void pollInput() {
@@ -227,7 +222,7 @@ void pollInput() {
  These routines weigh in at 538 bytes of code in total, perhaps I should use a lookup table in stead
  http://appnote.avrportal.com/calculator/thermistor-ntc
 */
-
+/*
 unsigned int readADCmv(const int channel) {
   unsigned int raw = getOsADC(channel);
 
@@ -248,6 +243,37 @@ float readNTCcelcius(const int channel) {
   return r2c(readNTCres(channel));
 }
 
+int readNTC(const unsigned char channel) {
+  return (int)floor(readNTCcelcius(channel)*10);
+}
+
+*/
+
+// Calculated using: http://appnote.avrportal.com/calculator/thermistor-ntc
+const unsigned int NTC_MINUS_20_TO_PLUS_30[] PROGMEM = { 860, 851, 842, 833, 823, 814, 804, 793, 783, 772, 761, 750, 738, 727, 715, 703, 691, 679, 666, 654, 641, 628, 616, 603, 590, 577, 564, 552, 539, 526, 514, 501, 489, 476, 464, 452, 440, 428, 417, 406, 394, 383, 373, 362, 352, 341, 331, 322, 312, 303, 294 };
+
+int readNTCint(const unsigned char channel) {
+  unsigned int raw = getOsADC(channel);
+  
+  signed char underIndex = -1;
+  unsigned int underADC = 1024;
+  unsigned int overADC = 0;
+  while (underADC > raw && underIndex < 51) {
+    ++underIndex;
+    overADC = underADC;			    
+    underADC = pgm_read_word(&NTC_MINUS_20_TO_PLUS_30[underIndex]);
+  }
+  
+  if (underIndex < 1) {
+    return -200;
+  } else if (underIndex >= 51) {
+    return 300;
+  }
+
+  return (underIndex-20)*10 - (raw-underADC)*10/(overADC-underADC);
+}
+
+
 #define P 10000
 
 #define MIN_OUTPUT ((long)0)
@@ -264,11 +290,11 @@ unsigned char timer = 0;
 
 void updateStateMachine() {
 
-  float thisStore = 10*readNTCcelcius(0);
-  currentStore += (thisStore-currentStore)*0.1;
+  int thisStore = readNTCint(0);
+  parameters[P_STORE_CURRENT] += (thisStore-parameters[P_STORE_CURRENT])/10;
 
-  float thisCirculation = 10*readNTCcelcius(1);
-  currentCirculation += (thisCirculation-currentCirculation)*0.1;
+  int thisCirculation = readNTCint(1);
+  parameters[P_CIRCULATION_CURRENT] += (thisCirculation-parameters[P_CIRCULATION_CURRENT])/10;
 
   if (parameters[P_CURRENT_STATE] == STATE_OFF) {
     if (parameters[P_POWER]) {
@@ -278,7 +304,7 @@ void updateStateMachine() {
   } else {
 	
     // This is the PID regulation of the circulation temperature
-    long error = parameters[P_CIRCULATION_TEMP]-currentCirculation;
+    long error = parameters[P_CIRCULATION_TEMP]-parameters[P_CIRCULATION_CURRENT];
     circOutput -= error * P;
 
     if (circOutput > MAX_OUTPUT) {
@@ -309,7 +335,7 @@ void updateStateMachine() {
 
       if (parameters[P_POWER]) {
       
-	if (currentStore > parameters[P_STORE_MAX_TEMP]) {
+	if (parameters[P_STORE_CURRENT] > parameters[P_STORE_MAX_TEMP]) {
 	  setState(STATE_WARMUP);
 	  parameters[P_FAN_TIMER] = 2; // This starts the fan a little while before the compressor to reduce the surge.
 	  timer = 0;
@@ -333,7 +359,7 @@ void updateStateMachine() {
 
     } else if (parameters[P_CURRENT_STATE] == STATE_COMPRESSOR_ON) {
 
-      if (currentStore < parameters[P_STORE_MIN_TEMP] || !parameters[P_POWER]) {
+      if (parameters[P_STORE_CURRENT] < parameters[P_STORE_MIN_TEMP] || !parameters[P_POWER]) {
 	setState(STATE_FAN_ON);
 	parameters[P_FAN_TIMER] = parameters[P_FAN_POST_RUN];
 	timer = 0;
@@ -346,7 +372,7 @@ void updateStateMachine() {
 	timer = 0;
 	parameters[P_FAN_TIMER]--;
 
-	if (currentStore > parameters[P_STORE_MAX_TEMP]) {
+	if (parameters[P_STORE_CURRENT] > parameters[P_STORE_MAX_TEMP]) {
 	  setState(STATE_COMPRESSOR_ON);
 
 	} else if (parameters[P_FAN_TIMER] <= 0) {

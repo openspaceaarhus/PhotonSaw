@@ -51,9 +51,11 @@ bin : $(PROJ).hex
 #	avr-objcopy -O ihex $(PROJ).elf $(PROJ).hex
 #	$(SIZE) $(PROJ).elf
 
+# Notice: We must include this particular libm if if we want to use float at all: /usr/lib/avr/lib/libm.a 
+
 # This uses whole-program optimization so there's only one compilation unit:
 $(PROJ).hex : $(CSRC) $(CPSRC) $(INTERMEDIATE)
-	$(CC) $(CFLAGS) $(CPFLAGS) $(LDFLAGS) $(CSRC) $(CPSRC) /usr/lib/avr/lib/libm.a -o $(PROJ).elf
+	$(CC) $(CFLAGS) $(CPFLAGS) $(LDFLAGS) $(CSRC) $(CPSRC) -o $(PROJ).elf
 	avr-objcopy -O ihex $(PROJ).elf $(PROJ).hex
 	$(SIZE) --format=berkeley $(PROJ).elf
 	$(SIZE) --format=avr --mcu=$(AVR) $(PROJ).elf
