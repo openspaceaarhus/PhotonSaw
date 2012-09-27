@@ -4,7 +4,7 @@
 AVR               ?= atmega88
 SLEEP_10_MS_COUNT ?= 79
 UART_BAUD         ?= 9600
-F_CPU             ?= =8000000
+F_CPU             ?= 8000000
 
 
 #PROG = -c usbtiny
