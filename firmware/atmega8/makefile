@@ -1,9 +1,15 @@
 #PROJ=hest
 
-AVR ?= atmega88
+# Some defaults that the project makefile should override:
+AVR               ?= atmega88
+SLEEP_10_MS_COUNT ?= 79
+UART_BAUD         ?= 9600
+F_CPU             ?= =8000000
+
+
 #PROG = -c usbtiny
 #AVR_ISP_PROGRAMMER = -c avrispv2 -P usb
-AVR_ISP_PROGRAMMER = -c jtag2isp -P usb
+AVR_ISP_PROGRAMMER ?= -c jtag2isp -P usb
 
 # Allow the user to have a different programmer.
 -include $(HOME)/.makefile
@@ -29,6 +35,10 @@ CFLAGS += -fshort-enums
 
 CFLAGS += -finline-limit=3 
 CFLAGS += -fno-inline-small-functions 
+
+CFLAGS += -D SLEEP_10_MS_COUNT=$(SLEEP_10_MS_COUNT)
+CFLAGS += -D UART_BAUD=$(UART_BAUD)
+CFLAGS += -D F_CPU=$(F_CPU)
 
 CFLAGS += --combine -fwhole-program 
 
@@ -61,10 +71,8 @@ $(PROJ).hex : $(CSRC) $(CPSRC) $(INTERMEDIATE)
 	$(SIZE) --format=avr --mcu=$(AVR) $(PROJ).elf
 
 # Internal oscilator 8MHz, no prescaler, BOD=2.7V:
-fuses:
+fuses8int:
 	avrdude $(AVR_ISP_PROGRAMMER) -p $(AVR) -B 100 -U lfuse:w:0xe2:m -U hfuse:w:0xdc:m -U efuse:w:0xf9:m 
 
 clean :
 	rm -f $(PROJ).hex $(PROJ).elf $(PROJ).map $(OBJS) $(INTERMEDIATE)
-
-

@@ -1,4 +1,3 @@
-#include "defines.h"
 #include "adchelper.h"
 #include <avr/io.h>
 

@@ -23,11 +23,11 @@
        
 *****************************************************************************/
 #include <inttypes.h>
+#include <stdarg.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "lcd.h"
-
-
+#include "mstdio.h"
 
 /* 
 ** constants/macros 
@@ -610,3 +610,12 @@ void lcd_init(uint8_t dispAttr)
     lcd_command(dispAttr);                  /* display/cursor control       */
 
 }/* lcd_init */
+
+
+void lcd_printf(PGM_P format, ...) {
+  va_list ap;
+  va_start(ap, format);
+  mvfprintf(lcd_putc, format, ap);
+  va_end(ap);
+}
+

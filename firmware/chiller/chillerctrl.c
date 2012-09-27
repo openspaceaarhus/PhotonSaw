@@ -1,5 +1,3 @@
-#include "defines.h"
-
 #include <ctype.h>
 #include <inttypes.h>
 
@@ -17,10 +15,8 @@
 
 #include "pwmvoltages.h"
 #include "adchelper.h"
-
 #include "lcd.h"
-
-#include "mprintf.h"
+#include "mstdio.h"
 
 // We don't really care about unhandled interrupts.
 EMPTY_INTERRUPT(__vector_default)
@@ -185,8 +181,8 @@ void updateDisplay() {
 
 void pollInput() {
   
-  if (UCSR0A & _BV(RXC0)) {
-    char ch = UDR0;
+  if (mchready()) {
+    char ch = mgetch();
 
     if (ch == '\r') {
       mputs(NL);

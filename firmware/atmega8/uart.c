@@ -10,9 +10,6 @@
  *
  * $Id: uart.c,v 1.1.2.1 2005/12/28 22:35:08 joerg_wunsch Exp $
  */
-
-#include "defines.h"
-
 #include <stdint.h>
 #include <stdio.h>
 
@@ -27,12 +24,12 @@
  */
 void uart_init(void) {
 #if F_CPU < 2000000UL && defined(U2X)
-  UCSRA = _BV(U2X);             /* improve baud rate error by using 2x clk */
-  UBRRL = (F_CPU / (8UL * UART_BAUD)) - 1;
+  UCSR0A = _BV(U2X);             /* improve baud rate error by using 2x clk */
+  UBRR0L = (F_CPU / (8UL * UART_BAUD)) - 1;
 #else
-  UBRRL = (F_CPU / (16UL * UART_BAUD)) - 1;
+  UBRR0L = (F_CPU / (16UL * UART_BAUD)) - 1;
 #endif
-  UCSRB = _BV(TXEN) | _BV(RXEN); /* tx/rx enable */
+  UCSR0B = _BV(TXEN0) | _BV(RXEN0); /* tx/rx enable */
   //UCSRB = _BV(TXEN); /* tx enable */
 }
 
@@ -44,24 +41,24 @@ int uart_putchar(char c, FILE *stream){
 
   //  if (c == '\n')
   //uart_putchar('\r', stream);
-  loop_until_bit_is_set(UCSRA, UDRE);
-  UDR = c;
-  loop_until_bit_is_set(UCSRA, UDRE);
+  loop_until_bit_is_set(UCSR0A, UDRE0);
+  UDR0 = c;
+  loop_until_bit_is_set(UCSR0A, UDRE0);
   
   return 0;
 }
 
 int uart_getchar(FILE *stream) {
 
-    if (UCSRA & 1<<RXC) {
-	if (UCSRA & _BV(FE))
-	    return _FDEV_EOF;
-	if (UCSRA & _BV(DOR))
-	    return _FDEV_ERR;
+  if (UCSR0A & 1<<RXC0) {
+	if (UCSR0A & _BV(FE0))
+	  return _FDEV_EOF;
+	if (UCSR0A & _BV(DOR0))
+	  return _FDEV_ERR;
 	
-	return UDR;
-    } else {
+	return UDR0;
+  } else {
 	return -1000;
-    }
+  }
 }
 

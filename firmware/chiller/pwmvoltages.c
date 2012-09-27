@@ -2,7 +2,6 @@
 
 #include "pwmvoltages.h"
 #include "adchelper.h"
-#include "mprintf.h"
 
 // These are the PWM output limits.
 const long MAX_OUTPUT = ((long)128)<<PID_Q;

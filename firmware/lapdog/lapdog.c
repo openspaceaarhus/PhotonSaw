@@ -1,12 +1,10 @@
-#include "defines.h"
-
 #include <ctype.h>
 #include <inttypes.h>
 
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdio.h>
+#include <mstdio.h>
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -18,25 +16,8 @@
 #include <avr/eeprom.h> 
 #include <avr/pgmspace.h>
 
-#include "uart.h"
-
 // We don't really care about unhandled interrupts.
 EMPTY_INTERRUPT(__vector_default)
-
-
-// A macro and function to store string constants in flash and only copy them to
-// RAM when needed, note the limit on string length.
-
-char stringBuffer[80];
-
-const char *getString(PGM_P src) {
-    //assert(strlen_P(src) < sizeof(stringBuffer));
-    strcpy_P(stringBuffer, src);
-    return stringBuffer;
-}
-
-#define PROGSTR(s) getString(PSTR(s))
-
 
 void led1(char on) {
   if (on) {
@@ -75,10 +56,8 @@ int main(void) {
   
   wdt_enable(WDTO_4S);
   
-  uart_init();
-  FILE uart_str = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
-  stdout = stdin = &uart_str;
-  fprintf(stdout, PROGSTR("#Power up!\n"));
+  muartInit();
+  mprintf(PSTR("#Power up!\n"));
   
   led1(0);
   led2(0);
@@ -86,7 +65,7 @@ int main(void) {
   char frame = 0;
   while(1) {
     if (!(frame & 15)) {
-      fprintf(stdout, PROGSTR("OK\n"));
+      mprintf(PSTR("OK\n"));
     }
 
     if (frame & 8) {
