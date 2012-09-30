@@ -24,6 +24,8 @@ Duration: Number of ticks this move lasts
 12&&(7|8): A end pos
 9: LASER intensity 
 10: LASER intensity acceleration
+13: Switches: bits to set  
+13: Switches: bits to clear
 11: Pixel speed
 11: Pixel word count
 ... pixel word count pixels
@@ -92,6 +94,9 @@ If pixels are present then the laser word must also be present to set the pwm an
 #define MOVE_HAS_LASER_A(x) ((x) & (1<<10))
 #define MOVE_HAS_PIXELS(x) ((x) & (1<<11))
 
+#define MOVE_HAS_SWITCHES(x) ((x) & (1<<13))
+
+
 #define LASER_MAGIC      0x1A5E0000
 
 #define IS_LASER_CODE(x) (((x) & 0xffff0000) == LASER_MAGIC)
@@ -99,5 +104,7 @@ If pixels are present then the laser word must also be present to set the pwm an
 
 #define ONE_STEP_ORDER 30
 #define ONE_STEP (1<<ONE_STEP_ORDER)
+
+#define MOVE_SW_ASSIST_AIR (1<<0)
 
 #endif
