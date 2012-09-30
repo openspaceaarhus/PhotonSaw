@@ -139,6 +139,8 @@ public class EngraveRaster extends LaserNode {
 	@Override
 	public void render(JobRenderTarget target, PointTransformation transformation) {
 
+		target.setAssistAir(assistAir);
+		
 		double yStep = target.getEngravingYStepSize();
 		double leadin = target.getEngravingXAccelerationDistance(maxSpeed);
 		

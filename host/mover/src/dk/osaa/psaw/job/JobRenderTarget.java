@@ -13,7 +13,7 @@ public interface JobRenderTarget {
 	 * Move as quickly as possible to this point
 	 * @param p The point to move to
 	 */
-	void moveTo(   Point p);
+	void moveTo(Point p);
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed
@@ -21,7 +21,7 @@ public interface JobRenderTarget {
 	 * @param intensity The intensity (0..1) of the LASER during the move
 	 * @param maxSpeed The desired speed
 	 */
-	void cutTo(    Point p, double intensity, double maxSpeed);
+	void cutTo(Point p, double intensity, double maxSpeed);
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed while engraving a scanline of pixels.
@@ -46,4 +46,10 @@ public interface JobRenderTarget {
 	 * @return The size, in mm of one step in the Y axis as used when engraving;
 	 */
 	double getEngravingYStepSize();
+	
+	/**
+	 * Turn assist air on or off
+	 * @param on status of assist air
+	 */
+	void setAssistAir(boolean on);
 }

@@ -28,6 +28,8 @@ public class CutPath extends LaserNode {
 	public void render(JobRenderTarget target,
 			PointTransformation transformation) {
 
+		target.setAssistAir(assistAir);
+		
 		for (int pass=0;pass<passes;pass++) {
 			boolean first = true;
 			for (Point2D p2d: path) {
