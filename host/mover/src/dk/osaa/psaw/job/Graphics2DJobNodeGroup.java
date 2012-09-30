@@ -71,9 +71,9 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		this.job = job;
 		this.jobNodeGroup = jobNodeGroup;
 		curveFlatness = 0.1;
-		defaultPower = 80;
-		maximumPower = 80;
-		defaultSpeed = 300;
+		defaultPower = 100;
+		maximumPower = 100;
+		defaultSpeed = 6;
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			newPoints.add(np);
 		}
 		
-		CutPath path = new CutPath(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), newPoints);
+		CutPath path = new CutPath(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), newPoints);
 		log.info("Appending CutPath: "+path.getId());
 		jobNodeGroup.addChild(path);
 	}
@@ -232,6 +232,40 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		return speed;
 	}
 	
+	int getPasses() {
+		int passes = 1;
+		if (element != null) {
+			StyleAttribute passesAttr = new StyleAttribute("photonsaw-passes");
+			try {
+				element.getStyle(passesAttr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get passes attribute from svg element", e);
+				passesAttr = null;
+			}			
+			if (passesAttr != null && !passesAttr.getStringValue().equals("")) {
+				passes = Math.min(100, Math.max(1, passesAttr.getIntValue()));
+			}
+		}
+		return passes;
+	}
+	
+	boolean getAssistAir() {
+		boolean assistAir = true;
+		if (element != null) {
+			StyleAttribute aaAttr = new StyleAttribute("photonsaw-assistair");
+			try {
+				element.getStyle(aaAttr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get assistair attribute from svg element", e);
+				aaAttr = null;
+			}			
+			if (aaAttr != null && !aaAttr.getStringValue().equals("")) {
+				assistAir = aaAttr.getBooleanValue();
+			}
+		}
+		return assistAir;
+	}
+	
 	String getId() {
 		String id = "svg-node";
 		if (element != null) {
@@ -254,8 +288,9 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			throw new RuntimeException("The Image passed to writeImage was not a BufferedImage: "+img.getClass().getName());
 		}
 		
-		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), 
-													(BufferedImage) img, pos.x, pos.y, width, height);
+		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(),
+					getPasses(), getAssistAir(), (BufferedImage) img, pos.x, pos.y, width, height);
+		
 		log.info("Appending EngraveRaster: "+engraving.getId());
 		jobNodeGroup.addChild(engraving);		
 	}

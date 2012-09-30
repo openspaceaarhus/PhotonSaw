@@ -126,8 +126,6 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	}
 		
 	private void configureMotors() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
-		run("ai 10f"); // TODO: Ignore alarms while testing
-		run("ai 10f"); // TODO: Ignore alarms while testing
 
 		for (int i=0;i<Move.AXES;i++) {
 			run("me "+i+" "+

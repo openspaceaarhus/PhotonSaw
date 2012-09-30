@@ -34,7 +34,7 @@ public class TestLoader {
 		tl.addPoint(0,0);
 		
 		JobNodeGroup test = new JobNodeGroup(job.getNodeId("test"));
-		test.addChild(new CutPath(job.getNodeId("testcut"), 0.5, 1000, tl.path));
+		test.addChild(new CutPath(job.getNodeId("testcut"), 0.5, 1000, 1, true, tl.path));
 		return test;
 	}
 

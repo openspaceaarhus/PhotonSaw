@@ -87,9 +87,9 @@ public class EngraveRaster extends LaserNode {
 	private EngraveRaster() {};
 	*/	
 	
-	public EngraveRaster(String id, double intensity, double maxSpeed,
+	public EngraveRaster(String id, double intensity, double maxSpeed, int passes, boolean assistAir,
 						BufferedImage img, double x, double y, double width, double height) {
-		super(id,intensity,maxSpeed);
+		super(id,intensity,maxSpeed, passes, assistAir);
 
 		setRaster(img);
         

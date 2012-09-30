@@ -18,9 +18,17 @@ public abstract class LaserNode extends AbstractJobNode {
 	@Getter
 	double maxSpeed;
 	
-	LaserNode(String id, double intensity, double maxSpeed) {
+	@Getter
+	int passes;
+	
+	@Getter
+	boolean assistAir;
+	
+	LaserNode(String id, double intensity, double maxSpeed, int passes, boolean assistAir) {
 		super(id);
 		this.intensity=intensity;
 		this.maxSpeed=maxSpeed;
+		this.passes=passes;
+		this.assistAir = assistAir;		
 	}	
 }

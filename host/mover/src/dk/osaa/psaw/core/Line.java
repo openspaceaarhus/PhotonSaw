@@ -530,12 +530,14 @@ public class Line {
 				// TODO: This is a ghastly hack, I know, but damn it, it works and I don't know what else to do.
 				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
 				// rather than have to rely on nudging the speed parameter up and down after the inaccuracy has been detected.
+				double klyt = 2;
 				while (diffSteps != 0) {
 					steps = move.getAxisLength(a);
 					diffSteps = steps - stepsWanted;
 					if (diffSteps != 0) {
-						move.nudgeSpeed(a, -diffSteps/2.0);
+						move.nudgeSpeed(a, -diffSteps/klyt);
 						log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
+						klyt += 0.1;
 					}
 				}
 			}

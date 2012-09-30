@@ -14,27 +14,30 @@ public class CutPath extends LaserNode {
 
 	@Getter
 	ArrayList<Point2D> path;
+
 /*
 	@SuppressWarnings("unused")
 	private CutPath() { super(); }
 	*/
-	CutPath(String id, double intensity, double maxSpeed, ArrayList<Point2D> path) {
-		super(id,intensity,maxSpeed);
+	CutPath(String id, double intensity, double maxSpeed, int passes, boolean assistAir, ArrayList<Point2D> path) {
+		super(id,intensity,maxSpeed,passes,assistAir);
 		this.path = path;
 	}
 
 	@Override
 	public void render(JobRenderTarget target,
 			PointTransformation transformation) {
-		
-		boolean first = true;
-		for (Point2D p2d: path) {
-			if (first) {
-				target.moveTo(transformation.transform(p2d));
-				first = false;			
-			} else {
-				target.cutTo(transformation.transform(p2d), intensity, maxSpeed);
+
+		for (int pass=0;pass<passes;pass++) {
+			boolean first = true;
+			for (Point2D p2d: path) {
+				if (first) {
+					target.moveTo(transformation.transform(p2d));
+					first = false;			
+				} else {
+					target.cutTo(transformation.transform(p2d), intensity, maxSpeed);
+				}
 			}
-		}		
+		}
 	}
 }
