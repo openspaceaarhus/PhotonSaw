@@ -38,8 +38,8 @@ unsigned int checkAlarmInputs();
 // Coolant flow was too low and the laser was commanded on
 #define ALARM_COOLANT_FLOW 11
 
-// Coolant temperature outside parameters and the laser was commanded on
-#define ALARM_COOLANT_TEMP 12
+// Coolant temperature too high and the laser was commanded on
+#define ALARM_COOLANT_TEMP_HIGH 12
 
 // The buffer is about to be reset
 #define ALARM_RESET 13
@@ -49,6 +49,13 @@ unsigned int checkAlarmInputs();
 
 // Motor drivers too hot.
 #define ALARM_MOTOR_DRIVER_OVERTEMP 15
+
+// Cooling sensors are giving invalid readings.
+#define ALARM_COOLING_SENSORS 16
+
+// Coolant temperature too low and the laser was commanded on
+#define ALARM_COOLANT_TEMP_LOW 17
+
 
 #define ALARM_MAX_LENGTH 80
 typedef struct {

@@ -2,17 +2,39 @@
 #include "api.h"
 #include "alarm.h"
 
+#define COOLING_SMOOTH 0.02
+
 // This gets called at the highest possible frequency to detect the pulses
-unsigned int waterflowPinstate;
+signed char waterflowPinstate;
 unsigned int waterflowPulses;
 
 void joulesPollFlow() {
+  if (waterflowPinstate > 0) {
+    
+    if (!GPIO_GET(IO_WATERFLOW)) {
+      if (--waterflowPinstate <= 0) {
+	waterflowPinstate = -10;
+      }
+    }
+
+  } else {
+
+    if (GPIO_GET(IO_WATERFLOW)) {
+      if (++waterflowPinstate >= 0) {
+	waterflowPinstate = 10;
+	waterflowPulses++;
+      }
+    }
+
+  }
+  /*
   if (waterflowPinstate && !GPIO_GET(IO_WATERFLOW)) {
     waterflowPinstate = 0;
   } else if (!waterflowPinstate && GPIO_GET(IO_WATERFLOW)) {
-   waterflowPinstate = 1;
+    waterflowPinstate = 1;
     waterflowPulses++;
   }
+  */
 }
 
 // The total number of water flow pulses seen
@@ -43,8 +65,13 @@ void joulesUpdateTotals100Hz() {
   }
 
   coolantAlarm = 0;
-
-  lastInternalTemp = readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL));
+  
+  double thisInternalTemp = readNTCcelcius(IO_CHAN(IO_TEMP_INTERNAL));
+  if (lastTime) {
+    lastInternalTemp += (thisInternalTemp-lastInternalTemp) * COOLING_SMOOTH;
+  } else {
+    lastInternalTemp = thisInternalTemp;
+  }
   if (lastInternalTemp > 100) {
     coolantAlarm |= ALARM_MOTOR_DRIVER_OVERTEMP;
   }
@@ -56,35 +83,47 @@ void joulesUpdateTotals100Hz() {
 
   if (it < 0 || ot < 0 || it > 50 || ot > 50) { // Ignore crazy values
 
-    // But raise the alarm if the sensor problems keep up for more than 1 second
-    if (deltaTime > 1000) {
-      coolantAlarm |= ALARM_COOLANT_TEMP;
+    // But raise the alarm if the sensor problems keep up for a long time
+    if (deltaTime > 2000) {
+      coolantAlarm |= ALARM_COOLING_SENSORS;
     }
     return;
   }
   unsigned int p = waterflowPulses;
   
+  double newIt = lastTime ? lastInTemp  + (it-lastInTemp) * COOLING_SMOOTH : it;
+  double newOt = lastTime ? lastOutTemp + (ot-lastOutTemp)* COOLING_SMOOTH : ot;
+
   if (lastTime && deltaTime) {
     double mass = (p-lastPulseCount)*WATERFLOW_GRAMS_PER_PULSE; // grams of water since last update
     totalWaterMass += mass/1000; // Because total watermass is in kg
-    double deltaTemp = ot-it; // ot and it are in C, so the diff in K is the same as the diff in C.
+    double deltaTemp = newOt-newIt; // ot and it are in C, so the diff in K is the same as the diff in C.
     double j = WATER_HEAT_CAPACITY * mass * deltaTemp; 
     totalJoules += j;
 
-    double power = (j * deltaTime) / 1000; // deltaTime is in ms
-    avgPower += (power-avgPower) * 0.01;
+    double power = j / (deltaTime / 1000.0); // deltaTime is in ms
+    avgPower += (power-avgPower) * COOLING_SMOOTH;
 
     double waterFlow = (1000*mass/deltaTime); // gram / second
-    avgWaterFlow += (waterFlow-avgWaterFlow) * 0.01;
+    avgWaterFlow += (waterFlow-avgWaterFlow) * COOLING_SMOOTH;
 
-    coolantAlarm |= (avgWaterFlow < MINIMUM_WATER_FLOW_GS ? ALARM_COOLANT_FLOW : 0) |
-      ((ot > MAXIMUM_WATER_TEMP || it < MINIMUM_WATER_TEMP) ? ALARM_COOLANT_TEMP : 0);
+    if (avgWaterFlow < MINIMUM_WATER_FLOW_GS) {
+      coolantAlarm |= ALARM_COOLANT_FLOW;
+    }
+
+    if (newOt < MAXIMUM_WATER_TEMP || newIt < MINIMUM_WATER_TEMP) {
+      coolantAlarm |= ALARM_COOLANT_TEMP_LOW;
+    }
+
+    if (newOt > MAXIMUM_WATER_TEMP || newIt > MINIMUM_WATER_TEMP) { 
+      coolantAlarm |= ALARM_COOLANT_TEMP_HIGH;
+    }    
   }  
   
   lastPulseCount = p;
   lastTime = t1;
-  lastOutTemp = it;
-  lastInTemp = ot;
+  lastOutTemp = newOt;
+  lastInTemp = newIt;
 }
 
 // The total mass of water, that has passed through the tube in kg 
