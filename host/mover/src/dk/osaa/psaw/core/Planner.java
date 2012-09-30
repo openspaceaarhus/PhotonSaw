@@ -364,4 +364,14 @@ public class Planner extends Thread implements JobRenderTarget {
 		jogDirection = direction;
 		jogTimeout = System.currentTimeMillis()+300;		
 	}
+
+	boolean assistAirStatus;
+	
+	@Override
+	public void setAssistAir(boolean assistAirOn) {
+		if (assistAirStatus != assistAirOn) {
+			assistAirStatus = assistAirOn;
+			// TODO: Issue move code that sets assist air on the hardware and waits for the time needed.
+		}
+	}
 }

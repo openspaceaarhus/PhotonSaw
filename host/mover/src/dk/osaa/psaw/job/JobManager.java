@@ -12,7 +12,6 @@ import java.util.TreeMap;
 import lombok.val;
 
 import dk.osaa.psaw.config.Configuration;
-import dk.osaa.psaw.config.HostConfig;
 
 /**
  * Manages a the jobs the system knows about and keeps a cache of jobs in memory.

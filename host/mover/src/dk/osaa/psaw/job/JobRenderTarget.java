@@ -49,7 +49,7 @@ public interface JobRenderTarget {
 	
 	/**
 	 * Turn assist air on or off
-	 * @param on status of assist air
+	 * @param assistAirOn status of assist air
 	 */
-	void setAssistAir(boolean on);
+	void setAssistAir(boolean assistAirOn);
 }

@@ -46,4 +46,9 @@ public class JobSize implements JobRenderTarget {
 	public double getEngravingYStepSize() {
 		return p.getEngravingYStepSize();
 	}
+
+	@Override
+	public void setAssistAir(boolean on) {
+		// Ignore
+	}
 }

@@ -164,6 +164,7 @@ public class EngraveRaster extends LaserNode {
 			}			
 			
 			double y = yOffset;
+			int scanNumber = 0;
 			for (int yc=0;yc<scanlines;yc++) {
 				
 				val pixels = new boolean[rasterWidth];				
@@ -171,7 +172,13 @@ public class EngraveRaster extends LaserNode {
 					pixels[xc] = getPixel(xc, (int)Math.round(rasterLine));  
 				}				
 				
-				renderScanline(target, transformation, (yc & 1) == 1, y, leadin, yStep, pixels);
+				if (passes > 1) {
+					for (int pass=1;pass<passes;pass++) {
+						renderScanline(target, transformation, (scanNumber++ & 1) == 1, y, leadin, 0, pixels);
+					}					
+				}
+				
+				renderScanline(target, transformation, (scanNumber++ & 1) == 1, y, leadin, yStep, pixels);
 				
 				y += yStep;
 				rasterLine += rasterLinesPerScanLine; 
