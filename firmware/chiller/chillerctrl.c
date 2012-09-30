@@ -176,7 +176,9 @@ void updateDisplay() {
   }
   
   lcd_gotoxy(0,1);
-  lcd_printf(PSTR("s=%d \xdf" "C o=%d \xdf" "C"), parameters[P_STORE_CURRENT], parameters[P_CIRCULATION_CURRENT]);
+  lcd_printf(PSTR("s=%d \xdf" "C o=%d \xdf" "C"),
+	     parameters[P_STORE_CURRENT]/10,
+	     parameters[P_CIRCULATION_CURRENT]/10);
 }
 
 void pollInput() {
@@ -333,7 +335,7 @@ void updateStateMachine() {
       
 	if (parameters[P_STORE_CURRENT] > parameters[P_STORE_MAX_TEMP]) {
 	  setState(STATE_WARMUP);
-	  parameters[P_FAN_TIMER] = 2; // This starts the fan a little while before the compressor to reduce the surge.
+	  parameters[P_FAN_TIMER] = 4; // This starts the fan a little while before the compressor to reduce the surge.
 	  timer = 0;
 	}      
       
