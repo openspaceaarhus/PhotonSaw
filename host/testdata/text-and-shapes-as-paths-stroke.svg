@@ -51,7 +51,8 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,2.988066e-5)">
+     transform="translate(0,2.988066e-5)"
+     style="photonsaw-speed:50">
     <g
        transform="matrix(0.97240904,0,0,1.0283738,-7.6187148,57.563623)"
        style="font-size:199.01844787999996811px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:none;fill-opacity:1;stroke:#008fc1;font-family:flatline;-inkscape-font-specification:flatline;stroke-opacity:1;stroke-width:1.06299214;stroke-miterlimit:4;stroke-dasharray:none"

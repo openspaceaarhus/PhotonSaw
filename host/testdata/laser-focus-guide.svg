@@ -53,13 +53,15 @@
      id="layer1">
     <g
        id="g3780"
-       transform="translate(-45.254834,-38.890873)">
+       transform="translate(-45.254834,-38.890873)" 
+       style="photonsaw-speed:50;photonsaw-power:2">
+<!--
       <text
          sodipodi:linespacing="125%"
          id="text3764"
          y="174.84267"
          x="178.89801"
-         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50;photonsaw-power:4"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
          xml:space="preserve"><tspan
            y="174.84267"
            x="178.89801"
@@ -71,7 +73,7 @@
          id="text3768"
          y="150.52991"
          x="-260.81665"
-         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50;photonsaw-power:4"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50"
          xml:space="preserve"><tspan
            y="150.52991"
            x="-260.81665"
@@ -82,7 +84,7 @@
          id="text3772"
          y="253.33151"
          x="50.91169"
-         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50;photonsaw-power:4"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50"
          xml:space="preserve"><tspan
            y="253.33151"
            x="50.91169"
@@ -94,16 +96,17 @@
          id="text3776"
          y="211.67902"
          x="-82.963661"
-         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50;photonsaw-power:4"
+         style="font-size:10px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;photonsaw-speed:50"
          xml:space="preserve"><tspan
            y="211.67902"
            x="-82.963661"
            id="tspan3778"
            sodipodi:role="line">10 mm</tspan></text>
+-->
       <path
          id="rect2987"
          d="m 191.78125,41.28125 0,69.875 -72.6875,0 0,119.6875 -70.875,0 0,35.4375 180,0 0,-225 -36.4375,0 z"
-         style="fill:none;stroke:#000000;stroke-opacity:1;photonsaw-speed:20;photonsaw-power:70;photonsaw-passes:2"
+         style="fill:none;stroke:#000000;stroke-opacity:1;photonsaw-speed:50;photonsaw-power:40;photonsaw-passes:1"
          inkscape:connector-curvature="0" />
     </g>
   </g>
