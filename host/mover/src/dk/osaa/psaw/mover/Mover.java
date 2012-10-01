@@ -30,7 +30,9 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple-stroke.svg");
 			
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/au109021.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/laser-focus-guide.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/laser-focus-guide.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/butterfly-2.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/testpiece.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/circle-and-rect.svg");
 			testJob.loadSVG(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
