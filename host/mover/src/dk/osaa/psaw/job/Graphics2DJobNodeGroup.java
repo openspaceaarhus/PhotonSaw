@@ -65,6 +65,20 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	@Getter
 	@Setter
 	private double maximumPower;
+	
+	/**
+	 * The duration of each pulse, if no photonsaw-pulse-duration is used 
+	 */
+	@Getter
+	@Setter
+	private int defaultPulseDuration;
+	
+	/**
+	 * The number of pulses per mm, if no photonsaw-ppmm style is used 
+	 */
+	@Getter
+	@Setter
+	private int defaultPpmm;
 
 	public Graphics2DJobNodeGroup(Job job, JobNodeGroup jobNodeGroup) {
 		super(0, 0, 2000, 1000);
@@ -74,12 +88,18 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		defaultPower = 80;
 		maximumPower = 80;
 		defaultSpeed = 6;
+		defaultPulseDuration = 3000; // 3 ms
+		defaultPpmm = 100;
 	}
 
 	@Override
 	public void startRendering(RenderableElement element) {
 		this.element = element;
 		log.info("Rendering SVG element: "+element.getId());
+	}
+	
+	LaserNodeSettings getLaserNodeSettings() {
+		return new LaserNodeSettings(getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), getPulsesPermm(), getPulseDuration());
 	}
 	
 	void addCutPath(ArrayList<Point2D> points) {
@@ -90,7 +110,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			newPoints.add(np);
 		}
 		
-		CutPath path = new CutPath(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), newPoints);
+		CutPath path = new CutPath(job.getNodeId(getId()), getLaserNodeSettings(), newPoints);
 		log.info("Appending CutPath: "+path.getId());
 		jobNodeGroup.addChild(path);
 	}
@@ -249,6 +269,42 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		return passes;
 	}
 	
+	int getPulsesPermm() {
+		int ppmm = defaultPpmm;
+		if (element != null) {
+			StyleAttribute attr = new StyleAttribute("photonsaw-ppmm");
+			try {
+				element.getStyle(attr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get ppmm attribute from svg element", e);
+				attr = null;
+			}			
+			if (attr != null && !attr.getStringValue().equals("")) {
+				ppmm = Math.min(10000, Math.max(0, attr.getIntValue()));
+			}
+		}
+		return ppmm;
+	}
+	
+	int getPulseDuration() {
+		int pd = defaultPulseDuration;
+		if (element != null) {
+			StyleAttribute attr = new StyleAttribute("photonsaw-pulse-length");
+			try {
+				element.getStyle(attr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get pulse-length attribute from svg element", e);
+				attr = null;
+			}			
+			if (attr != null && !attr.getStringValue().equals("")) {
+				pd = Math.min(100000, Math.max(1, attr.getIntValue()));
+			}
+		}
+		return pd;
+	}
+	
+	
+	
 	boolean getAssistAir() {
 		boolean assistAir = true;
 		if (element != null) {
@@ -288,8 +344,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			throw new RuntimeException("The Image passed to writeImage was not a BufferedImage: "+img.getClass().getName());
 		}
 		
-		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getPower()/maximumPower, getSpeed(),
-					getPasses(), getAssistAir(), (BufferedImage) img, pos.x, pos.y, width, height);
+		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getLaserNodeSettings(), (BufferedImage) img, pos.x, pos.y, width, height);
 		
 		log.info("Appending EngraveRaster: "+engraving.getId());
 		jobNodeGroup.addChild(engraving);		

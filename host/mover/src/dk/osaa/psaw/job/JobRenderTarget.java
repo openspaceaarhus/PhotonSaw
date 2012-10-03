@@ -21,7 +21,7 @@ public interface JobRenderTarget {
 	 * @param intensity The intensity (0..1) of the LASER during the move
 	 * @param maxSpeed The desired speed
 	 */
-	void cutTo(Point p, double intensity, double maxSpeed);
+	void cutTo(Point p, double intensity, double maxSpeed); //TODO: Take LaserNodeSettings in stead
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed while engraving a scanline of pixels.
@@ -30,7 +30,7 @@ public interface JobRenderTarget {
 	 * @param maxSpeed The desired speed
 	 * @param pixels The pixels to engrave over this line.
 	 */
-	void engraveTo(Point p, double intensity, double maxSpeed, boolean[] pixels);
+	void engraveTo(Point p, double intensity, double maxSpeed, boolean[] pixels);//TODO: Take LaserNodeSettings in stead
 	
 	/**
 	 * Calculates the distance in mm needed to accelerate the X axis from 0 to the desired speed.
@@ -45,7 +45,7 @@ public interface JobRenderTarget {
 	/**
 	 * @return The size, in mm of one step in the Y axis as used when engraving;
 	 */
-	double getEngravingYStepSize();
+	double getEngravingYStepSize(); // TODO: line height should come from the user in stead of the machine limit!
 	
 	/**
 	 * Turn assist air on or off

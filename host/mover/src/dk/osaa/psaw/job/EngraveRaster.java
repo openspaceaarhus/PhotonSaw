@@ -87,9 +87,9 @@ public class EngraveRaster extends LaserNode {
 	private EngraveRaster() {};
 	*/	
 	
-	public EngraveRaster(String id, double intensity, double maxSpeed, int passes, boolean assistAir,
+	public EngraveRaster(String id, LaserNodeSettings settings,
 						BufferedImage img, double x, double y, double width, double height) {
-		super(id,intensity,maxSpeed, passes, assistAir);
+		super(id, settings);
 
 		setRaster(img);
         
@@ -130,19 +130,19 @@ public class EngraveRaster extends LaserNode {
 		 */
 		
 		target.moveTo(transformation.transform(new Point2D(x0-leadin, y))); // Will be optimized out for every line except the first.
-		target.cutTo(transformation.transform(new Point2D(x0, y)), 0, maxSpeed);
-		target.engraveTo(transformation.transform(new Point2D(x1, y)), intensity, maxSpeed, pixels);
-		target.cutTo(transformation.transform(new Point2D(x1+leadin, y+yStep)), 0, maxSpeed);
+		target.cutTo(transformation.transform(new Point2D(x0, y)), 0, settings.maxSpeed);
+		target.engraveTo(transformation.transform(new Point2D(x1, y)), settings.intensity, settings.maxSpeed, pixels);
+		target.cutTo(transformation.transform(new Point2D(x1+leadin, y+yStep)), 0, settings.maxSpeed);
 	}
 	
 
 	@Override
 	public void render(JobRenderTarget target, PointTransformation transformation) {
 
-		target.setAssistAir(assistAir);
+		target.setAssistAir(settings.assistAir);
 		
 		double yStep = target.getEngravingYStepSize();
-		double leadin = target.getEngravingXAccelerationDistance(maxSpeed);
+		double leadin = target.getEngravingXAccelerationDistance(settings.maxSpeed);
 		
 		/*
 		 * Note: We always scan in the X direction at the speed wanted, acceleration moves
@@ -172,8 +172,8 @@ public class EngraveRaster extends LaserNode {
 					pixels[xc] = getPixel(xc, (int)Math.round(rasterLine));  
 				}				
 				
-				if (passes > 1) {
-					for (int pass=1;pass<passes;pass++) {
+				if (settings.passes > 1) {
+					for (int pass=1;pass<settings.passes;pass++) {
 						renderScanline(target, transformation, (scanNumber++ & 1) == 1, y, leadin, 0, pixels);
 					}					
 				}
