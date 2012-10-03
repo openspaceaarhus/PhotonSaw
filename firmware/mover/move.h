@@ -22,10 +22,10 @@ Duration: Number of ticks this move lasts
 7: A speed
 8: A accel
 12&&(7|8): A end pos
-9: LASER intensity 
-10: LASER intensity acceleration
 13: Switches: bits to set  
 13: Switches: bits to clear
+9: LASER intensity 
+10: LASER intensity acceleration
 11: Pixel speed
 11: Pixel word count
 ... pixel word count pixels

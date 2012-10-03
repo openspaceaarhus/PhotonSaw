@@ -31,6 +31,8 @@ public class MovementConstraints {
 	double rapidMoveSpeed;
 	int tickHZ;
 	double shortestMove;
+	long assistAirDelay;	
+	
 	public MoveVector mmPerStep() {
 		val v = new MoveVector();
 		for (int ax=0;ax<Move.AXES;ax++) {
@@ -71,6 +73,8 @@ public class MovementConstraints {
 
 		rapidMoveSpeed = 5000; // Just go!
 		shortestMove = 0.1; // Any move shorter than this gets rounded off to 0 and dropped
+		
+		assistAirDelay = 250; // Number of ms to wait after changing the assist air status until continuing 
 	}
 	
 	public void fixAfterLoad() {

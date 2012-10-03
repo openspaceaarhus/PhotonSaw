@@ -12,6 +12,7 @@ import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.core.PhotonSawAPI;
 import dk.osaa.psaw.core.PhotonSawStatus;
 import dk.osaa.psaw.job.JobManager;
+import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 
 public class SimulatedPhotonSaw implements PhotonSawAPI {
@@ -89,5 +90,15 @@ public class SimulatedPhotonSaw implements PhotonSawAPI {
 	@Override
 	public void setJogSpeed(MoveVector direction) {
 		// TODO: Simulate jogging...		
+	}
+
+	@Override
+	public void putMove(Move move) throws InterruptedException {
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void putAssistAir(boolean assistAir) throws InterruptedException {
+		// TODO Auto-generated method stub		
 	}
 }

@@ -6,27 +6,30 @@
 
 // This gets called at the highest possible frequency to detect the pulses
 signed char waterflowPinstate;
+char waterflowArmed;
 unsigned int waterflowPulses;
 
 void joulesPollFlow() {
-  if (waterflowPinstate > 0) {
-    
-    if (!GPIO_GET(IO_WATERFLOW)) {
-      if (--waterflowPinstate <= 0) {
-	waterflowPinstate = -10;
-      }
-    }
 
+  if (GPIO_GET(IO_WATERFLOW)) {
+    waterflowPinstate++;
   } else {
-
-    if (GPIO_GET(IO_WATERFLOW)) {
-      if (++waterflowPinstate >= 0) {
-	waterflowPinstate = 10;
-	waterflowPulses++;
-      }
-    }
-
+    waterflowPinstate--;
   }
+
+  if (waterflowPinstate > 10) {
+    waterflowPinstate = 10;
+
+    if (waterflowArmed) {
+      waterflowPulses++;
+      waterflowArmed = 0;
+    }    
+
+  } else if (waterflowPinstate < -10) {
+    waterflowPinstate = -10;
+    waterflowArmed = 1;
+  }
+
   /*
   if (waterflowPinstate && !GPIO_GET(IO_WATERFLOW)) {
     waterflowPinstate = 0;

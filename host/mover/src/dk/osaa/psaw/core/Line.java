@@ -65,6 +65,9 @@ public class Line {
 
 	@Getter @Setter
 	boolean[] pixels;
+	
+	@Getter @Setter
+	boolean assistAir;
 
 	
 	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
@@ -189,7 +192,7 @@ public class Line {
 	double maxExitSpeed;
 	private void updateMaxEntrySpeed(Line next) {	
 		MoveVector maxEndSpeeds; // The speed limits as imposed by the max entry speed of the next line		
-		if (next == null) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
+		if (next == null || assistAir != next.assistAir) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
 			maxEndSpeeds = new MoveVector();
 		} else {
 			maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed);
@@ -246,9 +249,9 @@ public class Line {
 	private void updateEntrySpeed(Line prev) {
 		
 		MoveVector prevSpeeds = new MoveVector();
-		if (prev != null) {
+		if (prev != null && prev.assistAir == assistAir) {
 			prevSpeeds = prev.unitVector.mul(prev.exitSpeed);
-		}
+		}		
 		
 		entrySpeed = maxEntrySpeed;
 		for (int i=0;i<Move.AXES;i++) {
@@ -435,7 +438,11 @@ public class Line {
 		}
 	}
 
-	static long moveId = 0;	
+	static long moveId = 0;
+	static public long getMoveId() {
+		return moveId++;
+	}
+	
 	long stepsMoved[] = new long[Move.AXES];
 	private static long stepCount = 0;
 	
@@ -546,7 +553,7 @@ public class Line {
 		return move;
 	}
 	
-	public void toMoves(PhotonSaw photonSaw) throws InterruptedException {
+	public void toMoves(PhotonSawAPI photonSaw) throws InterruptedException {
 		if (acceleration == 0) { // This is not a move, but a point
 			return;
 		}
@@ -559,6 +566,8 @@ public class Line {
 		}
 		
 		ArrayList<Move> output = new ArrayList<Move>(); 
+		
+		photonSaw.putAssistAir(assistAir);
 
 		int mbf = output.size();
 		for (int i=0;i<Move.AXES;i++) {

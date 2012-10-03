@@ -74,6 +74,20 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 			this.interrupt(); // Wake up from sleep.
 		}
 	}	
+
+	@Getter
+	boolean currentAssistAir = false;
+	
+	@Override
+	public void putAssistAir(boolean assistAir) throws InterruptedException {
+		if (currentAssistAir == assistAir) {
+			return;
+		}
+		currentAssistAir = assistAir;
+		
+		Move m = new Move(Line.getMoveId(), cfg.movementConstraints.getAssistAirDelay());
+		m.setAssistSwitch(assistAir);
+	}
 	
 	static FileWriter logWriter;
 	
@@ -219,4 +233,5 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 			log.log(Level.SEVERE, "Failed to run jog command '"+cmd+"': ", e);
 		}		
 	}
+
 }

@@ -213,6 +213,20 @@ inline void startNewMove() {
     
   // Max time elapsed here: 10 us
 
+  // Turn switches on and off.
+  if (MOVE_HAS_SWITCHES(head)) {
+    int switchesOn = bufferPop();
+    if (MOVE_SW_ASSIST_AIR & switchesOn) {
+      GPIO_SET(IO_ASSIST_AIR);
+    }
+
+    int switchesOff = bufferPop();
+    if (MOVE_SW_ASSIST_AIR & switchesOff) {
+      GPIO_CLEAR(IO_ASSIST_AIR);
+    }   
+  }
+
+
   // See if we should be running the LASER and at what power:
   if (MOVE_HAS_LASER(head)) {
     unsigned int lc = bufferPop();
