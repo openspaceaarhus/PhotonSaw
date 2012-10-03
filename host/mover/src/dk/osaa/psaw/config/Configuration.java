@@ -51,6 +51,9 @@ public class Configuration {
 		Configuration cfg = (Configuration)getXStream().fromXML(new FileInputStream(configFile));
 		cfg.configFile = configFile;
 		cfg.movementConstraints.fixAfterLoad();
+		if (cfg.machineConfig == null) {
+			cfg.machineConfig = new MachineConfig();
+		}
 		return cfg;
 	}
 	
