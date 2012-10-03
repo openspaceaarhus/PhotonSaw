@@ -71,8 +71,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		this.job = job;
 		this.jobNodeGroup = jobNodeGroup;
 		curveFlatness = 0.1;
-		defaultPower = 100;
-		maximumPower = 100;
+		defaultPower = 80;
+		maximumPower = 80;
 		defaultSpeed = 6;
 	}
 

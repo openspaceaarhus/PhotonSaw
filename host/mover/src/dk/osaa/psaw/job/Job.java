@@ -11,6 +11,7 @@ import com.kitfox.svg.SVGException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.machine.Move;
 
 import lombok.Getter;
@@ -172,8 +173,8 @@ public class Job {
 	 * @throws SVGException 
 	 * @throws IOException 
 	 */
-	public JobNodeID loadSVG(String name, InputStream svgStream) throws IOException, SVGException {
-		JobNode svg = SvgLoader.load(this, name, svgStream, 0);
+	public JobNodeID loadSVG(Configuration cfg, String name, InputStream svgStream) throws IOException, SVGException {
+		JobNode svg = SvgLoader.load(cfg, this, name, svgStream, 0);
 		getRootNode().addChild(svg);
 		return svg.getNodeID();
 	}
@@ -189,8 +190,8 @@ public class Job {
 	 * @throws SVGException 
 	 * @throws IOException 
 	 */
-	public JobNodeID loadSVG(String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
-		JobNode svg = SvgLoader.load(this, name, svgStream, forcedDPI);
+	public JobNodeID loadSVG(Configuration cfg, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
+		JobNode svg = SvgLoader.load(cfg, this, name, svgStream, forcedDPI);
 		getRootNode().addChild(svg);
 		return svg.getNodeID();
 	}

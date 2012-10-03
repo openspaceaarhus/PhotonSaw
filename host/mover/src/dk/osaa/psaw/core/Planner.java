@@ -260,6 +260,7 @@ public class Planner extends Thread implements JobRenderTarget {
 	}
 	
 	void addLine(Line line) {
+		line.setAssistAir(assistAirStatus);
 		lineBuffer.push(line);
 		lastBufferedLocation = line.getEndPoint(); // because the Line constructor rounds the point to the actual position.
 		recalculate();
@@ -365,13 +366,10 @@ public class Planner extends Thread implements JobRenderTarget {
 		jogTimeout = System.currentTimeMillis()+300;		
 	}
 
-	boolean assistAirStatus;
+	boolean assistAirStatus = false;
 	
 	@Override
 	public void setAssistAir(boolean assistAirOn) {
-		if (assistAirStatus != assistAirOn) {
-			assistAirStatus = assistAirOn;
-			// TODO: Issue move code that sets assist air on the hardware and waits for the time needed.
-		}
+		assistAirStatus = assistAirOn;
 	}
 }

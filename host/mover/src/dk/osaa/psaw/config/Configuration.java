@@ -16,6 +16,7 @@ public class Configuration {
 	public MovementConstraints movementConstraints;
 	public JettyConfig jettyConfig;
 	public HostConfig hostConfig;
+	public MachineConfig machineConfig;
 	
 	@Getter
 	File configFile;
@@ -24,6 +25,7 @@ public class Configuration {
 		movementConstraints = new MovementConstraints();
 		jettyConfig = new JettyConfig();
 		hostConfig = new HostConfig();
+		machineConfig = new MachineConfig();
 	} 
 
 	static XStream xstreamInstance = null;

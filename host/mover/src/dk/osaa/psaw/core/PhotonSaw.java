@@ -85,7 +85,7 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		}
 		currentAssistAir = assistAir;
 		
-		Move m = new Move(Line.getMoveId(), cfg.movementConstraints.getAssistAirDelay());
+		Move m = new Move(Line.getMoveId(), cfg.machineConfig.getAssistAirDelay());
 		m.setAssistSwitch(assistAir);
 	}
 	

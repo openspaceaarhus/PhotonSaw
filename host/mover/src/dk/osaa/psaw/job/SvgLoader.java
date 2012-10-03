@@ -13,6 +13,8 @@ import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.xml.StyleAttribute;
 
+import dk.osaa.psaw.config.Configuration;
+
 /**
  * Loads an SVG into a job as a JobNodeGroup, each group in the svg becomes another JobNodeGroup  
  * 
@@ -21,7 +23,7 @@ import com.kitfox.svg.xml.StyleAttribute;
 @Log
 public class SvgLoader {
 	
-	public static JobNodeGroup load(Job job, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
+	public static JobNodeGroup load(Configuration cfg, Job job, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
 
 		SVGUniverse su = new SVGUniverse();
 		URI svgURI = su.loadSVG(svgStream, name);
@@ -66,6 +68,9 @@ public class SvgLoader {
 		Graphics2DJobNodeGroup g2d = new Graphics2DJobNodeGroup(job, res);
 		g2d.scale(pixelsSizeX, pixelsSizeY);
 		diagram.setIgnoringClipHeuristic(true);
+		
+		g2d.setMaximumPower(cfg.machineConfig.getMaximumLaserPower());
+		g2d.setDefaultPower(cfg.machineConfig.getMaximumLaserPower());
 		
 		/* 
 		 * Notice: I've replaced com.kitfox.svg.Group with a version that makes the svg element being rendered available
