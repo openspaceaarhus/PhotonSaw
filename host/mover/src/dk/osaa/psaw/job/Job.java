@@ -95,8 +95,8 @@ public class Job {
 			xstreamInstance.omitField(AbstractJobNode.class, "parent");
 			xstreamInstance.useAttributeFor(AbstractJobNode.class, "name");
 			xstreamInstance.useAttributeFor(AbstractJobNode.class, "id");
-			xstreamInstance.useAttributeFor(LaserNode.class, "intensity");
-			xstreamInstance.useAttributeFor(LaserNode.class, "maxSpeed");
+			//xstreamInstance.useAttributeFor(LaserNode.class, "intensity");
+			//xstreamInstance.useAttributeFor(LaserNode.class, "maxSpeed");
 			
 			xstreamInstance.alias("group", JobNodeGroup.class);
 			xstreamInstance.addImplicitCollection(JobNodeGroup.class, "children");

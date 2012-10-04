@@ -76,7 +76,7 @@ void joulesUpdateTotals100Hz() {
     lastInternalTemp = thisInternalTemp;
   }
   if (lastInternalTemp > 100) {
-    coolantAlarm |= ALARM_MOTOR_DRIVER_OVERTEMP;
+    coolantAlarm |= 1<<ALARM_MOTOR_DRIVER_OVERTEMP;
   }
 
   double it = readNTCcelcius(IO_CHAN(IO_TEMP_IN)); 
@@ -88,7 +88,7 @@ void joulesUpdateTotals100Hz() {
 
     // But raise the alarm if the sensor problems keep up for a long time
     if (deltaTime > 2000) {
-      coolantAlarm |= ALARM_COOLING_SENSORS;
+      coolantAlarm |= 1<<ALARM_COOLING_SENSORS;
     }
     return;
   }
@@ -111,15 +111,15 @@ void joulesUpdateTotals100Hz() {
     avgWaterFlow += (waterFlow-avgWaterFlow) * COOLING_SMOOTH;
 
     if (avgWaterFlow < MINIMUM_WATER_FLOW_GS) {
-      coolantAlarm |= ALARM_COOLANT_FLOW;
+      coolantAlarm |= 1<<ALARM_COOLANT_FLOW;
     }
 
-    if (newOt < MAXIMUM_WATER_TEMP || newIt < MINIMUM_WATER_TEMP) {
-      coolantAlarm |= ALARM_COOLANT_TEMP_LOW;
+    if (newOt < MINIMUM_WATER_TEMP || newIt < MINIMUM_WATER_TEMP) {
+      coolantAlarm |= 1<<ALARM_COOLANT_TEMP_LOW;
     }
 
-    if (newOt > MAXIMUM_WATER_TEMP || newIt > MINIMUM_WATER_TEMP) { 
-      coolantAlarm |= ALARM_COOLANT_TEMP_HIGH;
+    if (newOt > MAXIMUM_WATER_TEMP || newIt > MAXIMUM_WATER_TEMP) { 
+      coolantAlarm |= 1<<ALARM_COOLANT_TEMP_HIGH;
     }    
   }  
   
