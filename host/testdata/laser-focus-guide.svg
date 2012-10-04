@@ -54,8 +54,8 @@
     <g
        id="g3780"
        transform="translate(-45.254834,-38.890873)" 
-       style="photonsaw-speed:50;photonsaw-power:2">
-<!--
+       style="photonsaw-speed:50;photonsaw-power:10">
+
       <text
          sodipodi:linespacing="125%"
          id="text3764"
@@ -102,11 +102,11 @@
            x="-82.963661"
            id="tspan3778"
            sodipodi:role="line">10 mm</tspan></text>
--->
+
       <path
          id="rect2987"
          d="m 191.78125,41.28125 0,69.875 -72.6875,0 0,119.6875 -70.875,0 0,35.4375 180,0 0,-225 -36.4375,0 z"
-         style="fill:none;stroke:#000000;stroke-opacity:1;photonsaw-speed:50;photonsaw-power:40;photonsaw-passes:1"
+         style="fill:none;stroke:#000000;stroke-opacity:1;photonsaw-speed:10;photonsaw-power:80;photonsaw-passes:3"
          inkscape:connector-curvature="0" />
     </g>
   </g>
