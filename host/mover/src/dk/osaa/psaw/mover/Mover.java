@@ -22,9 +22,20 @@ public class Mover {
 	public static void main(String[] args) {
 		PhotonSaw ps = null;
 		try {
+	    	File cfgFile = new File("test.psconfig");
+	    	Configuration cfg;
+	    	if (cfgFile.exists()) {
+	    		cfg = Configuration.load(cfgFile);
+	    	} else {
+	    		cfg = new Configuration();	
+	    		cfg.store(cfgFile);
+	    	}
+	    	cfg.store();
+
+
 			Job testJob = new Job();
 			//testJob.loadTest();
-						
+			
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/up-engraving.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths-stroke.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple-stroke.svg");
@@ -37,21 +48,11 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/testpiece.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/circle-and-rect.svg");
-			testJob.loadSVG(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
+			testJob.loadSVG(cfg, svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
 			testJob.logStructure();
 			
 			testJob.storeJob(new FileOutputStream("/tmp/"+svgFile.getName()+".psjob"));
 				
-	    	File cfgFile = new File("test.psconfig");
-	    	Configuration cfg;
-	    	if (cfgFile.exists()) {
-	    		cfg = Configuration.load(cfgFile);
-	    	} else {
-	    		cfg = new Configuration();	
-	    		cfg.store(cfgFile);
-	    	}
-	    	cfg.store();
-
 			
 			ps = new PhotonSaw(cfg);
 			

@@ -31,6 +31,7 @@ public class MovementConstraints {
 	double rapidMoveSpeed;
 	int tickHZ;
 	double shortestMove;
+	
 	public MoveVector mmPerStep() {
 		val v = new MoveVector();
 		for (int ax=0;ax<Move.AXES;ax++) {

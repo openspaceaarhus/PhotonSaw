@@ -44,7 +44,40 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "br: Buffer reset\r\n");
     fiprintf(output, "jv <x> <y> <z> <a> Jog speed vector\r\n");
     fiprintf(output, "me <axis> <current> <usm>: Motor Enable\r\n");
+    fiprintf(output, "aa on|off: Turn assist air on or off\r\n");
+    fiprintf(output, "ex on|off: Turn exhaust on or off\r\n");
 }
+
+void cmdAssistAir(char *line, FILE *output) {
+
+  if (!strcmp(line, "on")) {
+      GPIO_SET(IO_ASSIST_AIR);
+      fprintf(output, "result  OK\r\n");
+
+  } else if (!strcmp(line, "off")) {
+      GPIO_CLEAR(IO_ASSIST_AIR);
+      fprintf(output, "result  OK\r\n");
+
+  } else {
+    fiprintf(output, "result  Error: Unable to parse: %s\r\n", line);
+  }
+}
+
+void cmdExhaust(char *line, FILE *output) {
+
+  if (!strcmp(line, "on")) {
+      GPIO_SET(IO_EXHAUST);
+      fprintf(output, "result  OK\r\n");
+      
+  } else if (!strcmp(line, "off")) {
+      GPIO_CLEAR(IO_EXHAUST);
+      fprintf(output, "result  OK\r\n");
+
+  } else {
+    fiprintf(output, "result  Error: Unable to parse: %s\r\n", line);
+  }
+}
+
 
 void cmdAlarmClear(char *line, FILE *output) {
   int id;
@@ -211,6 +244,12 @@ void commandRun(char *line, FILE *output) {
   } else if (!strncmp(line, "jv ", 3)) {
     cmdJog(line+3, output);
     
+  } else if (!strncmp(line, "aa ", 3)) {
+    cmdAssistAir(line+3, output);
+
+  } else if (!strncmp(line, "ex ", 3)) {
+    cmdExhaust(line+3, output);
+
   } else {
     respondSyntaxError(line, output);
     return;

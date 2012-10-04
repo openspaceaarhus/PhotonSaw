@@ -12,12 +12,11 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
-import dk.osaa.psaw.config.MovementConstraints.MovementContstraintAxis;
-
 public class Configuration {
 	public MovementConstraints movementConstraints;
 	public JettyConfig jettyConfig;
 	public HostConfig hostConfig;
+	public MachineConfig machineConfig;
 	
 	@Getter
 	File configFile;
@@ -26,6 +25,7 @@ public class Configuration {
 		movementConstraints = new MovementConstraints();
 		jettyConfig = new JettyConfig();
 		hostConfig = new HostConfig();
+		machineConfig = new MachineConfig();
 	} 
 
 	static XStream xstreamInstance = null;
@@ -51,6 +51,9 @@ public class Configuration {
 		Configuration cfg = (Configuration)getXStream().fromXML(new FileInputStream(configFile));
 		cfg.configFile = configFile;
 		cfg.movementConstraints.fixAfterLoad();
+		if (cfg.machineConfig == null) {
+			cfg.machineConfig = new MachineConfig();
+		}
 		return cfg;
 	}
 	

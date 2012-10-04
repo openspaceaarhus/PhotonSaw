@@ -12,23 +12,10 @@ import lombok.Getter;
  */
 public abstract class LaserNode extends AbstractJobNode {
 	
-	@Getter
-	double intensity;
-
-	@Getter
-	double maxSpeed;
+	LaserNodeSettings settings;
 	
-	@Getter
-	int passes;
-	
-	@Getter
-	boolean assistAir;
-	
-	LaserNode(String id, double intensity, double maxSpeed, int passes, boolean assistAir) {
+	LaserNode(String id, LaserNodeSettings settings) {
 		super(id);
-		this.intensity=intensity;
-		this.maxSpeed=maxSpeed;
-		this.passes=passes;
-		this.assistAir = assistAir;		
+		this.settings = settings;
 	}	
 }

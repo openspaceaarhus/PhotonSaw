@@ -1,6 +1,7 @@
 package dk.osaa.psaw.core;
 
 import dk.osaa.psaw.job.JobManager;
+import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 
 /**
@@ -29,4 +30,17 @@ public interface PhotonSawAPI {
 	 * @param direction The speed in each direction
 	 */
 	void setJogSpeed(MoveVector direction);
+
+	/**
+	 * Used by the planner code to inject a move into the move buffer
+	 * 
+	 * @param move
+	 * @throws InterruptedException
+	 */
+	public void putMove(Move move) throws InterruptedException;
+	
+	/**
+	 * Optionally appends a Move code into the move buffer
+	 */
+	public void putAssistAir(boolean assistAir) throws InterruptedException;
 }

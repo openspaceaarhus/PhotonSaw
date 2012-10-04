@@ -34,6 +34,19 @@ public class Move {
 
 	Q30 pixelSpeed;
 	long[] pixelWords;
+	
+	long switchesOn;
+	long switchesOff;
+	
+	static final long MOVE_SW_ASSIST_AIR = 1<<0;
+	
+	public void setAssistSwitch(boolean assistAir) {
+		if (assistAir) {
+			switchesOn |= MOVE_SW_ASSIST_AIR;			
+		} else {
+			switchesOff |= MOVE_SW_ASSIST_AIR;			
+		}
+	}
 
 	public void setScanline(boolean[] pixels) {
 		pixelSpeed = new Q30(((double)pixels.length)/duration);
@@ -198,6 +211,8 @@ public class Move {
 	public Move(long id, long duration) {
 		this.id = id;
 		this.duration = duration;
+		
+		switchesOn = switchesOff = 0;			
 	}
 	
 	static final long MOVE_MAGIC = 0x05aa0000L;
@@ -215,6 +230,7 @@ public class Move {
 	static final int LASER_FLAG = 1<<9;
 	static final int LASER_ACCEL_FLAG = 1<<10;
 	static final int PIXEL_FLAG = 1<<11;
+	static final int SWITCHES_FLAG = 1<<13;
 	
 	/**
 	 * Encode this move as a number of move codes so it's ready to be output. 
@@ -253,6 +269,13 @@ public class Move {
 				encoded.add((long)axes[i].accel.getValue()); 
 				header |= axisAccelFlag(i);
 			}
+		}
+		
+		// 13: Switches
+		if (switchesOn != 0 || switchesOff != 0) {
+			encoded.add(switchesOn);
+			encoded.add(switchesOff);
+			header |= SWITCHES_FLAG;
 		}
 
 		// 9: LASER (start) intensity

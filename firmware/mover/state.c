@@ -40,16 +40,20 @@ void printState(FILE *file) {
   }
 
   printInt(file, "exhaust.airflow", airflow(), "%");
-  //printInt(file, "exhaust.airflow.adc", readADC(IO_CHAN(IO_AIRFLOW)), "adc");
+  printInt(file, "exhaust.airflow.adc", readADC(IO_CHAN(IO_AIRFLOW)), "adc");
+  printBool(file, "exhaust.running", GPIO_GET(IO_EXHAUST));
 
   printDouble(file, "board.temperature", joulesLastInternalTemp(), "C" );
   printInt(   file, "board.inputvoltage", supplyVoltage(), "mv");        
 
   printHex(   file, "cooling.alarm", getCoolantAlarm());
   printDouble(file, "cooling.flow",joulesWaterFlow(),"gram/s");        
+  printInt(file, "cooling.flow.raw", joulesRawFlowCount(), "pulses");
+
   printDouble(file, "cooling.power", joulesCurrentPower(), "W");        
   printDouble(file, "cooling.temp.in", joulesLastInTemp(), "C");
   printDouble(file, "cooling.temp.out", joulesLastOutTemp(), "C");
+  printBool(file, "assist-air", GPIO_GET(IO_ASSIST_AIR));
     
   unsigned int err0 = errorUART(IO_DEBUG_RX);
   if (err0) {

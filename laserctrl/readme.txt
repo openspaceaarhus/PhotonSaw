@@ -17,10 +17,17 @@ Bugs found in V1:
 
 Features missing in V1:
 
-* Add extra headers with GPIO pins for things like
- * Intrusion switch input(s), don't start if open.
+* A 6p header connector to bring +24 V on-board and connect to the Assist Air and Exhaust relays to avoid screw terminals entirely
 
-* More LEDs
+* A 3-pin serial connector for the chiller.
+
+* More bulkhead header pins:
+ * Power output pins: +24V / +3.3V. / GND
+ * I2C pins to allow connecting a couple of TMP006 fire sensors or GPIO extenders.
+ * Add extra GPIO pins to the bulkhead header for things like:
+  * Intrusion switch inputs: don't start if open.
+
+* More LEDs, perhaps?
  * LASER PWM outout
  * Watchdog SPI lines (a total of 5 LEDs for the WD)
  * Power 
