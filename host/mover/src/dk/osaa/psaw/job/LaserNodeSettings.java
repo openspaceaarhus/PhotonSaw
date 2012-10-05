@@ -2,33 +2,35 @@ package dk.osaa.psaw.job;
 
 import lombok.Getter;
 
+/**
+ * This class wraps the parameters needed when firing the laser
+ * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
+ */
 public class LaserNodeSettings {
-
 	@Getter
-	boolean assistAir;
+	double intensity;
 
 	@Getter
 	double maxSpeed;
 	
 	@Getter
-	double intensity;
-	
-	@Getter
 	int passes;
 	
 	@Getter
-	int ppmm; // pulses per mm
+	boolean assistAir;
 	
 	@Getter
-	int pulseDuration; // In micro seconds (us)
-
-	public LaserNodeSettings(double intensity, double maxSpeed, int passes, boolean assistAir, int ppmm, int pulseDuration) {
-		this.assistAir = assistAir;
-		this.maxSpeed = maxSpeed;
-		this.intensity = intensity;
-		this.passes = passes;
-		this.ppmm = ppmm;
-		this.pulseDuration = pulseDuration;
+	int pulsesPermm; 
+	
+	@Getter
+	int pulseDuration; // In us 
+	
+	public LaserNodeSettings(double intensity, double maxSpeed, int passes, boolean assistAir, int pulsesPermm, int pulseDuration) {
+		this.intensity=intensity;
+		this.maxSpeed=maxSpeed;
+		this.passes=passes;
+		this.assistAir = assistAir;		
+		this.pulsesPermm = pulsesPermm; 
+		this.pulseDuration = pulseDuration; 
 	}
-		
 }
