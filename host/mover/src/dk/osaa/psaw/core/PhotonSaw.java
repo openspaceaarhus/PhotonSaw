@@ -58,6 +58,8 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		setName("PhotonSaw thread, keeps the hardware fed");				
 		
 		configureMotors();
+		run("ex on");
+		run("aa on");
 
 		planner.start();
 		this.start();	
