@@ -9,11 +9,14 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 
 import com.kitfox.svg.RenderableElement;
+import com.kitfox.svg.SVGElement;
 import com.kitfox.svg.SVGException;
 import com.kitfox.svg.SVGGraphics2D;
+import com.kitfox.svg.SVGRoot;
 import com.kitfox.svg.xml.StyleAttribute;
 
 import lombok.Getter;
@@ -102,6 +105,55 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		return new LaserNodeSettings(getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), getPulsesPermm(), getPulseDuration());
 	}
 	
+	void addChild(JobNode newChild) {
+		val stack = new ArrayList<SVGElement>();  
+		
+		
+		SVGElement e = element;
+		while ((e = e.getParent()) != null && !(e instanceof SVGRoot)) {
+			if (e.getId() != null) {
+				stack.add(e);
+			}
+		}
+		
+		Collections.reverse(stack);
+		
+		JobNodeGroup parent = jobNodeGroup;
+		for (val elem : stack) {
+			
+			String id=elem.getId();
+			String label = id;
+			
+			StyleAttribute labelAttr = new StyleAttribute("inkscape:label");
+			try {
+				elem.getPres(labelAttr);
+			} catch (SVGException ex) {
+			}
+			if (labelAttr != null) {
+				label = labelAttr.getStringValue();
+			}
+			
+			JobNode jn = parent.getChildById(id);
+
+			if (jn == null) {
+				val np = new JobNodeGroup(id);
+				np.setName(label);
+				parent.addChild(np);
+				parent = np;
+
+			} else if (jn instanceof JobNodeGroup) {
+				parent = (JobNodeGroup)jn; 
+
+			} else {
+				// Hmm, this is not good.
+				log.severe("Found a parent item that corrosponds to a job node which is not a group: "+jn.toString());				
+			}
+		}
+		
+		parent.addChild(newChild);		
+	}
+	
+	
 	void addCutPath(ArrayList<Point2D> points) {
 		ArrayList<Point2D> newPoints = new ArrayList<Point2D>();
 		for (Point2D p : points) {
@@ -112,7 +164,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		
 		CutPath path = new CutPath(job.getNodeId(getId()), getLaserNodeSettings(), newPoints);
 		log.info("Appending CutPath: "+path.getId());
-		jobNodeGroup.addChild(path);
+		addChild(path);
 	}
 
 	@Override
@@ -304,6 +356,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 	
 	
+
+	
 	
 	boolean getAssistAir() {
 		boolean assistAir = true;
@@ -316,12 +370,18 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 				aaAttr = null;
 			}			
 			if (aaAttr != null && !aaAttr.getStringValue().equals("")) {
-				assistAir = aaAttr.getBooleanValue();
+				assistAir = isTrue(aaAttr.getStringValue());
+			} else {
+				assistAir = true;
 			}
 		}
 		return assistAir;
 	}
 	
+	static private boolean isTrue(String stringValue) {
+		return stringValue.equalsIgnoreCase("true") || stringValue.equals("1") || stringValue.equalsIgnoreCase("yes")|| stringValue.equalsIgnoreCase("on");
+	}
+
 	String getId() {
 		String id = "svg-node";
 		if (element != null) {
@@ -347,7 +407,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getLaserNodeSettings(), (BufferedImage) img, pos.x, pos.y, width, height);
 		
 		log.info("Appending EngraveRaster: "+engraving.getId());
-		jobNodeGroup.addChild(engraving);		
+		addChild(engraving);		
 	}
 
 	@Override

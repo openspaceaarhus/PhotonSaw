@@ -3,8 +3,6 @@
  */
 package dk.osaa.psaw.job;
 
-import lombok.Getter;
-
 /**
  * A node in the job tree which does something with the LASER.
  * 

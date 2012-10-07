@@ -21,8 +21,17 @@ public interface PhotonSawAPI {
 	 */
 	JobManager getJobManager();
 	
-	// TODO: Add Job control (start job)
-	// boolean startJob(String id);
+	/**
+	 * Starts a job with a given id, that was previously imported into the system using the JobManager
+	 * @param id The job to start
+	 * @return true if the job was started
+	 */
+	boolean startJob(String id);
+	
+	/**
+	 * @return the ID of the current job, or null if no job is currently executing
+	 */
+	String getCurrentJob();
 	
 	/**
 	 * Sets a jog speed in all directions, the machine stops 250 ms after this call.

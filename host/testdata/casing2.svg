@@ -66,7 +66,7 @@
     </rdf:RDF>
   </metadata>
   <g
-     style="display:inline;photonsaw-power:80;photonsaw-speed:30;photonsaw-passes:1;photonsaw-assistair:1"
+     style="display:inline;photonsaw-power:80;photonsaw-speed:30;photonsaw-passes:1;photonsaw-assistair:true"
      transform="translate(0,-116.92918)"
      inkscape:label="Engraving"
      id="layer2"
@@ -157,7 +157,7 @@
     </g>
   </g>
   <g
-     style="display:inline;photonsaw-power:80;photonsaw-speed:16;photonsaw-passes:2;photonsaw-assistair:1"
+     style="display:inline;photonsaw-power:80;photonsaw-speed:16;photonsaw-passes:2;photonsaw-assistair:true"
      transform="translate(-148.64173,-173.79926)"
      id="layer1"
      inkscape:groupmode="layer"

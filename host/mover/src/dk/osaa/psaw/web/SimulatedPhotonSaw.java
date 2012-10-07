@@ -101,4 +101,16 @@ public class SimulatedPhotonSaw implements PhotonSawAPI {
 	public void putAssistAir(boolean assistAir) throws InterruptedException {
 		// TODO Auto-generated method stub		
 	}
+
+	@Override
+	public boolean startJob(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String getCurrentJob() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.JobManager;
 import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
@@ -234,6 +235,24 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		} catch (Exception e) { // TODO: re-throw to tell the client about the problem.
 			log.log(Level.SEVERE, "Failed to run jog command '"+cmd+"': ", e);
 		}		
+	}
+
+	@Override
+	public boolean startJob(String id) {
+		try {
+			Job job = getJobManager().getJobById(id);
+			getPlanner().startJob(job);
+			return true;
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "Failed to start job: "+id, e);
+			return false;
+		}
+	}
+
+	@Override
+	public String getCurrentJob() {
+		// TODO: Fail.
+		return null;
 	}
 
 }
