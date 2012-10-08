@@ -52,13 +52,22 @@ int main(void) {
 
   DDRB  |= _BV(PB2);  // Enable Motors output
   DDRC  |= _BV(PC1);  // Enable LASER outout 
-  run();
+
+  stop(); // This pulls the motor driver reset
   
   wdt_enable(WDTO_4S);
   
   muartInit();
   mprintf(PSTR("#Power up!\n"));
+
+  // Ensure that the motor drivers are properly initialized by holding them in reset while the power stabilizes.
+  for (char i=0;i<10;i++) {
+    _delay_ms(100);
+  }
+  run();
   
+  mprintf(PSTR("#Motor drivers and laser armed!\n"));
+
   led1(0);
   led2(0);
 
