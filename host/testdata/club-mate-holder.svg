@@ -13,7 +13,7 @@
    height="1417.3228"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.2 r9819"
    sodipodi:docname="club-mate-holder.svg">
   <defs
      id="defs4" />
@@ -24,16 +24,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.19967223"
-     inkscape:cx="335.45629"
-     inkscape:cy="182.79267"
+     inkscape:zoom="2.2590334"
+     inkscape:cx="264.42731"
+     inkscape:cy="430.45549"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      showgrid="false"
      units="mm"
-     inkscape:window-width="1230"
-     inkscape:window-height="773"
-     inkscape:window-x="44"
+     inkscape:window-width="1674"
+     inkscape:window-height="1023"
+     inkscape:window-x="1680"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -200,7 +200,7 @@
        sodipodi:rx="21.284882"
        sodipodi:ry="17.528727"
        d="m 100.16415,282.96375 a 21.284882,17.528727 0 1 1 -42.569759,0 21.284882,17.528727 0 1 1 42.569759,0 z"
-       transform="matrix(0.412394,0,0,0.50076412,224.36043,168.3412)" />
+       transform="matrix(0.412394,0,0,0.50076412,206.64389,168.3412)" />
     <path
        sodipodi:type="arc"
        style="opacity:0.72000002;fill:none;stroke:#000000;stroke-width:0.35433072;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
@@ -220,7 +220,7 @@
        sodipodi:rx="21.284882"
        sodipodi:ry="17.528727"
        d="m 100.16415,282.96375 a 21.284882,17.528727 0 1 1 -42.569759,0 21.284882,17.528727 0 1 1 42.569759,0 z"
-       transform="matrix(0.41239399,0,0,0.50076412,224.36043,912.43569)" />
+       transform="matrix(0.41239399,0,0,0.50076412,206.64389,912.43569)" />
   </g>
   <g
      inkscape:label="cut"
