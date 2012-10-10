@@ -18,13 +18,17 @@ import lombok.extern.java.Log;
 import lombok.val;
 
 @Log
-public class Commander {
+public class Commander implements CommanderInterface {
 		
 	Thread reader;
     SerialPort serialPort;
     CommandReply reply = new CommandReply(); // Result of the last command.
 	boolean replyReady = false;
 		
+	/* (non-Javadoc)
+	 * @see dk.osaa.psaw.machine.CommanderInterface#connect(java.lang.String)
+	 */
+	@Override
 	public boolean connect(String portName) throws NoSuchPortException, PortInUseException, UnsupportedCommOperationException, IOException {
 		System.setProperty("gnu.io.rxtx.SerialPorts", portName); // God damn it, why isn't the default to try the port the user wants?
 		
@@ -51,6 +55,10 @@ public class Commander {
 	
 	public static final int USB_LINE_BUFFER_SIZE = 1<<12;
 		
+	/* (non-Javadoc)
+	 * @see dk.osaa.psaw.machine.CommanderInterface#run(java.lang.String)
+	 */
+	@Override
 	public synchronized CommandReply run(String cmd) throws IOException, ReplyTimeout {
 		synchronized (reply) {
 			reply.clear();
@@ -80,12 +88,19 @@ public class Commander {
     }
 
 	CommandReply lastReplyValues = new CommandReply();
+	/* (non-Javadoc)
+	 * @see dk.osaa.psaw.machine.CommanderInterface#getLastReplyValue(java.lang.String)
+	 */
 	public ReplyValue getLastReplyValue(String name) {
 		synchronized (lastReplyValues) {
 			return lastReplyValues.get(name);
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see dk.osaa.psaw.machine.CommanderInterface#getLastReplyValues()
+	 */
+	@Override
 	public CommandReply getLastReplyValues() {
 		synchronized (lastReplyValues) {
 			return lastReplyValues.clone();
@@ -150,7 +165,7 @@ public class Commander {
     /**
      * Sends the moves to the buffer and ensures the first one isn't started before the last one is done buffering
      */
-    public CommandReply bufferMovesAtomic(ArrayList<Move> moves) throws IOException, ReplyTimeout {
+	public CommandReply bufferMovesAtomic(ArrayList<Move> moves) throws IOException, ReplyTimeout {
     	int wordsNeeded = 0;
     	for (Move m : moves) {
     		wordsNeeded += m.encode().size();
@@ -217,11 +232,10 @@ public class Commander {
     	return lastBufferMoveReply;
     }
     
-    /**
-     * Flushes the buffered commands to the hardware 
-     * @throws PhotonSawCommandFailed 
-     */
-    public void flushMoves() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+    /* (non-Javadoc)
+	 * @see dk.osaa.psaw.machine.CommanderInterface#flushMoves()
+	 */
+	public void flushMoves() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
     	if (wordsInCommand <= 0) {
     		return;
     	}
@@ -312,7 +326,7 @@ public class Commander {
      * Buffers the moves as soon as possible with as few commands as possible. 
      * @throws PhotonSawCommandFailed 
      */
-    public void bufferMoves(ArrayList<Move> moves) throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+	public void bufferMoves(ArrayList<Move> moves) throws IOException, ReplyTimeout, PhotonSawCommandFailed {
     	for (Move m : moves) {
     		bufferMove(m);
     	}

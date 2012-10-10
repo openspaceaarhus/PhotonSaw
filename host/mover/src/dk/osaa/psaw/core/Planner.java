@@ -6,7 +6,6 @@ import dk.osaa.psaw.config.MovementConstraints;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.PointTransformation;
 import dk.osaa.psaw.job.JobRenderTarget;
-import dk.osaa.psaw.machine.Commander;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
@@ -30,7 +29,7 @@ public class Planner extends Thread implements JobRenderTarget {
 	Point lastBufferedLocation;
 	boolean homed[] = new boolean[Move.AXES];
 	boolean usedAxes[] = new boolean[Move.AXES];
-	Commander commander;	
+	
 	private PhotonSaw photonSaw;
 	
 	MoveVector jogDirection;

@@ -19,9 +19,11 @@ import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.JobManager;
 import dk.osaa.psaw.machine.CommandReply;
 import dk.osaa.psaw.machine.Commander;
+import dk.osaa.psaw.machine.CommanderInterface;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Q30;
+import dk.osaa.psaw.machine.SimulatedCommander;
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.machine.PhotonSawCommandFailed;
 import dk.osaa.psaw.machine.ReplyTimeout;
@@ -38,7 +40,7 @@ import lombok.extern.java.Log;
 @Log
 public class PhotonSaw extends Thread implements PhotonSawAPI {
 	Configuration cfg;
-	Commander commander;
+	CommanderInterface commander;
 	JobManager jobManager;
 	@Getter
 	Planner planner;
@@ -51,8 +53,14 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	public PhotonSaw(Configuration cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
 		this.cfg = cfg;
 		planner = new Planner(this);
-		commander = new Commander();
+		
+		if (cfg.hostConfig.isSimulating()) {
+			commander = new SimulatedCommander();			
+		} else {
+			commander = new Commander();
+		}		
 		commander.connect(cfg.hostConfig.getSerialPort());
+		
 		jobManager = new JobManager(cfg);
 		
 		setDaemon(true);
@@ -150,7 +158,7 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		}
 	}
 
-	public Commander getCommander() {
+	public CommanderInterface getCommander() {
 		return commander;
 	}
 

@@ -8,13 +8,9 @@ import java.util.logging.Level;
 
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
-import dk.osaa.psaw.core.PhotonSawAPI;
-import dk.osaa.psaw.core.PhotonSawStatus;
 import dk.osaa.psaw.job.Job;
-import dk.osaa.psaw.job.JobManager;
 import dk.osaa.psaw.job.SVGRenderTarget;
 import dk.osaa.psaw.machine.Move;
-import dk.osaa.psaw.web.SimulatedPhotonSaw;
 
 import lombok.extern.java.Log;
 
@@ -27,7 +23,8 @@ public class Mover {
 	public static void main(String[] args) {
 		PhotonSaw ps = null;
 		try {
-	    	File cfgFile = new File("test.psconfig");
+//	    	File cfgFile = new File("test.psconfig");
+	    	File cfgFile = new File("simulate.psconfig");
 	    	Configuration cfg;
 	    	if (cfgFile.exists()) {
 	    		cfg = Configuration.load(cfgFile);
@@ -38,8 +35,6 @@ public class Mover {
 	    	cfg.store();
 
 			ps = new PhotonSaw(cfg);
-			
-   	
 	    	
 			//testJob.loadTest();
 			
