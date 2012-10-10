@@ -38,7 +38,7 @@ import lombok.extern.java.Log;
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
 @Log
-public class PhotonSaw extends Thread implements PhotonSawAPI {
+public class PhotonSaw extends Thread {
 	Configuration cfg;
 	CommanderInterface commander;
 	JobManager jobManager;
@@ -89,7 +89,6 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 	@Getter
 	boolean currentAssistAir = false;
 	
-	@Override
 	public void putAssistAir(boolean assistAir) throws InterruptedException {
 		if (currentAssistAir == assistAir) {
 			return;
@@ -178,7 +177,6 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		return xstreamInstance;
 	}
 
-	@Override
 	public PhotonSawStatus getStatus() {
 		PhotonSawStatus r = new PhotonSawStatus();
 		
@@ -210,12 +208,10 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		return r;
 	}
 
-	@Override
 	public JobManager getJobManager() {
 		return jobManager;
 	}
 
-	@Override
 	public void setJogSpeed(MoveVector direction) {
 		String cmd = "jv";
 		// full step: 0.00625
@@ -245,7 +241,6 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		}		
 	}
 
-	@Override
 	public boolean startJob(String id) {
 		try {
 			Job job = getJobManager().getJobById(id);
@@ -257,7 +252,6 @@ public class PhotonSaw extends Thread implements PhotonSawAPI {
 		}
 	}
 
-	@Override
 	public String getCurrentJob() {
 		// TODO: Fail.
 		return null;

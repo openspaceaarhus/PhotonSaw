@@ -13,7 +13,6 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
-import dk.osaa.psaw.core.PhotonSawAPI;
 import dk.osaa.psaw.web.handlers.JogHandler;
 
 @Log
@@ -36,12 +35,8 @@ public class Main {
 	    		cfg.store(cfgFile);
 	    	}
 	    	
-	    	PhotonSawAPI api;
-	    	if (cfg.hostConfig.isSimulating()) {
-	    		api = new SimulatedPhotonSaw(cfg);	    		
-	    	} else {
-	    		api = new PhotonSaw(cfg);
-	    	}    	
+	    	PhotonSaw api = new PhotonSaw(cfg);
+	    	
 	    	
 	    	Server server = new Server(cfg.jettyConfig.getPort());
 

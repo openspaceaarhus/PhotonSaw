@@ -13,7 +13,7 @@ import lombok.extern.java.Log;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import dk.osaa.psaw.core.PhotonSawAPI;
+import dk.osaa.psaw.core.PhotonSaw;
 
 /**
  * All the classes with methods that are callable by the client inherit from this class.
@@ -25,13 +25,13 @@ import dk.osaa.psaw.core.PhotonSawAPI;
 @Log
 public class AbstractJSONHandler extends AbstractHandler {
 	
-	protected PhotonSawAPI ps;
+	protected PhotonSaw ps;
 	protected Request baseRequest;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	
 	String prefix;
-	protected AbstractJSONHandler(PhotonSawAPI ps, String prefix) {
+	protected AbstractJSONHandler(PhotonSaw ps, String prefix) {
 		this.ps = ps;
 		this.prefix = prefix;
 	}

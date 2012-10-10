@@ -49,9 +49,9 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/osaa-10x10.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/OSAA-10x10-laser.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/speed-guide.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-with-text.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-with-text.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/wall.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/url.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/MAGENTA_LASER.svg");

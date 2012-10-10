@@ -553,7 +553,7 @@ public class Line {
 		return move;
 	}
 	
-	public void toMoves(PhotonSawAPI photonSaw) throws InterruptedException {
+	public void toMoves(PhotonSaw photonSaw) throws InterruptedException {
 		if (acceleration == 0) { // This is not a move, but a point
 			return;
 		}
