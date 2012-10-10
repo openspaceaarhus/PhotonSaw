@@ -25,8 +25,7 @@ import lombok.extern.java.Log;
 @Log
 public class Mover {
 	public static void main(String[] args) {
-		PhotonSawAPI ps = null;
-		PhotonSaw photonSaw = null;
+		PhotonSaw ps = null;
 		try {
 	    	File cfgFile = new File("test.psconfig");
 	    	Configuration cfg;
@@ -38,11 +37,7 @@ public class Mover {
 	    	}
 	    	cfg.store();
 
-			if (cfg.hostConfig.isSimulating()) {
-				ps = new SimulatedPhotonSaw(cfg);
-			} else {
-				ps = new PhotonSaw(cfg);
-			}
+			ps = new PhotonSaw(cfg);
 			
    	
 	    	
@@ -69,13 +64,9 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/circle-and-rect.svg");
 
-/*			
+			
 			Job testJob = new Job();
 			testJob.loadSVG(cfg, svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
-			*/
-			JobManager jm = ps.getJobManager();
-			String id = jm.importJob(svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
-			Job testJob = jm.getJobById(id);
 			
 			testJob.logStructure();
 		
@@ -85,35 +76,31 @@ public class Mover {
 			testJob.render(rt);
 			rt.done();
 		
-			ps.startJob(id);
 			
-			//ps.getPlanner().startJob(testJob);			
+			//ps.startJob(id);
+			ps.getPlanner().startJob(testJob);			
 
-			if (ps instanceof PhotonSaw) {
-				photonSaw = (PhotonSaw)ps;
-			
-				// Wait for the job to finish
-				while (photonSaw.getPlanner().getCurrentJob() != null) {
-					Thread.sleep(1000);
-				}
-	
-				// Turn off the motors
-				for (int i=0;i<Move.AXES;i++) {
-					photonSaw.run("me "+i+" 0 0");
-				}
-				Move.dumpProfile();
+			// Wait for the job to finish
+			while (ps.getPlanner().getCurrentJob() != null) {
+				Thread.sleep(1000);
 			}
-
+/*
+			// Turn off the motors
+			for (int i=0;i<Move.AXES;i++) {
+				ps.run("me "+i+" 0 0");
+			}
+			Move.dumpProfile();
+*/
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Failed while running command", e);
 			System.exit(2);
 
 		} finally {
-			if (photonSaw != null) {
+			if (ps != null) {
 				// Turn off the motors
 				for (int i=0;i<Move.AXES;i++) {					
 					try {
-						photonSaw.run("me "+i+" 0 0");
+						ps.run("me "+i+" 0 0");
 					} catch (Exception e) {
 					}
 				}
