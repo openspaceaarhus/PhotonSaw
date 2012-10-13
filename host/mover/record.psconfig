@@ -53,4 +53,8 @@
     <recording>true</recording>
     <jobsInMemory>10</jobsInMemory>
   </hostConfig>
+  <machineConfig>
+    <assistAirDelay>250</assistAirDelay>
+    <maximumLaserPower>80.0</maximumLaserPower>
+  </machineConfig>
 </photonsaw-config>
