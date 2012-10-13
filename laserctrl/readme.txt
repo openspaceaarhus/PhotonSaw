@@ -13,7 +13,7 @@ Bugs found in V1:
 * Add a power control FET for the microSD to be able to reset it.
 * Footprint for 32768 Hz xtal: 3x7mm solder pad in stead of glue.
 * Switch the small mini-melf diodes to SOT-23, even where only one diode is needed (easier to mount).
-
+* BC817 is too slow, replace with NX3008NBK
 
 Features missing in V1:
 

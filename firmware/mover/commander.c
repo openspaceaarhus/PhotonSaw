@@ -7,6 +7,7 @@
 #include "shaker.h"
 #include "hexparser.h"
 #include "commander.h"
+#include "laser.h"
 
 char READY[] = "\r\nReady\r\n";
 void respondReady(FILE *output) {
@@ -199,6 +200,19 @@ void cmdJog(char *line, FILE *output) {
   printMotionState(output);
 }
 
+void cmdLaserPWM(char *line, FILE *output) {
+  unsigned int pwm;
+  if (sscanf(line, "%d", &pwm) != 1) {
+    fprintf(output, "result  Error: Unable to parse pwm: %s\r\n", line);
+    return;
+  }
+
+  setLaserPWM(pwm);
+
+  fiprintf(output, "result  OK\r\n");
+}
+
+
 void commandRun(char *line, FILE *output) {
   if (!*line) {
     fiprintf(output, "\x1b[2JPhotonSaw console\r\n");
@@ -249,6 +263,9 @@ void commandRun(char *line, FILE *output) {
 
   } else if (!strncmp(line, "ex ", 3)) {
     cmdExhaust(line+3, output);
+
+  } else if (!strncmp(line, "lp ", 3)) {
+    cmdLaserPWM(line+3, output);
 
   } else {
     respondSyntaxError(line, output);

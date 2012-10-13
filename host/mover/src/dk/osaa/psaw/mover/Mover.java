@@ -23,8 +23,8 @@ public class Mover {
 	public static void main(String[] args) {
 		PhotonSaw ps = null;
 		try {
-//	    	File cfgFile = new File("test.psconfig");
-	    	File cfgFile = new File("simulate.psconfig");
+	    	File cfgFile = new File("test.psconfig");
+//	    	File cfgFile = new File("simulate.psconfig");
 	    	Configuration cfg;
 	    	if (cfgFile.exists()) {
 	    		cfg = Configuration.load(cfgFile);
@@ -48,8 +48,11 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/butterfly-2.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/osaa-10x10.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/OSAA-10x10-laser.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/lens-ring.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/speed-guide.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/power-guide.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/3mm-box.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-with-text.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/wall.svg");

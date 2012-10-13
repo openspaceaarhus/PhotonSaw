@@ -9,7 +9,7 @@ inline void setLaserPWM(unsigned int laserPWM) {
   
   if (laserPWM != currentLaserPWM) {
     currentLaserPWM = laserPWM;
-    setPWM(IO_CHAN(IO_LASER_POWER), laserPWM);
+    setPWM(IO_CHAN(IO_LASER_POWER), 0xff-laserPWM);
   }
 }
 
