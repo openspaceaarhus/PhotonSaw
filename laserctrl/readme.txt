@@ -3,17 +3,18 @@ Fixed for V2:
 * Too small/few power vias (on the +24V/GND main power rails)
 * Wrong foot print for Q3 (BC807 for USB pull up): Swapped pin 1 and 2
 
+Fixed for V2, in schematic only:
+* The PWM and Fire optocouplers are too slow replace them with one VO 2630-X007T which can do 10 MHz.
+* Add diode to the main fire signal that goes to the WD to make it impossible for the WD to fire the laser on its own.
+* Switch the small mini-melf diodes to SOT-23, even where only one diode is needed (easier to mount).
+* BC817 is too slow, replace with NX3008NBK
 
 Bugs found in V1:
 
-* The PWM and Fire optocouplers are too slow replace them with one VO 2630-X007T which can do 10 MHz.
-* Water flow sensor on P1.16 cannot generate interrupts, needs to be moved to port 0 or port 2.
+* Meh: Water flow sensor on P1.16 cannot generate interrupts, needs to be moved to port 0 or port 2.
 * Mirrored silkscreen text on bottom side
-* Add diode to the main fire signal that goes to the WD to make it impossible for the WD to fire the laser on its own.
 * Add a power control FET for the microSD to be able to reset it.
 * Footprint for 32768 Hz xtal: 3x7mm solder pad in stead of glue.
-* Switch the small mini-melf diodes to SOT-23, even where only one diode is needed (easier to mount).
-* BC817 is too slow, replace with NX3008NBK
 
 Features missing in V1:
 

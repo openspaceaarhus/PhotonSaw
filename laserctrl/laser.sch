@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 13 Oct 2012 04:06:36 PM CEST
+EESchema Schematic File Version 2  date Sun 14 Oct 2012 04:23:31 PM CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -52,7 +52,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 4 10
 Title ""
-Date "13 oct 2012"
+Date "14 oct 2012"
 Rev ""
 Comp ""
 Comment1 ""
@@ -62,7 +62,9 @@ Comment4 ""
 $EndDescr
 Connection ~ 6550 1400
 Wire Wire Line
-	7300 1400 6400 1400
+	6650 1400 6550 1400
+Wire Wire Line
+	6550 1400 6400 1400
 Wire Wire Line
 	2500 7000 2500 7100
 Wire Wire Line
@@ -79,42 +81,60 @@ Wire Wire Line
 	2800 4600 2850 4600
 Connection ~ 2150 5700
 Wire Wire Line
-	2300 5700 1300 5700
+	2300 5700 2150 5700
+Wire Wire Line
+	2150 5700 1700 5700
+Wire Wire Line
+	1700 5700 1300 5700
 Wire Wire Line
 	3100 4250 3100 4200
 Wire Wire Line
 	3100 4200 3150 4200
 Connection ~ 1700 4600
 Wire Wire Line
-	1400 5350 1400 4900
+	1400 5350 1400 5200
 Wire Wire Line
-	1700 5200 1300 5200
+	1400 5200 1400 4900
+Wire Wire Line
+	1700 5200 1400 5200
+Wire Wire Line
+	1400 5200 1300 5200
 Wire Wire Line
 	1900 6450 1900 6550
 Wire Wire Line
-	1300 6300 1700 6300
+	1300 6300 1400 6300
+Wire Wire Line
+	1400 6300 1700 6300
 Connection ~ 1700 5700
 Connection ~ 2800 3500
 Wire Wire Line
-	2500 3500 2950 3500
+	2500 3500 2800 3500
+Wire Wire Line
+	2800 3500 2950 3500
 Wire Wire Line
 	1550 3450 1550 3500
 Connection ~ 5700 5000
 Wire Wire Line
-	5150 5000 7750 5000
+	5150 5000 5700 5000
+Wire Wire Line
+	5700 5000 6650 5000
 Wire Wire Line
 	5150 5000 5150 4525
 Connection ~ 5700 3600
 Wire Wire Line
-	5150 3600 6550 3600
-Connection ~ 7750 4200
-Connection ~ 7750 3250
+	5150 3600 5700 3600
 Wire Wire Line
-	7750 3250 5700 3250
+	5700 3600 5850 3600
 Wire Wire Line
-	8150 2750 7750 2750
+	5850 3600 6550 3600
+Connection ~ 6650 4200
+Connection ~ 6650 3250
 Wire Wire Line
-	7750 3800 8100 3800
+	6650 3250 5700 3250
+Wire Wire Line
+	8150 2750 6650 2750
+Wire Wire Line
+	6650 3800 8100 3800
 Connection ~ 5700 1700
 Wire Wire Line
 	5700 2000 5900 2000
@@ -129,13 +149,19 @@ Connection ~ 5850 4400
 Wire Wire Line
 	5850 4550 5850 4400
 Wire Wire Line
-	6550 1400 6550 4400
+	6550 1400 6550 2650
+Wire Wire Line
+	6550 2650 6550 3600
+Wire Wire Line
+	6550 3600 6550 4000
+Wire Wire Line
+	6550 4000 6550 4400
 Connection ~ 6350 3900
 Wire Wire Line
 	6350 3900 6350 3750
 Connection ~ 5700 2950
 Wire Wire Line
-	5050 1400 5900 1400
+	5100 1400 5900 1400
 Wire Wire Line
 	3750 3900 2950 3900
 Wire Wire Line
@@ -147,7 +173,9 @@ Wire Wire Line
 Wire Wire Line
 	1850 3900 1850 3700
 Wire Wire Line
-	1350 1700 3800 1700
+	1350 1700 2800 1700
+Wire Wire Line
+	2800 1700 3850 1700
 Wire Wire Line
 	3300 1800 3300 2000
 Wire Wire Line
@@ -158,22 +186,22 @@ Wire Wire Line
 Wire Wire Line
 	2850 2950 2900 2950
 Connection ~ 1400 6300
-Connection ~ 7850 2950
+Connection ~ 8000 2950
 Connection ~ 6550 3600
 Connection ~ 6550 4000
 Wire Wire Line
-	8100 3700 7850 3700
+	8100 3700 8000 3700
 Wire Wire Line
 	3650 1300 3650 1400
 Wire Wire Line
-	3650 1400 3800 1400
+	3650 1400 3850 1400
 Connection ~ 3600 2650
 Wire Wire Line
 	3600 1950 3600 2050
 Wire Wire Line
 	3600 2650 3600 2550
 Wire Wire Line
-	3750 2950 3600 2950
+	3850 2950 3600 2950
 Wire Wire Line
 	3600 2950 3600 3050
 Wire Wire Line
@@ -182,7 +210,7 @@ Wire Wire Line
 	6550 2650 6350 2650
 Connection ~ 6550 2650
 Wire Wire Line
-	7850 3700 7850 2950
+	8000 3700 8000 2950
 Wire Wire Line
 	3300 2750 3300 2950
 Wire Wire Line
@@ -190,7 +218,11 @@ Wire Wire Line
 Wire Wire Line
 	2800 2000 2900 2000
 Wire Wire Line
-	3750 2650 1350 2650
+	3850 2650 3600 2650
+Wire Wire Line
+	3600 2650 2800 2650
+Wire Wire Line
+	2800 2650 1350 2650
 Connection ~ 1850 3700
 Wire Wire Line
 	2800 3900 2450 3900
@@ -201,9 +233,15 @@ Wire Wire Line
 Wire Wire Line
 	2800 5700 2850 5700
 Wire Wire Line
-	8150 2950 5000 2950
+	8150 2950 8000 2950
 Wire Wire Line
-	5850 2650 5000 2650
+	8000 2950 5700 2950
+Wire Wire Line
+	5700 2950 5100 2950
+Wire Wire Line
+	5850 2650 5700 2650
+Wire Wire Line
+	5700 2650 5100 2650
 Connection ~ 5700 2650
 Connection ~ 5700 3900
 Connection ~ 2800 1700
@@ -211,35 +249,53 @@ Wire Wire Line
 	5850 3600 5850 3750
 Connection ~ 5850 3600
 Wire Wire Line
-	6550 4400 5700 4400
+	6550 4400 5850 4400
+Wire Wire Line
+	5850 4400 5700 4400
 Wire Wire Line
 	8100 4000 6550 4000
 Wire Wire Line
 	6350 4550 6350 4700
 Connection ~ 5700 4700
 Wire Wire Line
-	7750 1700 5050 1700
-Connection ~ 7750 2750
+	6650 1700 5900 1700
+Wire Wire Line
+	5900 1700 5700 1700
+Wire Wire Line
+	5700 1700 5100 1700
+Connection ~ 6650 2750
 Connection ~ 5900 1700
 Wire Wire Line
-	7750 4200 5700 4200
-Connection ~ 7750 3800
+	6650 4200 5700 4200
+Connection ~ 6650 3800
 Wire Wire Line
-	8100 3900 5150 3900
+	8100 3900 6350 3900
+Wire Wire Line
+	6350 3900 5700 3900
+Wire Wire Line
+	5700 3900 5150 3900
 Wire Wire Line
 	5150 4200 5400 4200
 Wire Wire Line
 	5400 4200 5400 4700
 Wire Wire Line
-	5400 4700 6750 4700
+	5400 4700 5700 4700
 Wire Wire Line
-	2500 3700 1350 3700
+	5700 4700 6350 4700
+Wire Wire Line
+	6350 4700 6750 4700
+Wire Wire Line
+	2500 3700 1850 3700
+Wire Wire Line
+	1850 3700 1350 3700
 Wire Wire Line
 	2050 3500 2100 3500
 Wire Wire Line
 	1700 6000 1400 6000
 Wire Wire Line
-	1400 6000 1400 6450
+	1400 6000 1400 6300
+Wire Wire Line
+	1400 6300 1400 6450
 Wire Wire Line
 	1400 4900 1700 4900
 Connection ~ 1400 5200
@@ -250,7 +306,11 @@ Wire Wire Line
 Wire Wire Line
 	2150 4600 2150 5050
 Wire Wire Line
-	2300 4600 1300 4600
+	2300 4600 2150 4600
+Wire Wire Line
+	2150 4600 1700 4600
+Wire Wire Line
+	1700 4600 1300 4600
 Connection ~ 2150 4600
 Wire Wire Line
 	3250 5700 3300 5700
@@ -261,17 +321,27 @@ Wire Wire Line
 Wire Wire Line
 	2500 6050 2500 6100
 Wire Wire Line
-	7700 1400 7750 1400
+	7050 1400 7050 1700
 Wire Wire Line
-	7750 1400 7750 5000
-Connection ~ 7750 1700
+	7050 1700 6650 1700
+Wire Wire Line
+	6650 1700 6650 2750
+Wire Wire Line
+	6650 2750 6650 3250
+Wire Wire Line
+	6650 3250 6650 3800
+Wire Wire Line
+	6650 3800 6650 4200
+Wire Wire Line
+	6650 4200 6650 5000
+Connection ~ 6650 1700
 $Comp
 L C C?
 U 1 1 5079733A
-P 7500 1400
-F 0 "C?" V 7350 1600 50  0000 L CNN
-F 1 "100 nF" V 7350 1200 50  0000 L CNN
-	1    7500 1400
+P 6850 1400
+F 0 "C?" V 6700 1600 50  0000 L CNN
+F 1 "100 nF" V 6700 1200 50  0000 L CNN
+	1    6850 1400
 	0    1    1    0   
 $EndComp
 $Comp
@@ -417,7 +487,7 @@ Text Label 6900 3600 0    50   ~ 0
 Fire LASER
 Text Label 6900 2950 0    50   ~ 0
 E-stop
-Text Label 6900 1700 0    50   ~ 0
+Text Label 6900 3800 0    50   ~ 0
 GND from LASER
 $Comp
 L OPTO-COUPLER U?
@@ -475,7 +545,7 @@ F 1 "BAT 54S" H 5950 3150 60  0000 C CNN
 $EndComp
 Text Notes 2200 800  0    50   ~ 0
 Note: All LEDS on => LASER fires
-Text Label 6450 1400 0    50   ~ 0
+Text Label 6900 4000 0    50   ~ 0
 +5V from LASER
 $Comp
 L R R37
@@ -644,11 +714,11 @@ $EndComp
 $Comp
 L OPTO-TRANSISTOR-4P U2
 U 1 1 4EB1C805
-P 4400 1550
-F 0 "U2" H 4400 1750 60  0000 C CNN
-F 1 "EL 816S(TA)" H 4400 1250 60  0000 C CNN
-F 4 "75-390-25" H 4400 1550 60  0001 C CNN "ELFA"
-	1    4400 1550
+P 4450 1550
+F 0 "U2" H 4450 1750 60  0000 C CNN
+F 1 "EL 816S(TA)" H 4450 1250 60  0000 C CNN
+F 4 "75-390-25" H 4450 1550 60  0001 C CNN "ELFA"
+	1    4450 1550
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -690,10 +760,10 @@ $EndComp
 $Comp
 L OPTO-TRANSISTOR-4P U3
 U 1 1 4EB1C635
-P 4350 2800
-F 0 "U3" H 4350 3000 60  0000 C CNN
-F 1 "EL 816S(TA)" H 4350 2500 60  0000 C CNN
-	1    4350 2800
+P 4450 2800
+F 0 "U3" H 4450 3000 60  0000 C CNN
+F 1 "EL 816S(TA)" H 4450 2500 60  0000 C CNN
+	1    4450 2800
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -755,5 +825,5 @@ Text Notes 8650 3750 0    50   ~ 0
 Text Notes 8650 3650 0    50   ~ 0
 ~Enable
 Text Notes 9200 3600 0    50   ~ 0
-Terminal 1 Enable (pull down) is connected\nto Terminal 4 GND at Laser PSU connector.\n\nPin 1 on this connector is Terminal 2 on the laser\nPin 2 -> Terminal 3\nPin 3 -> Terminal 4\nPin 4 -> Terminal 5\nPin 5 -> Terminal 6\n
+Terminal 1 Enable (pull down) is connected\nto Terminal 4 GND at Laser PSU connector.\n\nPin 1 on this connector is Terminal 2 on the laser\nPin 2 -> Terminal 3\nPin 3 -> Terminal 4\nPin 4 -> Terminal 5\nPin 5 -> Terminal 6\n\nNotice that the modulation input\nis active-high, so full power is 100% high\nwhile zero power is 100 low, this is opposite\nlogic to the three enable inputs.
 $EndSCHEMATC

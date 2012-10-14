@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 13 Oct 2012 04:06:36 PM CEST
+EESchema Schematic File Version 2  date Sun 14 Oct 2012 04:23:31 PM CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -52,7 +52,7 @@ $Descr A4 11700 8267
 encoding utf-8
 Sheet 10 10
 Title ""
-Date "13 oct 2012"
+Date "14 oct 2012"
 Rev ""
 Comp ""
 Comment1 ""
@@ -76,10 +76,6 @@ Wire Wire Line
 	3250 5250 3250 5200
 Wire Wire Line
 	3250 5200 2350 5200
-Wire Wire Line
-	8250 5800 8050 5800
-Wire Wire Line
-	8050 5800 8050 5950
 Connection ~ 2550 5200
 Wire Wire Line
 	2550 5200 2550 5050
@@ -227,10 +223,6 @@ Wire Wire Line
 	2650 5200 2650 5050
 Connection ~ 2650 5200
 Wire Wire Line
-	8250 5600 8050 5600
-Wire Wire Line
-	8050 5600 8050 5500
-Wire Wire Line
 	1500 6900 1500 7100
 Connection ~ 6300 2600
 Connection ~ 6300 3000
@@ -306,33 +298,6 @@ P 1500 7100
 F 0 "#PWR0132" H 1500 7100 30  0001 C CNN
 F 1 "GND" H 1500 7030 30  0001 C CNN
 	1    1500 7100
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR0133
-U 1 1 4EBEE96C
-P 8050 5950
-F 0 "#PWR0133" H 8050 5950 30  0001 C CNN
-F 1 "GND" H 8050 5880 30  0001 C CNN
-	1    8050 5950
-	1    0    0    -1  
-$EndComp
-$Comp
-L +24V #PWR0134
-U 1 1 4EBEE964
-P 8050 5500
-F 0 "#PWR0134" H 8050 5450 20  0001 C CNN
-F 1 "+24V" H 8050 5600 30  0000 C CNN
-	1    8050 5500
-	1    0    0    -1  
-$EndComp
-$Comp
-L CONN_2 P27
-U 1 1 4EBEE955
-P 8600 5700
-F 0 "P27" V 8550 5700 40  0000 C CNN
-F 1 "Power" V 8650 5700 40  0000 C CNN
-	1    8600 5700
 	1    0    0    -1  
 $EndComp
 $Comp
