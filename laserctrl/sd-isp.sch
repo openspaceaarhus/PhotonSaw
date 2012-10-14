@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sun 14 Oct 2012 04:23:31 PM CEST
+EESchema Schematic File Version 2  date Sun 14 Oct 2012 09:24:14 PM CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -50,7 +50,7 @@ EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
-Sheet 2 10
+Sheet 3 11
 Title ""
 Date "14 oct 2012"
 Rev ""
@@ -237,7 +237,7 @@ L MOSFET_P Q?
 U 1 1 507AC25D
 P 2100 1000
 F 0 "Q?" H 2100 1190 60  0000 R CNN
-F 1 "MOSFET_P" H 2100 820 60  0000 R CNN
+F 1 "nx3008pbk" H 2100 820 60  0000 R CNN
 	1    2100 1000
 	1    0    0    -1  
 $EndComp
