@@ -68,6 +68,9 @@ public class Line {
 	
 	@Getter @Setter
 	boolean assistAir;
+	
+	@Getter @Setter
+	boolean endPosDirty;
 
 	
 	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
@@ -76,13 +79,21 @@ public class Line {
 		this.maxSpeed=targetMaxSpeed;
 		
 		endPoint.roundToWholeSteps(mc);
+		endPosDirty = false;
 
 		// Initialize each axis.
 		for (int a=0;a<Move.AXES;a++) {
 			axes[a] = new LineAxis();
  			axes[a].endPos = endPoint.getAxes()[a];
-			axes[a].startPos = startPoint.getAxes()[a];
 		}
+		
+		setStartPoint(startPoint);
+	}
+	
+	public void setStartPoint(Point startPoint) {
+		for (int a=0;a<Move.AXES;a++) {
+			axes[a].startPos = startPoint.getAxes()[a];
+		}		
 		
 		for (int a=0;a<Move.AXES;a++) {
 			axes[a].direction = axes[a].startPos == axes[a].endPos ? 0 :
@@ -98,9 +109,8 @@ public class Line {
 		if (length == 0) {
 			return;
 		}
-		
 		unitVector = moveVector.unit();
-
+		
 		/**
 		 * Find the max speed, min speed and acceleration limits for movement along this vector
 		 * by constricting each value to accommodate the slowest involved axis.   
@@ -128,7 +138,7 @@ public class Line {
 		} 
 		
 		if (Double.isNaN(acceleration) || acceleration == 0) {
-			throw new RuntimeException("Failed to calculate accleration for line from "+startPoint+" to "+endPoint);
+			throw new RuntimeException("Failed to calculate accleration for line from "+startPoint);
 		}
 		maxEntrySpeed = minSpeed;
 
@@ -146,7 +156,7 @@ public class Line {
 
 	    //log.info("a:"+acceleration + "s:"+ allowableSpeed + " for line from " + startPoint+" to "+endPoint);
 
-       	maxEntrySpeed = entrySpeed = minSpeed; // We start at a standstill.
+       	maxEntrySpeed = entrySpeed = 0; // We start at a standstill.
        	
        	updateMaxEntrySpeed(null);       	
          /*       
@@ -518,6 +528,8 @@ public class Line {
 		}
 				
 		for (int a=0; a < Move.AXES; a++) {
+			move.setAxisStartPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);
+			
 			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
 			if (accel != null) {
 				move.setAxisAccel(a, accel.getAxis(a));
@@ -539,15 +551,16 @@ public class Line {
 				if (diffSteps != 0) {
 					steps = move.getAxisLength(a);
 					diffSteps = steps - stepsWanted;
-					if (diffSteps != 0) {
-						 
+					if (diffSteps != 0) {						 
 						move.nudgeSpeed(a, -diffSteps/2);
 						log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
+						steps = move.getAxisLength(a);
 					}
 				}
 			}
 
 			stepsMoved[a] += steps;
+			move.setAxisEndPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);
 		}		
 
 		return move;
@@ -623,17 +636,16 @@ public class Line {
 			long diffSteps = stepsMoved[i] - stepsWanted;
 			
 			if (diffSteps != 0) {
-				if (Math.abs(diffSteps) > 10) {
+				if (Math.abs(diffSteps) != 0) {
 					log.warning("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]+" a:"+accelerateDistance+" p:"+plateauDistance+" d:"+decelerateDistance);
 				}
-				
-				Move m = output.get(output.size()-1);
-				int mi = output.size()-1;
-				while (mi > 0 && m.getDuration() < Math.abs(diffSteps)*2) {
-					mi--;
-					m = output.get(mi);
-				}
-				m.nudgeSpeed(i, -diffSteps); // Modify speed of the last, long move, whatever it is
+
+				/*
+				 *  This signals the planner that this move didn't actually land where we wanted to, so the planner has to update the start point of
+				 *  the next line to compensate and recalculate all the lines in the buffer.
+				 */				
+				axes[i].endPos += diffSteps*mc.getAxes()[i].mmPerStep;
+				endPosDirty = true;
 			}
 		}
 				

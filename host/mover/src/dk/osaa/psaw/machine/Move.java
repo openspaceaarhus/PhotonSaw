@@ -24,6 +24,8 @@ public class Move {
 	public static class MoveAxis {
 		Q30 speed;
 		Q30 accel;
+		long endPos;
+		long startPos;
 	};
 	
 	long id;
@@ -98,7 +100,22 @@ public class Move {
 			return 0;
 		}
 	}
+
+	public void setAxisStartPos(int axis, long pos) {
+		getAxis(axis).startPos = pos;
+	}
 	
+	public void setAxisEndPos(int axis, long pos) {
+		getAxis(axis).endPos = pos;
+	}
+
+	public long getAxisStartPos(int axis) {
+		return getAxis(axis).startPos;
+	}
+	
+	public long getAxisEndPos(int axis) {
+		return getAxis(axis).endPos;
+	}	
 
 	public String toString() {
 		val sb = new StringBuilder();

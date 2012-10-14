@@ -41,7 +41,8 @@ public class SVGRenderTarget implements JobRenderTarget {
 			out.write("  <path style=\"stroke:#000000;stroke-width:0.1;fill:none\" d=\"");
 			String l = "M";
 			for (Point p : path) {
-				out.write(l+p.axes[0]+","+p.axes[1]);
+//				out.write(l+p.axes[0]+","+p.axes[1]);
+				out.write(l+p.axes[0]*3.5+","+p.axes[1]*3.5);
 				l = " L";
 			}
 			out.write("\"/>\n");

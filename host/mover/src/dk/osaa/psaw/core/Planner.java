@@ -190,8 +190,7 @@ public class Planner extends Thread implements JobRenderTarget {
 					log.info("Job has finished rendering, waiting for buffer to empty");
 					// Let the line buffer empty out before we continue
 					while (!lineBuffer.isEmpty()) {
-						Line ready = lineBuffer.shift();
-						ready.toMoves(photonSaw); // This will block if the move buffer is full.
+						encodeLine();
 					}
 					
 					log.info("LineBuffer empty, waiting for MoveQueue to empty");
@@ -258,6 +257,24 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 	}
 	
+	void encodeLine() {
+		Line ready = lineBuffer.shift();
+		try {
+			ready.toMoves(photonSaw); // This will block if the move buffer is full.
+		} catch (InterruptedException e) {
+			log.log(Level.SEVERE, "Ignoring exeception from buffering moves", e);
+		}
+		
+		if (ready.isEndPosDirty()) {
+			ready.setEndPosDirty(false);
+			if (lineBuffer.getList().size() > 0) {
+				lineBuffer.getList().get(0).setStartPoint(ready.getEndPoint());
+				recalculate();
+			}			
+		}
+		
+	}
+	
 	void addLine(Line line) {
 		line.setAssistAir(assistAirStatus);
 		lineBuffer.push(line);
@@ -265,12 +282,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		recalculate();
 
 		while (lineBuffer.isFull()) {
-			Line ready = lineBuffer.shift();
-			try {
-				ready.toMoves(photonSaw); // This will block if the move buffer is full.
-			} catch (InterruptedException e) {
-				log.log(Level.WARNING, "Ignoring exeception from buffering moves", e);
-			}
+			encodeLine();
 		}
 	}
 
