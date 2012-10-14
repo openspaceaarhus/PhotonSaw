@@ -77,18 +77,22 @@ public class SimulatedCommander implements CommanderInterface {
     		writer.append(Long.toString(m.id)); writer.append("\t");
     		writer.append(Long.toString(m.duration)); writer.append("\t");
     		writer.append(Long.toString(m.laserIntensity)); writer.append("\t");
+    		writer.append(Long.toString(m.laserAcceleration.getValue())); writer.append("\t");
 
     		for (MoveAxis ma : m.axes) {
     			if (ma.speed != null) {
-    	    		writer.append(ma.speed.toString()); writer.append("\t");    				
+    	    		writer.append(Long.toString(ma.speed.getLong())); writer.append("\t");    				
     			} else {
     	    		writer.append("0"); writer.append("\t");    				    				
     			}
     			if (ma.accel != null) {
-    	    		writer.append(ma.accel.toString()); writer.append("\t");    				
+    	    		writer.append(Long.toString(ma.accel.getLong())); writer.append("\t");    				
     			} else {
     	    		writer.append("0"); writer.append("\t");    				    				
     			}
+    			
+	    		writer.append(Long.toString(ma.startPos)); writer.append("\t");    				    				
+	    		writer.append(Long.toString(ma.endPos)); writer.append("\t");    				    				
     		}
     		
     		writer.append("\n");

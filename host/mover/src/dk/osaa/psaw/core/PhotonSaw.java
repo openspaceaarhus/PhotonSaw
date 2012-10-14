@@ -131,7 +131,7 @@ public class PhotonSaw extends Thread {
 					idle = false;
 				}
 			} catch (Exception e) {
-				log.log(Level.SEVERE, "Caught exception while buffering moves", e);
+				log.log(Level.WARNING, "Caught exception while buffering moves", e);
 			}
 		}
 	}

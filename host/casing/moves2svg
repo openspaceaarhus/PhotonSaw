@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Data::Dumper;
+
+
+for my $mf (@ARGV) {
+    open M, "<$mf" or die "Failed to read $mf: $!";
+    my $sf = "$mf.svg";
+
+    my @paths;
+    my $moving = 0;
+    my $path = [];
+
+    while (my $l = <M>) {
+	chomp $l;
+
+	my ($id, $duration, $laserI, $laserA, 
+	    $xs, $xa, $xstart, $xend,
+	    $ys, $ya, $ystart, $yend,
+	    $zs, $za, $zstart, $zend,
+	    $as, $aa, $astart, $aend) = split /\t/, $l;
+	my $laserOff = !$laserI and !$laserA ? 1:0;
+
+	if ($laserOff != $moving) {
+	    if (@$path) {
+		push @paths, {
+		    cut=>!$moving,
+		    path=>$path,
+		};
+		$path = [];
+	    }
+	    $moving=$laserOff;
+	}
+	
+	push @$path, {
+	    xstart=>$xstart*0.0375*3.5,
+	    ystart=>$ystart*0.0375*3.5,
+	    xend=>$xend*0.0375*3.5,
+	    yend=>$yend*0.0375*3.5,
+	};
+    }
+    close M;
+    push @paths, {
+	cut=>!$moving,
+	path=>$path,
+    };
+
+    open S, ">$sf" or die "Failed to write $sf: $!";
+    print S "<svg>\n";
+    for my $p (@paths) {
+	my $width = $p->{cut} ? 1 : 0.05;
+	print S qq'  <path style="stroke:#000000;stroke-width:$width;fill:none" d="';
+	print S "M$p->{path}[0]{xstart},$p->{path}[0]{ystart}";
+	for my $n (@{$p->{path}}) {
+	    print S " L$n->{xend},$n->{yend}";	    
+	}
+	print S qq'"/>\n';
+    }
+    print S "</svg>\n";
+    close S;
+}
