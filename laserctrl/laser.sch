@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Mon 15 Oct 2012 07:59:43 PM CEST
+EESchema Schematic File Version 2  date 2012-10-15T23:46:03 CEST
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -62,6 +62,16 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Text Label 7000 2950 0    50   ~ 0
+LASER e-stop
+Wire Wire Line
+	5100 2950 8150 2950
+Connection ~ 5700 2650
+Wire Wire Line
+	5100 2650 5850 2650
+Connection ~ 5700 1400
+Wire Wire Line
+	5900 1400 5100 1400
 Connection ~ 6550 1400
 Wire Wire Line
 	6650 1400 6400 1400
@@ -137,8 +147,6 @@ Wire Wire Line
 	6350 3750 6350 3900
 Connection ~ 5700 2950
 Wire Wire Line
-	5100 1400 5900 1400
-Wire Wire Line
 	3750 3900 2950 3900
 Wire Wire Line
 	2950 3900 2950 3500
@@ -202,11 +210,6 @@ Wire Wire Line
 	3100 3600 3100 3550
 Wire Wire Line
 	2800 5700 2850 5700
-Wire Wire Line
-	8150 2950 5100 2950
-Wire Wire Line
-	5850 2650 5100 2650
-Connection ~ 5700 2650
 Connection ~ 5700 3900
 Connection ~ 2800 1700
 Wire Wire Line
@@ -267,6 +270,15 @@ Wire Wire Line
 Wire Wire Line
 	6650 5000 6650 1700
 Connection ~ 6650 1700
+$Comp
+L DIODE2 D7
+U 1 1 4EBADE4A
+P 5700 2950
+F 0 "D7" H 5850 3050 60  0000 C CNN
+F 1 "BAT 54S" H 5950 3150 60  0000 C CNN
+	1    5700 2950
+	-1   0    0    1   
+$EndComp
 $Comp
 L C C45
 U 1 1 5079733A
@@ -417,8 +429,6 @@ Text Label 6900 3900 0    50   ~ 0
 LASER modulation
 Text Label 6900 3600 0    50   ~ 0
 Fire LASER
-Text Label 6900 2950 0    50   ~ 0
-E-stop
 Text Label 6900 3800 0    50   ~ 0
 GND from LASER
 $Comp
@@ -464,15 +474,6 @@ P 5700 3900
 F 0 "D8" H 5850 4000 60  0000 C CNN
 F 1 "BAT 54S" H 5950 4100 60  0000 C CNN
 	1    5700 3900
-	-1   0    0    1   
-$EndComp
-$Comp
-L DIODE2 D7
-U 1 1 4EBADE4A
-P 5700 2950
-F 0 "D7" H 5850 3050 60  0000 C CNN
-F 1 "BAT 54S" H 5950 3150 60  0000 C CNN
-	1    5700 2950
 	-1   0    0    1   
 $EndComp
 Text Notes 2200 800  0    50   ~ 0

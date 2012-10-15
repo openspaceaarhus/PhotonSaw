@@ -1,13 +1,11 @@
 package dk.osaa.psaw.web.handlers;
 
-import lombok.extern.java.Log;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.web.api.AbstractJSONHandler;
 import dk.osaa.psaw.web.api.JSONParameters;
 import dk.osaa.psaw.web.api.JSONResult;
 
-@Log
 public class JogHandler extends AbstractJSONHandler {
 
 	public JogHandler(PhotonSaw ps) {

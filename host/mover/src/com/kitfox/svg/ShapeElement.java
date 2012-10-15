@@ -349,6 +349,10 @@ abstract public class ShapeElement extends RenderableElement
 	                {
 	                    strokeShape = stroke.createStrokedShape(shape);
 	                }
+                } else {
+	                if (vectorEffect == VECTOR_EFFECT_NON_SCALING_STROKE) {
+	                    shape = cacheXform.createTransformedShape(shape);
+	                }                	
                 }
             	
                 Composite cachedComposite = g.getComposite();

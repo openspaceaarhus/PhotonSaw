@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = Mon 15 Oct 2012 09:23:45 PM CEST
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2012-10-15T23:08:45 CEST
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -690,7 +690,7 @@ BeginCmp
 TimeStamp = /4EAEE920/50796F6B;
 Reference = D17;
 ValeurCmp = BAT_54S;
-IdModule  = LED-0805;
+IdModule  = diode-SOT23;
 EndCmp
 
 BeginCmp
