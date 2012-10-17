@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = 2012-10-15T23:08:45 CEST
+Cmp-Mod V01 Created by CvPCB (2011-05-25)-stable date = Wed 17 Oct 2012 08:34:24 PM CEST
 
 BeginCmp
 TimeStamp = /4EC15AA5;
@@ -715,6 +715,13 @@ IdModule  = diode-SOT23;
 EndCmp
 
 BeginCmp
+TimeStamp = /4EA1A825/507EF98A;
+Reference = D21;
+ValeurCmp = BAT_54C;
+IdModule  = diode-SOT23;
+EndCmp
+
+BeginCmp
 TimeStamp = /4EA1D353/4EBAE09E;
 Reference = D22;
 ValeurCmp = BAT_54S;
@@ -768,20 +775,6 @@ TimeStamp = /4EA1A825/4D04CF74;
 Reference = D43;
 ValeurCmp = SK_34;
 IdModule  = diode-SMA-unfucked;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EA1A825/4EA3EF38;
-Reference = D44;
-ValeurCmp = LS_914B;
-IdModule  = diode-minimelf-unfucked;
-EndCmp
-
-BeginCmp
-TimeStamp = /4EA1A825/4EA3EF40;
-Reference = D45;
-ValeurCmp = LS_914B;
-IdModule  = diode-minimelf-unfucked;
 EndCmp
 
 BeginCmp
@@ -848,13 +841,6 @@ IdModule  = 3mm-hole;
 EndCmp
 
 BeginCmp
-TimeStamp = /4EB45CE6/4EC2E647;
-Reference = hole;
-ValeurCmp = P1;
-IdModule  = 2mm;
-EndCmp
-
-BeginCmp
 TimeStamp = /4EAD3DC6/4EA1E74B;
 Reference = IC1;
 ValeurCmp = DRV8811;
@@ -915,6 +901,13 @@ TimeStamp = /4EA1A825/4D04CFE3;
 Reference = L1;
 ValeurCmp = 330uH;
 IdModule  = INDUCTOR_V;
+EndCmp
+
+BeginCmp
+TimeStamp = /4EB45CE6/4EC2E647;
+Reference = P1;
+ValeurCmp = 2mm-hole;
+IdModule  = ;
 EndCmp
 
 BeginCmp
