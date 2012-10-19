@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 import dk.osaa.psaw.machine.Move.MoveAxis;
 
+import lombok.val;
 import lombok.extern.java.Log;
 
 @Log
@@ -69,6 +70,8 @@ public class SimulatedCommander implements CommanderInterface {
 		
     	while (!moveQueue.isEmpty()) {
     		Move m = moveQueue.take();
+    		
+    		val words = m.encode();
     		
     		if (writer == null) {
     			continue;    			

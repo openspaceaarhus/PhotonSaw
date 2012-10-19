@@ -398,6 +398,14 @@ public class Line {
 		
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
 	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
+	    
+	    if (accelerateDistance < 0.1) {
+	    	accelerateDistance = 0;
+	    }
+	    if (decelerateDistance < 0.1) {
+	    	decelerateDistance = 0;
+	    }
+	    
 	    plateauDistance = length-accelerateDistance-decelerateDistance;
 	    if (log.isLoggable(Level.FINE)) {
 	    	log.fine("Length:"+length+" a:"+accelerateDistance+" d:"+decelerateDistance+" p:"+plateauDistance);
@@ -487,7 +495,11 @@ public class Line {
 				
 		MoveVector accel = null;
 		long ticks;
-		if (startSpeedMMS == endSpeedMMS) {			
+		if (startSpeedMMS == endSpeedMMS) {
+			if (startSpeedVector.getAxis(longAxis) == 0) {
+				throw new RuntimeException("Fail! start speed and end speed is zero, but move has a length");
+			}
+			
 			ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
 			
 		} else {
@@ -523,10 +535,6 @@ public class Line {
 		move.setLaserIntensity(startIntensity);
 		move.setLaserAcceleration(new Q16((endIntensity-startIntensity)/ticks));
 		
-		if (pixels != null) {			
-			move.setScanline(pixels);
-		}
-				
 		for (int a=0; a < Move.AXES; a++) {
 			move.setAxisStartPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);
 			
@@ -563,6 +571,10 @@ public class Line {
 			move.setAxisEndPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);
 		}		
 
+		if (pixels != null) {			
+			move.setScanline(pixels);
+		}
+				
 		return move;
 	}
 	
@@ -590,6 +602,10 @@ public class Line {
 		
 		if ((accelerateDistance > 0 || decelerateDistance > 0) && pixels != null) {
 			throw new RuntimeException("Engraving line contains acceleration or deceleration ramps. ad="+accelerateDistance+" dd="+decelerateDistance);
+		}
+		
+		if (entrySpeed != maxSpeed && pixels != null) {
+			throw new RuntimeException("Engraving line does not start at full speed: entrySpeed != maxSpeed: "+entrySpeed+" != "+ maxSpeed);			
 		}
 		
 		if (accelerateDistance > 0) {

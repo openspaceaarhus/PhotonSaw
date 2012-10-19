@@ -52,8 +52,10 @@ public class Move {
 
 	public void setScanline(boolean[] pixels) {
 		pixelSpeed = new Q30(((double)pixels.length)/duration);
-		//log.info("id: "+id+" Speed: "+pixelSpeed.toDouble()+" duration:"+duration);
 		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
+		log.info("id: "+id+" Speed: "+pixelSpeed.toDouble()+
+				" duration:"+duration+" pixels.length:"+pixels.length+
+				" pixelWords:"+pixelWords.length+" xspeed:"+axes[0].speed.toDouble());
 		for (int pc=0;pc<pixels.length;pc++) {
 			if (pixels[pc]) {
 				pixelWords[pc >> 5] |= 1L<<(pc & 31);
@@ -321,7 +323,7 @@ public class Move {
 		}		
 		
 		encoded.set(headerIndex, header);
-		/*
+		
 		// Log the encoded words for debugging.
 		val sb = new StringBuilder();
 		sb.append("Encoding move id: ");
@@ -331,7 +333,7 @@ public class Move {
 			sb.append(Long.toHexString(w).toLowerCase());	
 		}
 		log.info(sb.toString());
-		*/
+		
 		return encoded;
 	}
 
