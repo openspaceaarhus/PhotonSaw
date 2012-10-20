@@ -51,4 +51,9 @@ public class JobSize implements JobRenderTarget {
 	public void setAssistAir(boolean on) {
 		// Ignore
 	}
+
+	@Override
+	public void moveToAtSpeed(Point p, double maxSpeed) {
+		moveTo(p);		
+	}
 }

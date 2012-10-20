@@ -78,6 +78,11 @@ public class SVGRenderTarget implements JobRenderTarget {
 	}
 
 	@Override
+	public void moveToAtSpeed(Point p, double maxSpeed) {
+		path.add(p);		
+	}
+
+	@Override
 	public void engraveTo(Point p, double intensity, double maxSpeed, boolean[] pixels) {
 		// TODO Auto-generated method stub
 	}

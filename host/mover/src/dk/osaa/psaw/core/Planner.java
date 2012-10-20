@@ -103,9 +103,9 @@ public class Planner extends Thread implements JobRenderTarget {
 		Line current = null;
 		for (Line next: lineBuffer.getList()) {
 			if (current != null) {
-				if (current.isRecalculateNeeded() || next.isRecalculateNeeded()) {
+				//if (current.isRecalculateNeeded() || next.isRecalculateNeeded()) {
 					current.calculateTrapezoid(next);
-				}
+				//}
 			}			
 			current = next;
 		}
@@ -279,7 +279,10 @@ public class Planner extends Thread implements JobRenderTarget {
 		line.setAssistAir(assistAirStatus);
 		lineBuffer.push(line);
 		lastBufferedLocation = line.getEndPoint(); // because the Line constructor rounds the point to the actual position.
-		recalculate();
+		
+		if (lineBuffer.isFull()) {
+			recalculate();
+		}
 
 		while (lineBuffer.isFull()) {
 			encodeLine();
@@ -319,6 +322,23 @@ public class Planner extends Thread implements JobRenderTarget {
 		renderedLines++;
 	}
 
+	@Override
+	public void moveToAtSpeed(Point p, double maxSpeed) {
+		for (int i=0;i<Move.AXES;i++) {
+			if (!usedAxes[i]) {
+				p.axes[i] = lastBufferedLocation.axes[i]; 
+			}
+		}
+		Line line = new Line(photonSaw.cfg.movementConstraints, 
+				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
+				lastBufferedLocation, p, maxSpeed);
+		line.setMandatoryExitSpeed(maxSpeed);
+		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
+			addLine(line);
+		}
+		renderedLines++;
+	}
+	
 	@Override
 	public void engraveTo(Point p, double intensity, double maxSpeed,
 			boolean[] pixels) {
@@ -383,4 +403,5 @@ public class Planner extends Thread implements JobRenderTarget {
 	public void setAssistAir(boolean assistAirOn) {
 		assistAirStatus = assistAirOn;
 	}
+
 }

@@ -14,6 +14,14 @@ public interface JobRenderTarget {
 	 * @param p The point to move to
 	 */
 	void moveTo(Point p);
+
+	/**
+	 * Like moveTo, but asserts that the speed maxSpeed must be the exact speed at the end of the line
+	 *  
+	 * @param p the point to move to
+	 * @param maxSpeed the target speed to hit at the end point
+	 */
+	void moveToAtSpeed(Point p, double maxSpeed);
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed
@@ -52,4 +60,6 @@ public interface JobRenderTarget {
 	 * @param assistAirOn status of assist air
 	 */
 	void setAssistAir(boolean assistAirOn);
+
+	
 }

@@ -48,6 +48,8 @@ public class Line {
 	double maxEntrySpeed;  	// The highest speed we can allow the previous line to leave us with, constrained by the next line
 	double entrySpeed;   	// The actual speed we get to start with, contributed by the previous line, constrained by maxEntrySpeed
 	double exitSpeed;   	// The actual speed at the end of this line, updated by updateEntrySpeed
+	@Getter @Setter
+	double mandatoryExitSpeed; // The speed that we must attain at the exit of this line.
 
 	@Getter
 	double length;			// The number of mm from start to finish
@@ -80,6 +82,7 @@ public class Line {
 		
 		endPoint.roundToWholeSteps(mc);
 		endPosDirty = false;
+		mandatoryExitSpeed = -1;
 
 		// Initialize each axis.
 		for (int a=0;a<Move.AXES;a++) {
@@ -200,12 +203,14 @@ public class Line {
 	 * @param next The next line which we have to hand off to when we're done, if null, then we have to come to a stop.
 	 */
 	double maxExitSpeed;
+	Line nextStored;
 	private void updateMaxEntrySpeed(Line next) {	
 		MoveVector maxEndSpeeds; // The speed limits as imposed by the max entry speed of the next line		
 		if (next == null || assistAir != next.assistAir) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
 			maxEndSpeeds = new MoveVector();
 		} else {
 			maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed);
+			nextStored = next;			
 		}
 
 		// Find the maximum speed along this normal vector which doesn't exceed the maxEndSpeed limit.
@@ -235,6 +240,14 @@ public class Line {
         		}
         	}
         }
+		
+		if (mandatoryExitSpeed >= 0) {
+			double diffExit = mandatoryExitSpeed-maxExitSpeed;
+			
+			if (diffExit > 0.1) {
+				throw new RuntimeException("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least"+mandatoryExitSpeed);				
+			}			
+		}
 
 		// Figure out how fast we can allow the previous line to run when handing off:
 		maxEntrySpeed = Line.maxAllowableSpeed(-acceleration, maxExitSpeed, length);
@@ -293,12 +306,22 @@ public class Line {
 		
 		// Calculate our own exit speed
 		exitSpeed = Line.maxAllowableSpeed(-acceleration, entrySpeed, length);
+				
 		if (exitSpeed > maxExitSpeed) {
 			exitSpeed = maxExitSpeed;
 		}		
 		if (exitSpeed < 0) {
 			throw new RuntimeException("Calculated a negative exitSpeed: "+exitSpeed);			
 		}
+		
+		if (mandatoryExitSpeed >= 0) {
+			double diffExit = mandatoryExitSpeed-exitSpeed;
+			
+			if (Math.abs(diffExit) > 0.1) {
+				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+			}			
+		}		
+		
 	}
 	
 	// Called by Planner::recalculate() when scanning the plan from last to first entry.
@@ -395,6 +418,14 @@ public class Line {
 		if (acceleration == 0) { // This is a point, not a line.
 			return;
 		}
+		
+		if (mandatoryExitSpeed >= 0 && next != null) {
+			double diffExit = mandatoryExitSpeed-exitSpeed;
+			
+			if (Math.abs(diffExit) > 0.1) {
+				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+			}			
+		}		
 		
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
 	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
@@ -497,7 +528,7 @@ public class Line {
 		long ticks;
 		if (startSpeedMMS == endSpeedMMS) {
 			if (startSpeedVector.getAxis(longAxis) == 0) {
-				throw new RuntimeException("Fail! start speed and end speed is zero, but move has a length");
+				throw new RuntimeException("Fail! start speed and end speed is zero, but move has a length along axis "+longAxis+" "+longAxisLength+" steps");
 			}
 			
 			ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
@@ -588,6 +619,14 @@ public class Line {
 		}
 		if (entrySpeed < 0) {
 			throw new RuntimeException("entrySpeed cannot be negative");
+		}
+		
+		if (mandatoryExitSpeed >= 0) {
+			double diffExit = mandatoryExitSpeed-exitSpeed;
+			
+			if (Math.abs(diffExit) > 0.1) {
+				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+			}			
 		}
 		
 		ArrayList<Move> output = new ArrayList<Move>(); 
