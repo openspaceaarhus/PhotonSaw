@@ -570,7 +570,7 @@ public class Line {
 		int startIntensity = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*startSpeedMMS/maxSpeed)));
 		int endIntensity   = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*endSpeedMMS  /maxSpeed)));
 		move.setLaserIntensity(startIntensity);
-		move.setLaserAcceleration(new Q16((endIntensity-startIntensity)/ticks));
+		move.setLaserAcceleration(new Q16(((double)(endIntensity-startIntensity))/ticks));
 		
 		for (int a=0; a < Move.AXES; a++) {
 			move.setAxisStartPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);

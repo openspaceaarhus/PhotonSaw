@@ -20,7 +20,7 @@ for my $mf (@ARGV) {
 	    $ys, $ya, $ystart, $yend,
 	    $zs, $za, $zstart, $zend,
 	    $as, $aa, $astart, $aend) = split /\t/, $l;
-	my $laserOff = !$laserI and !$laserA ? 1:0;
+	my $laserOff = ((!$laserI) and (!$laserA)) ? 1:0;
 
 	if ($laserOff != $moving) {
 	    if (@$path) {
