@@ -1,6 +1,7 @@
 package dk.osaa.psaw.machine;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import lombok.Data;
 import lombok.val;
@@ -218,7 +219,7 @@ public class Move {
 		if (lengthCount != 0) {
 			log.info("getAxisLength calls: "+lengthCount+" total time: "+lengthTime+" ns, avg: "+lengthTime/lengthCount+" ns");
 		}
-		log.info("nudgeSpeed calls: "+nudgeSpeedCalls);
+		log.info("nudgeSpeed calls: "+nudgeAxisStepsCalls);
 	}
 
 
@@ -324,28 +325,38 @@ public class Move {
 		
 		encoded.set(headerIndex, header);
 		
-		// Log the encoded words for debugging.
-		val sb = new StringBuilder();
-		sb.append("Encoding move id: ");
-		sb.append(id);
-		for (val w : encoded) { 
-			sb.append(" ");
-			sb.append(Long.toHexString(w).toLowerCase());	
-		}
-		log.info(sb.toString());
+		if (log.isLoggable(Level.FINE)) {
+			// Log the encoded words for debugging.
+			val sb = new StringBuilder();
+			sb.append("Encoding move id: ");
+			sb.append(id);
+			for (val w : encoded) { 
+				sb.append(" ");
+				sb.append(Long.toHexString(w).toLowerCase());	
+			}
+			log.fine(sb.toString());
+		}		
 		
 		return encoded;
 	}
 
-	static long nudgeSpeedCalls = 0;
-	public void nudgeSpeed(int axis, double diffSteps) {
-		nudgeSpeedCalls++;
-		if (getAxis(axis).speed == null) {
-			setAxisSpeed(axis, ((double)diffSteps)/duration);
-		} else {
-//			long steps = (getAxis(axis).speed.getLong()*duration) / Q30.ONE;
-//			getAxis(axis).speed.setLong(((steps+diffSteps)*Q30.ONE) / duration);
+	static long nudgeAxisStepsCalls = 0;
+	public void nudgeAxisSteps(int axis, double diffSteps) {
+		nudgeAxisStepsCalls++;
+		
+		if (getAxis(axis).accel != null) {
+			double oldAccel = getAxis(axis).accel.toDouble();
+			double addAccel = diffSteps/(duration*duration);
+			if (Math.signum(oldAccel+addAccel) != Math.signum(oldAccel)) {
+				//throw new RuntimeException("Nudging acceleration would change sign of acceleration "+oldAccel+" "+addAccel);
+			}
+			getAxis(axis).accel.addDouble(addAccel);
+
+		} else if (getAxis(axis).speed != null) {
 			getAxis(axis).speed.addDouble(diffSteps/duration);
+
+		} else {
+			throw new RuntimeException("This move has no acceleration and no speed to modify on axis: "+axis+" steperror: "+diffSteps);
 		}
 	}
 }

@@ -150,7 +150,7 @@ public class Planner extends Thread implements JobRenderTarget {
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
 				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
-				move.nudgeSpeed(a, -diffSteps);
+				move.nudgeAxisSteps(a, -diffSteps);
 					
 				// TODO: This is a ghastly hack, I know, but damn it, it works and I don't know what else to do.
 				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
@@ -159,7 +159,7 @@ public class Planner extends Thread implements JobRenderTarget {
 					steps = move.getAxisLength(a);
 					diffSteps = steps - stepsWanted;
 					if (diffSteps != 0) {
-						move.nudgeSpeed(a, -diffSteps/2.0);
+						move.nudgeAxisSteps(a, -diffSteps/2.0);
 						log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
 					}
 				}

@@ -7,6 +7,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import javax.management.RuntimeErrorException;
+
 import dk.osaa.psaw.config.MovementConstraints;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
@@ -585,8 +587,16 @@ public class Line {
 			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
-				log.fine("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
-				move.nudgeSpeed(a, -diffSteps);
+				if (Math.abs(diffSteps) > 3) {
+					throw new RuntimeException("Got too large an error, will not correct "+a+" wanted:"+stepsWanted+" got:"+steps);
+				}
+				log.info("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
+				move.nudgeAxisSteps(a, -diffSteps);
+				steps = move.getAxisLength(a);
+				diffSteps = steps - stepsWanted;
+				if (Math.abs(diffSteps) > 3) {
+					throw new RuntimeException("Got too large an error, will not correct "+a+" wanted:"+stepsWanted+" got:"+steps);
+				}
 					
 				// TODO: This is a ghastly hack, I know, but damn it, it works and I don't know what else to do.
 				// I'd much rather have a system that's able to calculate the correct speed and acceleration the first time
@@ -595,8 +605,12 @@ public class Line {
 					steps = move.getAxisLength(a);
 					diffSteps = steps - stepsWanted;
 					if (diffSteps != 0) {						 
-						move.nudgeSpeed(a, -diffSteps/2);
-						log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
+						move.nudgeAxisSteps(a, -diffSteps/2);
+						
+						if (Math.abs(diffSteps) > 3) {
+							throw new RuntimeException("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);
+//							log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
+						}
 						steps = move.getAxisLength(a);
 					}
 				}
@@ -698,8 +712,9 @@ public class Line {
 			long diffSteps = stepsMoved[i] - stepsWanted;
 			
 			if (diffSteps != 0) {
-				if (Math.abs(diffSteps) != 0) {
-					log.warning("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]+" a:"+accelerateDistance+" p:"+plateauDistance+" d:"+decelerateDistance);
+				if (Math.abs(diffSteps) > 3) {
+					throw new RuntimeException("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]+" a:"+accelerateDistance+" p:"+plateauDistance+" d:"+decelerateDistance); 
+					//log.warning("Step difference on axis "+i+": "+diffSteps+ " wanted:"+stepsWanted+" got:"+stepsMoved[i]+" a:"+accelerateDistance+" p:"+plateauDistance+" d:"+decelerateDistance);
 				}
 
 				/*
