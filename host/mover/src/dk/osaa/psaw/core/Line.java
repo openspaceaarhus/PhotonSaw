@@ -227,7 +227,7 @@ public class Line {
     			double jerk = Math.abs(maxEndSpeedAxis) - Math.abs(nextStartSpeedAxis);
 
     			if (jerk > mc.getAxes()[i].maxJerk) {
-    				double jerkFactor = Math.abs(maxEndSpeedAxis) / (Math.abs(nextStartSpeedAxis)+mc.getAxes()[i].maxJerk);
+    				double jerkFactor = jerk/mc.getAxes()[i].maxJerk;
         			maxExitSpeed /= jerkFactor;
         		}
 	        		
@@ -282,15 +282,17 @@ public class Line {
         	double prevSpeed = prevSpeeds.getAxis(i);
         	
         	if (Math.signum(axisSpeed) == Math.signum(prevSpeed)) {
-        		double overspeed = Math.abs(axisSpeed) / (Math.abs(prevSpeed)+mc.getAxes()[i].maxJerk);
-        		if (overspeed > 1) {
-        			entrySpeed /= overspeed;
-        		}
+    			double jerk = Math.abs(axisSpeed) - Math.abs(prevSpeed);
+    			if (jerk > mc.getAxes()[i].maxJerk) {
+        			double jerkFactor = jerk / mc.getAxes()[i].maxJerk;
+        			entrySpeed /= jerkFactor;
+    			}
+
         	} else {
         		if (unitVector.getAxis(i) != 0) {
         			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
         			if (entrySpeed > halfJerk) {
-        				entrySpeed = halfJerk;        				
+        				entrySpeed = halfJerk;        			
         			}
         		}
         	}        	
@@ -305,8 +307,7 @@ public class Line {
 		}
 		
 		// Calculate our own exit speed
-		exitSpeed = Line.maxAllowableSpeed(-acceleration, entrySpeed, length);
-				
+		exitSpeed = Line.maxAllowableSpeed(-acceleration, entrySpeed, length);			
 		if (exitSpeed > maxExitSpeed) {
 			exitSpeed = maxExitSpeed;
 		}		
@@ -321,7 +322,6 @@ public class Line {
 				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			}			
 		}		
-		
 	}
 	
 	// Called by Planner::recalculate() when scanning the plan from last to first entry.
@@ -430,10 +430,10 @@ public class Line {
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
 	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
 	    
-	    if (accelerateDistance < 0.1) {
+	    if (accelerateDistance < 0) {
 	    	accelerateDistance = 0;
 	    }
-	    if (decelerateDistance < 0.1) {
+	    if (decelerateDistance < 0) {
 	    	decelerateDistance = 0;
 	    }
 	    
@@ -453,7 +453,11 @@ public class Line {
 	    if (accelerateDistance == 0 && decelerateDistance == 0 && plateauDistance == 0) {
 	    	throw new RuntimeException("Line has no length");	    	
 	    }
-	    
+
+	    if (accelerateDistance == 0 && entrySpeed == 0) {
+	    	throw new RuntimeException("Fail, entry speed is lower than maxSpeed, but no acceleration distance found: entry:"+entrySpeed+" max:"+maxSpeed);
+	    }
+	    	    
 	    if (accelerateDistance < 0) {
 	    	throw new RuntimeException("Calculated negative length for accelerateDistance: "+accelerateDistance
 	    			+" entrySpeed="+entrySpeed
@@ -653,6 +657,9 @@ public class Line {
 		}
 		
 		if (plateauDistance > 0) {
+			if (topSpeed == 0) {
+				throw new RuntimeException("Fail");
+			}
 			output.add(endcodeMove(unitVector.mul(plateauDistance), topSpeed, topSpeed));
 		}
 		
