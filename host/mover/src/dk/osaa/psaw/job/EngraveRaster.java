@@ -129,7 +129,7 @@ public class EngraveRaster extends LaserNode {
 		 * not the maximum speed of the machine as moveTo would do. 
 		 */
 		
-		//target.moveTo(transformation.transform(new Point2D(x0-leadin, y))); // Will be optimized out for every line except the first.
+		target.moveTo(transformation.transform(new Point2D(x0-leadin, y))); // Will be optimized out for every line except the first.
 		target.moveToAtSpeed(transformation.transform(new Point2D(x0, y)), settings.maxSpeed);
 //		target.cutTo(transformation.transform(new Point2D(x0, y)), 0, settings.maxSpeed);
 

@@ -7,8 +7,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import javax.management.RuntimeErrorException;
-
 import dk.osaa.psaw.config.MovementConstraints;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
@@ -75,7 +73,6 @@ public class Line {
 	
 	@Getter @Setter
 	boolean endPosDirty;
-
 	
 	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
 		this.pixels = null;
@@ -205,14 +202,16 @@ public class Line {
 	 * @param next The next line which we have to hand off to when we're done, if null, then we have to come to a stop.
 	 */
 	double maxExitSpeed;
-	Line nextStored;
 	private void updateMaxEntrySpeed(Line next) {	
 		MoveVector maxEndSpeeds; // The speed limits as imposed by the max entry speed of the next line		
 		if (next == null || assistAir != next.assistAir) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
 			maxEndSpeeds = new MoveVector();
 		} else {
 			maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed);
-			nextStored = next;			
+		}
+		
+		if (axes[0].startPos == 0.0 && axes[1].startPos == 0.0 && mandatoryExitSpeed >= 0) {
+			log.info("It's about to happen!");
 		}
 
 		// Find the maximum speed along this normal vector which doesn't exceed the maxEndSpeed limit.
@@ -247,7 +246,8 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-maxExitSpeed;
 			
 			if (diffExit > 0.1) {
-				throw new RuntimeException("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least"+mandatoryExitSpeed);				
+				log.info("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
+//				throw new RuntimeException("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
 			}			
 		}
 
@@ -307,7 +307,20 @@ public class Line {
 		if (entrySpeed < 0) {
 			throw new RuntimeException("Calculated a negative speed: "+entrySpeed);			
 		}
-		
+	}
+	
+	// Called by Planner::recalculate() when scanning the plan from last to first entry.
+	public void reversePass(Line next) {
+		updateMaxEntrySpeed(next);		
+        recalculateNeeded = true;
+	}
+	
+	// Called by Planner::recalculate() when scanning the plan from first to last entry.
+	public void forwardPass(Line prev) {
+	    if (prev != null) {
+	    	updateEntrySpeed(prev);
+	    }
+
 		// Calculate our own exit speed
 		exitSpeed = Line.maxAllowableSpeed(-acceleration, entrySpeed, length);			
 		if (exitSpeed > maxExitSpeed) {
@@ -321,43 +334,11 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
 			if (Math.abs(diffExit) > 0.1) {
-				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+				log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			}			
 		}		
-	}
-	
-	// Called by Planner::recalculate() when scanning the plan from last to first entry.
-	public void reversePass(Line next) {
-		if (next == null) return; // This is the last line.
-		updateMaxEntrySpeed(next);
-        recalculateNeeded = true;
-
-        
-        // If entry speed is already at the maximum entry speed, no need to recheck. Block is cruising.
-        // If not, block in state of acceleration or deceleration. Reset entry speed to maximum and
-        // check for maximum allowable speed reductions to ensure maximum possible planned speed.        
-/*
-		if (entrySpeed != maxEntrySpeed) {
-
-            // If nominal length true, max junction speed is guaranteed to be reached. Only compute
-            // for max allowable speed if block is decelerating and nominal length is false.
-            if ((!nominalLength) && (maxEntrySpeed > next.entrySpeed)) {
-                entrySpeed = Math.min( maxEntrySpeed,
-                		Line.maxAllowableSpeed(-acceleration, entrySpeed, length));
-            } else {
-                entrySpeed = maxEntrySpeed;
-            }
-            recalculateNeeded = true;
-        }
-        */
-	}
-	
-	// Called by Planner::recalculate() when scanning the plan from first to last entry.
-	public void forwardPass(Line prev) {
-	    if (prev == null) return; // This is the very first line or the previous line is no longer available, because it has been processed 
-
-	    updateEntrySpeed(prev);
-        recalculateNeeded = true;
+		  
+	    recalculateNeeded = true;
 /*	    
 	    // If the previous block is an acceleration block, but it is not long enough to complete the
 	    // full speed change within the block, we need to adjust the entry speed accordingly. Entry
@@ -425,7 +406,7 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
 			if (Math.abs(diffExit) > 0.1) {
-				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+				log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			}			
 		}		
 		
@@ -643,7 +624,7 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
 			if (Math.abs(diffExit) > 0.1) {
-				throw new RuntimeException("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+				throw new RuntimeException("The exit speed of the line starting at "+axes[0].startPos+","+axes[1].startPos+" was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			}			
 		}
 		

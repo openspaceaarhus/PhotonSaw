@@ -103,9 +103,9 @@ public class Planner extends Thread implements JobRenderTarget {
 		Line current = null;
 		for (Line next: lineBuffer.getList()) {
 			if (current != null) {
-				//if (current.isRecalculateNeeded() || next.isRecalculateNeeded()) {
+				if (current.isRecalculateNeeded() || next.isRecalculateNeeded()) {
 					current.calculateTrapezoid(next);
-				//}
+				}
 			}			
 			current = next;
 		}
@@ -362,7 +362,7 @@ public class Planner extends Thread implements JobRenderTarget {
 	@Override
 	public double getEngravingXAccelerationDistance(double speed) {
 		// This doesn't take minSpeed into account, so there should be some head room.
-		return Line.estimateAccelerationDistance(0, speed, photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
+		return 2*Line.estimateAccelerationDistance(0, speed, photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
 	}
 
 	@Override
