@@ -37,9 +37,7 @@ import java.net.*;
 import java.util.List;
 
 /**
- * Implements an embedded font.
- *
- * SVG specification: http://www.w3.org/TR/SVG/fonts.html
+ * Implements an image.
  *
  * @author Mark McKay
  * @author <a href="mailto:mark@kitfox.com">Mark McKay</a>
@@ -254,7 +252,16 @@ public class ImageSVG extends RenderableElement
             if (getPres(sty.setName("xlink:href")))
             {
                 URI src = sty.getURIValue(getXMLBase());
-                URL newVal = src.toURL();
+
+                URL newVal;
+                if ("data".equals(src.getScheme()))
+                {
+                    newVal = new URL(null, src.toASCIIString(), new Handler());
+                }
+                else
+                {
+                    newVal = src.toURL();
+                }
                 
                 if (!newVal.equals(imageSrc))
                 {

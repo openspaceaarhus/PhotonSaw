@@ -49,6 +49,7 @@ for my $mf (@ARGV) {
     open S, ">$sf" or die "Failed to write $sf: $!";
     print S "<svg>\n";
     for my $p (@paths) {
+	next unless @{$p->{path}};
 	my $width = $p->{cut} ? 1 : 0.05;
 	print S qq'  <path style="stroke:#000000;stroke-width:$width;fill:none" d="';
 	print S "M$p->{path}[0]{xstart},$p->{path}[0]{ystart}";
