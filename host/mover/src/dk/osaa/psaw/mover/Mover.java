@@ -38,6 +38,7 @@ public class Mover {
 	    	
 			//testJob.loadTest();
 			
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing4-vector.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/up-engraving.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths-stroke.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple-stroke.svg");
@@ -45,9 +46,9 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/au109021.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/laser-focus-guide.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/butterfly-2.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/zoid.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/osaa-10x10.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/butterfly-3.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/zoid-cut.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/osaa-10x10.svg"); // Zoid cut
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/OSAA-10x10-laser.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/lens-ring.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/speed-guide.svg");
@@ -55,7 +56,8 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/3mm-box.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-with-text.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing-raster.svg"); // Broken
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-helper.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/wall.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/url.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/MAGENTA_LASER.svg");

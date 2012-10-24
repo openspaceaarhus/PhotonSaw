@@ -397,8 +397,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		// Note: We do not support rotation of rasters at this point.
 		Point2D pos = new Point2D(x, y);
 		pos.transform(getTransform());
-		width  = width *getTransform().getScaleX(); 
-		height = height*getTransform().getScaleY(); 
+		width  = Math.abs(width *getTransform().getScaleX()); 
+		height = Math.abs(height*getTransform().getScaleY()); 
 		
 		if (!(img instanceof BufferedImage)) {
 			throw new RuntimeException("The Image passed to writeImage was not a BufferedImage: "+img.getClass().getName());

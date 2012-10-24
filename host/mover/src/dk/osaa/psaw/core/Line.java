@@ -48,7 +48,7 @@ public class Line {
 	double maxEntrySpeed;  	// The highest speed we can allow the previous line to leave us with, constrained by the next line
 	double entrySpeed;   	// The actual speed we get to start with, contributed by the previous line, constrained by maxEntrySpeed
 	double exitSpeed;   	// The actual speed at the end of this line, updated by updateEntrySpeed
-	@Getter @Setter
+	@Getter
 	double mandatoryExitSpeed; // The speed that we must attain at the exit of this line.
 
 	@Getter
@@ -175,6 +175,10 @@ public class Line {
 	    }	
 	    */    
 	}
+	
+	public void setMandatoryExitSpeed(double mes) {
+		mandatoryExitSpeed = Math.min(mes, maxSpeed);
+	}
 
 	public Point getEndPoint() {
 		Point ep = new Point();
@@ -210,10 +214,6 @@ public class Line {
 			maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed);
 		}
 		
-		if (axes[0].startPos == 0.0 && axes[1].startPos == 0.0 && mandatoryExitSpeed >= 0) {
-			log.info("It's about to happen!");
-		}
-
 		// Find the maximum speed along this normal vector which doesn't exceed the maxEndSpeed limit.
 		maxExitSpeed = maxSpeed;
 		for (int i=0;i<Move.AXES;i++) {
@@ -397,19 +397,19 @@ public class Line {
 	double accelerateDistance;
 	double plateauDistance;
 	double decelerateDistance;
-	void calculateTrapezoid(Line next) {
+	private void calculateTrapezoid() {
 		if (acceleration == 0) { // This is a point, not a line.
 			return;
 		}
 		
-		if (mandatoryExitSpeed >= 0 && next != null) {
+		if (mandatoryExitSpeed >= 0) {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
 			if (Math.abs(diffExit) > 0.1) {
-				log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
-			}			
-		}		
-		
+				throw new RuntimeException("The exit speed of the line starting at "+axes[0].startPos+","+axes[1].startPos+" was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+			} 			
+		}
+				
 	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
 	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
 	    
@@ -613,19 +613,13 @@ public class Line {
 			return;
 		}
 		
+		calculateTrapezoid();
+		
 		if (exitSpeed < 0) {
 			throw new RuntimeException("exitSpeed cannot be negative");
 		}
 		if (entrySpeed < 0) {
 			throw new RuntimeException("entrySpeed cannot be negative");
-		}
-		
-		if (mandatoryExitSpeed >= 0) {
-			double diffExit = mandatoryExitSpeed-exitSpeed;
-			
-			if (Math.abs(diffExit) > 0.1) {
-				throw new RuntimeException("The exit speed of the line starting at "+axes[0].startPos+","+axes[1].startPos+" was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
-			}			
 		}
 		
 		ArrayList<Move> output = new ArrayList<Move>(); 

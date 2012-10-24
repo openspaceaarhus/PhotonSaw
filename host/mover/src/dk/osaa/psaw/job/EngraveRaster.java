@@ -8,12 +8,14 @@ import java.awt.image.ColorConvertOp;
 import java.awt.image.DataBufferByte;
 
 import lombok.val;
+import lombok.extern.java.Log;
 
 /**
  * Engraves (or cuts depending on speed and power setting, but that would be silly) a raster image
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
+@Log
 public class EngraveRaster extends LaserNode {
 
 	/*
@@ -52,26 +54,33 @@ public class EngraveRaster extends LaserNode {
 	}
 	
 	void setRaster(BufferedImage image) {
-		BufferedImage  img = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-        ColorConvertOp xformOp = new ColorConvertOp(null);
-        xformOp.filter(image, img);
-
-        byte[] gray = ( (DataBufferByte) img.getRaster().getDataBuffer() ).getData();
-
-        rasterHeight = img.getHeight();
-        rasterWidth = img.getWidth();
+        rasterHeight = image.getHeight();
+        rasterWidth = image.getWidth();
         bytesPerLine = (int)Math.ceil(rasterWidth/8.0);
         raster = new byte[bytesPerLine*rasterHeight];
         
         int srcIndex = 0;
-        for (int y=0;y<img.getHeight();y++) {
+        for (int y=0;y<image.getHeight();y++) {
+        	
+        	int line[] = new int[image.getWidth()];
+        	image.getRGB(0, y, image.getWidth(), 1, line, 0, 0);
+        	
         	int bitValue = 1;
         	int tgtIndex = y*bytesPerLine;
-            for (int x=0;x<img.getWidth();x++) {
-            	if (gray[srcIndex] >= 0) {
+            for (int x=0;x<image.getWidth();x++) {
+            
+            	int rgb = line[x];
+            	int alpha = (rgb >> 24) & 0xFF;
+            	int red =   (rgb >> 16) & 0xFF;
+            	int green = (rgb >>  8) & 0xFF;
+            	int blue =  (rgb      ) & 0xFF;
+
+            	int grey = alpha*(0xff-(red+green+blue)/3) >> 8;
+
+            	if (grey > 126) {
             		raster[tgtIndex] |= bitValue;
             	}
-
+            	
             	bitValue <<= 1;
             	if (bitValue >= 256) {
             		bitValue = 1;
@@ -129,14 +138,14 @@ public class EngraveRaster extends LaserNode {
 		 * not the maximum speed of the machine as moveTo would do. 
 		 */
 		
-		target.moveTo(transformation.transform(new Point2D(x0-leadin, y))); // Will be optimized out for every line except the first.
-		target.moveToAtSpeed(transformation.transform(new Point2D(x0, y)), settings.maxSpeed);
-//		target.cutTo(transformation.transform(new Point2D(x0, y)), 0, settings.maxSpeed);
+		target.moveTo(       transformation.transform(new Point2D(x0-leadin, y))); // Will be optimized out for every line except the first.
+		target.moveToAtSpeed(transformation.transform(new Point2D(x0,        y)), settings.maxSpeed);
+//		target.cutTo(        transformation.transform(new Point2D(x0,        y)), 0, settings.maxSpeed);
 
-		target.engraveTo(transformation.transform(new Point2D(x1, y)), settings.intensity, settings.maxSpeed, pixels);
+		target.engraveTo(    transformation.transform(new Point2D(x1, y)), settings.intensity, settings.maxSpeed, pixels);
 
 		//		target.moveTo(transformation.transform(new Point2D(x1+leadin, y+yStep))); // stopping move, so we don't care about what speed it's at.
-		target.cutTo(transformation.transform(new Point2D(x1+leadin, y+yStep)), 0, settings.maxSpeed);
+		target.cutTo(        transformation.transform(new Point2D(x1+leadin, y+yStep)), 0, settings.maxSpeed);
 	}
 	
 

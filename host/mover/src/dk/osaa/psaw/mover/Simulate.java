@@ -19,9 +19,11 @@ import dk.osaa.psaw.machine.SimulatedCommander;
 public class Simulate {
 	
 	static final String[] files = {
-		"casing2-orig.svg", "casing2.svg", "casing2-opt.svg", "casing2-opt-group.svg","up-engraving.svg","zoid.svg"
+		//"casing2-orig.svg", "casing2.svg", "casing2-opt.svg", "casing2-opt-group.svg", 
+		//"up-engraving.svg", "zoid.svg",
+		"casing-raster.svg", "zoid-cut.svg"
 		};
-	static final String ROOT = "/home/ff/projects/osaa/PhotonSaw/host/casing";
+	static final String ROOT = "/home/ff/projects/osaa/PhotonSaw/host/testdata";
 	
 	public static void main(String[] args) {
 		PhotonSaw ps = null;
@@ -45,14 +47,14 @@ public class Simulate {
 				Job testJob = new Job();
 				testJob.loadSVG(cfg, svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));				
 				//testJob.logStructure();			
-				testJob.storeJob(new FileOutputStream(ROOT+"/"+svgFile.getName()+".psjob"));
+				testJob.storeJob(new FileOutputStream(ROOT+"/out/"+svgFile.getName()+".psjob"));
 				
 				
-				SVGRenderTarget rt = new SVGRenderTarget(new File(ROOT+"/"+svgFile.getName()+".svg"));
+				SVGRenderTarget rt = new SVGRenderTarget(new File(ROOT+"/out/"+svgFile.getName()+".svg"));
 				testJob.render(rt);
 				rt.done();
 				
-				SimulatedCommander.setLog(new File(ROOT+"/"+svgFile.getName()+".moves"));
+				SimulatedCommander.setLog(new File(ROOT+"/out/"+svgFile.getName()+".moves"));
 			
 				ps.getPlanner().startJob(testJob);			
 	

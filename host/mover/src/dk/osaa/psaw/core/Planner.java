@@ -94,22 +94,6 @@ public class Planner extends Thread implements JobRenderTarget {
 			line.forwardPass(prev);
 			prev = line;
 		}
-		
-		// Recalculates the trapezoid speed profiles for flagged blocks in the plan according to the
-		// entry_speed for each junction and the entry_speed of the next junction. Must be called by
-		// planner_recalculate() after updating the blocks. Any recalculate flagged junction will
-		// compute the two adjacent trapezoids to the junction, since the junction speed corresponds
-		// to exit speed and entry speed of one another.
-		Line current = null;
-		for (Line next: lineBuffer.getList()) {
-			if (current != null) {
-				if (current.isRecalculateNeeded() || next.isRecalculateNeeded()) {
-					current.calculateTrapezoid(next);
-				}
-			}			
-			current = next;
-		}
-		current.calculateTrapezoid(null); // Stop when this is done.
 	}
 	
 	Move endcodeJogMove(MoveVector mmMoveVector, double speedMMS) {		
@@ -272,7 +256,6 @@ public class Planner extends Thread implements JobRenderTarget {
 				recalculate();
 			}			
 		}
-		
 	}
 	
 	void addLine(Line line) {
@@ -291,6 +274,7 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void moveTo(Point p) {
+		log.info("moveTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -307,6 +291,7 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void cutTo(Point p, double intensity, double maxSpeed) {
+		//log.info("cutTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -324,6 +309,7 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void moveToAtSpeed(Point p, double maxSpeed) {
+		//log.info("moveToAtSpeed:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -343,6 +329,8 @@ public class Planner extends Thread implements JobRenderTarget {
 	public void engraveTo(Point p, double intensity, double maxSpeed,
 			boolean[] pixels) {
 
+		//log.info("engraveTo:"+p);
+		
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -354,6 +342,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
 			line.setLaserIntensity(intensity);
 			line.setPixels(pixels);
+			line.setMandatoryExitSpeed(maxSpeed);
 			addLine(line);
 		}
 		renderedLines++;
@@ -362,7 +351,7 @@ public class Planner extends Thread implements JobRenderTarget {
 	@Override
 	public double getEngravingXAccelerationDistance(double speed) {
 		// This doesn't take minSpeed into account, so there should be some head room.
-		return 2*Line.estimateAccelerationDistance(0, speed, photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
+		return 1.1*Line.estimateAccelerationDistance(0, speed, photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
 	}
 
 	@Override

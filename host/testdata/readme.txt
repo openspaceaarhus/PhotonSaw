@@ -1,4 +1,3 @@
-text-and-shapes.svg          : Inkscape svg with text and shapes.
+The engraving on the case does not end up in the correct location,
+but all the cuts do.
 
-text-and-shapes-as-paths.svg 
-Same as above, but the text has been converted to paths and optimized a bit.
