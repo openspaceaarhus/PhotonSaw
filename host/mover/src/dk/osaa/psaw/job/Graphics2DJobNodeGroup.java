@@ -355,10 +355,6 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		return pd;
 	}
 	
-	
-
-	
-	
 	boolean getAssistAir() {
 		boolean assistAir = true;
 		if (element != null) {
@@ -394,6 +390,56 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	@Override
 	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
 
+		/*
+	      Rectangle2D bb = objects.getBoundingBox();
+	      if (bb != null && bb.getWidth() > 0 && bb.getHeight() > 0)
+	      {
+	        //First render them on an empty image
+	        BufferedImage scaledImg = new BufferedImage((int) bb.getWidth(), (int) bb.getHeight(), BufferedImage.TYPE_INT_RGB);
+	        Graphics2D g = scaledImg.createGraphics();
+	        g.setColor(Color.white);
+	        g.fillRect(0, 0, scaledImg.getWidth(), scaledImg.getHeight());
+	        g.setClip(0, 0, scaledImg.getWidth(), scaledImg.getHeight());
+	        if (objects.getTransform() != null)
+	        {
+	          Rectangle2D origBB = objects.getOriginalBoundingBox();
+	          Rectangle2D targetBB = new Rectangle(0, 0, scaledImg.getWidth(), scaledImg.getHeight());
+	          g.setTransform(Helper.getTransform(origBB, targetBB));
+	        }
+	        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+	        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	        for (GraphicObject o : objects)
+	        {
+	          o.render(g);
+	        }
+	        //Then dither this image
+	        BufferedImageAdapter ad = new BufferedImageAdapter(scaledImg, invertColors);
+	        ad.setColorShift(this.getColorShift());
+	        BlackWhiteRaster bw = new BlackWhiteRaster(ad, this.getDitherAlgorithm());
+	        for (LaserProperty prop : laserProperties)
+	        {
+	          RasterPart part = new RasterPart(bw, prop, new Point((int) bb.getX(), (int) bb.getY()));
+	          job.addPart(part);
+	        }
+	      }
+*/
+		
+		// Calculate the bounding box of the transformed image
+		Point2D bb[] = new Point2D[4];
+		bb[0] = new Point2D(0, 0);
+		bb[1] = new Point2D(imgWidth-1,0);
+		bb[2] = new Point2D(imgWidth-1,imgHeight-1);
+		bb[3] = new Point2D(0,imgHeight-1);
+		for (Point2D p : bb) {
+			p.transform(getTransform());
+		}
+		
+		// Then find the width of the smallest image that can contain the transformed image
+		
+		// Then create a transformation that puts the image at 
+		
+		// TODO: all of that shit.
+		
 		// Note: We do not support rotation of rasters at this point.
 		Point2D pos = new Point2D(x, y);
 		pos.transform(getTransform());
