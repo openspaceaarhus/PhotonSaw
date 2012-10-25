@@ -59,7 +59,6 @@ public class EngraveRaster extends LaserNode {
         bytesPerLine = (int)Math.ceil(rasterWidth/8.0);
         raster = new byte[bytesPerLine*rasterHeight];
         
-        int srcIndex = 0;
         for (int y=0;y<image.getHeight();y++) {
         	
         	int line[] = new int[image.getWidth()];
@@ -86,7 +85,6 @@ public class EngraveRaster extends LaserNode {
             		bitValue = 1;
             		tgtIndex++;
             	}
-            	srcIndex++;
             }
         }
 	}

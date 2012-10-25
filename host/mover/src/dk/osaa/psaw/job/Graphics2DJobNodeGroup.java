@@ -1,16 +1,24 @@
 package dk.osaa.psaw.job;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
+
+import javax.imageio.ImageIO;
 
 import com.kitfox.svg.RenderableElement;
 import com.kitfox.svg.SVGElement;
@@ -389,40 +397,6 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 
 	@Override
 	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
-
-		/*
-	      Rectangle2D bb = objects.getBoundingBox();
-	      if (bb != null && bb.getWidth() > 0 && bb.getHeight() > 0)
-	      {
-	        //First render them on an empty image
-	        BufferedImage scaledImg = new BufferedImage((int) bb.getWidth(), (int) bb.getHeight(), BufferedImage.TYPE_INT_RGB);
-	        Graphics2D g = scaledImg.createGraphics();
-	        g.setColor(Color.white);
-	        g.fillRect(0, 0, scaledImg.getWidth(), scaledImg.getHeight());
-	        g.setClip(0, 0, scaledImg.getWidth(), scaledImg.getHeight());
-	        if (objects.getTransform() != null)
-	        {
-	          Rectangle2D origBB = objects.getOriginalBoundingBox();
-	          Rectangle2D targetBB = new Rectangle(0, 0, scaledImg.getWidth(), scaledImg.getHeight());
-	          g.setTransform(Helper.getTransform(origBB, targetBB));
-	        }
-	        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-	        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-	        for (GraphicObject o : objects)
-	        {
-	          o.render(g);
-	        }
-	        //Then dither this image
-	        BufferedImageAdapter ad = new BufferedImageAdapter(scaledImg, invertColors);
-	        ad.setColorShift(this.getColorShift());
-	        BlackWhiteRaster bw = new BlackWhiteRaster(ad, this.getDitherAlgorithm());
-	        for (LaserProperty prop : laserProperties)
-	        {
-	          RasterPart part = new RasterPart(bw, prop, new Point((int) bb.getX(), (int) bb.getY()));
-	          job.addPart(part);
-	        }
-	      }
-*/
 		
 		// Calculate the bounding box of the transformed image
 		Point2D bb[] = new Point2D[4];
@@ -430,17 +404,74 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		bb[1] = new Point2D(imgWidth-1,0);
 		bb[2] = new Point2D(imgWidth-1,imgHeight-1);
 		bb[3] = new Point2D(0,imgHeight-1);
+		
+		double x0 = Double.MAX_VALUE;
+		double y0 = Double.MAX_VALUE;
+		double x1 = Double.MIN_VALUE;
+		double y1 = Double.MIN_VALUE;
+		
 		for (Point2D p : bb) {
 			p.transform(getTransform());
+			
+			x0 = Math.min(x0, p.getX());
+			y0 = Math.min(y0, p.getY());
+			x1 = Math.max(x1, p.getX());
+			y1 = Math.max(y1, p.getY());
 		}
+				
+		// The bb is now in mm, so we need to figure out what resolution we want the raster to be in.
+		int pixelWidth  = (int)Math.round((x1-x0)/0.0375);
+		int pixelHeight = (int)Math.round((y1-y0)/0.0375);	
 		
-		// Then find the width of the smallest image that can contain the transformed image
+		BufferedImage ri = new BufferedImage(pixelWidth, pixelHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = ri.createGraphics();
+        
+        g.setColor(Color.WHITE);        
+        g.fillRect(0, 0, ri.getWidth(), ri.getHeight());
+        g.setClip( 0, 0, ri.getWidth(), ri.getHeight());
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+		AffineTransform toImage = AffineTransform.getScaleInstance(1/0.0375, 1/0.0375);
+		toImage.concatenate(AffineTransform.getTranslateInstance(-x0, -y0));		
+		toImage.concatenate(getTransform());
+
+        g.drawImage(img, toImage, null);
+
+		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getLaserNodeSettings(), ri,
+				x0, y0, x1-x0, y1-y0);
 		
+		log.info("Appending EngraveRaster: "+engraving.getId());
+		addChild(engraving);		
+       
+		try {
+		    File outputfile = new File("/tmp/saved.png");
+		    ImageIO.write(ri, "png", outputfile);
+		} catch (IOException e) {
+		    log.log(Level.SEVERE, "Fail!", e);
+		}
+	    log.log(Level.SEVERE, "Done");
+        
+        /*
+        //Then dither this image
+        BufferedImageAdapter ad = new BufferedImageAdapter(scaledImg, invertColors);
+        ad.setColorShift(this.getColorShift());
+        BlackWhiteRaster bw = new BlackWhiteRaster(ad, this.getDitherAlgorithm());
+        for (LaserProperty prop : laserProperties)
+        {
+          RasterPart part = new RasterPart(bw, prop, new Point((int) bb.getX(), (int) bb.getY()));
+          job.addPart(part);
+        }
+*/
+		
+		
+/*		
 		// Then create a transformation that puts the image at 
 		
 		// TODO: all of that shit.
 		
 		// Note: We do not support rotation of rasters at this point.
+        
 		Point2D pos = new Point2D(x, y);
 		pos.transform(getTransform());
 		width  = Math.abs(width *getTransform().getScaleX()); 
@@ -453,7 +484,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getLaserNodeSettings(), (BufferedImage) img, pos.x, pos.y, width, height);
 		
 		log.info("Appending EngraveRaster: "+engraving.getId());
-		addChild(engraving);		
+		addChild(engraving);	
+		*/	
 	}
 
 	@Override

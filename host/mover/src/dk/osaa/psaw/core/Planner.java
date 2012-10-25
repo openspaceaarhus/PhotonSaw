@@ -350,8 +350,7 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public double getEngravingXAccelerationDistance(double speed) {
-		// This doesn't take minSpeed into account, so there should be some head room.
-		return 1.1*Line.estimateAccelerationDistance(0, speed, photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
+		return 1.1*Line.estimateAccelerationDistance(0, Math.min(photonSaw.cfg.movementConstraints.getAxes()[0].maxSpeed, speed), photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
 	}
 
 	@Override

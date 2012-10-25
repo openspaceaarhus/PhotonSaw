@@ -38,6 +38,8 @@ public class Mover {
 	    	
 			//testJob.loadTest();
 			
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/rotated-image.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/N64_case.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing4-vector.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/up-engraving.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths-stroke.svg");
@@ -56,7 +58,7 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/3mm-box.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing-raster.svg"); // Broken
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing-raster.svg"); // Broken
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-helper.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/wall.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/url.svg");
