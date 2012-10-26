@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
@@ -9,9 +10,9 @@ import java.util.ArrayList;
  */
 public class TestLoader {
 
-	ArrayList<Point2D> path = new ArrayList<Point2D>();
+	ArrayList<Point2D.Double> path = new ArrayList<Point2D.Double>();
 	void addPoint(double x, double y) {
-		path.add(new Point2D(x,y));
+		path.add(new Point2D.Double(x,y));
 	}
 
 	public static JobNode load(Job job) {

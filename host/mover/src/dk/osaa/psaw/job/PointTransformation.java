@@ -1,5 +1,7 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.Point2D;
+
 import lombok.Data;
 import dk.osaa.psaw.machine.Point;
 
@@ -50,7 +52,7 @@ public class PointTransformation {
 	
 	AxisMapping axisMapping = AxisMapping.XY;
 	Rotation rotation = Rotation.NORMAL;
-	Point2D offset = new Point2D(0,0);
+	Point2D.Double offset = new Point2D.Double(0,0);
 			
 	public Point transform(Point2D p2d) {
 		Point res = new Point();
@@ -60,20 +62,20 @@ public class PointTransformation {
 		
 		// First handle rotation
 		if (rotation == Rotation.NORMAL) {
-			x = p2d.x;
-			y = p2d.y;
+			x = p2d.getX();
+			y = p2d.getY();
 
 		} else if (rotation == Rotation.LEFT) {
-			x = -p2d.y;
-			y = p2d.x;
+			x = -p2d.getY();
+			y = p2d.getX();
 
 		} else if (rotation == Rotation.DOWN) {
-			x = -p2d.x;
-			y = -p2d.y;
+			x = -p2d.getX();
+			y = -p2d.getY();
 
 		} else if (rotation == Rotation.RIGHT) {
-			x = p2d.y;
-			y = -p2d.x;
+			x = p2d.getY();
+			y = -p2d.getX();
 
 		} else {
 			throw new RuntimeException("Rotation not implemented");

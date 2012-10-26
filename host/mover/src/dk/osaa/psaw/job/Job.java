@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -113,9 +114,9 @@ public class Job {
 			xstreamInstance.useAttributeFor(EngraveRaster.class, "rasterWidth");
 			xstreamInstance.useAttributeFor(EngraveRaster.class, "bytesPerLine");
 			
-			xstreamInstance.alias("point", Point2D.class);
-			xstreamInstance.useAttributeFor(Point2D.class, "x");
-			xstreamInstance.useAttributeFor(Point2D.class, "y");			
+			xstreamInstance.alias("point", Point2D.Double.class);
+			xstreamInstance.useAttributeFor(Point2D.Double.class, "x");
+			xstreamInstance.useAttributeFor(Point2D.Double.class, "y");			
 		}
 		return xstreamInstance;
 	}

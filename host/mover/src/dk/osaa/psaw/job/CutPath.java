@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import lombok.Getter;

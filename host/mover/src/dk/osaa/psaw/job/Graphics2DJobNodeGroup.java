@@ -10,6 +10,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -165,9 +166,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	void addCutPath(ArrayList<Point2D> points) {
 		ArrayList<Point2D> newPoints = new ArrayList<Point2D>();
 		for (Point2D p : points) {
-			Point2D np = new Point2D(p.getX(), p.getY());
-			np.transform(getTransform());
-			newPoints.add(np);
+			newPoints.add(getTransform().transform(p, null));
 		}
 		
 		CutPath path = new CutPath(job.getNodeId(getId()), getLaserNodeSettings(), newPoints);
@@ -192,19 +191,19 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		if (s instanceof Line2D) {
 			Line2D l = (Line2D) s;
 			val points = new ArrayList<Point2D>();
-			points.add(new Point2D(l.getX1(), l.getY1()));
-			points.add(new Point2D(l.getX2(), l.getY2()));
+			points.add(new Point2D.Double(l.getX1(), l.getY1()));
+			points.add(new Point2D.Double(l.getX2(), l.getY2()));
 			addCutPath(points);
 			return;
 
 		} else if (s instanceof Rectangle2D) {
 			Rectangle2D r = (Rectangle2D) s;
 			val points = new ArrayList<Point2D>();
-			points.add(new Point2D(r.getX(), r.getY()));
-			points.add(new Point2D(r.getX() + r.getWidth(), r.getY()));
-			points.add(new Point2D(r.getX() + r.getWidth(), r.getY() + r.getHeight()));
-			points.add(new Point2D(r.getX(), r.getY() + r.getHeight()));
-			points.add(new Point2D(r.getX(), r.getY()));
+			points.add(new Point2D.Double(r.getX(), r.getY()));
+			points.add(new Point2D.Double(r.getX() + r.getWidth(), r.getY()));
+			points.add(new Point2D.Double(r.getX() + r.getWidth(), r.getY() + r.getHeight()));
+			points.add(new Point2D.Double(r.getX(), r.getY() + r.getHeight()));
+			points.add(new Point2D.Double(r.getX(), r.getY()));
 			addCutPath(points);
 			return;
 
@@ -249,10 +248,10 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 						addCutPath(points);
 					}
 					points = new ArrayList<Point2D>();
-					points.add(new Point2D(coordsCur[0], coordsCur[1]));
+					points.add(new Point2D.Double(coordsCur[0], coordsCur[1]));
 
 				} else if (segmentType == PathIterator.SEG_LINETO) {
-					points.add(new Point2D(coordsCur[0], coordsCur[1]));
+					points.add(new Point2D.Double(coordsCur[0], coordsCur[1]));
 					pointPrev[0] = coordsCur[0];
 					pointPrev[1] = coordsCur[1];
 
@@ -400,10 +399,10 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		
 		// Calculate the bounding box of the transformed image
 		Point2D bb[] = new Point2D[4];
-		bb[0] = new Point2D(0, 0);
-		bb[1] = new Point2D(imgWidth-1,0);
-		bb[2] = new Point2D(imgWidth-1,imgHeight-1);
-		bb[3] = new Point2D(0,imgHeight-1);
+		bb[0] = new Point2D.Double(0, 0);
+		bb[1] = new Point2D.Double(imgWidth-1,0);
+		bb[2] = new Point2D.Double(imgWidth-1,imgHeight-1);
+		bb[3] = new Point2D.Double(0,imgHeight-1);
 		
 		double x0 = Double.MAX_VALUE;
 		double y0 = Double.MAX_VALUE;
@@ -411,7 +410,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		double y1 = Double.MIN_VALUE;
 		
 		for (Point2D p : bb) {
-			p.transform(getTransform());
+			getTransform().transform(p, p);
 			
 			x0 = Math.min(x0, p.getX());
 			y0 = Math.min(y0, p.getY());
@@ -472,7 +471,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		
 		// Note: We do not support rotation of rasters at this point.
         
-		Point2D pos = new Point2D(x, y);
+		Point2D.Double pos = new Point2D.Double(x, y);
 		pos.transform(getTransform());
 		width  = Math.abs(width *getTransform().getScaleX()); 
 		height = Math.abs(height*getTransform().getScaleY()); 
