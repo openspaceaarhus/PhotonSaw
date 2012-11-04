@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -63,10 +64,12 @@ public class SvgLoader {
 		} else {
 			log.warning("Unable to guess the pixel size used in the svg file "+name+" guessing 96 DPI");
 		}
+		
+		// Create the affine transform that is used to convert from svg pixels to mm
+		AffineTransform pixel2mm = AffineTransform.getScaleInstance(pixelsSizeX, pixelsSizeY);
 				
-		JobNodeGroup res = new JobNodeGroup(job.getNodeId(name));
+		JobNodeGroup res = new JobNodeGroup(job.getNodeId(name), pixel2mm);
 		Graphics2DJobNodeGroup g2d = new Graphics2DJobNodeGroup(job, res);
-		g2d.scale(pixelsSizeX, pixelsSizeY);
 		diagram.setIgnoringClipHeuristic(true);
 		
 		g2d.setMaximumPower(cfg.machineConfig.getMaximumLaserPower());

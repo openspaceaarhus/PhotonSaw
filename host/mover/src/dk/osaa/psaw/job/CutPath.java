@@ -1,6 +1,8 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import lombok.Getter;
@@ -20,8 +22,8 @@ public class CutPath extends LaserNode {
 	@SuppressWarnings("unused")
 	private CutPath() { super(); }
 	*/
-	CutPath(String id, LaserNodeSettings settings, ArrayList<Point2D> path) {
-		super(id, settings);
+	CutPath(String id, AffineTransform xform, LaserNodeSettings settings, ArrayList<Point2D> path) {
+		super(id, xform, settings);
 		this.path = path;
 	}
 
@@ -34,13 +36,23 @@ public class CutPath extends LaserNode {
 		for (int pass=0;pass<settings.passes;pass++) {
 			boolean first = true;
 			for (Point2D p2d: path) {
+				
 				if (first) {
-					target.moveTo(transformation.transform(p2d));
+					target.moveTo(transformation.transform(getTransformation().transform(p2d,null)));
 					first = false;			
 				} else {
-					target.cutTo(transformation.transform(p2d), settings.intensity, settings.maxSpeed);
+					target.cutTo(transformation.transform(getTransformation().transform(p2d,null)), settings.intensity, settings.maxSpeed);
 				}
 			}
 		}
+	}
+
+	@Override
+	public Rectangle2D getBoundingBox() {
+		Rectangle2D r = new Rectangle2D.Double();
+		for (Point2D p2d: path) {
+			r.add(getTransformation().transform(p2d,null));
+		}
+		return r;
 	}
 }

@@ -1,10 +1,13 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 
 /**
  * A group of JobNodes that make up the document tree that make up a Job. 
@@ -14,18 +17,18 @@ import lombok.Setter;
 public class JobNodeGroup extends AbstractJobNode {
 	
 	@Getter @Setter
-	PointTransformation nodeTransformation;
+	PointTransformation pointTransformation;
 	
 	ArrayList<JobNode> children = new ArrayList<JobNode>();
 	
-	public JobNodeGroup(String id) {
-		super(id);
+	public JobNodeGroup(String id, AffineTransform xform) {
+		super(id, xform);
 	}
 
 	public void render(JobRenderTarget target,
 			PointTransformation transformation) {
 
-		PointTransformation xform = transformation.add(nodeTransformation); 
+		PointTransformation xform = transformation.add(pointTransformation); 
 		for (JobNode child : children) {
 			child.render(target, xform);
 		}		
@@ -73,6 +76,28 @@ public class JobNodeGroup extends AbstractJobNode {
 				res.addAll(((JobNodeGroup)ch).rebuildAndGetIds());
 			} else {
 				res.add(ch.getId());
+			}
+		}
+		return res;
+	}
+
+	@Override
+	public Rectangle2D getBoundingBox() {
+		Rectangle2D r = new Rectangle2D.Double();
+		for (JobNode ch : children) {
+			r.add(ch.getBoundingBox());
+		}
+		return r;
+	}
+	
+	public ArrayList<RasterNode> getRasters() {
+		val res = new ArrayList<RasterNode>(); 
+
+		for (JobNode ch : children) {
+			if (ch instanceof JobNodeGroup) {
+				res.addAll(((JobNodeGroup)ch).getRasters());
+			} else if (ch instanceof RasterNode) {
+				res.add((RasterNode)ch);
 			}
 		}
 		return res;

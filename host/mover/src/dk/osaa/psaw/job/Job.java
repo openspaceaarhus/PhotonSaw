@@ -138,7 +138,7 @@ public class Job {
 
 	JobNodeGroup getRootNode() {
 		if (rootNode == null) {
-			rootNode = new JobNodeGroup(getNodeId("root"));
+			rootNode = new JobNodeGroup(getNodeId("root"), null);
 		}
 		return rootNode;
 	}
@@ -212,6 +212,10 @@ public class Job {
 	 * @param target Where the job output must go.
 	 */
 	public void render(JobRenderTarget target) {
+		// This collects all the rasters and renders them:
+		Rasterizer.rasterize(getRootNode(), rootTransformation, target);	
+		
+		// This renders the vector parts of the job:
 		getRootNode().render(target, rootTransformation);
 	}
 	

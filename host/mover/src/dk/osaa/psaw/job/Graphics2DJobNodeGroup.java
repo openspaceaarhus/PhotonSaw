@@ -1,7 +1,5 @@
 package dk.osaa.psaw.job;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -111,9 +109,9 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 	
 	LaserNodeSettings getLaserNodeSettings() {
-		return new LaserNodeSettings(getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), getPulsesPermm(), getPulseDuration());
+		return new LaserNodeSettings(getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), getPulsesPermm(), getPulseDuration(), getRasterLinePitch());
 	}
-	
+
 	void addChild(JobNode newChild) {
 		val stack = new ArrayList<SVGElement>();  
 		
@@ -145,7 +143,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			JobNode jn = parent.getChildById(id);
 
 			if (jn == null) {
-				val np = new JobNodeGroup(id);
+				val np = new JobNodeGroup(id, null);
 				np.setName(label);
 				parent.addChild(np);
 				parent = np;
@@ -164,13 +162,15 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	
 	
 	void addCutPath(ArrayList<Point2D> points) {
+		/*
 		ArrayList<Point2D> newPoints = new ArrayList<Point2D>();
 		for (Point2D p : points) {
 			newPoints.add(getTransform().transform(p, null));
 		}
+		*/
 		
-		CutPath path = new CutPath(job.getNodeId(getId()), getLaserNodeSettings(), newPoints);
-		log.info("Appending CutPath: "+path.getId());
+		CutPath path = new CutPath(job.getNodeId(getId()), getTransform(), getLaserNodeSettings(), points);
+		//log.info("Appending CutPath: "+path.getId());
 		addChild(path);
 	}
 
@@ -294,6 +294,23 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		return power;
 	}
 	
+	private double getRasterLinePitch() {
+		double res = 0.0375;
+		if (element != null) {
+			StyleAttribute attr = new StyleAttribute("photonsaw-linepitch");
+			try {
+				element.getStyle(attr, true);
+			} catch (SVGException e) {
+				log.log(Level.WARNING, "Failed to get linepitch attribute from svg element", e);
+				attr = null;
+			}
+			if (attr != null && !attr.getStringValue().equals("")) {
+				res = Math.min(10, Math.max(0.0375, attr.getDoubleValue()));
+			}
+		}
+		return res;
+	}
+	
 	double getSpeed() {
 		double speed = defaultSpeed;
 		if (element != null) {
@@ -396,6 +413,12 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 
 	@Override
 	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
+
+		RasterNode rn = new RasterNode(job.getNodeId(getId()), getTransform(), getLaserNodeSettings(), img);
+		addChild(rn);
+		
+		
+		/*
 		
 		// Calculate the bounding box of the transformed image
 		Point2D bb[] = new Point2D[4];
@@ -451,6 +474,9 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		}
 	    log.log(Level.SEVERE, "Done");
         
+	    
+	    */
+	    
         /*
         //Then dither this image
         BufferedImageAdapter ad = new BufferedImageAdapter(scaledImg, invertColors);

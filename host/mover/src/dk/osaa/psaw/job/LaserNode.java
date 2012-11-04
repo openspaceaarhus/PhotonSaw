@@ -3,6 +3,10 @@
  */
 package dk.osaa.psaw.job;
 
+import java.awt.geom.AffineTransform;
+
+import lombok.Getter;
+
 /**
  * A node in the job tree which does something with the LASER.
  * 
@@ -10,10 +14,11 @@ package dk.osaa.psaw.job;
  */
 public abstract class LaserNode extends AbstractJobNode {
 	
+	@Getter
 	LaserNodeSettings settings;
 	
-	LaserNode(String id, LaserNodeSettings settings) {
-		super(id);
+	LaserNode(String id, AffineTransform xform, LaserNodeSettings settings) {
+		super(id, xform);
 		this.settings = settings;
 	}	
 }

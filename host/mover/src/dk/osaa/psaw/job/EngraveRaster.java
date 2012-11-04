@@ -4,6 +4,7 @@
 package dk.osaa.psaw.job;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.DataBufferByte;
@@ -97,7 +98,7 @@ public class EngraveRaster extends LaserNode {
 	
 	public EngraveRaster(String id, LaserNodeSettings settings,
 						BufferedImage img, double x, double y, double width, double height) {
-		super(id, settings);
+		super(id, null, settings);
 
 		setRaster(img);
         
@@ -222,5 +223,11 @@ public class EngraveRaster extends LaserNode {
 				rasterPixel += rasterPixelsPerScanLine; 
 			}
 		}		
+	}
+
+	@Override
+	public Rectangle2D getBoundingBox() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
