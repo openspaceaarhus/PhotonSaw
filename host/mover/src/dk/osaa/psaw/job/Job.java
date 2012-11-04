@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,8 +97,6 @@ public class Job {
 			xstreamInstance.omitField(AbstractJobNode.class, "parent");
 			xstreamInstance.useAttributeFor(AbstractJobNode.class, "name");
 			xstreamInstance.useAttributeFor(AbstractJobNode.class, "id");
-			//xstreamInstance.useAttributeFor(LaserNode.class, "intensity");
-			//xstreamInstance.useAttributeFor(LaserNode.class, "maxSpeed");
 			
 			xstreamInstance.alias("group", JobNodeGroup.class);
 			xstreamInstance.addImplicitCollection(JobNodeGroup.class, "children");
@@ -105,18 +104,15 @@ public class Job {
 			xstreamInstance.alias("cut", CutPath.class);
 			xstreamInstance.addImplicitCollection(CutPath.class, "path");
 
-			xstreamInstance.alias("engrave", EngraveRaster.class);
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "xOffset");
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "yOffset");
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "width");
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "height");
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "rasterHeight");
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "rasterWidth");
-			xstreamInstance.useAttributeFor(EngraveRaster.class, "bytesPerLine");
+			xstreamInstance.alias("raster", RasterNode.class);
 			
 			xstreamInstance.alias("point", Point2D.Double.class);
 			xstreamInstance.useAttributeFor(Point2D.Double.class, "x");
-			xstreamInstance.useAttributeFor(Point2D.Double.class, "y");			
+			xstreamInstance.useAttributeFor(Point2D.Double.class, "y");
+			
+			xstreamInstance.alias("settings", LaserNodeSettings.class);			
+
+			xstreamInstance.alias("xform", AffineTransform.class);			
 		}
 		return xstreamInstance;
 	}
