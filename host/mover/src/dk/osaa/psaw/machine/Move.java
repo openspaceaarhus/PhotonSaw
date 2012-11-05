@@ -52,11 +52,19 @@ public class Move {
 	}
 
 	public void setScanline(boolean[] pixels) {
-		pixelSpeed = new Q30(((double)pixels.length)/duration);
+		long pixelSpeedLong = (Q30.ONE*pixels.length)/duration;
+		pixelSpeed = new Q30(pixelSpeedLong);
+			
+		//pixelSpeed = new Q30(((double)pixels.length)/duration);
 		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
 		
 		if (pixels.length == 448 && duration==8382) {
 			log.info("Hit: "+axes[0].speed.toDouble());
+		}
+		
+		double pixelCount = pixelSpeed.toDouble()*duration;
+		if (pixelCount > pixels.length) {
+			throw new RuntimeException("Mis-calculated pixel speed: "+pixelCount+" > "+pixels.length);
 		}
 		
 		log.info("id: "+id+" Speed: "+pixelSpeed.toDouble()+

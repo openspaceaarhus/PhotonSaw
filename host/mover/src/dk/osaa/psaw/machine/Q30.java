@@ -9,12 +9,16 @@ import lombok.Data;
  */
 @Data
 public class Q30 {
-	static final int ONE = 1<<30;
+	static final long ONE = 1<<30;
 	int intValue;
 	long value;
 
 	public Q30(double floating) {
 		setDouble(floating);
+	}
+	
+	public Q30(long fixed) {
+		setLong(fixed);
 	}
 	
 	public void setDouble(double floating) {
