@@ -54,6 +54,11 @@ public class Move {
 	public void setScanline(boolean[] pixels) {
 		pixelSpeed = new Q30(((double)pixels.length)/duration);
 		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
+		
+		if (pixels.length == 448 && duration==8382) {
+			log.info("Hit: "+axes[0].speed.toDouble());
+		}
+		
 		log.info("id: "+id+" Speed: "+pixelSpeed.toDouble()+
 				" duration:"+duration+" pixels.length:"+pixels.length+
 				" pixelWords:"+pixelWords.length+" xspeed:"+axes[0].speed.toDouble());
