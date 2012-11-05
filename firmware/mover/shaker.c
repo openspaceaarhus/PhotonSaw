@@ -257,7 +257,9 @@ inline void startNewMove() {
     cuHasPixels = 1;
     cuPS = bufferPop();
     cuPixelWords = bufferPop();
-    cuPP = 42; nextPixel(); // Pops off a pixel word and readies the first pixel in cuPV
+    cuPE = 0;
+    cuPP = 42;
+    nextPixel(); // Pops off a pixel word and readies the first pixel in cuPV
   } else {
     cuHasPixels = 0;
   }
@@ -278,7 +280,7 @@ inline void continueCurrentMove() {
 
     if (cuHasPixels) {
       cuPE += cuPS;
-      if (cuPE > ONE_STEP) {
+      if (cuPE >= ONE_STEP) {
 	cuPE -= ONE_STEP;
 	nextPixel();
       }

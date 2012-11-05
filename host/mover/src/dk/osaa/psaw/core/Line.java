@@ -246,7 +246,7 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-maxExitSpeed;
 			
 			if (diffExit > 0.1) {
-				log.info("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
+				//log.info("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
 //				throw new RuntimeException("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
 			}			
 		}

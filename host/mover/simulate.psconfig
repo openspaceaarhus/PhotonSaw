@@ -2,8 +2,8 @@
   <movementConstraints>
     <axes>
       <movementconstraint axis="X">
-        <acceleration>500.0</acceleration>
-        <maxSpeed>1600.0</maxSpeed>
+        <acceleration>1000.0</acceleration>
+        <maxSpeed>300.0</maxSpeed>
         <minSpeed>2.0</minSpeed>
         <maxJerk>2.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
@@ -50,7 +50,7 @@
     <serialPort>/dev/ttyACM0</serialPort>
     <simulating>true</simulating>
     <recording>false</recording>
-    <jobsInMemory>10</jobsInMemory>
+    <jobsInMemory>0</jobsInMemory>
   </hostConfig>
   <machineConfig>
     <assistAirDelay>250</assistAirDelay>

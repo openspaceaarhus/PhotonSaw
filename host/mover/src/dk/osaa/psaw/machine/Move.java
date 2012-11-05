@@ -58,14 +58,16 @@ public class Move {
 		//pixelSpeed = new Q30(((double)pixels.length)/duration);
 		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
 		
+		/*
 		if (pixels.length == 448 && duration==8382) {
 			log.info("Hit: "+axes[0].speed.toDouble());
 		}
+		*/
 		
-		double pixelCount = pixelSpeed.toDouble()*duration;
-		if (pixelCount > pixels.length) {
-			throw new RuntimeException("Mis-calculated pixel speed: "+pixelCount+" > "+pixels.length);
-		}
+		long actualPixels = getPixelLength();
+		if (pixels.length != actualPixels) {
+			throw new RuntimeException("Fail! "+pixels.length+" != "+actualPixels);
+		}		
 		
 		log.info("id: "+id+" Speed: "+pixelSpeed.toDouble()+
 				" duration:"+duration+" pixels.length:"+pixels.length+
@@ -81,6 +83,28 @@ public class Move {
 			*/
 		}
 	}
+	
+	public long getPixelLength() {
+		int v = pixelSpeed.getIntValue();
+		
+		int ticks = (int)duration;
+		int d = 0; // pixels consumed
+		int e = 0; // Error
+		while (true) {
+			e += v; 
+			
+			if (e > Q30.ONE) {
+				d += 1;
+				e -= Q30.ONE;
+			}
+			
+			if (ticks-- == 0) { // See shaker.c: Bottom of continueCurrentMove
+				break;
+			}
+		}
+		return d;
+	}
+	
 	
 	MoveAxis getAxis(int axis) {
 		if (axes[axis] == null) {
