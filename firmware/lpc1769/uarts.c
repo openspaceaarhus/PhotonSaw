@@ -72,7 +72,7 @@ uint32_t BAUD[] = {
   115200, // Debug
   9600,   // Not in use
   9600,   // Chiller
-  19200   // Watchdog
+  9600    // Watchdog
 };
 
 

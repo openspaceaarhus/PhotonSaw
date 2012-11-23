@@ -321,7 +321,7 @@ inline void continueCurrentMove() {
   }
 }
 
-// This routine gets called at 20 kHz, don't fiddle about!
+// This routine gets called at 50 kHz, don't fiddle about!
 void TIMER2_IRQHandler(void) {
   TIM_ClearIntPending(LPC_TIM2, TIM_MR0_INT); // Must be done first thing
 #ifdef IO_STEPPER_ACTIVE

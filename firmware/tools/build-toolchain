@@ -7,7 +7,7 @@ use File::Path;
 my $GNU_MIRROR = 'ftp://ftp.fu-berlin.de/unix/gnu';
 my $NEWLIB_URL = 'ftp://sources.redhat.com/pub/newlib';
 
-my $GCC_VERSION = '4.6.2';
+my $GCC_VERSION = '4.6.3';
 my $GDB_VERSION = '7.4';
 my $BINUTILS_VERSION = '2.22';
 my $NEWLIB_VERSION = '1.20.0';

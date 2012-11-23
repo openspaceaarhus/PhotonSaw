@@ -58,11 +58,9 @@ public class Move {
 		//pixelSpeed = new Q30(((double)pixels.length)/duration);
 		pixelWords = new long[(int)Math.ceil(pixels.length/32.0)];
 		
-		/*
 		if (pixels.length == 448 && duration==8382) {
 			log.info("Hit: "+axes[0].speed.toDouble());
 		}
-		*/
 		
 		long actualPixels = getPixelLength();
 		if (pixels.length != actualPixels) {
@@ -93,8 +91,8 @@ public class Move {
 		while (true) {
 			e += v; 
 			
-			if (e > Q30.ONE) {
-				d += 1;
+			if (e >= Q30.ONE) {
+				d++;
 				e -= Q30.ONE;
 			}
 			

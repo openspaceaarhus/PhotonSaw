@@ -484,10 +484,33 @@ O/r9aKK7ST//2Q==
 
 
 <!-- 
-alarm.0                        ts:209205 mid:1174 mo:20 sw:a msg:Too few pixel words/pixel speed too high
+alarm.0 ts:209205 mid:1174 mo:20 sw:a msg:Too few pixel words/pixel speed too high
 
 Nov 5, 2012 6:17:31 PM dk.osaa.psaw.machine.Move setScanline
 INFO: id: 1174 Speed: 0.05344786401838064 duration:8382 pixels.length:448 pixelWords:14 xspeed:0.1600000001490116
+
+
+
+Nov 22, 2012 5:37:08 PM dk.osaa.psaw.machine.Move setScanline
+INFO: Hit: -0.1600000001490116
+Nov 22, 2012 5:37:08 PM dk.osaa.psaw.machine.Move setScanline
+INFO: id: 1181 Speed: 0.05344786401838064 duration:8382 pixels.length:448 pixelWords:14 xspeed:-0.1600000001490116
+Nov 22, 2012 5:37:08 PM dk.osaa.psaw.core.Line endcodeMove
+INFO: Did not get correct movement in axis 1 wanted:3 got:2
+Nov 22, 2012 5:37:09 PM dk.osaa.psaw.core.Planner moveTo
+INFO: moveTo:Point(axes=[183.7178503757053, 25.938842919137848, 0.0, 0.0])
+Nov 22, 2012 5:37:09 PM dk.osaa.psaw.core.Line forwardPass
+INFO: The exit speed of this line was off by 299.0 mm/s, it was planned to be 1.0 but should have been 300.0
+Nov 22, 2012 5:37:09 PM dk.osaa.psaw.core.Line forwardPass
+INFO: The exit speed of this line was off by 285.98184325486943 mm/s, it was planned to be 14.018156745130565 but should have been 300.0
+Nov 22, 2012 5:37:09 PM dk.osaa.psaw.core.Line forwardPass
+INFO: The exit speed of this line was off by 299.0 mm/s, it was planned to be 1.0 but should have been 300.0
+Nov 22, 2012 5:37:09 PM dk.osaa.psaw.machine.Move setScanline
+INFO: id: 1188 Speed: 0.05345238093286753 duration:8400 pixels.length:449 pixelWords:15 xspeed:0.1600000001490116
+
+
+
+alarm.0                        ts:242305 mid:1186 mo:20 sw:a msg:Too few pixel words/pixel speed too high
 
 
 -->
