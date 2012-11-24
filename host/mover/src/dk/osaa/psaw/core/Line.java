@@ -364,6 +364,9 @@ public class Line {
 	// given acceleration:
 	static public double estimateAccelerationDistance(double initialrate, double targetrate, double acceleration) {
 	      return (Math.pow(targetrate, 2) - Math.pow(initialrate, 2))/(2*acceleration);
+	      
+	      //double time = (targetrate-initialrate)/acceleration;
+	      //return initialrate*time + acceleration*Math.pow(time,2)/2; 
 	}
 
 	// This function gives you the point at which you must start braking (at the rate of -acceleration) if
@@ -419,6 +422,18 @@ public class Line {
 	    if (decelerateDistance < 0) {
 	    	decelerateDistance = 0;
 	    }
+	    
+		if (accelerateDistance > 0) {
+
+			double topSpeed = Math.sqrt(entrySpeed+2*acceleration*accelerateDistance);
+
+			if (mandatoryExitSpeed > 0) {
+				if (Math.abs(mandatoryExitSpeed - topSpeed) > 0.1) {
+					throw new RuntimeException("Top speed is not mandatory speed: "+mandatoryExitSpeed+" "+ topSpeed);			
+				}
+			}
+		}
+
 	    
 	    plateauDistance = length-accelerateDistance-decelerateDistance;
 	    if (log.isLoggable(Level.FINE)) {
@@ -588,7 +603,7 @@ public class Line {
 					if (diffSteps != 0) {						 
 						move.nudgeAxisSteps(a, -diffSteps/2);
 						
-						if (Math.abs(diffSteps) > 0) {
+						if (Math.abs(diffSteps) > 1) {
 							throw new RuntimeException("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);
 //							log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
 						}
@@ -641,8 +656,15 @@ public class Line {
 		}
 		
 		if (accelerateDistance > 0) {
-			topSpeed = entrySpeed+acceleration*Math.sqrt(accelerateDistance/acceleration);
+			topSpeed = Math.sqrt(entrySpeed+2*acceleration*accelerateDistance);
+			//topSpeed = entrySpeed+acceleration*Math.sqrt(accelerateDistance/acceleration);
 			output.add(endcodeMove(unitVector.mul(accelerateDistance), entrySpeed, topSpeed));			
+		}
+		
+		if (mandatoryExitSpeed > 0) {
+			if (Math.abs(mandatoryExitSpeed - topSpeed) > 0.1) {
+				throw new RuntimeException("Top speed is not mandatory speed: "+mandatoryExitSpeed+" "+ topSpeed);			
+			}
 		}
 		
 		if (plateauDistance > 0) {
