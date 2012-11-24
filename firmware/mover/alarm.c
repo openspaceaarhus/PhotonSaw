@@ -32,7 +32,7 @@ int alarmSet(unsigned int switches, char *message) {
     return -1; // Well, shit has already hit the fan, it does nobody any good to remove the evidence.
   }
 
-  // If all the flags are ignored, don't crated 
+  // If all the flags are ignored, don't create the alarm 
   if (alarmsIgnored) {
     switches &=~ alarmsIgnored;
   }

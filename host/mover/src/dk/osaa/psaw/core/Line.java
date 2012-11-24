@@ -334,7 +334,7 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
 			if (Math.abs(diffExit) > 0.1) {
-				log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+				//log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			}			
 		}		
 		  
@@ -588,7 +588,7 @@ public class Line {
 					if (diffSteps != 0) {						 
 						move.nudgeAxisSteps(a, -diffSteps/2);
 						
-						if (Math.abs(diffSteps) > 3) {
+						if (Math.abs(diffSteps) > 0) {
 							throw new RuntimeException("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);
 //							log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
 						}

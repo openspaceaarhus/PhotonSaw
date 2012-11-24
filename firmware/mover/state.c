@@ -79,6 +79,9 @@ void printState(FILE *file) {
 }
 
 void printAlarmState(FILE *file) {
+  
+  printHex(file, "alarm.ignoremask", alarmsIgnored);
+
   if (alarmCount()) {
     char buffy[100];
     buffy[0] = 0;

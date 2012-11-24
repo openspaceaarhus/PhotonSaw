@@ -66,6 +66,20 @@ public class PhotonSaw extends Thread {
 		setDaemon(true);
 		setName("PhotonSaw thread, keeps the hardware fed");				
 		
+		try {
+			run("");
+			run("br");
+			run("mr");
+			run("ac 0");
+		} catch (Exception e) {			
+		}
+
+		try {
+			run("ai 10100");
+		} catch (Exception e) {			
+		}
+
+
 		configureMotors();
 		run("ex on");
 		run("aa on");
@@ -149,7 +163,6 @@ public class PhotonSaw extends Thread {
 	}
 		
 	private void configureMotors() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
-
 		for (int i=0;i<Move.AXES;i++) {
 			run("me "+i+" "+
 					cfg.movementConstraints.getAxes()[i].coilCurrent+" "+

@@ -45,6 +45,7 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "br: Buffer reset\r\n");
     fiprintf(output, "jv <x> <y> <z> <a> Jog speed vector\r\n");
     fiprintf(output, "me <axis> <current> <usm>: Motor Enable\r\n");
+    fiprintf(output, "mr: Reset motor drivers and turn them off\r\n");
     fiprintf(output, "aa on|off: Turn assist air on or off\r\n");
     fiprintf(output, "ex on|off: Turn exhaust on or off\r\n");
 }
@@ -182,6 +183,19 @@ void cmdMotorEnable(char *line, FILE *output) {
   return;
 }
 
+void cmdMotorReset(FILE *output) {
+
+  for (int i=0;i<4;i++) {
+    axisMotorEnable(&axes[i], 0, 0);
+  }
+  setLaserPWM(0);
+  GPIO_CLEAR(IO_ASSIST_AIR);
+  GPIO_CLEAR(IO_EXHAUST);
+
+  return;
+}
+
+
 void cmdJog(char *line, FILE *output) {
   int axes[4];
   if (sscanf(line, "%d %d %d %d", axes+0, axes+1, axes+2, axes+3) != 4) {
@@ -254,6 +268,9 @@ void commandRun(char *line, FILE *output) {
     
   } else if (!strncmp(line, "me ", 3)) {
     cmdMotorEnable(line+3, output);
+    
+  } else if (!strncmp(line, "mr", 2)) {
+    cmdMotorReset(output);
     
   } else if (!strncmp(line, "jv ", 3)) {
     cmdJog(line+3, output);

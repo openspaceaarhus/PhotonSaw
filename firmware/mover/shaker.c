@@ -105,7 +105,9 @@ unsigned int cuPV;
 
 inline void bufferPopPixels() {
   if (!cuPixelWords) {
-    codeError("Too few pixel words/pixel speed too high");
+    //codeError("Too few pixel words/pixel speed too high");
+    cuPixelWord = 0;
+    cuPP=0;
     return;
   }
   cuPixelWords--;
