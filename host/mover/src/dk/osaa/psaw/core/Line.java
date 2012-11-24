@@ -405,16 +405,24 @@ public class Line {
 			return;
 		}
 		
+		if (pixels != null) {
+		    accelerateDistance = decelerateDistance = 0;
+		    entrySpeed = exitSpeed = maxSpeed;
+		    
+		} else {
+		    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
+		    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);			
+		}
+
 		if (mandatoryExitSpeed >= 0) {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
-			if (Math.abs(diffExit) > 0.1) {
+			if (Math.abs(diffExit) > 2) {
 				throw new RuntimeException("The exit speed of the line starting at "+axes[0].startPos+","+axes[1].startPos+" was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			} 			
 		}
-				
-	    accelerateDistance = estimateAccelerationDistance(entrySpeed, maxSpeed, acceleration);
-	    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);
+			
+
 	    
 	    if (accelerateDistance < 0) {
 	    	accelerateDistance = 0;
@@ -428,7 +436,7 @@ public class Line {
 			double topSpeed = Math.sqrt(entrySpeed+2*acceleration*accelerateDistance);
 
 			if (mandatoryExitSpeed > 0) {
-				if (Math.abs(mandatoryExitSpeed - topSpeed) > 0.1) {
+				if (Math.abs(mandatoryExitSpeed - topSpeed) > 2) {
 					throw new RuntimeException("Top speed is not mandatory speed: "+mandatoryExitSpeed+" "+ topSpeed);			
 				}
 			}
