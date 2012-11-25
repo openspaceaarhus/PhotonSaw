@@ -433,7 +433,7 @@ public class Line {
 	    
 		if (accelerateDistance > 0) {
 
-			double topSpeed = Math.sqrt(entrySpeed+2*acceleration*accelerateDistance);
+			double topSpeed = Math.sqrt(Math.pow(entrySpeed,2)+2*acceleration*accelerateDistance);
 
 			if (mandatoryExitSpeed > 0) {
 				if (Math.abs(mandatoryExitSpeed - topSpeed) > 2) {
@@ -668,15 +668,16 @@ public class Line {
 		}
 		
 		if (accelerateDistance > 0) {
-			topSpeed = Math.sqrt(entrySpeed+2*acceleration*accelerateDistance);
+			topSpeed = Math.sqrt(Math.pow(entrySpeed,2)+2*acceleration*accelerateDistance);
 			//topSpeed = entrySpeed+acceleration*Math.sqrt(accelerateDistance/acceleration);
 			output.add(endcodeMove(unitVector.mul(accelerateDistance), entrySpeed, topSpeed));			
 		}
 		
 		if (mandatoryExitSpeed > 0) {
-			if (Math.abs(mandatoryExitSpeed - topSpeed) > 0.1) {
+			if (Math.abs(mandatoryExitSpeed - topSpeed) > 2) {
 				throw new RuntimeException("Top speed is not mandatory speed: "+mandatoryExitSpeed+" "+ topSpeed);			
 			}
+			topSpeed = mandatoryExitSpeed;
 		}
 		
 		if (plateauDistance > 0) {
