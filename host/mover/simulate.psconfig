@@ -5,7 +5,7 @@
         <acceleration>1000.0</acceleration>
         <maxSpeed>300.0</maxSpeed>
         <minSpeed>2.0</minSpeed>
-        <maxJerk>2.0</maxJerk>
+        <maxJerk>20.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
         <coilCurrent>1800</coilCurrent>
         <microSteppingMode>3</microSteppingMode>

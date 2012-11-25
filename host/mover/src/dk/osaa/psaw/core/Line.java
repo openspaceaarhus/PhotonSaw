@@ -581,7 +581,11 @@ public class Line {
 			
 			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
 			if (accel != null) {
-				move.setAxisAccel(a, accel.getAxis(a));
+				if (Math.abs(axes[a].endPos-axes[a].startPos) > 2) { // Don't add acceleration to moves that are too short for it to make any sense
+					move.setAxisAccel(a, accel.getAxis(a));
+				} else {
+					move.setAxisSpeed(a, startSpeedVector.getAxis(a) + accel.getAxis(a)*ticks/2);						
+				}
 			}
 			
 			// Check that we got exactly the movement in steps that we wanted,
