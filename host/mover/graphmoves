@@ -27,7 +27,7 @@ while (my $line = <I>) {
     
     my $xsj = abs($xs-$oxs)*$QF;
 
-    if ($xsj > 40) {
+    if ($xsj > 20) {
 	print "max jerk violated: $xsj $xs-$oxs id:$id t:$t\n";
     }
 

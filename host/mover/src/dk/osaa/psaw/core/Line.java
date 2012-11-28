@@ -207,8 +207,9 @@ public class Line {
 	 */
 	double maxExitSpeed;
 	private void updateMaxEntrySpeed(Line next) {	
+		
 		MoveVector maxEndSpeeds; // The speed limits as imposed by the max entry speed of the next line		
-		if (next == null || assistAir != next.assistAir) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
+		if (next == null) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
 			maxEndSpeeds = new MoveVector();
 		} else {
 			maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed);
@@ -221,8 +222,6 @@ public class Line {
         	double maxEndSpeedAxis     = unitVector.getAxis(i) * maxExitSpeed;
         	double nextStartSpeedAxis  = maxEndSpeeds.getAxis(i);
         	
-        	//double jerk = maxEndSpeedAxis-nextStartSpeedAxis;
-        	
         	if (Math.signum(maxEndSpeedAxis) == Math.signum(nextStartSpeedAxis)) {
         		// We're going in the same direction as the next line, so just make sure we aren't going too fast.
     			double jerk = Math.abs(maxEndSpeedAxis) - Math.abs(nextStartSpeedAxis);
@@ -234,7 +233,7 @@ public class Line {
 	        		
         	} else { // Direction change, so limit the end speed to a half jerk, thus leaving the other half of the jerk for the acceleration
         		if (unitVector.getAxis(i) != 0) {
-        			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
+        			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
         			if (maxExitSpeed > jerkLimit) {
         				maxExitSpeed = jerkLimit;
         			}
@@ -242,15 +241,6 @@ public class Line {
         	}
         }
 		
-		if (mandatoryExitSpeed >= 0) {
-			double diffExit = mandatoryExitSpeed-maxExitSpeed;
-			
-			if (diffExit > 0.1) {
-				//log.info("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
-//				throw new RuntimeException("The maxExitSpeed of this line was too low by "+diffExit+" mm/s, it was planned to be "+maxExitSpeed+" but should have been at least "+mandatoryExitSpeed);				
-			}			
-		}
-
 		// Figure out how fast we can allow the previous line to run when handing off:
 		maxEntrySpeed = Line.maxAllowableSpeed(-acceleration, maxExitSpeed, length);
 		if (maxEntrySpeed > maxSpeed) {
@@ -274,8 +264,8 @@ public class Line {
 	private void updateEntrySpeed(Line prev) {
 		
 		MoveVector prevSpeeds = new MoveVector();
-		if (prev != null && prev.assistAir == assistAir) {
-			prevSpeeds = prev.unitVector.mul(prev.exitSpeed);
+		if (prev != null) {
+			prevSpeeds = prev.unitVector.mul(prev.exitSpeed);		
 		}		
 		
 		entrySpeed = maxEntrySpeed;
@@ -286,13 +276,13 @@ public class Line {
         	if (Math.signum(axisSpeed) == Math.signum(prevSpeed)) {
     			double jerk = Math.abs(axisSpeed) - Math.abs(prevSpeed);
     			if (jerk > mc.getAxes()[i].maxJerk) {
-        			double jerkFactor = jerk / mc.getAxes()[i].maxJerk;
+        			double jerkFactor = (Math.abs(axisSpeed)-mc.getAxes()[i].maxJerk) / Math.abs(prevSpeed);
         			entrySpeed /= jerkFactor;
     			}
 
         	} else {
         		if (unitVector.getAxis(i) != 0) {
-        			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
+        			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
         			if (entrySpeed > halfJerk) {
         				entrySpeed = halfJerk;        			
         			}

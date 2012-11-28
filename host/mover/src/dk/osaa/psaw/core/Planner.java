@@ -252,7 +252,9 @@ public class Planner extends Thread implements JobRenderTarget {
 		if (ready.isEndPosDirty()) {
 			ready.setEndPosDirty(false);
 			if (lineBuffer.getList().size() > 0) {
-				lineBuffer.getList().get(0).setStartPoint(ready.getEndPoint());
+				Line next =lineBuffer.getList().get(0); 
+				next.setStartPoint(ready.getEndPoint());
+				next.forwardPass(ready);
 				recalculate();
 			}			
 		}

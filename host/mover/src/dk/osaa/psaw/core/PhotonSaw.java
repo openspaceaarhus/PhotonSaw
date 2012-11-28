@@ -44,6 +44,9 @@ public class PhotonSaw extends Thread {
 	JobManager jobManager;
 	@Getter
 	Planner planner;
+
+	@Getter
+	boolean currentAssistAir = false;
 	
 	public static final int MOVE_QUEUE_SIZE = 100;
 	
@@ -105,7 +108,7 @@ public class PhotonSaw extends Thread {
 			for (int i=0;i<Move.AXES;i++) {
 				double jerk = lastSpeed.getAxis(i)-startSpeed.getAxis(i);
 				if (Math.abs(jerk) > cfg.movementConstraints.getAxes()[i].maxJerk*1.1) {
-					log.warning("Jerk too large: "+jerk+" "+lastSpeed.getAxis(i)+" to "+startSpeed.getAxis(i)+" id:"+move.getId());
+				 	log.warning("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId());
 				}
 			}
 		}
@@ -126,9 +129,6 @@ public class PhotonSaw extends Thread {
 		}
 	}	
 
-	@Getter
-	boolean currentAssistAir = false;
-	
 	public void putAssistAir(boolean assistAir) throws InterruptedException {
 		if (currentAssistAir == assistAir) {
 			return;
