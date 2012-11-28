@@ -22,6 +22,7 @@ public class Move {
 	public static final String AXIS_NAMES[] = {"X", "Y", "Z", "A"};
 	static long lastEncodedId = 0;
 	
+	@Data
 	public static class MoveAxis {
 		Q30 speed;
 		Q30 accel;
@@ -101,8 +102,7 @@ public class Move {
 			}
 		}
 		return d;
-	}
-	
+	}	
 	
 	MoveAxis getAxis(int axis) {
 		if (axes[axis] == null) {
@@ -117,7 +117,7 @@ public class Move {
 		}
 	}
 
-	int getAxisSpeed(int axis) {
+	public int getAxisSpeed(int axis) {
 		if (axes[axis] != null && axes[axis].speed != null) {
 			return axes[axis].speed.intValue;
 		} else {
@@ -131,7 +131,7 @@ public class Move {
 		}
 	}
 
-	int getAxisAccel(int axis) {
+	public int getAxisAccel(int axis) {
 		if (axes[axis] != null && axes[axis].accel != null) {
 			return axes[axis].accel.intValue;
 		} else {

@@ -11,6 +11,10 @@ open I, "<$if";
 my $df = "$if.graph";
 open D, ">$df";
 
+my $oxs = 0;
+
+my $QF = 0.0375*50000/(1<<30);
+
 my $t = 0;
 while (my $line = <I>) {
 
@@ -21,12 +25,26 @@ while (my $line = <I>) {
 	$as, $aa, $astart, $aend) = split /\t/, $line;
 	my $laserOff = ((!$laserI) and (!$laserA)) ? 1:0;
     
-    print D join("\t", $t, $xs, $ys), "\n";
-    $t += $duration;
-    print D join("\t", $t, $xs+$xa*$duration, $ys+$ya*$duration), "\n";
+    my $xsj = abs($xs-$oxs)*$QF;
+
+    if ($xsj > 40) {
+	print "max jerk violated: $xsj $xs-$oxs id:$id t:$t\n";
+    }
+
+    print D join("\t", $t, $xs*$QF,
+		 #$ys*$QF,
+		 $id), "\n";
+    $t += $duration/50000.0;
+    my $exs = ($xs+$xa*$duration)*$QF;
+    my $xa1 = ($exs-$xs*$QF)/($duration/50000.0);
+    print D join("\t", $t,
+		 $exs,
+		 #($ys+$ya*$duration)*$QF,
+		 $id, $xa1, $xa*$QF*50000), "\n";
+    $oxs = $xs+$xa*$duration;
 }
 close D;
 
-print "Total time: ".($t/50000)." s \n";
+print "Total time: ".($t)." s \n";
 
 #system("gnuplot", "plot-moves");
