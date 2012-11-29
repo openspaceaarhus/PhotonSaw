@@ -26,10 +26,13 @@ while (my $line = <I>) {
 	my $laserOff = ((!$laserI) and (!$laserA)) ? 1:0;
     
     my $xsj = abs($xs-$oxs)*$QF;
+    my $xsm = $xs*$QF;
+    my $oxsm = $oxs*$QF;
 
-    if ($xsj > 20) {
-	print "max jerk violated: $xsj $xs-$oxs id:$id t:$t\n";
+    if ($xsj > 2) {
+	print "max jerk violated: $xsj $xsm-$oxsm id:$id t:$t\n";
     }
+
 
     print D join("\t", $t, $xs*$QF,
 		 #$ys*$QF,
@@ -42,6 +45,19 @@ while (my $line = <I>) {
 		 #($ys+$ya*$duration)*$QF,
 		 $id, $xa1, $xa*$QF*50000), "\n";
     $oxs = $xs+$xa*$duration;
+
+    if (abs($xa1) > 1600) {
+	print "max accel violated: $xa1 id:$id t:$t\n";
+    }
+
+    if (abs($exs) > 305) {
+	print "max end speed violated: $exs id:$id t:$t\n";
+    }
+
+    if (abs($xsm) > 305) {
+	print "max start speed violated: $xsm id:$id t:$t\n";
+    }
+
 }
 close D;
 

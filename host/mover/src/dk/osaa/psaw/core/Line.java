@@ -74,6 +74,13 @@ public class Line {
 	@Getter @Setter
 	boolean endPosDirty;
 	
+	@Getter
+	boolean poked;
+	
+	
+	static long lineSerialCounter=0;
+	long lineNumber = lineSerialCounter++;
+	
 	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
 		this.pixels = null;
 		this.mc = mc;
@@ -89,10 +96,13 @@ public class Line {
  			axes[a].endPos = endPoint.getAxes()[a];
 		}
 		
+       	maxEntrySpeed = entrySpeed = 0; // We start at a standstill.
 		setStartPoint(startPoint);
+		poked = false;
 	}
 	
 	public void setStartPoint(Point startPoint) {
+		poked = true;
 		for (int a=0;a<Move.AXES;a++) {
 			axes[a].startPos = startPoint.getAxes()[a];
 		}		
@@ -157,8 +167,6 @@ public class Line {
 	    recalculateNeeded = true;
 
 	    //log.info("a:"+acceleration + "s:"+ allowableSpeed + " for line from " + startPoint+" to "+endPoint);
-
-       	maxEntrySpeed = entrySpeed = 0; // We start at a standstill.
        	
        	updateMaxEntrySpeed(null);       	
          /*       
@@ -274,7 +282,7 @@ public class Line {
         	double prevSpeed = prevSpeeds.getAxis(i);
         	
         	if (Math.signum(axisSpeed) == Math.signum(prevSpeed)) {
-    			double jerk = Math.abs(axisSpeed) - Math.abs(prevSpeed);
+    			double jerk = Math.abs(axisSpeed - prevSpeed);
     			if (jerk > mc.getAxes()[i].maxJerk) {
         			double jerkFactor = (Math.abs(axisSpeed)-mc.getAxes()[i].maxJerk) / Math.abs(prevSpeed);
         			entrySpeed /= jerkFactor;
@@ -287,7 +295,16 @@ public class Line {
         				entrySpeed = halfJerk;        			
         			}
         		}
-        	}        	
+        	}
+		}        	
+		
+		for (int i=0;i<Move.AXES;i++) {
+            double prevSpeed = prevSpeeds.getAxis(i);
+        	double axisSpeed1 = unitVector.getAxis(i) * entrySpeed;
+			double jerk1 = axisSpeed1 - prevSpeed;
+			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*1.1) {
+				throw new RuntimeException("Jerk too large for axis "+i+": "+jerk1+" "+prevSpeed+" "+axisSpeed1);				
+			}        	
 		}
 		
 		if (entrySpeed > maxEntrySpeed) {
@@ -404,22 +421,26 @@ public class Line {
 		    decelerateDistance = estimateAccelerationDistance(maxSpeed, exitSpeed, -acceleration);			
 		}
 
-		if (mandatoryExitSpeed >= 0) {
-			double diffExit = mandatoryExitSpeed-exitSpeed;
-			
-			if (Math.abs(diffExit) > 2) {
-				throw new RuntimeException("The exit speed of the line starting at "+axes[0].startPos+","+axes[1].startPos+" was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
-			} 			
-		}
-			
-
-	    
 	    if (accelerateDistance < 0) {
 	    	accelerateDistance = 0;
 	    }
 	    if (decelerateDistance < 0) {
 	    	decelerateDistance = 0;
 	    }
+	    
+	    plateauDistance = length-accelerateDistance-decelerateDistance;
+	    if (plateauDistance < 0) {
+	    	accelerateDistance = intersectionDistance(entrySpeed, exitSpeed, acceleration, length);
+	    	accelerateDistance = Math.max(accelerateDistance, 0); 
+	    	accelerateDistance = Math.min(accelerateDistance, length);
+	    	decelerateDistance = length-accelerateDistance;
+	    	plateauDistance = 0;
+	    }
+	    
+	    if (log.isLoggable(Level.FINE)) {
+	    	log.fine("Length:"+length+" a:"+accelerateDistance+" d:"+decelerateDistance+" p:"+plateauDistance);
+	    }
+
 	    
 		if (accelerateDistance > 0) {
 
@@ -431,21 +452,15 @@ public class Line {
 				}
 			}
 		}
-
-	    
-	    plateauDistance = length-accelerateDistance-decelerateDistance;
-	    if (log.isLoggable(Level.FINE)) {
-	    	log.fine("Length:"+length+" a:"+accelerateDistance+" d:"+decelerateDistance+" p:"+plateauDistance);
-	    }
-
-	    if (plateauDistance < 0) {
-	    	accelerateDistance = intersectionDistance(entrySpeed, exitSpeed, acceleration, length);
-	    	accelerateDistance = Math.max(accelerateDistance, 0); 
-	    	accelerateDistance = Math.min(accelerateDistance, length);
-	    	decelerateDistance = length-accelerateDistance;
-	    	plateauDistance = 0;
-	    }
-	    
+	    	    
+		if (mandatoryExitSpeed >= 0) {
+			double diffExit = mandatoryExitSpeed-exitSpeed;
+			
+			if (Math.abs(diffExit) > 2) {
+				throw new RuntimeException("The exit speed of the line starting at "+axes[0].startPos+","+axes[1].startPos+" was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+			} 			
+		}
+				    
 	    if (accelerateDistance == 0 && decelerateDistance == 0 && plateauDistance == 0) {
 	    	throw new RuntimeException("Line has no length");	    	
 	    }
@@ -571,7 +586,7 @@ public class Line {
 			
 			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
 			if (accel != null) {
-				if (Math.abs(axes[a].endPos-axes[a].startPos) > 2) { // Don't add acceleration to moves that are too short for it to make any sense
+				if (Math.abs(axes[a].endPos-axes[a].startPos) > mc.getAxes()[a].mmPerStep*2) { // Don't add acceleration to moves that are too short for it to make any sense
 					move.setAxisAccel(a, accel.getAxis(a));
 				} else {
 					move.setAxisSpeed(a, startSpeedVector.getAxis(a) + accel.getAxis(a)*ticks/2);						
@@ -630,6 +645,9 @@ public class Line {
 			return;
 		}
 		
+		if (lineNumber == 4) {
+			log.fine("");
+		}
 		calculateTrapezoid();
 		
 		if (exitSpeed < 0) {
@@ -726,12 +744,13 @@ public class Line {
 			}
 		}
 				
+		logLine(lineNumber+": "+stepCount+" "+maxSpeed+" "+maxEntrySpeed+" "+maxExitSpeed+" "+entrySpeed+" "+exitSpeed+" "+ accelerateDistance +" "+ plateauDistance +" "+ decelerateDistance);
 		for (Move m : output) {
 			stepCount += m.getDuration();
+			logLine(lineNumber+": Adding move: "+m.getId());
 			photonSaw.putMove(m);			
 		}
 		
-		logLine(stepCount+" "+maxSpeed+" "+maxEntrySpeed+" "+maxExitSpeed+" "+entrySpeed+" "+exitSpeed+" "+ accelerateDistance +" "+ plateauDistance +" "+ decelerateDistance);
 	}
 	
 	public String toString() {
