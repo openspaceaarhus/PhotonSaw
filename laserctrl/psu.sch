@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 01 Dec 2012 10:01:00 PM CET
+EESchema Schematic File Version 2  date Sat 01 Dec 2012 10:07:49 PM CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -47,7 +47,7 @@ LIBS:vo-2630
 LIBS:little-logic
 LIBS:con-molex
 LIBS:con-molex-2
-LIBS:laserctrl-cache
+LIBS:1g08
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
