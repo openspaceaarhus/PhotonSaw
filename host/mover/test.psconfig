@@ -2,10 +2,10 @@
   <movementConstraints>
     <axes>
       <movementconstraint axis="X">
-        <acceleration>1500.0</acceleration>
-        <maxSpeed>300.0</maxSpeed>
+        <acceleration>2500.0</acceleration>
+        <maxSpeed>400.0</maxSpeed>
         <minSpeed>2.0</minSpeed>
-        <maxJerk>1</maxJerk>
+        <maxJerk>5.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
         <coilCurrent>1800</coilCurrent>
         <microSteppingMode>3</microSteppingMode>
