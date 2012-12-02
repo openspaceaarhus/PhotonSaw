@@ -19,12 +19,12 @@ import dk.osaa.psaw.machine.SimulatedCommander;
 public class Simulate {
 	
 	static final String[] files = {
-	    //"rotated-image.svg",
-	    //"casing-raster.svg",
+		"casing2.svg", "casing2-orig.svg", "casing2-opt.svg", "casing2-opt-group.svg",
+	    "up-engraving.svg",
+	    "rotated-image.svg",
+	    "casing-raster.svg",
 	    "zoid-color.svg",
 	    
-	    //"casing2-orig.svg", "casing2.svg", "casing2-opt.svg", "casing2-opt-group.svg",
-	    //"up-engraving.svg"
 		};
 	static final String ROOT = "/home/ff/projects/osaa/PhotonSaw/host/testdata";
 	

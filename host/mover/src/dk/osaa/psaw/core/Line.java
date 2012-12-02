@@ -240,7 +240,7 @@ public class Line {
         		}
 	        		
         	} else { // Direction change, so limit the end speed to a half jerk, thus leaving the other half of the jerk for the acceleration
-        		if (unitVector.getAxis(i) != 0) {
+        		if (unitVector.getAxis(i) != 0) {       			
         			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
         			if (maxExitSpeed > jerkLimit) {
         				maxExitSpeed = jerkLimit;
@@ -280,9 +280,9 @@ public class Line {
 		for (int i=0;i<Move.AXES;i++) {
         	double axisSpeed = unitVector.getAxis(i) * entrySpeed;
         	double prevSpeed = prevSpeeds.getAxis(i);
+			double jerk = Math.abs(axisSpeed - prevSpeed);
         	
         	if (Math.signum(axisSpeed) == Math.signum(prevSpeed)) {
-    			double jerk = Math.abs(axisSpeed - prevSpeed);
     			if (jerk > mc.getAxes()[i].maxJerk) {
         			double jerkFactor = (Math.abs(axisSpeed)-mc.getAxes()[i].maxJerk) / Math.abs(prevSpeed);
         			entrySpeed /= jerkFactor;
@@ -290,7 +290,7 @@ public class Line {
 
         	} else {
         		if (unitVector.getAxis(i) != 0) {
-        			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
+        			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
         			if (entrySpeed > halfJerk) {
         				entrySpeed = halfJerk;        			
         			}
@@ -302,8 +302,8 @@ public class Line {
             double prevSpeed = prevSpeeds.getAxis(i);
         	double axisSpeed1 = unitVector.getAxis(i) * entrySpeed;
 			double jerk1 = axisSpeed1 - prevSpeed;
-			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*5) {
-				throw new RuntimeException("Jerk too large for axis "+i+": "+jerk1+" "+prevSpeed+" "+axisSpeed1);				
+			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*1.1) {
+				throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1);				
 			}        	
 		}
 		
