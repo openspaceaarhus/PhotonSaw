@@ -216,38 +216,61 @@ public class Line {
 	double maxExitSpeed;
 	private void updateMaxEntrySpeed(Line next) {	
 		
-		MoveVector maxEndSpeeds; // The speed limits as imposed by the max entry speed of the next line		
 		if (next == null) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
-			maxEndSpeeds = new MoveVector();
+			maxExitSpeed = 0;
 		} else {
-			maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed);
-		}
-		
-		// Find the maximum speed along this normal vector which doesn't exceed the maxEndSpeed limit.
-		maxExitSpeed = maxSpeed;
-		for (int i=0;i<Move.AXES;i++) {
-			// Scale down end speed until we can transition to the target vector without violating the jerk limit 
-        	double maxEndSpeedAxis     = unitVector.getAxis(i) * maxExitSpeed;
-        	double nextStartSpeedAxis  = maxEndSpeeds.getAxis(i);
-        	
-        	if (Math.signum(maxEndSpeedAxis) == Math.signum(nextStartSpeedAxis)) {
-        		// We're going in the same direction as the next line, so just make sure we aren't going too fast.
-    			double jerk = Math.abs(maxEndSpeedAxis) - Math.abs(nextStartSpeedAxis);
+			MoveVector maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed); // The speed limits as imposed by the max entry speed of the next line
+						
+			if (lineNumber == 160) {
+				log.fine("");
+			}
+			
+			// Find the maximum speed along this normal vector which doesn't exceed the maxEndSpeed limit.
+			maxExitSpeed = maxSpeed;
+			for (int i=0;i<Move.AXES;i++) {
+				// Scale down end speed until we can transition to the target vector without violating the jerk limit 
+	        	
+	        	if (unitVector.getAxis(i) != 0) {
+	            	double nextStartSpeedAxis  = maxEndSpeeds.getAxis(i);
+	            	double axisMaxSpeed = nextStartSpeedAxis + mc.getAxes()[i].maxJerk*Math.signum(unitVector.getAxis(i));
+	            	double axisSpeed = unitVector.getAxis(i) * maxExitSpeed;
+	            	
+	            	if (Math.signum(axisMaxSpeed) != Math.signum(axisSpeed)) {
+	            		axisMaxSpeed = (mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i);
+	            	}
 
-    			if (jerk > mc.getAxes()[i].maxJerk) {
-    				double jerkFactor = jerk/mc.getAxes()[i].maxJerk;
-        			maxExitSpeed /= jerkFactor;
-        		}
+	            	if (Math.abs(axisMaxSpeed) < Math.abs(axisSpeed)) {
+	            		maxExitSpeed = axisMaxSpeed / unitVector.getAxis(i);
+	                }
+
+	        	} else if (next.unitVector.getAxis(i) != 0) {
+	        		maxExitSpeed = 0;
 	        		
-        	} else { // Direction change, so limit the end speed to a half jerk, thus leaving the other half of the jerk for the acceleration
-        		if (unitVector.getAxis(i) != 0) {       			
-        			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
-        			if (maxExitSpeed > jerkLimit) {
-        				maxExitSpeed = jerkLimit;
-        			}
-        		}
-        	}
-        }
+	        	}
+	        	
+	        	/*
+	        	double maxEndSpeedAxis     = unitVector.getAxis(i) * maxExitSpeed;
+	        	double nextStartSpeedAxis  = maxEndSpeeds.getAxis(i);
+	        	if (Math.signum(maxEndSpeedAxis) == Math.signum(nextStartSpeedAxis) || maxEndSpeedAxis == 0) {
+	        		// We're going in the same direction as the next line, so just make sure we aren't going too fast.
+	    			double jerk = Math.abs(maxEndSpeedAxis - nextStartSpeedAxis);
+
+	    			if (jerk > mc.getAxes()[i].maxJerk) {
+	    				double jerkFactor = jerk/mc.getAxes()[i].maxJerk;
+	        			maxExitSpeed /= jerkFactor;
+	        		}
+		        		
+	        	} else { // Direction change, so limit the end speed to a half jerk, thus leaving the other half of the jerk for the acceleration
+	        		if (unitVector.getAxis(i) != 0) {       			
+	        			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
+	        			if (maxExitSpeed > jerkLimit) {
+	        				maxExitSpeed = jerkLimit;
+	        			}
+	        		}
+	        	}
+	        	*/
+	        }
+		}
 		
 		// Figure out how fast we can allow the previous line to run when handing off:
 		maxEntrySpeed = Line.maxAllowableSpeed(-acceleration, maxExitSpeed, length);
@@ -275,16 +298,35 @@ public class Line {
 		if (prev != null) {
 			prevSpeeds = prev.unitVector.mul(prev.exitSpeed);		
 		}		
-		
+
+		if (lineNumber == 161) {
+			log.fine("");
+		}
+
 		entrySpeed = maxEntrySpeed;
 		for (int i=0;i<Move.AXES;i++) {
-        	double axisSpeed = unitVector.getAxis(i) * entrySpeed;
-        	double prevSpeed = prevSpeeds.getAxis(i);
-			double jerk = Math.abs(axisSpeed - prevSpeed);
         	
-        	if (Math.signum(axisSpeed) == Math.signum(prevSpeed)) {
+        	if (unitVector.getAxis(i) != 0) {
+            	double prevSpeed = prevSpeeds.getAxis(i);
+            	double axisMaxSpeed = prevSpeed + mc.getAxes()[i].maxJerk*Math.signum(unitVector.getAxis(i));
+            	double axisSpeed = unitVector.getAxis(i) * entrySpeed;
+            	
+            	if (Math.signum(axisMaxSpeed) != Math.signum(axisSpeed)) {
+            		axisMaxSpeed = (mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i);
+            	}
+
+            	if (Math.abs(axisMaxSpeed) < Math.abs(axisSpeed)) {
+            		entrySpeed = axisMaxSpeed / unitVector.getAxis(i);
+                }
+        	}
+            	
+/*			
+        	double axisSpeed = unitVector.getAxis(i) * entrySpeed;
+        	
+        	if (Math.signum(axisSpeed) == Math.signum(prevSpeed) || prevSpeed == 0) {
+    			double jerk = Math.abs(axisSpeed - prevSpeed);
     			if (jerk > mc.getAxes()[i].maxJerk) {
-        			double jerkFactor = (Math.abs(axisSpeed)-mc.getAxes()[i].maxJerk) / Math.abs(prevSpeed);
+        			double jerkFactor = jerk / mc.getAxes()[i].maxJerk;
         			entrySpeed /= jerkFactor;
     			}
 
@@ -296,6 +338,7 @@ public class Line {
         			}
         		}
         	}
+        	*/
 		}        	
 		
 		for (int i=0;i<Move.AXES;i++) {
@@ -303,7 +346,7 @@ public class Line {
         	double axisSpeed1 = unitVector.getAxis(i) * entrySpeed;
 			double jerk1 = axisSpeed1 - prevSpeed;
 			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*1.1) {
-				throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1);				
+				throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1+" line:"+lineNumber);				
 			}        	
 		}
 		
