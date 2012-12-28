@@ -57,7 +57,7 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/power-guide.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/3mm-box.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing-raster.svg"); // Broken
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-helper.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/wall.svg");
@@ -66,6 +66,7 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/testpiece.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/circle-and-rect.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/arcadebox.svg");
 
 			
 			Job testJob = new Job();

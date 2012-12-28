@@ -28,7 +28,13 @@ public class Cornering {
 	 * The speed along the exit vector after the corner.
 	 */
 	@Getter
-	double exitSpeed; 
+	double exitSpeed;
+	
+	@Getter
+	MoveVector jerks;
+	
+	@Getter
+	MoveVector exitSpeeds;
 	
 	/**
 	 * Calculates the cornering parameters
@@ -43,13 +49,13 @@ public class Cornering {
 		MoveVector entrySpeeds = entryVector.mul(entrySpeed);
 		constrainingAxis = -1;
 		overSpeed = -1;
-		
+		exitSpeed = maxExitSpeed;
+		MoveVector maxExitSpeeds = exitVector.mul(maxExitSpeed);
 		
 		/*
 		 * Find the speed limit for each axis,
 		 * then compare that to the entry speed
-		 * and pick the axis that is going to constrain the corner
-		 * and the amount of    
+		 * and pick the axis that is going to constrain the corner   
 		 */
 		
 		for (int ax=0;ax<Move.AXES;ax++) {			
@@ -63,13 +69,27 @@ public class Cornering {
 				max = mc.getAxes()[ax].maxJerk/2;				
 			}
 			
-			//double os = entrySpeeds
+			double os = maxExitSpeeds.getAxis(ax)/max;
 			
-			
-			
-						
+			if (os > 1 && os > overSpeed) {
+				constrainingAxis = ax;
+				overSpeed = os;
+			}
 		}
 		
+		if (overSpeed > 1) {
+			exitSpeed = exitSpeed/overSpeed;
+		}
 		
-	}	
+		exitSpeeds = exitVector.mul(exitSpeed);		
+		jerks = new MoveVector();
+		for (int ax=0;ax<Move.AXES;ax++) {
+			double jerk = exitSpeeds.getAxis(ax)-entrySpeeds.getAxis(ax);
+			jerks.setAxis(ax, jerk);
+			
+			if (Math.abs(jerk) > mc.getAxes()[ax].maxJerk) {
+				throw new RuntimeException("Jerk was too large in axis: "+ax+" jerk was "+jerk+" max:"+mc.getAxes()[ax].maxJerk);
+			}
+		}
+	}
 }

@@ -346,7 +346,7 @@ public class Line {
         	double axisSpeed1 = unitVector.getAxis(i) * entrySpeed;
 			double jerk1 = axisSpeed1 - prevSpeed;
 			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*1.1) {
-				throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1+" line:"+lineNumber);				
+				//throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1+" line:"+lineNumber);				
 			}        	
 		}
 		
