@@ -209,12 +209,48 @@ public class Line {
 	 * The field updated is maxEntrySpeed
 	 * 
 	 * There are two limiting factors
-	 *  * The absolute maximum speeds at the start of the next line 
-	 *  * The 
+	 *  * The absolute maximum speeds at the start of the next line
+	 *  * The maximum speed of this line. 
+	 *   
 	 * @param next The next line which we have to hand off to when we're done, if null, then we have to come to a stop.
 	 */
 	double maxExitSpeed;
-	private void updateMaxEntrySpeed(Line next) {	
+	private void updateMaxEntrySpeed(Line next) {
+		if (next == null) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
+			maxExitSpeed = 0;
+			return;
+		}
+		
+		/*
+		 * Max entry speed is the maximum speed at the beginning of this line in the direction of this line,
+		 * it is dictated the maxExitSpeed and the acceleration that can happen for this line, so to calculate it we first need to
+		 * figure out how fast we're allowed to go at the end, by the constraint placed on us by cornering and the next lines maxEntrySpeed.  
+		 */
+				
+		Cornering fc = new Cornering(mc, unitVector, maxSpeed, next.unitVector, next.maxSpeed);
+		Cornering c = new Cornering(mc, next.unitVector, next.maxEntrySpeed, unitVector, fc.exitSpeed);
+		maxExitSpeed = c.getExitSpeed();
+	}
+	
+	/**
+	 * Answers the question: How fast is the system going when control is being handed over by the previous line
+	 * The answer is provided in the entrySpeed field.
+	 * 
+	 * @param prev the previous line, if null then we're starting from a standstill.
+	 */
+	private void updateEntrySpeed(Line prev) {
+		
+		if (prev == null) { // Starting from a stand-still
+			entrySpeed = 0;
+			return;			
+		}
+
+		Cornering c = new Cornering(mc, prev.unitVector, prev.exitSpeed, unitVector, maxSpeed).checkJerks();
+		entrySpeed = c.getExitSpeed();
+	}
+	
+	
+	private void old_updateMaxEntrySpeed(Line next) {	
 		
 		if (next == null) { // We must come to a stop, because there isn't a next move to handle stopping for us.			
 			maxExitSpeed = 0;
@@ -270,29 +306,10 @@ public class Line {
 	        	}
 	        	*/
 	        }
-		}
-		
-		// Figure out how fast we can allow the previous line to run when handing off:
-		maxEntrySpeed = Line.maxAllowableSpeed(-acceleration, maxExitSpeed, length);
-		if (maxEntrySpeed > maxSpeed) {
-			maxEntrySpeed = maxSpeed;
-		}
-
-		if (maxEntrySpeed < 0) {
-			throw new RuntimeException("Calculated a negative maxEntrySpeed: "+maxEntrySpeed);			
-		}
-		if (maxExitSpeed < 0) {
-			throw new RuntimeException("Calculated a negative maxExitSpeed: "+maxExitSpeed);			
-		}
+		}		
 	}
 
-	/**
-	 * Answers the question: How fast is the system going when control is being handed over by the previous line
-	 * The answer is provided in the entrySpeed field.
-	 * 
-	 * @param prev the previous line, if null then we're starting from a standstill.
-	 */
-	private void updateEntrySpeed(Line prev) {
+	private void old_updateEntrySpeed(Line prev) {
 		
 		MoveVector prevSpeeds = new MoveVector();
 		if (prev != null) {
@@ -346,7 +363,7 @@ public class Line {
         	double axisSpeed1 = unitVector.getAxis(i) * entrySpeed;
 			double jerk1 = axisSpeed1 - prevSpeed;
 			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*1.1) {
-				//throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1+" line:"+lineNumber);				
+				throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1+" line:"+lineNumber);				
 			}        	
 		}
 		
@@ -361,7 +378,21 @@ public class Line {
 	
 	// Called by Planner::recalculate() when scanning the plan from last to first entry.
 	public void reversePass(Line next) {
-		updateMaxEntrySpeed(next);		
+		updateMaxEntrySpeed(next);
+		
+		// Figure out how fast we can allow the previous line to run when handing off:
+		maxEntrySpeed = Line.maxAllowableSpeed(-acceleration, maxExitSpeed, length);
+		if (maxEntrySpeed > maxSpeed) {
+			maxEntrySpeed = maxSpeed;
+		}
+
+		if (maxEntrySpeed < 0) {
+			throw new RuntimeException("Calculated a negative maxEntrySpeed: "+maxEntrySpeed);			
+		}
+		if (maxExitSpeed < 0) {
+			throw new RuntimeException("Calculated a negative maxExitSpeed: "+maxExitSpeed);			
+		}
+		
         recalculateNeeded = true;
 	}
 	
@@ -386,8 +417,8 @@ public class Line {
 			if (Math.abs(diffExit) > 0.1) {
 				//log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
 			}			
-		}		
-		  
+		}
+
 	    recalculateNeeded = true;
 /*	    
 	    // If the previous block is an acceleration block, but it is not long enough to complete the
@@ -643,7 +674,7 @@ public class Line {
 			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
-				if (Math.abs(diffSteps) > 3) {
+				if (Math.abs(diffSteps) > 6) {
 					throw new RuntimeException("Got too large an error, will not correct "+a+" wanted:"+stepsWanted+" got:"+steps);
 				}
 				log.info("Did not get correct movement in axis "+a+" wanted:"+stepsWanted+" got:"+steps);				
@@ -663,7 +694,7 @@ public class Line {
 					if (diffSteps != 0) {						 
 						move.nudgeAxisSteps(a, -diffSteps/2);
 						
-						if (Math.abs(diffSteps) > 1) {
+						if (Math.abs(diffSteps) > 3) {
 							throw new RuntimeException("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps);
 //							log.warning("Did not get correct movement in axis after correction "+a+" wanted:"+stepsWanted+" got:"+steps+", compensating...");
 						}
