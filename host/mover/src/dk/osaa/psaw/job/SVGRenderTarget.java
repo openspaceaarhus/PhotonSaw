@@ -18,6 +18,8 @@ public class SVGRenderTarget implements JobRenderTarget {
 	ArrayList<Point> path;
 	
 	Writer out;
+
+	private String id;
 	
 	public SVGRenderTarget(File outFile) {
 		try {
@@ -38,7 +40,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 		}
 		
 		try {
-			out.write("  <path style=\"stroke:#000000;stroke-width:1;fill:none\" d=\"");
+			out.write("  <path style=\"stroke:#000000;stroke-width:1;fill:none\" id=\""+id+"\" d=\"");
 			String l = "M";
 			for (Point p : path) {
 //				out.write(l+p.axes[0]+","+p.axes[1]);
@@ -100,5 +102,10 @@ public class SVGRenderTarget implements JobRenderTarget {
 	@Override
 	public void setAssistAir(boolean assistAirOn) {
 		// Meh.
+	}
+
+	@Override
+	public void startShape(String id) {
+		this.id = id;
 	}
 }

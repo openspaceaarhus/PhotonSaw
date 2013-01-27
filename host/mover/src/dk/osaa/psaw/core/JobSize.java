@@ -56,4 +56,10 @@ public class JobSize implements JobRenderTarget {
 	public void moveToAtSpeed(Point p, double maxSpeed) {
 		moveTo(p);		
 	}
+
+	@Override
+	public void startShape(String id) {
+		// TODO Auto-generated method stub
+		
+	}
 }

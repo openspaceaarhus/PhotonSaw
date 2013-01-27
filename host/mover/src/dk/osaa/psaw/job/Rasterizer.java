@@ -144,6 +144,8 @@ public class Rasterizer {
 		
 		for (val eg : merged) {
 			
+			target.startShape("rastergroup-"+eg.bb.toString());
+			
 			// Make sure the line pitch is a whole number of y-steps or we'll end up with a shitty looking raster
 			double linePitch = Math.max(target.getEngravingYStepSize(),
 					                    target.getEngravingYStepSize() * Math.round(eg.settings.rasterLinePitch/target.getEngravingYStepSize()));
@@ -250,7 +252,7 @@ public class Rasterizer {
 				
 				y += linePitch;
 			}    
-			
+			target.startShape("end-rastergroup-"+eg.bb.toString());
 		}	
 	}
 }

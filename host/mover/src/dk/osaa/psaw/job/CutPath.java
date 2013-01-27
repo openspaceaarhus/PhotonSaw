@@ -30,6 +30,8 @@ public class CutPath extends LaserNode {
 	@Override
 	public void render(JobRenderTarget target,
 			PointTransformation transformation) {
+		
+		target.startShape(id);
 
 		target.setAssistAir(settings.assistAir);
 		
@@ -45,6 +47,7 @@ public class CutPath extends LaserNode {
 				}
 			}
 		}
+		target.startShape("end-"+id);
 	}
 
 	@Override

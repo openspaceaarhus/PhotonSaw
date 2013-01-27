@@ -19,6 +19,7 @@ import dk.osaa.psaw.machine.SimulatedCommander;
 public class Simulate {
 	
 	static final String[] files = {
+		"fl.svg",
 		"iss.svg",
 		
 		"casing2.svg", "casing2-orig.svg", "casing2-opt.svg", "casing2-opt-group.svg",

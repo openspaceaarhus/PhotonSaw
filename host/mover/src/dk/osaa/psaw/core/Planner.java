@@ -396,4 +396,10 @@ public class Planner extends Thread implements JobRenderTarget {
 		assistAirStatus = assistAirOn;
 	}
 
+	@Override
+	public void startShape(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

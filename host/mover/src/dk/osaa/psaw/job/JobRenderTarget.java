@@ -9,6 +9,14 @@ import dk.osaa.psaw.machine.Point;
  * @author ff
  */
 public interface JobRenderTarget {
+	
+	/**
+	 * Called by the job to let the target know what the shape that's going to be rendered now is called,
+	 * this is useful for progress indicators as well as debugability.
+	 * @param id the id of the shape that's about to start
+	 */
+	void startShape(String id);
+	
 	/**
 	 * Move as quickly as possible to this point
 	 * @param p The point to move to
