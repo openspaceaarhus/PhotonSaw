@@ -227,8 +227,8 @@ public class Line {
 		 * figure out how fast we're allowed to go at the end, by the constraint placed on us by cornering and the next lines maxEntrySpeed.  
 		 */
 				
-		Cornering fc = new Cornering(mc, unitVector, maxSpeed, next.unitVector, next.maxSpeed);
-		Cornering c = new Cornering(mc, next.unitVector, next.maxEntrySpeed, unitVector, fc.exitSpeed);
+		//Cornering fc = new Cornering(mc, unitVector, maxSpeed, next.unitVector, next.maxSpeed);
+		Cornering c = new Cornering(mc, next.unitVector, next.maxEntrySpeed, unitVector, maxSpeed);
 		maxExitSpeed = c.getExitSpeed();
 	}
 	

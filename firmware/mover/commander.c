@@ -48,6 +48,7 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "mr: Reset motor drivers and turn them off\r\n");
     fiprintf(output, "aa on|off: Turn assist air on or off\r\n");
     fiprintf(output, "ex on|off: Turn exhaust on or off\r\n");
+    fiprintf(output, "crc <length> <crc> <command>: Run a command only if the length and checksum matches\r\n");
 }
 
 void cmdAssistAir(char *line, FILE *output) {
@@ -226,6 +227,48 @@ void cmdLaserPWM(char *line, FILE *output) {
   fiprintf(output, "result  OK\r\n");
 }
 
+void cmdCRC(char *line, FILE *output) {
+
+  unsigned int length;
+  unsigned int crc;
+
+  if (parseHex(&line, &length) < 1) {
+    fprintf(output, "result  Error: Unable to parse length: %s\r\n", line);
+    return;
+  }
+
+  if (parseHex(&line, &crc) < 1) {
+    fprintf(output, "result  Error: Unable to crc: %s\r\n", line);
+    return;
+  }
+  
+  // Skip whitespace
+  while (*line == ' ') {
+    line++;
+  }
+
+  unsigned int pl = 0;
+  unsigned int ps = 0;
+  char *payload = line;
+  char pc;
+  
+  while ((pc = *(payload++))) {
+    pl++;
+    ps += pc;
+  }
+
+  if (pl != length) {
+    fprintf(output, "result  Error: Payload length mismatch: %x != %x\r\n", pl, length);
+    return;
+  }
+
+  if (ps != crc) {
+    fprintf(output, "result  Error: Payload checksum mismatch: %x != %x\r\n", ps, crc);
+    return;
+  }
+
+  commandRun(line, output); 
+}
 
 void commandRun(char *line, FILE *output) {
   if (!*line) {
@@ -283,6 +326,9 @@ void commandRun(char *line, FILE *output) {
 
   } else if (!strncmp(line, "lp ", 3)) {
     cmdLaserPWM(line+3, output);
+
+  } else if (!strncmp(line, "crc ", 4)) {
+    cmdCRC(line+4, output);
 
   } else {
     respondSyntaxError(line, output);

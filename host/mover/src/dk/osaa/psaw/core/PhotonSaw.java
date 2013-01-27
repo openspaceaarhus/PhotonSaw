@@ -100,15 +100,15 @@ public class PhotonSaw extends Thread {
 		MoveVector endSpeed = new MoveVector();
 		for (int i=0;i<Move.AXES;i++) {
 			double qf = cfg.movementConstraints.getTickHZ()*cfg.movementConstraints.getAxes()[i].mmPerStep/(1<<30);
-			startSpeed.setAxis(i,  move.getAxisSpeed(i)*qf);
-			endSpeed  .setAxis(i, (move.getAxisSpeed(i)+move.getAxisAccel(i)*move.getDuration())  *qf);
+			startSpeed.setAxis(i,  move.getAxisSpeed(i)                                          * qf);
+			endSpeed  .setAxis(i, (move.getAxisSpeed(i)+move.getAxisAccel(i)*move.getDuration()) * qf);
 		}
 
 		if (lastSpeed != null) {
 			for (int i=0;i<Move.AXES;i++) {
 				double jerk = lastSpeed.getAxis(i)-startSpeed.getAxis(i);
 				if (Math.abs(jerk) > cfg.movementConstraints.getAxes()[i].maxJerk*1.25) {
-				 	log.warning("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId());
+				 	throw new RuntimeException("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId()+" axis: "+i+" "+lastSpeed+" "+startSpeed);
 				}
 			}
 		}
