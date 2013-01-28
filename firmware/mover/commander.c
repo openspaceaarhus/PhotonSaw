@@ -233,12 +233,12 @@ void cmdCRC(char *line, FILE *output) {
   unsigned int crc;
 
   if (parseHex(&line, &length) < 1) {
-    fprintf(output, "result  Error: Unable to parse length: %s\r\n", line);
+    fprintf(output, "result  CRC-Error: Unable to parse length: %s\r\n", line);
     return;
   }
 
   if (parseHex(&line, &crc) < 1) {
-    fprintf(output, "result  Error: Unable to crc: %s\r\n", line);
+    fprintf(output, "result  CRC-Error: Unable to crc: %s\r\n", line);
     return;
   }
   
@@ -258,12 +258,12 @@ void cmdCRC(char *line, FILE *output) {
   }
 
   if (pl != length) {
-    fprintf(output, "result  Error: Payload length mismatch: %x != %x\r\n", pl, length);
+    fprintf(output, "result  CRC-Error: Payload length mismatch: %x != %x\r\n", pl, length);
     return;
   }
 
   if (ps != crc) {
-    fprintf(output, "result  Error: Payload checksum mismatch: %x != %x\r\n", ps, crc);
+    fprintf(output, "result  CRC-Error: Payload checksum mismatch: %x != %x\r\n", ps, crc);
     return;
   }
 

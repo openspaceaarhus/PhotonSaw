@@ -53,18 +53,26 @@ public class Commander implements CommanderInterface {
         return true;
     }
 	
-	public static final int USB_LINE_BUFFER_SIZE = 1<<12;
+	public static final int CRC_WRAPPER_OVERHEAD = "crc 12345678 12345678 ".length();
+	public static final int USB_LINE_BUFFER_SIZE= 1<<12;
+	public static final int MAX_COMMAND_LENGTH = USB_LINE_BUFFER_SIZE-CRC_WRAPPER_OVERHEAD;
 		
 	/* (non-Javadoc)
 	 * @see dk.osaa.psaw.machine.CommanderInterface#run(java.lang.String)
 	 */
-	@Override
-	public synchronized CommandReply run(String cmd) throws IOException, ReplyTimeout {
+	public synchronized CommandReply runOnce(String bareCommand) throws IOException, ReplyTimeout {
 		synchronized (reply) {
 			reply.clear();
 			replyReady = false;
 		}
-		cmd += "\r";
+		
+		long bareLength = bareCommand.length();
+		long bareSum = 0;
+		for (byte b : bareCommand.getBytes()) {
+			bareSum += b;
+		}
+		
+		String cmd = "crc "+Long.toHexString(bareLength).toLowerCase()+" "+Long.toHexString(bareSum).toLowerCase()+" "+bareCommand+"\r";
 		
 		if (cmd.length() >= USB_LINE_BUFFER_SIZE) {
 			throw new RuntimeException("The command line is too long: "+cmd);			
@@ -85,7 +93,22 @@ public class Commander implements CommanderInterface {
 		}
 		
 		throw new ReplyTimeout();
-    }
+	}
+	
+	@Override
+	public synchronized CommandReply run(String bareCommand) throws IOException, ReplyTimeout {
+		while (true) {
+			val res = runOnce(bareCommand);
+			val result = res.get("result"); 
+			if (!result.isOk() && result.getString().startsWith("CRC-Error")) {
+				log.warning("Repeating command due to CRC error: "+result.getString());
+				try {Thread.sleep(100);} catch (Exception e) { }
+			} else {
+				return res;
+			}
+		}
+	}
+	
 
 	CommandReply lastReplyValues = new CommandReply();
 	/* (non-Javadoc)
@@ -198,7 +221,7 @@ public class Commander implements CommanderInterface {
     	while (mw.size() > 0) {    		
     		val s = new StringBuilder();
 			int wordsInCommand = 0;
-    		while (s.length() < USB_LINE_BUFFER_SIZE-20 && mw.size() > 0) {
+    		while (s.length() < MAX_COMMAND_LENGTH-20 && mw.size() > 0) {
     			s.append(" ");
     			s.append(mw.remove(0));
     			wordsInCommand++;
@@ -289,7 +312,7 @@ public class Commander implements CommanderInterface {
 		wordsInMove = move.encode().size();
 
     	// Fire off the previously accumulated command if adding this move would overflow the line buffer size or the move buffer. 
-		if (encodedMoves.length()+ms.length() > USB_LINE_BUFFER_SIZE-10 || wordsInCommand+wordsInMove > lastBufferFree) {
+		if (encodedMoves.length()+ms.length() > MAX_COMMAND_LENGTH-10 || wordsInCommand+wordsInMove > lastBufferFree) {
 
         	while (lastBufferFree < wordsInCommand) {    		
         		lastBufferMoveReply = run("st");
