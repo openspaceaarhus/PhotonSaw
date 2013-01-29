@@ -25,11 +25,17 @@ void respondError(char *msg, FILE *output) {
 }
 
 void respondSyntaxError(char *msg, FILE *output) {
-  fiprintf(output, "result Error, unknown command: %s\r\n", msg);
   if (output != stderr) {
     fiprintf(stderr, "Got invalid command from USB: %s\r\n", msg);
   }
-  respondReady(output);
+
+  if (*msg == '~' || *msg == 'A') {
+    fiprintf(stderr, "Note: Ignoring invalid command silently\r\n");
+
+  } else {
+    fiprintf(output, "result Error, unknown command: %s\r\n", msg);
+    respondReady(output);
+  }
 }
 
 void cmdHelp(FILE *output) {
@@ -229,14 +235,14 @@ void cmdLaserPWM(char *line, FILE *output) {
 
 void cmdCRC(char *line, FILE *output) {
 
-  unsigned int length;
-  unsigned int crc;
 
+  unsigned int length;
   if (parseHex(&line, &length) < 1) {
     fprintf(output, "result  CRC-Error: Unable to parse length: %s\r\n", line);
     return;
   }
 
+  unsigned int crc;
   if (parseHex(&line, &crc) < 1) {
     fprintf(output, "result  CRC-Error: Unable to crc: %s\r\n", line);
     return;
@@ -267,6 +273,7 @@ void cmdCRC(char *line, FILE *output) {
     return;
   }
 
+  fiprintf(output, "command %s\r\n", line);
   commandRun(line, output); 
 }
 
@@ -279,7 +286,10 @@ void commandRun(char *line, FILE *output) {
     return;
   }
 
-  if (!strncmp(line, "bm ", 3)) {
+  if (!strncmp(line, "crc ", 4)) {
+    cmdCRC(line+4, output);
+
+  } else if (!strncmp(line, "bm ", 3)) {
     cmdBufferMoves(line+3, output);
     
   } else if (!strcmp(line, "bs")) {
@@ -326,9 +336,6 @@ void commandRun(char *line, FILE *output) {
 
   } else if (!strncmp(line, "lp ", 3)) {
     cmdLaserPWM(line+3, output);
-
-  } else if (!strncmp(line, "crc ", 4)) {
-    cmdCRC(line+4, output);
 
   } else {
     respondSyntaxError(line, output);

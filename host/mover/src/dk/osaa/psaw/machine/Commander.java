@@ -64,6 +64,7 @@ public class Commander implements CommanderInterface {
 		synchronized (reply) {
 			reply.clear();
 			replyReady = false;
+			reply.setSentCommand(bareCommand);
 		}
 		
 		long bareLength = bareCommand.length();
@@ -99,7 +100,8 @@ public class Commander implements CommanderInterface {
 	public synchronized CommandReply run(String bareCommand) throws IOException, ReplyTimeout {
 		while (true) {
 			val res = runOnce(bareCommand);
-			val result = res.get("result"); 
+			val result = res.get("result");
+			
 			if (!result.isOk() && result.getString().startsWith("CRC-Error")) {
 				log.warning("Repeating command due to CRC error: "+result.getString());
 				try {Thread.sleep(100);} catch (Exception e) { }
@@ -155,8 +157,16 @@ public class Commander implements CommanderInterface {
 					lastBufferFree = value.getInteger();
 				}
 			}
+			
 			if (!reply.containsKey("result")) {
 				reply.put("result", new ReplyValue("result OK"));
+			}
+
+			String cmd = reply.containsKey("command") ? reply.get("command").toString().substring("command ".length()) : "unknown";
+			if (!cmd.equals(reply.getSentCommand())) {
+				reply.clear();
+				replyReady = false;
+				log.warning("Ignoring reply that doesn't match the sent command: '"+cmd+"' is not '"+reply.getSentCommand()+"'");
 			}
 		}		
 	}

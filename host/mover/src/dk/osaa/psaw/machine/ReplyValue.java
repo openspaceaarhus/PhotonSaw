@@ -4,7 +4,9 @@ import java.math.BigInteger;
 
 public class ReplyValue {
 	String[] parts;
+	String raw;
 	public ReplyValue(String str) {
+		raw = str;
 		parts = str.split("\\s+", 3);
 	}
 	
@@ -37,11 +39,7 @@ public class ReplyValue {
 	}
 	
 	public String toString() {
-		if (parts.length == 3) {
-			return parts[0]+" = "+parts[1]+" "+parts[2];
-		} else {
-			return parts[0]+" = "+parts[1];
-		}
+		return raw;
 	}
 
 	public boolean getBoolean() {
