@@ -234,17 +234,17 @@ void cmdLaserPWM(char *line, FILE *output) {
 }
 
 void cmdCRC(char *line, FILE *output) {
-
-
   unsigned int length;
   if (parseHex(&line, &length) < 1) {
     fprintf(output, "result  CRC-Error: Unable to parse length: %s\r\n", line);
+    respondReady(output);
     return;
   }
 
   unsigned int crc;
   if (parseHex(&line, &crc) < 1) {
     fprintf(output, "result  CRC-Error: Unable to crc: %s\r\n", line);
+    respondReady(output);
     return;
   }
   
@@ -265,11 +265,13 @@ void cmdCRC(char *line, FILE *output) {
 
   if (pl != length) {
     fprintf(output, "result  CRC-Error: Payload length mismatch: %x != %x\r\n", pl, length);
+    respondReady(output);
     return;
   }
 
   if (ps != crc) {
     fprintf(output, "result  CRC-Error: Payload checksum mismatch: %x != %x\r\n", ps, crc);
+    respondReady(output);
     return;
   }
 
@@ -288,6 +290,7 @@ void commandRun(char *line, FILE *output) {
 
   if (!strncmp(line, "crc ", 4)) {
     cmdCRC(line+4, output);
+    return; // Avoid duplicate Ready
 
   } else if (!strncmp(line, "bm ", 3)) {
     cmdBufferMoves(line+3, output);

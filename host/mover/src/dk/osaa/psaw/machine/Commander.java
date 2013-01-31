@@ -7,6 +7,8 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class Commander implements CommanderInterface {
         serialPort = (SerialPort) commPort;
         serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
         
+        setLog(new File("/tmp/serial.log"));
         reader = new Thread(new SerialReader());
         reader.start();
         
@@ -82,6 +85,8 @@ public class Commander implements CommanderInterface {
 		log.fine("Running: "+cmd);
 		serialPort.getOutputStream().write(cmd.getBytes());
 		serialPort.getOutputStream().flush();
+
+		logSerial("TX", cmd);
 		
 		int patience = 10000 / 10; // Timeout 10 sec, sleep 10 ms per loop
 		while (patience-- > 0) {
@@ -136,7 +141,7 @@ public class Commander implements CommanderInterface {
 	
 	static final String READY = "\r\nReady\r\n";
 	void parseReply(StringBuilder replyString) {
-		int readyIndex = replyString.lastIndexOf(READY);
+		int readyIndex = replyString.indexOf(READY);
 		if (readyIndex < 0) {
 			return; // Moar!
 		}
@@ -146,6 +151,8 @@ public class Commander implements CommanderInterface {
 			String rs = replyString.substring(0, readyIndex+2);
 			replyString.delete(0, readyIndex+READY.length());
 			replyReady = true;
+			
+    		logSerial("RS", rs);
 			
 			for (String line : rs.split("[\r\n]+")) {
 				ReplyValue value = new ReplyValue(line);
@@ -170,9 +177,37 @@ public class Commander implements CommanderInterface {
 			}
 		}		
 	}
-
+	
+	FileWriter writer;
+	
+	private void setLog(File lf) {
+		try {
+			if (writer != null) {
+				writer.close();
+				writer = null;
+			}
+			if (lf != null) {
+				writer = new FileWriter(lf);
+			}
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "Fail", e);
+		}
+	}
+	
+	private void logSerial(String src, String str) {
+		if (writer != null) {
+    		try {
+				writer.append(src+": ");
+        		writer.append(str);
+        		writer.flush();
+			} catch (IOException e) {
+				log.log(Level.SEVERE, "Argh", e);
+			}
+		}
+	}
+	
+	
     public class SerialReader implements Runnable {
-
     	InputStream in;
     	public SerialReader() throws IOException {
     		in = serialPort.getInputStream();
@@ -184,7 +219,11 @@ public class Commander implements CommanderInterface {
                 int len = -1;
                 StringBuilder replyString = new StringBuilder();
                 while ( (len = this.in.read(buffer)) > -1) {
-                	replyString.append(new String(buffer,0,len));
+            		String str = new String(buffer,0,len);
+
+            		logSerial("RX", str);
+
+                	replyString.append(str);
                 	parseReply(replyString);
                 }
             } catch (IOException e) {
