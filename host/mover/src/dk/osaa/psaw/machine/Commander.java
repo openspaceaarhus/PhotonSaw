@@ -88,7 +88,7 @@ public class Commander implements CommanderInterface {
 
 		logSerial("TX", cmd);
 		
-		int patience = 10000 / 10; // Timeout 10 sec, sleep 10 ms per loop
+		int patience = 2000 / 10; // Timeout 2 sec, sleep 10 ms per loop
 		while (patience-- > 0) {
 			synchronized (reply) {
 				if (replyReady) {
@@ -103,15 +103,28 @@ public class Commander implements CommanderInterface {
 	
 	@Override
 	public synchronized CommandReply run(String bareCommand) throws IOException, ReplyTimeout {
+		int patience = 5;
 		while (true) {
-			val res = runOnce(bareCommand);
-			val result = res.get("result");
 			
-			if (!result.isOk() && result.getString().startsWith("CRC-Error")) {
-				log.warning("Repeating command due to CRC error: "+result.getString());
-				try {Thread.sleep(100);} catch (Exception e) { }
-			} else {
-				return res;
+			try {
+			
+				val res = runOnce(bareCommand);
+				val result = res.get("result");
+			
+				if (!result.isOk() && result.getString().startsWith("CRC-Error")) {
+					log.warning("Repeating command due to CRC error: "+result.getString());
+					try {Thread.sleep(100);} catch (Exception e) { }
+				} else {
+					return res;
+				}
+			} catch (ReplyTimeout to) {
+				
+				if (--patience > 0) {
+					log.log(Level.WARNING, "Repeating command due to reply timeout error patience="+patience, to);
+					try {Thread.sleep(100);} catch (Exception e) { }
+				} else {
+					throw to;
+				}
 			}
 		}
 	}
