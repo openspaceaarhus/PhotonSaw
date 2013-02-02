@@ -49,21 +49,24 @@ public class Commander implements CommanderInterface {
         serialPort = (SerialPort) commPort;
         serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
         
-        //setLog(new File("/tmp/serial.log"));
+        commandId = 0;
+        
+        setLog(new File("/tmp/serial.log"));
         reader = new Thread(new SerialReader());
         reader.start();
-        
+                
         return true;
     }
 	
-	public static final int CRC_WRAPPER_OVERHEAD = "crc 12345678 12345678 ".length();
+	public static final int WRAPPER_OVERHEAD = "wrap 12345678 12345678 12345678 ".length();
 	public static final int USB_LINE_BUFFER_SIZE= 1<<12;
-	public static final int MAX_COMMAND_LENGTH = USB_LINE_BUFFER_SIZE-CRC_WRAPPER_OVERHEAD;
-		
+	public static final int MAX_COMMAND_LENGTH = USB_LINE_BUFFER_SIZE-WRAPPER_OVERHEAD;
+	static long commandId;	
+	
 	/* (non-Javadoc)
 	 * @see dk.osaa.psaw.machine.CommanderInterface#run(java.lang.String)
 	 */
-	public synchronized CommandReply runOnce(String bareCommand) throws IOException, ReplyTimeout {
+	private synchronized CommandReply runOnce(String bareCommand) throws IOException, ReplyTimeout {
 		synchronized (reply) {
 			reply.clear();
 			replyReady = false;
@@ -76,7 +79,11 @@ public class Commander implements CommanderInterface {
 			bareSum += b;
 		}
 		
-		String cmd = "crc "+Long.toHexString(bareLength).toLowerCase()+" "+Long.toHexString(bareSum).toLowerCase()+" "+bareCommand+"\r";
+		String cmd = "wrap "+
+				Long.toHexString(bareLength).toLowerCase()+" "+
+				Long.toHexString(bareSum).toLowerCase()+" "+
+				Long.toHexString(commandId).toLowerCase()+" "+
+				bareCommand+"\r";
 		
 		if (cmd.length() >= USB_LINE_BUFFER_SIZE) {
 			throw new RuntimeException("The command line is too long: "+cmd);			
@@ -104,15 +111,20 @@ public class Commander implements CommanderInterface {
 	@Override
 	public synchronized CommandReply run(String bareCommand) throws IOException, ReplyTimeout {
 		int patience = 5;
+
+		if (commandId++ >= 0xffffffffL) {
+			commandId = 1;
+		}
+		logSerial("ID", Long.toString(commandId)+"\n");
+		
 		while (true) {
 			
-			try {
-			
+			try {				
 				val res = runOnce(bareCommand);
 				val result = res.get("result");
 			
-				if (!result.isOk() && result.getString().startsWith("CRC-Error")) {
-					log.warning("Repeating command due to CRC error: "+result.getString());
+				if (!result.isOk() && result.getString().startsWith("WRAP-Error")) {
+					log.warning("Repeating command due to WRAP error: "+result.getString());
 					try {Thread.sleep(100);} catch (Exception e) { }
 				} else {
 					return res;
@@ -182,11 +194,14 @@ public class Commander implements CommanderInterface {
 				reply.put("result", new ReplyValue("result OK"));
 			}
 
-			String cmd = reply.containsKey("command") ? reply.get("command").toString().substring("command ".length()) : "unknown";
-			if (!cmd.equals(reply.getSentCommand())) {
+			long wrapAck = reply.containsKey("wrap.ack") 
+					? Long.parseLong(reply.get("wrap.ack").toString().substring("wrap.ack ".length()), 16)
+					: 0;
+						
+			if (wrapAck != commandId) {
+				log.warning("Ignoring reply because of id mismatch: "+wrapAck+" != "+commandId+"\nreply: "+reply.toString());
 				reply.clear();
 				replyReady = false;
-				log.warning("Ignoring reply that doesn't match the sent command: '"+cmd+"' is not '"+reply.getSentCommand()+"'");
 			}
 		}		
 	}

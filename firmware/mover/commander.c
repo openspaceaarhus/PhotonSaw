@@ -54,7 +54,7 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "mr: Reset motor drivers and turn them off\r\n");
     fiprintf(output, "aa on|off: Turn assist air on or off\r\n");
     fiprintf(output, "ex on|off: Turn exhaust on or off\r\n");
-    fiprintf(output, "crc <length> <crc> <command>: Run a command only if the length and checksum matches\r\n");
+    fiprintf(output, "crc <length> <crc> <id> <command>: Run a command only if the length and checksum matches\r\n");
 }
 
 void cmdAssistAir(char *line, FILE *output) {
@@ -233,17 +233,26 @@ void cmdLaserPWM(char *line, FILE *output) {
   fiprintf(output, "result  OK\r\n");
 }
 
-void cmdCRC(char *line, FILE *output) {
+unsigned int lastCommandId;
+
+void cmdWRAP(char *line, FILE *output) {
   unsigned int length;
   if (parseHex(&line, &length) < 1) {
-    fprintf(output, "result  CRC-Error: Unable to parse length: %s\r\n", line);
+    fprintf(output, "result  WRAP-Error: Unable to parse length: %s\r\n", line);
     respondReady(output);
     return;
   }
 
   unsigned int crc;
   if (parseHex(&line, &crc) < 1) {
-    fprintf(output, "result  CRC-Error: Unable to crc: %s\r\n", line);
+    fprintf(output, "result  WRAP-Error: Unable to parse crc: %s\r\n", line);
+    respondReady(output);
+    return;
+  }
+  
+  unsigned int cmdid;
+  if (parseHex(&line, &cmdid) < 1) {
+    fprintf(output, "result  WRAP-Error: Unable to parse id: %s\r\n", line);
     respondReady(output);
     return;
   }
@@ -264,18 +273,31 @@ void cmdCRC(char *line, FILE *output) {
   }
 
   if (pl != length) {
-    fprintf(output, "result  CRC-Error: Payload length mismatch: %x != %x\r\n", pl, length);
+    fprintf(output, "result  WRAP-Error: Payload length mismatch: %x != %x\r\n", pl, length);
     respondReady(output);
     return;
   }
 
   if (ps != crc) {
-    fprintf(output, "result  CRC-Error: Payload checksum mismatch: %x != %x\r\n", ps, crc);
+    fprintf(output, "result  WRAP-Error: Payload checksum mismatch: %x != %x\r\n", ps, crc);
     respondReady(output);
     return;
   }
 
-  fiprintf(output, "command %s\r\n", line);
+  fiprintf(output, "wrap.ack %x\r\n", cmdid);
+
+  if (cmdid == lastCommandId) { 
+    // Repeat command, so check if it's not an idempotent command and skip it if it is
+    lastCommandId = cmdid;
+
+    if (!strncmp(line, "bm ", 3)) {
+      fiprintf(output, "result  OK\r\n");
+      printBufferState(output);
+      return;
+    }
+  }
+
+  lastCommandId = cmdid;
   commandRun(line, output); 
 }
 
@@ -288,8 +310,8 @@ void commandRun(char *line, FILE *output) {
     return;
   }
 
-  if (!strncmp(line, "crc ", 4)) {
-    cmdCRC(line+4, output);
+  if (!strncmp(line, "wrap ", 5)) {
+    cmdWRAP(line+5, output);
     return; // Avoid duplicate Ready
 
   } else if (!strncmp(line, "bm ", 3)) {
