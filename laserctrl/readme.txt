@@ -2,9 +2,6 @@ Fixed for V2:
 
 * Too small/few power vias (on the +24V/GND main power rails)
 * Wrong foot print for Q3 (BC807 for USB pull up): Swapped pin 1 and 2
-
-Fixed for V2, in schematic only:
-
 * The PWM and Fire optocouplers are too slow replace them with one VO 2630-X007T which can do 10 MHz.
 * Add diode to the main fire signal that goes to the WD to make it impossible for the WD to fire the laser on its own.
 * Switch the small mini-melf diodes to SOT-23, even where only one diode is needed (easier to mount).
@@ -18,11 +15,16 @@ Fixed for V2, in schematic only:
  * Meh: I2C pins to allow connecting a couple of TMP006 fire sensors or GPIO extenders.
  * Add extra GPIO pins to the bulkhead header for things like:
   * Intrusion switch inputs: don't start if open.
-* Meh: Water flow sensor on P1.16 cannot generate interrupts, needs to be moved to port 0 or port 2.
+* Mirrored silkscreen text on bottom side
+
+TODO in V2:
+
+* Soldermask fuckup on all molex headers.
+
 
 Bugs found in V1:
 
-* Mirrored silkscreen text on bottom side
+* Meh: Water flow sensor on P1.16 cannot generate interrupts, needs to be moved to port 0 or port 2.
 * Footprint for 32768 Hz xtal: 3x7mm solder pad in stead of glue.
 
 Features missing in V1:

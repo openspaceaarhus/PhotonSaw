@@ -11,7 +11,7 @@ while (my $line = <IN>) {
 	  my @l = split / /, $line;
 	  $l[3] = 197;
 	  $l[4] = 197;
-	  $l[7] = 45;
+	  $l[6] = 45;
 	  $l[8] = 'V';
       
 	  $line = join ' ', @l;
