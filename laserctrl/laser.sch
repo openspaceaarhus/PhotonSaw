@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 01 Dec 2012 10:07:49 PM CET
+EESchema Schematic File Version 2  date Sat 16 Feb 2013 03:37:53 PM CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,13 +48,14 @@ LIBS:little-logic
 LIBS:con-molex
 LIBS:con-molex-2
 LIBS:1g08
+LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 5 11
 Title ""
-Date "17 oct 2012"
+Date "16 feb 2013"
 Rev ""
 Comp ""
 Comment1 ""
@@ -758,5 +759,5 @@ Text Notes 8650 3750 0    50   ~ 0
 Text Notes 8650 3650 0    50   ~ 0
 ~Enable
 Text Notes 9200 3600 0    50   ~ 0
-Terminal 1 Enable (pull down) is connected\nto Terminal 4 GND at Laser PSU connector.\n\nPin 1 on this connector is Terminal 2 on the laser\nPin 2 -> Terminal 3\nPin 3 -> Terminal 4\nPin 4 -> Terminal 5\nPin 5 -> Terminal 6\n\nNotice that the modulation input\nis active-high, so full power is 100% high\nwhile zero power is 100 low, this is opposite\nlogic to the three enable inputs.
+Terminal 1 Enable (pull down) is connected\nto Terminal 4 GND at Laser PSU connector.\n\nPin 1 on this connector is Terminal 2 on the laser\nPin 2 -> Terminal 3\nPin 3 -> Terminal 4\nPin 4 -> Terminal 5\nPin 5 -> Terminal 6\n\nNotice that the modulation input\nis active-high, so full power is 100% high\nwhile zero power is 100% low, this is opposite\nlogic to the three enable inputs.
 $EndSCHEMATC

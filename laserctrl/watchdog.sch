@@ -1,4 +1,4 @@
-EESchema Schematic File Version 2  date Sat 01 Dec 2012 10:07:49 PM CET
+EESchema Schematic File Version 2  date Sat 16 Feb 2013 03:37:53 PM CET
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -48,13 +48,14 @@ LIBS:little-logic
 LIBS:con-molex
 LIBS:con-molex-2
 LIBS:1g08
+LIBS:laserctrl-cache
 EELAYER 25  0
 EELAYER END
 $Descr A4 11700 8267
 encoding utf-8
 Sheet 8 11
 Title ""
-Date "17 oct 2012"
+Date "16 feb 2013"
 Rev ""
 Comp ""
 Comment1 ""
@@ -62,6 +63,8 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Wire Wire Line
+	3500 2550 3500 2700
 Wire Wire Line
 	3650 4000 3750 4000
 Wire Wire Line
@@ -106,7 +109,7 @@ Wire Wire Line
 Wire Wire Line
 	5650 2450 5750 2450
 Wire Wire Line
-	3500 1800 3500 1900
+	3400 1800 3400 1900
 Connection ~ 3500 2550
 Wire Wire Line
 	1825 2200 1500 2200
@@ -124,8 +127,6 @@ Wire Wire Line
 	1500 2300 1825 2300
 Wire Wire Line
 	1500 2100 1825 2100
-Wire Wire Line
-	3500 2700 3500 2400
 Wire Wire Line
 	3750 2550 3300 2550
 Wire Wire Line
@@ -178,6 +179,9 @@ Wire Wire Line
 	3750 3400 3650 3400
 Wire Wire Line
 	3050 4000 3150 4000
+Wire Wire Line
+	3400 2400 3400 2550
+Connection ~ 3400 2550
 $Comp
 L GND #PWR095
 U 1 1 4ED27DA7
@@ -310,10 +314,10 @@ $EndComp
 $Comp
 L +3.3V #PWR0102
 U 1 1 4EB83F32
-P 3500 1800
-F 0 "#PWR0102" H 3500 1760 30  0001 C CNN
-F 1 "+3.3V" H 3500 1910 30  0000 C CNN
-	1    3500 1800
+P 3400 1800
+F 0 "#PWR0102" H 3400 1760 30  0001 C CNN
+F 1 "+3.3V" H 3400 1910 30  0000 C CNN
+	1    3400 1800
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -370,10 +374,10 @@ $EndComp
 $Comp
 L R R65
 U 1 1 4EA3E4C2
-P 3500 2150
-F 0 "R65" V 3580 2150 50  0000 C CNN
-F 1 "10k" V 3500 2150 50  0000 C CNN
-	1    3500 2150
+P 3400 2150
+F 0 "R65" V 3480 2150 50  0000 C CNN
+F 1 "10k" V 3400 2150 50  0000 C CNN
+	1    3400 2150
 	1    0    0    -1  
 $EndComp
 $Comp
