@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+open IN, "<con-molex.mod" or die "Failed to read $!";
+open OUT, ">lcon-molex.mod.new" or die "Failed to write $!";
+
+while (my $line = <IN>) {
+      chomp $line;
+      if ($line =~ /^At STD N 00A88001$/) {
+	  my @l = split / /, $line;
+	  $l[3] = '00E8FFFF';
+      
+	  $line = join ' ', @l;
+      }
+      print OUT "$line\n";
+}
+
+
+close OUT;
+close IN;

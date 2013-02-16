@@ -16,10 +16,9 @@ Fixed for V2:
  * Add extra GPIO pins to the bulkhead header for things like:
   * Intrusion switch inputs: don't start if open.
 * Mirrored silkscreen text on bottom side
+* Soldermask fuckup on all molex headers fixed in lib
 
 TODO in V2:
-
-* Soldermask fuckup on all molex headers.
 
 
 Bugs found in V1:
