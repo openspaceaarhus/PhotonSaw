@@ -9,7 +9,7 @@ import dk.osaa.psaw.web.api.JSONResult;
 public class JogHandler extends AbstractJSONHandler {
 
 	public JogHandler(PhotonSaw ps) {
-		super(ps, "jog");
+		super(ps, "jog", "Set jogging speeds.");
 	}
 	
 	public JSONResult jog(JSONParameters param) {

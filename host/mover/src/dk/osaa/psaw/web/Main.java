@@ -13,6 +13,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
+import dk.osaa.psaw.web.api.ApiIndexHandler;
 import dk.osaa.psaw.web.handlers.JogHandler;
 
 @Log
@@ -50,9 +51,13 @@ public class Main {
 	        
 	        // Set up the handler stack, each request is passed to each handler in turn until one of them handles the request 
 	        HandlerList handlers = new HandlerList();
+	        
 	        handlers.setHandlers(new Handler[] {
 	        			resource_handler,    // Serves real files from disk.
-	        			new JogHandler(api), // Jogging the machine 
+
+	        			new JogHandler(api), // Jogging the machine
+	        			new ApiIndexHandler(handlers),
+	        			
 	        			new DefaultHandler() // 404
 	        			});
 	        server.setHandler(handlers);

@@ -19,6 +19,8 @@ import dk.osaa.psaw.machine.SimulatedCommander;
 public class Simulate {
 	
 	static final String[] files = {
+		"raspberry-pi-box.svg",
+		/*
 		"fl.svg",
 		"iss.svg",
 		
@@ -27,7 +29,7 @@ public class Simulate {
 	    "rotated-image.svg",
 	    "casing-raster.svg",
 	    "zoid-color.svg",
-	    
+	    */
 		};
 	static final String ROOT = "/home/ff/projects/osaa/PhotonSaw/host/testdata";
 	

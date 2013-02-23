@@ -67,8 +67,9 @@ public class Mover {
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/circle-and-rect.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/arcadebox.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/fl.svg");
+//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/fl.svg");
 //			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/iss.svg");
+			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/raspberry-pi-box.svg");
 
 			
 			Job testJob = new Job();

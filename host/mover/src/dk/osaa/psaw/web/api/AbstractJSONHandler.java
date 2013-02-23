@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.Getter;
 import lombok.extern.java.Log;
 
 import org.eclipse.jetty.server.Request;
@@ -30,10 +31,14 @@ public class AbstractJSONHandler extends AbstractHandler {
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	
+	@Getter
 	String prefix;
-	protected AbstractJSONHandler(PhotonSaw ps, String prefix) {
+	@Getter
+	String description;
+	protected AbstractJSONHandler(PhotonSaw ps, String prefix, String desc) {
 		this.ps = ps;
 		this.prefix = prefix;
+		this.description = desc;
 	}
 	
 	@Override
