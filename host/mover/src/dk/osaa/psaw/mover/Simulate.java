@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
 
-import lombok.extern.java.Log;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import lombok.extern.java.Log;
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
@@ -17,21 +19,6 @@ import dk.osaa.psaw.machine.SimulatedCommander;
 
 @Log
 public class Simulate {
-	
-	static final String[] files = {
-		"raspberry-pi-box.svg",
-		/*
-		"fl.svg",
-		"iss.svg",
-		
-		"casing2.svg", "casing2-orig.svg", "casing2-opt.svg", "casing2-opt-group.svg",
-	    "up-engraving.svg",
-	    "rotated-image.svg",
-	    "casing-raster.svg",
-	    "zoid-color.svg",
-	    */
-		};
-	static final String ROOT = "/home/ff/projects/osaa/PhotonSaw/host/testdata";
 	
 	public static void main(String[] args) {
 		PhotonSaw ps = null;
@@ -48,21 +35,31 @@ public class Simulate {
 
 			ps = new PhotonSaw(cfg);
 
+			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+			FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
+			fc.setFileFilter(fcf);
+			fc.setMultiSelectionEnabled(true);
+			int rv = fc.showOpenDialog(null);
+			if(rv != JFileChooser.APPROVE_OPTION) {
+				System.exit(0);
+			}
 			
-			for (String name : files) {
-				File svgFile = new File(ROOT+"/"+name);
-
+			for (File svgFile : fc.getSelectedFiles()) {
+				File savepath = new File(svgFile.getParent() + "/out");
+				if(!savepath.exists()) {
+					savepath.mkdir();
+				}
 				Job testJob = new Job();
 				testJob.loadSVG(cfg, svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));				
 				//testJob.logStructure();			
-				testJob.storeJob(new FileOutputStream(ROOT+"/out/"+svgFile.getName()+".psjob"));
+				testJob.storeJob(new FileOutputStream(savepath+"/"+svgFile.getName()+".psjob"));
 				
 				
-				SVGRenderTarget rt = new SVGRenderTarget(new File(ROOT+"/out/"+svgFile.getName()+".svg"));
+				SVGRenderTarget rt = new SVGRenderTarget(new File(savepath+"/"+svgFile.getName()+".svg"));
 				testJob.render(rt);
 				rt.done();
 				
-				SimulatedCommander.setLog(new File(ROOT+"/out/"+svgFile.getName()+".moves"));
+				SimulatedCommander.setLog(new File(savepath+"/"+svgFile.getName()+".moves"));
 			
 				ps.getPlanner().startJob(testJob);			
 	

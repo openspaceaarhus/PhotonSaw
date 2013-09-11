@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import dk.osaa.psaw.config.Configuration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
@@ -37,41 +40,17 @@ public class Mover {
 			ps = new PhotonSaw(cfg);
 	    	
 			//testJob.loadTest();
-			
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/rotated-image.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/N64_case.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing4-vector.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/up-engraving.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/text-and-shapes-as-paths-stroke.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/simple-stroke.svg");
-			
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/au109021.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/laser-focus-guide.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/butterfly-3.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/zoid-color.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/osaa-10x10.svg"); // Zoid cut
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/OSAA-10x10-laser.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/lens-ring.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/speed-guide.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/power-guide.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/3mm-box.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/club-mate-holder.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing-raster.svg"); // Broken
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/casing2-helper.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/wall.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/url.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/MAGENTA_LASER.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/testpiece.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/x-end.plate.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/circle-and-rect.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/arcadebox.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/fl.svg");
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/iss.svg");
 
-//			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/flexbox.svg");
-			File svgFile = new File("/home/ff/projects/osaa/PhotonSaw/host/testdata/raspberry-pi-box.svg");
+			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+			FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
+			fc.setFileFilter(fcf);
+			fc.setMultiSelectionEnabled(false);
+			int rv = fc.showOpenDialog(null);
+			if(rv != JFileChooser.APPROVE_OPTION) {
+				System.exit(0);
+			}
+
+			File svgFile = fc.getSelectedFile();
 
 			
 			Job testJob = new Job();
