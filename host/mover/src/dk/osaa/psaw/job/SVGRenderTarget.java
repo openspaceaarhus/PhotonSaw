@@ -77,8 +77,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 		Point pp = new Point();
 		pp.axes[0] = 0.0;
 		pp.axes[1] = 0.0;
-		path.add(pp);
-		linewidth = LWMOVE;
+		moveTo(pp);
 		outputPath();
 		try {
 			out.write("</svg>\n");
