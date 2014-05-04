@@ -1,0 +1,9 @@
+<holes>
+	<import from="thorlabs-holder" cx="0" cy="0" rotate="0"/>	
+	<path d="M -8 7 L -8 -15 L 8 -15 L 8 7" />
+<!--
+	<path d="M -12.7 15 L -12.7 20 L 12.7 20 L 12.7 15" />
+	<path d="M -8 20 L -8 25 L 8 25 L 8 20" />
+-->
+	<path d="M -12.7 15 L -12.7 20 L -8 20 L -8 23 L 8 23 L 8 20 L 12.7 20 L 12.7 15" />
+</holes>

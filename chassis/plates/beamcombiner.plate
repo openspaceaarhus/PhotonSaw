@@ -1,0 +1,12 @@
+<plate width="115" height="130" radius="2.5">
+       <text x="20" y="30">1 pcs, 4 mm Al</text>
+
+       <import from="thorlabs-mirror" cx="35" cy="25" rotate="45"/>
+       <import from="thorlabs-laser" cx="26.34" cy="120" rotate="180"/>
+
+       <hole cx="15" cy="40" d="5"/>
+       <hole cx="15" cy="80" d="5"/>
+
+       <hole cx="100" cy="10" d="5"/>
+       <hole cx="100" cy="80" d="5"/>
+</plate>
