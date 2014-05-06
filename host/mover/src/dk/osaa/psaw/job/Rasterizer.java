@@ -91,18 +91,18 @@ public class Rasterizer {
 			}
 		}
 		
-		/* Note: We use cutTo for the lead-in/out lines, this is because we need to hit the desired maxSpeed,
+		/* Note: We use cutTo for the lead-in/out lines, this is because we need to hit the desired getRasterSpeed(),
 		 * not the maximum speed of the machine as moveTo would do. 
 		 */
 		
 		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y))); // Will be optimized out for every line except the first.
-		target.moveToAtSpeed(transformation.transform(new Point2D.Double(x0,        y)), settings.maxSpeed);
-//		target.cutTo(        transformation.transform(new Point2D(x0,        y)), 0, settings.maxSpeed);
+		target.moveToAtSpeed(transformation.transform(new Point2D.Double(x0,        y)), settings.getRasterSpeed());
+//		target.cutTo(        transformation.transform(new Point2D(x0,        y)), 0, settings.getRasterSpeed());
 
-		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings.intensity, settings.maxSpeed, pixels);
+		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings.getIntensity(), settings.getRasterSpeed(), pixels);
 
 		//target.moveTo(transformation.transform(new Point2D(x1+leadin, y+yStep))); // stopping move, so we don't care about what speed it's at.
-		target.cutTo(        transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), 0, settings.maxSpeed);
+		target.cutTo(        transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), 0, settings.getRasterSpeed());
 	}
 	
 	static void rasterize(JobNodeGroup root, PointTransformation pointTransformation, JobRenderTarget target) {
@@ -148,7 +148,7 @@ public class Rasterizer {
 			
 			// Make sure the line pitch is a whole number of y-steps or we'll end up with a shitty looking raster
 			double linePitch = Math.max(target.getEngravingYStepSize(),
-					                    target.getEngravingYStepSize() * Math.round(eg.settings.rasterLinePitch/target.getEngravingYStepSize()));
+					                    target.getEngravingYStepSize() * Math.round(eg.settings.getRasterLinePitch()/target.getEngravingYStepSize()));
 			
 			double pixelPitch = linePitch; // TODO: This means that we have square pixels, do we want that or should we also have a pixelPitch setting?
 			
@@ -202,9 +202,9 @@ public class Rasterizer {
 		     * For each line of the raster we need to figure out the first and last black pixel, as those positions are needed to calculate 
 		     * how wide this particular scanline is, if it doesn't have any black pixels at all, then we need to skip the line entirely.
 		     */
-			target.setAssistAir(eg.settings.assistAir);
+			target.setAssistAir(eg.settings.isAssistAir());
 			
-			double leadin = target.getEngravingXAccelerationDistance(eg.settings.maxSpeed);
+			double leadin = target.getEngravingXAccelerationDistance(eg.settings.getRasterSpeed());
 
 			double y = eg.bb.getY();
 			int scanNumber = 0;
@@ -242,8 +242,8 @@ public class Rasterizer {
 					}
 				}
 				
-				if (eg.settings.passes > 1) {
-					for (int pass=1;pass<eg.settings.passes;pass++) {
+				if (eg.settings.getPasses() > 1) {
+					for (int pass=1;pass<eg.settings.getPasses();pass++) {
 						renderScanline(x0, x1, eg.settings, target, pointTransformation, (scanNumber++ & 1) == 1, y, leadin, 0, pixels);
 					}					
 				}

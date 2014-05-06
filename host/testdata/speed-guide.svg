@@ -50,7 +50,7 @@
   <g
      inkscape:label="1-pass"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1" style="photonsaw-power:20">
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.35433071999999999;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;photonsaw-speed:5"
        id="rect6679"
@@ -125,7 +125,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="2-pass" style="photonsaw-passes:2">
+     inkscape:label="2-pass" style="photonsaw-power:50">
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.35433071999999999;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;photonsaw-speed:5"
        id="rect6679-1"
@@ -200,7 +200,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer6"
-     inkscape:label="3-pass" style="photonsaw-passes:3">
+     inkscape:label="3-pass" style="photonsaw-power:80">
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.35433071999999999;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;photonsaw-speed:5"
        id="rect6679-1-8"
@@ -277,7 +277,7 @@
      id="layer7"
      inkscape:label="cut">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:0.35433072;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;photonsaw-passes:3;photonsaw-speed:15"
+       style="fill:none;stroke:#000000;stroke-width:0.35433072;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;photonsaw-power:80;photonsaw-passes:3;photonsaw-speed:15"
        id="rect7720"
        width="440"
        height="152"

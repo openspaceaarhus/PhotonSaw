@@ -1,9 +1,9 @@
 package dk.osaa.psaw.job;
 
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
@@ -12,16 +12,16 @@ import lombok.extern.java.Log;
 public class RasterNode extends LaserNode {
 
 	@Getter
-	Image image;
+	BufferedImage image;
 	
-	RasterNode(String id, AffineTransform xform, LaserNodeSettings settings, Image image) {
+	RasterNode(String id, AffineTransform xform, LaserNodeSettings settings, BufferedImage image) {
 		super(id, xform, settings);
 		this.image = image;
 	}
 
 	@Override
 	public void render(JobRenderTarget target, PointTransformation transformation) {
-		// We don't do anything here, because only the vector bits get to render in order.
+		// We don't do anything here, because only the vector bits get to render in job-order.
 	}
 
 	@Override
@@ -51,6 +51,16 @@ public class RasterNode extends LaserNode {
 		r.setRect(xmin, ymin, xmax-xmin, ymax-ymin);
 		//log.info("Image bounding box: "+r);
 		return r;
+	}
+
+	@Override
+	public Point2D getStartPoint() {
+		return null;
+	}
+
+	@Override
+	public Point2D getEndPoint() {
+		return null;
 	}
 
 }

@@ -344,7 +344,7 @@ for my $l (keys %{$doc{path}}) {
 		die "Failed to encode path $e->{o}";
 	    }
 	}
-	$svg .= qq{<path d="$d" stroke-dasharray="10,10,2.5,10" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>\n};
+	$svg .= qq{<path d="$d" stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>\n};
     }
 
     $svg .= qq{ </g>};

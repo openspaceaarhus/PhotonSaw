@@ -1,7 +1,14 @@
-$(document).ready(function(){
+
+jQuery(function($) {
+
+//$(document).ready(function(){
    resize();
    
-   $("#jogger").mousedown(jogStart).mousemove(jogChange).mouseup(jogStop).mouseleave(jogStop);
+   $("#jogger")
+   	.mousedown(jogStart)
+   	.mousemove(jogChange)
+   	.mouseup(jogStop)
+   	.mouseleave(jogStop);
 });
 
 $(window).resize(function(){
@@ -97,12 +104,14 @@ function jogStop(e){
 	if (jogInterval != null) {
 		clearInterval(jogInterval);
 		jogInterval = null;
-	}	
-	jogVector.x = 0;
-	jogVector.y = 0;
-	jogVector.z = 0;
-	jogVector.a = 0;
-	sendJogCommand();
+	}
+	if (jogVector != null) {	
+		jogVector.x = 0;
+		jogVector.y = 0;
+		jogVector.z = 0;
+		jogVector.a = 0;
+		sendJogCommand();
+	}
 	drawJogger();
 }
 

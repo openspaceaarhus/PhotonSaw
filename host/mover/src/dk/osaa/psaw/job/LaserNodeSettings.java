@@ -8,34 +8,39 @@ import lombok.Getter;
  */
 public class LaserNodeSettings {
 	@Getter
-	double intensity;
+	private double intensity;
 
 	@Getter
-	double maxSpeed;
+	private double maxSpeed;
 	
 	@Getter
-	int passes;
+	private int passes;
 	
 	@Getter
-	boolean assistAir;
+	private boolean assistAir;
 	
 	@Getter
-	int pulsesPermm; 
+	private int pulsesPermm; 
 	
 	@Getter
-	int pulseDuration; // In us
+	private double pulseDuration; 
 	
 	@Getter
-	double rasterLinePitch; // In mm
+	private double rasterLinePitch;
+
+	@Getter
+	private double rasterSpeed; // In mm/s
 	
-	public LaserNodeSettings(double intensity, double maxSpeed, int passes, boolean assistAir, int pulsesPermm, int pulseDuration, double rasterLinePitch) {
+	public LaserNodeSettings(double intensity, double maxSpeed, int passes, boolean assistAir,
+			                 int pulsesPermm, double pulseDuration, double rasterLinePitch, double rasterSpeed) {
+		this.assistAir = assistAir;		
 		this.intensity=intensity;
 		this.maxSpeed=maxSpeed;
-		this.passes=passes;
-		this.assistAir = assistAir;		
-		this.pulsesPermm = pulsesPermm; 
-		this.pulseDuration = pulseDuration;
 		this.rasterLinePitch = rasterLinePitch;
+		this.passes=passes;
+		this.pulseDuration = pulseDuration;
+		this.pulsesPermm = pulsesPermm; 
+		this.rasterSpeed = rasterSpeed;
 	}
 	
 	public boolean equalsRaster(LaserNodeSettings other) {
@@ -43,6 +48,9 @@ public class LaserNodeSettings {
 				&& other.intensity == intensity 
 				&& other.maxSpeed == maxSpeed
 				&& other.rasterLinePitch == rasterLinePitch
-				&& other.passes == passes;
+				&& other.passes == passes 
+				&& other.rasterSpeed==rasterSpeed
+				&& other.pulseDuration == pulseDuration
+				&& other.pulsesPermm == pulsesPermm;
 	}
 }

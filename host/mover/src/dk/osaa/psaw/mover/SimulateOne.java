@@ -38,7 +38,7 @@ public class SimulateOne {
 
 			ps = new PhotonSaw(cfg);
 
-			File svgFile = new File(System.getProperty("user.home"), "projects/iris/iris.svg");
+			File svgFile = new File(System.getProperty("user.dir"), "../testdata/fill.svg");
 			
 			File savepath = new File(svgFile.getParent() + "/out");
 			if(!savepath.exists()) {

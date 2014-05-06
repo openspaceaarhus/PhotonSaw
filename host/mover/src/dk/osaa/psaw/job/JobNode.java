@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -17,4 +18,6 @@ public interface JobNode {
 	public void setParent(JobNodeGroup parent);
 	public JobNodeID getNodeID();
 	public Rectangle2D getBoundingBox();
+	public Point2D getStartPoint();
+	public Point2D getEndPoint();
 }

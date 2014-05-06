@@ -26,6 +26,8 @@ public class Mover {
 	public static void main(String[] args) {
 		PhotonSaw ps = null;
 		try {
+			File svgFile = args.length==1 ? new File(args[0]) : null;
+			
 	    	File cfgFile = new File("test.psconfig");
 //	    	File cfgFile = new File("simulate.psconfig");
 	    	Configuration cfg;
@@ -40,22 +42,24 @@ public class Mover {
 			ps = new PhotonSaw(cfg);
 	    	
 			//testJob.loadTest();
-
-			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
-			FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
-			fc.setFileFilter(fcf);
-			fc.setMultiSelectionEnabled(false);
-			int rv = fc.showOpenDialog(null);
-			if(rv != JFileChooser.APPROVE_OPTION) {
-				System.exit(0);
+			
+			if (svgFile == null) {
+				JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+				FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
+				fc.setFileFilter(fcf);
+				fc.setMultiSelectionEnabled(false);
+				int rv = fc.showOpenDialog(null);
+				if(rv != JFileChooser.APPROVE_OPTION) {
+					System.exit(0);
+				}
+	
+				svgFile = fc.getSelectedFile();
 			}
-
-			File svgFile = fc.getSelectedFile();
-
+			
 			
 			Job testJob = new Job();
 			testJob.loadSVG(cfg, svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
-			
+			testJob.optimizeCuts();
 			testJob.logStructure();
 		
 			testJob.storeJob(new FileOutputStream("/tmp/"+svgFile.getName()+".psjob"));

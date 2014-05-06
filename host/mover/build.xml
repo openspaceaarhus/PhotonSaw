@@ -6,6 +6,16 @@
     <path id="classpath">
         <fileset dir="lib" includes="**/*.jar"/>
     </path>
+	
+	<pathconvert property="mf.classpath" pathsep=" ">
+		<path refid="classpath"/>
+		<mapper>
+			<chainedmapper>
+				<flattenmapper/>
+				<globmapper from="*.jar" to="lib/*.jar"/>
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
 
     <target name="clean">
         <delete dir="build"/>
@@ -23,8 +33,15 @@
     <target name="jar" depends="compile">
         <mkdir dir="build/jar"/>
         <jar destfile="build/jar/photonsaw-host.jar">
-		  <fileset dir="build/classes"/> 
+		  	<fileset dir="build/classes"/> 
+        	<zipgroupfileset dir="lib" includes="*.jar"/>
+
+        	<manifest>
+	          	<attribute name="Main-Class" value="dk.osaa.psaw.mover.Mover"/>
+        		<attribute name="Class-Path" value="${mf.classpath}"/>
+	        </manifest>	        	
 		</jar>
+
     </target>
 
 </project>

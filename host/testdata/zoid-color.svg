@@ -52,7 +52,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     style="display:inline;photonsaw-power:40; photonsaw-speed:300; photonsaw-linepitch:0.1">
+     style="display:inline;photonsaw-power:80; photonsaw-speed:5000; photonsaw-linepitch:0.1">
     <image
        y="2.2193253"
        x="154.28569"
@@ -469,7 +469,7 @@ O/r9aKK7ST//2Q==
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="cut"
-     style="display:inline;photonsaw-power:80; photonsaw-speed:7">
+     style="display:inline;photonsaw-power:80; photonsaw-speed:20">
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3058"

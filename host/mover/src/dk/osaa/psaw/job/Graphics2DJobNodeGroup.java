@@ -1,5 +1,6 @@
 package dk.osaa.psaw.job;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -30,7 +31,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import lombok.extern.java.Log;
-
 import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 
 /**
@@ -81,7 +81,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	 */
 	@Getter
 	@Setter
-	private int defaultPulseDuration;
+	private double defaultPulseDuration;
 	
 	/**
 	 * The number of pulses per mm, if no photonsaw-ppmm style is used 
@@ -89,6 +89,10 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	@Getter
 	@Setter
 	private int defaultPpmm;
+	
+	@Getter
+	@Setter
+	private double defaultRasterSpeed;
 
 	public Graphics2DJobNodeGroup(Job job, JobNodeGroup jobNodeGroup) {
 		super(0, 0, 2000, 1000);
@@ -98,8 +102,10 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		defaultPower = 80;
 		maximumPower = 80;
 		defaultSpeed = 6;
-		defaultPulseDuration = 3000; // 3 ms
+		defaultPulseDuration = 3; // 3 ms
 		defaultPpmm = 100;
+		defaultRasterSpeed = 500;
+		setRasteredImageSizeMaximum(256);
 	}
 
 	@Override
@@ -109,7 +115,15 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	}
 	
 	LaserNodeSettings getLaserNodeSettings() {
-		return new LaserNodeSettings(getPower()/maximumPower, getSpeed(), getPasses(), getAssistAir(), getPulsesPermm(), getPulseDuration(), getRasterLinePitch());
+		return new LaserNodeSettings(
+				getPower()/maximumPower,
+				getSpeed(),
+				getPasses(),
+				getAssistAir(),
+				getPulsesPermm(),
+				getPulseDuration(),
+				getRasterLinePitch(),
+				getRasterSpeed());
 	}
 
 	void addChild(JobNode newChild) {
@@ -129,15 +143,10 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		for (val elem : stack) {
 			
 			String id=elem.getId();
-			String label = id;
-			
-			StyleAttribute labelAttr = new StyleAttribute("inkscape:label");
-			try {
-				elem.getPres(labelAttr);
-			} catch (SVGException ex) {
-			}
-			if (labelAttr != null) {
-				label = labelAttr.getStringValue();
+			String groupMode = getStyleAttr("inkscape:groupmode");			
+			String label = getStyleAttr("inkscape:label");
+			if (label == null) {
+				label = id;
 			}
 			
 			JobNode jn = parent.getChildById(id);
@@ -145,6 +154,11 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			if (jn == null) {
 				val np = new JobNodeGroup(id, null);
 				np.setName(label);
+				
+				if (groupMode != null && groupMode.equals("layer")) {
+					np.setLayer(true);
+				}
+				
 				parent.addChild(np);
 				parent = np;
 
@@ -181,221 +195,195 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			
 	public void fill(Shape s) {
 		// TODO: Add some sort of handling for filling shapes in stead of ignoring them
-		log.warning("Going to cut outline of shape in stead of filling it");
-		writeClosingDraw(s);
-		// writeClosingFill(s);
+		writeClosingFill(s);
 	}
 
 	@Override
 	protected void writeClosingDraw(Shape s) {
-		if (s instanceof Line2D) {
-			Line2D l = (Line2D) s;
-			val points = new ArrayList<Point2D>();
-			points.add(new Point2D.Double(l.getX1(), l.getY1()));
-			points.add(new Point2D.Double(l.getX2(), l.getY2()));
-			addCutPath(points);
-			return;
+		PathIterator segments = s.getPathIterator(null, curveFlatness);
+		double[] coordsCur = new double[6];
+		double[] pointPrev = new double[2];
+		ArrayList<Point2D> points = null;
 
-		} else if (s instanceof Rectangle2D) {
-			Rectangle2D r = (Rectangle2D) s;
-			val points = new ArrayList<Point2D>();
-			points.add(new Point2D.Double(r.getX(), r.getY()));
-			points.add(new Point2D.Double(r.getX() + r.getWidth(), r.getY()));
-			points.add(new Point2D.Double(r.getX() + r.getWidth(), r.getY() + r.getHeight()));
-			points.add(new Point2D.Double(r.getX(), r.getY() + r.getHeight()));
-			points.add(new Point2D.Double(r.getX(), r.getY()));
-			addCutPath(points);
-			return;
+		while (!segments.isDone()) {
+			int segmentType = segments.currentSegment(coordsCur);
 
-		} else if (s instanceof Ellipse2D) {
-			/*
-			 * Ellipse2D e = (Ellipse2D) s; double x = e.getX() +
-			 * e.getWidth()/2.0; double y = e.getY() + e.getHeight()/2.0; double
-			 * rx = e.getWidth()/2.0; double ry = e.getHeight()/2.0;
-			 */
-			throw new RuntimeException("Ellipse not implemented, try a path in stead, sorry");
+			if (segmentType == PathIterator.SEG_MOVETO) {
+				pointPrev[0] = coordsCur[0];
+				pointPrev[1] = coordsCur[1];
 
-		} else if (s instanceof Arc2D) {
-
-			throw new RuntimeException("Arc2D not implemented, try a path in stead, sorry");
-
-			/*
-			 * Arc2D e = (Arc2D) s; double x = (e.getX() + e.getWidth()/2.0);
-			 * double y = (e.getY() + e.getHeight()/2.0); double rx =
-			 * e.getWidth()/2.0; double ry = e.getHeight()/2.0; double
-			 * startAngle = -e.getAngleStart(); double endAngle =
-			 * -(e.getAngleStart() + e.getAngleExtent()); write(x, " ", y, " ",
-			 * rx, " ", ry, " ", startAngle, " ", endAngle, " ellipse"); if
-			 * (e.getArcType() == Arc2D.CHORD) { write(" Z"); } else if
-			 * (e.getArcType() == Arc2D.PIE) { write(" ", x, " ", y, " L Z"); }
-			 * return;
-			 */
-			
-		} else {
-			PathIterator segments = s.getPathIterator(null, curveFlatness);
-			double[] coordsCur = new double[6];
-			double[] pointPrev = new double[2];
-			ArrayList<Point2D> points = null;
-
-			while (!segments.isDone()) {
-				int segmentType = segments.currentSegment(coordsCur);
-
-				if (segmentType == PathIterator.SEG_MOVETO) {
-					pointPrev[0] = coordsCur[0];
-					pointPrev[1] = coordsCur[1];
-
-					if (points != null) {
-						addCutPath(points);
-					}
-					points = new ArrayList<Point2D>();
-					points.add(new Point2D.Double(coordsCur[0], coordsCur[1]));
-
-				} else if (segmentType == PathIterator.SEG_LINETO) {
-					points.add(new Point2D.Double(coordsCur[0], coordsCur[1]));
-					pointPrev[0] = coordsCur[0];
-					pointPrev[1] = coordsCur[1];
-
-					// } else if (segmentType == PathIterator.SEG_CUBICTO) { //
-					// Should be flattened for us
-					// } else if (segmentType == PathIterator.SEG_QUADTO) { //
-					// Should be flattened for us
-
-				} else if (segmentType == PathIterator.SEG_CLOSE) {
-					points.add(points.get(0));
+				if (points != null) {
 					addCutPath(points);
-					points = null;
-
-				} else {
-					throw new RuntimeException("Unimplemented segment type for path: "+ segmentType);
 				}
+				points = new ArrayList<Point2D>();
+				points.add(new Point2D.Double(coordsCur[0], coordsCur[1]));
 
-				segments.next();
-			}
-			if (points != null) {
+			} else if (segmentType == PathIterator.SEG_LINETO) {
+				points.add(new Point2D.Double(coordsCur[0], coordsCur[1]));
+				pointPrev[0] = coordsCur[0];
+				pointPrev[1] = coordsCur[1];
+
+				// } else if (segmentType == PathIterator.SEG_CUBICTO) { //
+				// Should be flattened for us
+				// } else if (segmentType == PathIterator.SEG_QUADTO) { //
+				// Should be flattened for us
+
+			} else if (segmentType == PathIterator.SEG_CLOSE) {
+				points.add(points.get(0));
 				addCutPath(points);
+				points = null;
+
+			} else {
+				throw new RuntimeException("Unimplemented segment type for path: "+ segmentType);
 			}
+
+			segments.next();
+		}
+		if (points != null) {
+			addCutPath(points);
 		}
 	}
 	
-	double getPower() {
-		double power = defaultPower;
+	static final private int RASTERED_IMAGE_SIZE = 1000;
+
+	protected void writeClosingFill(Shape s) {
+		
+		// First transform the shape to the job coordinate system:
+		AffineTransform xform = getTransform();
+		Shape xShape = xform.createTransformedShape(s);
+		
+		
+		Rectangle2D shapeBounds = xShape.getBounds2D();
+
+		// Calculate dimensions of shape with current transformations
+		double pixelSize = getRasterLinePitch();
+		int wImage = (int) Math.ceil(shapeBounds.getWidth()/pixelSize);
+		int hImage = (int) Math.ceil(shapeBounds.getHeight()/pixelSize);
+		// Limit the size of images
+		wImage = Math.min(wImage, RASTERED_IMAGE_SIZE);
+		hImage = Math.min(hImage, RASTERED_IMAGE_SIZE);
+
+		// Create image to paint draw gradient with current transformations
+		BufferedImage paintImage = new BufferedImage(wImage, hImage, BufferedImage.TYPE_INT_ARGB);
+
+		// Paint shape
+		Graphics2D g = (Graphics2D) paintImage.getGraphics();
+		g.scale(wImage/shapeBounds.getWidth(), hImage/shapeBounds.getHeight());
+		g.translate(-shapeBounds.getX(), -shapeBounds.getY());
+		g.setPaint(getPaint());
+		g.fill(xShape);
+		// Free resources
+		g.dispose();
+		
+		AffineTransform scaleAndTranslate = new AffineTransform();
+		scaleAndTranslate.translate(shapeBounds.getX(), shapeBounds.getY());
+		scaleAndTranslate.scale(shapeBounds.getWidth()/wImage, shapeBounds.getHeight()/hImage);
+
+		/* 
+		 	// It's handy to be able to dump the images out to some pngs for debugging.
+		File outputfile = new File("/tmp/"+getId()+".png");
+	    try {
+			ImageIO.write(paintImage, "png", outputfile);
+			log.info("Stored: "+outputfile);
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "Failed to store "+outputfile+" ", e);
+		}*/
+		
+		// Output image of gradient
+		addChild(new RasterNode(job.getNodeId(getId()), scaleAndTranslate, getLaserNodeSettings(), paintImage));
+	}
+	
+	
+	String getStyleAttr(String name) {
 		if (element != null) {
-			StyleAttribute powerAttr = new StyleAttribute("photonsaw-power");
+			StyleAttribute attr = new StyleAttribute(name);
 			try {
-				element.getStyle(powerAttr, true);
+				element.getStyle(attr, true);
 			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get power attribute from svg element", e);
-				powerAttr = null;
-			}
-			if (powerAttr != null && !powerAttr.getStringValue().equals("")) {
-				power = Math.min(maximumPower,Math.max(0, powerAttr.getDoubleValue()));
+				log.log(Level.WARNING, "Failed to get "+name+" attribute from svg element", e);
+				attr = null;
+			}			
+			if (attr != null && !attr.getStringValue().equals("")) {
+				return attr.getStringValue();
 			}
 		}
-		return power;
+		
+		return null;
+	}
+
+	double getPower() {
+		String value = getStyleAttr("photonsaw-power");
+		if (value != null) {
+			return Math.min(maximumPower, Math.max(0, Double.parseDouble(value)));			
+		} else {
+			return defaultPower;
+		}
 	}
 	
 	private double getRasterLinePitch() {
-		double res = 0.0375;
-		if (element != null) {
-			StyleAttribute attr = new StyleAttribute("photonsaw-linepitch");
-			try {
-				element.getStyle(attr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get linepitch attribute from svg element", e);
-				attr = null;
-			}
-			if (attr != null && !attr.getStringValue().equals("")) {
-				res = Math.min(10, Math.max(0.0375, attr.getDoubleValue()));
-			}
+		String value = getStyleAttr("photonsaw-raster-pitch");
+		if (value == null) {
+			value = getStyleAttr("photonsaw-linepitch");
 		}
-		return res;
+		if (value != null) {
+			return Math.min(10, Math.max(0.0375, Double.parseDouble(value)));	
+		} else {
+			return 0.0375;
+		}
+	}
+	
+	private double getRasterSpeed() {
+		String value = getStyleAttr("photonsaw-raster-speed");
+		if (value != null) {
+			return Math.min(10000, Math.max(1, Double.parseDouble(value)));
+		} else {
+			return defaultRasterSpeed;
+		}
 	}
 	
 	double getSpeed() {
-		double speed = defaultSpeed;
-		if (element != null) {
-			StyleAttribute speedAttr = new StyleAttribute("photonsaw-speed");
-			try {
-				element.getStyle(speedAttr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get speed attribute from svg element", e);
-				speedAttr = null;
-			}			
-			if (speedAttr != null && !speedAttr.getStringValue().equals("")) {
-				speed = Math.min(1000, Math.max(1, speedAttr.getDoubleValue()));
-			}
+		String value = getStyleAttr("photonsaw-speed");
+		if (value != null) {
+			return Math.min(10000, Math.max(1, Double.parseDouble(value)));
+		} else {
+			return defaultSpeed;
 		}
-		return speed;
 	}
 	
 	int getPasses() {
-		int passes = 1;
-		if (element != null) {
-			StyleAttribute passesAttr = new StyleAttribute("photonsaw-passes");
-			try {
-				element.getStyle(passesAttr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get passes attribute from svg element", e);
-				passesAttr = null;
-			}			
-			if (passesAttr != null && !passesAttr.getStringValue().equals("")) {
-				passes = Math.min(100, Math.max(1, passesAttr.getIntValue()));
-			}
+		String value = getStyleAttr("photonsaw-passes");
+		if (value != null) {
+			return Math.min(10, Math.max(1, Integer.parseInt(value)));
+		} else {
+			return 1;
 		}
-		return passes;
 	}
 	
 	int getPulsesPermm() {
-		int ppmm = defaultPpmm;
-		if (element != null) {
-			StyleAttribute attr = new StyleAttribute("photonsaw-ppmm");
-			try {
-				element.getStyle(attr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get ppmm attribute from svg element", e);
-				attr = null;
-			}			
-			if (attr != null && !attr.getStringValue().equals("")) {
-				ppmm = Math.min(10000, Math.max(0, attr.getIntValue()));
-			}
+		String value = getStyleAttr("photonsaw-ppmm");
+		if (value != null) {
+			return Math.min(10000, Math.max(0, Integer.parseInt(value)));			
+		} else {
+			return defaultPpmm;			
 		}
-		return ppmm;
 	}
 	
-	int getPulseDuration() {
-		int pd = defaultPulseDuration;
-		if (element != null) {
-			StyleAttribute attr = new StyleAttribute("photonsaw-pulse-length");
-			try {
-				element.getStyle(attr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get pulse-length attribute from svg element", e);
-				attr = null;
-			}			
-			if (attr != null && !attr.getStringValue().equals("")) {
-				pd = Math.min(100000, Math.max(1, attr.getIntValue()));
-			}
+	double getPulseDuration() {
+		String value = getStyleAttr("photonsaw-pulse-length");
+		if (value != null) {
+			return Math.min(100000, Math.max(1, Integer.parseInt(value)));			
+		} else {
+			return defaultPulseDuration;	
 		}
-		return pd;
 	}
 	
 	boolean getAssistAir() {
-		boolean assistAir = true;
-		if (element != null) {
-			StyleAttribute aaAttr = new StyleAttribute("photonsaw-assistair");
-			try {
-				element.getStyle(aaAttr, true);
-			} catch (SVGException e) {
-				log.log(Level.WARNING, "Failed to get assistair attribute from svg element", e);
-				aaAttr = null;
-			}			
-			if (aaAttr != null && !aaAttr.getStringValue().equals("")) {
-				assistAir = isTrue(aaAttr.getStringValue());
-			} else {
-				assistAir = true;
-			}
+		String value = getStyleAttr("photonsaw-assistair");
+		if (value != null) {
+			return isTrue(value);	
+		} else {
+			return true;
 		}
-		return assistAir;
 	}
 	
 	static private boolean isTrue(String stringValue) {
@@ -412,105 +400,10 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	
 
 	@Override
-	protected void writeImage(Image img, int imgWidth, int imgHeight, double x, double y, double width, double height) {
-
+	protected void writeImage(Image img_, int imgWidth, int imgHeight, double x, double y, double width, double height) {
+		BufferedImage img = (BufferedImage)img_;
 		RasterNode rn = new RasterNode(job.getNodeId(getId()), getTransform(), getLaserNodeSettings(), img);
 		addChild(rn);
-		
-		
-		/*
-		
-		// Calculate the bounding box of the transformed image
-		Point2D bb[] = new Point2D[4];
-		bb[0] = new Point2D.Double(0, 0);
-		bb[1] = new Point2D.Double(imgWidth-1,0);
-		bb[2] = new Point2D.Double(imgWidth-1,imgHeight-1);
-		bb[3] = new Point2D.Double(0,imgHeight-1);
-		
-		double x0 = Double.MAX_VALUE;
-		double y0 = Double.MAX_VALUE;
-		double x1 = Double.MIN_VALUE;
-		double y1 = Double.MIN_VALUE;
-		
-		for (Point2D p : bb) {
-			getTransform().transform(p, p);
-			
-			x0 = Math.min(x0, p.getX());
-			y0 = Math.min(y0, p.getY());
-			x1 = Math.max(x1, p.getX());
-			y1 = Math.max(y1, p.getY());
-		}
-				
-		// The bb is now in mm, so we need to figure out what resolution we want the raster to be in.
-		int pixelWidth  = (int)Math.round((x1-x0)/0.0375);
-		int pixelHeight = (int)Math.round((y1-y0)/0.0375);	
-		
-		BufferedImage ri = new BufferedImage(pixelWidth, pixelHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = ri.createGraphics();
-        
-        g.setColor(Color.WHITE);        
-        g.fillRect(0, 0, ri.getWidth(), ri.getHeight());
-        g.setClip( 0, 0, ri.getWidth(), ri.getHeight());
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-		AffineTransform toImage = AffineTransform.getScaleInstance(1/0.0375, 1/0.0375);
-		toImage.concatenate(AffineTransform.getTranslateInstance(-x0, -y0));		
-		toImage.concatenate(getTransform());
-
-        g.drawImage(img, toImage, null);
-
-		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getLaserNodeSettings(), ri,
-				x0, y0, x1-x0, y1-y0);
-		
-		log.info("Appending EngraveRaster: "+engraving.getId());
-		addChild(engraving);		
-       
-		try {
-		    File outputfile = new File("/tmp/saved.png");
-		    ImageIO.write(ri, "png", outputfile);
-		} catch (IOException e) {
-		    log.log(Level.SEVERE, "Fail!", e);
-		}
-	    log.log(Level.SEVERE, "Done");
-        
-	    
-	    */
-	    
-        /*
-        //Then dither this image
-        BufferedImageAdapter ad = new BufferedImageAdapter(scaledImg, invertColors);
-        ad.setColorShift(this.getColorShift());
-        BlackWhiteRaster bw = new BlackWhiteRaster(ad, this.getDitherAlgorithm());
-        for (LaserProperty prop : laserProperties)
-        {
-          RasterPart part = new RasterPart(bw, prop, new Point((int) bb.getX(), (int) bb.getY()));
-          job.addPart(part);
-        }
-*/
-		
-		
-/*		
-		// Then create a transformation that puts the image at 
-		
-		// TODO: all of that shit.
-		
-		// Note: We do not support rotation of rasters at this point.
-        
-		Point2D.Double pos = new Point2D.Double(x, y);
-		pos.transform(getTransform());
-		width  = Math.abs(width *getTransform().getScaleX()); 
-		height = Math.abs(height*getTransform().getScaleY()); 
-		
-		if (!(img instanceof BufferedImage)) {
-			throw new RuntimeException("The Image passed to writeImage was not a BufferedImage: "+img.getClass().getName());
-		}
-		
-		EngraveRaster engraving = new EngraveRaster(job.getNodeId(getId()), getLaserNodeSettings(), (BufferedImage) img, pos.x, pos.y, width, height);
-		
-		log.info("Appending EngraveRaster: "+engraving.getId());
-		addChild(engraving);	
-		*/	
 	}
 
 	@Override

@@ -70,6 +70,7 @@ public class SvgLoader {
 				
 		JobNodeGroup res = new JobNodeGroup(job.getNodeId(name), pixel2mm);
 		Graphics2DJobNodeGroup g2d = new Graphics2DJobNodeGroup(job, res);
+		g2d.setResolution(25.4/cfg.movementConstraints.getAxes()[0].mmPerStep);
 		diagram.setIgnoringClipHeuristic(true);
 		
 		g2d.setMaximumPower(cfg.machineConfig.getMaximumLaserPower());

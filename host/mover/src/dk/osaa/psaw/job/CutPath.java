@@ -4,6 +4,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import lombok.Getter;
 
@@ -33,9 +34,9 @@ public class CutPath extends LaserNode {
 		
 		target.startShape(id);
 
-		target.setAssistAir(settings.assistAir);
+		target.setAssistAir(settings.isAssistAir());
 		
-		for (int pass=0;pass<settings.passes;pass++) {
+		for (int pass=0;pass<settings.getPasses();pass++) {
 			boolean first = true;
 			for (Point2D p2d: path) {
 				
@@ -43,7 +44,7 @@ public class CutPath extends LaserNode {
 					target.moveTo(transformation.transform(getTransformation().transform(p2d,null)));
 					first = false;			
 				} else {
-					target.cutTo(transformation.transform(getTransformation().transform(p2d,null)), settings.intensity, settings.maxSpeed);
+					target.cutTo(transformation.transform(getTransformation().transform(p2d,null)), settings.getIntensity(), settings.getMaxSpeed());
 				}
 			}
 		}
@@ -57,5 +58,25 @@ public class CutPath extends LaserNode {
 			r.add(getTransformation().transform(p2d,null));
 		}
 		return r;
+	}
+
+	@Override
+	public Point2D getStartPoint() {
+		if (path.isEmpty()) {
+			return null;
+		}
+		return getTransformation().transform(path.get(0),null);
+	}
+
+	@Override
+	public Point2D getEndPoint() {
+		if (path.isEmpty()) {
+			return null;
+		}
+		return getTransformation().transform(path.get(path.size()-1),null);
+	}
+	
+	public void reverse() {
+		Collections.reverse(path);
 	}
 }

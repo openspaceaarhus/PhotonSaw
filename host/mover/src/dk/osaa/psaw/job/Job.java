@@ -88,7 +88,7 @@ public class Job {
 	private static XStream getXStream() {
 		if (xstreamInstance == null) {
 			xstreamInstance = new XStream(new StaxDriver());
-			xstreamInstance.setMode(XStream.NO_REFERENCES);
+			xstreamInstance.setMode(XStream.NO_REFERENCES); 
 			
 			xstreamInstance.alias("job", Job.class);
 			xstreamInstance.omitField(Job.class, "ids");
@@ -112,7 +112,8 @@ public class Job {
 			
 			xstreamInstance.alias("settings", LaserNodeSettings.class);			
 
-			xstreamInstance.alias("xform", AffineTransform.class);			
+			xstreamInstance.alias("xform", AffineTransform.class);
+			xstreamInstance.registerConverter(new ImageConverter());
 		}
 		return xstreamInstance;
 	}
@@ -238,5 +239,9 @@ public class Job {
 		StringBuilder sb = new StringBuilder();
 		getRootNode().getStructure(sb, " ");
 		log.info("Structure of job "+name+":\n"+sb);	
+	}
+
+	public void optimizeCuts() {
+		getRootNode().optimizeCuts();
 	}
 }
