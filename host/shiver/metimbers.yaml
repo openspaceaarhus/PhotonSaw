@@ -1,0 +1,49 @@
+host: 
+  serialPort: /dev/ttyACM0
+  simulating: false
+  recording: false
+  jobsInMemory: 0
+  
+machine: 
+  assistAirDelay: 250
+  maximumLaserPower: 80
+
+movementConstraints:
+  junctionDeviation: 0.1
+  rapidMoveSpeed: 5000.0
+  tickHZ: 50000
+  shortestMove: 0.1
+ 
+  axes: 
+    X: 
+     acceleration: "2500.0"
+     maxSpeed: "400.0"
+     minSpeed: "2.0"
+     maxJerk: "5.0"
+     mmPerStep: "0.0375"
+     coilCurrent: 1800
+     microSteppingMode: 3
+    Y: 
+     acceleration: "500.0"
+     maxSpeed: "1175.0"
+     minSpeed: "10.0"
+     maxJerk: "10.0"
+     mmPerStep: "0.0375"
+     coilCurrent: 1800
+     microSteppingMode: 3
+    Z:
+     acceleration: "0.1"
+     maxSpeed: "10.0"
+     minSpeed: "0.2"
+     maxJerk: "0.2"
+     mmPerStep: "0.003125"
+     coilCurrent: 1500
+     microSteppingMode: 3
+    A:
+     acceleration: "5000.0"
+     maxSpeed: "10.0"
+     minSpeed: "1.0"
+     maxJerk: "1.0"
+     mmPerStep: "0.02"
+     coilCurrent: 350
+     microSteppingMode: 1

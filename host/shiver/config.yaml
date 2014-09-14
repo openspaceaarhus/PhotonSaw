@@ -1,0 +1,18 @@
+test: Hest
+legacyConfig: test.psconfig
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      threshold: DEBUG
+      target: stderr
+
+server: 
+  applicationConnectors:
+  - type: http 
+    port: 9000
+  adminConnectors:
+  - type: http
+    port: 9001
+    
