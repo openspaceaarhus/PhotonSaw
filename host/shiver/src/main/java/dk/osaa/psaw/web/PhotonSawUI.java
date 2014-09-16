@@ -5,19 +5,8 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerDropwizard;
-
 import java.io.File;
 import java.util.logging.Level;
-
-import com.wordnik.swagger.config.ConfigFactory;
-import com.wordnik.swagger.config.ScannerFactory;
-import com.wordnik.swagger.config.SwaggerConfig;
-import com.wordnik.swagger.jaxrs.config.DefaultJaxrsScanner;
-import com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider;
-import com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON;
-import com.wordnik.swagger.jaxrs.listing.ResourceListingProvider;
-import com.wordnik.swagger.jaxrs.reader.DefaultJaxrsApiReader;
-import com.wordnik.swagger.reader.ClassReaders;
 
 import lombok.extern.java.Log;
 import dk.osaa.psaw.config.LegacyConfiguration;
@@ -27,7 +16,9 @@ import dk.osaa.psaw.web.resources.Jogger;
 
 @Log
 public class PhotonSawUI extends Application<PhotonSawConfiguration> {
-	private final SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard();
+	static final String API_BASE_PATH = "/api";
+	
+	private final SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard("/api");
 	
 	@Override
 	public String getName() {
@@ -47,6 +38,7 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	@Override
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
 		bootstrap.addBundle(new AssetsBundle("/static/",        "/", "index.html", "static"));
+		
 		swaggerDropwizard.onInitialize(bootstrap);
 	}
 
@@ -59,11 +51,10 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		environment.lifecycle().manage(new ManagedPhotonSaw(psaw));
 
 		// All the live API resources live under /api
-		environment.jersey().setUrlPattern("/api/*");
+		environment.jersey().setUrlPattern(API_BASE_PATH+"/*");
 		swaggerDropwizard.onRun(configuration, environment);
 
 		// Register the resources:		
 		environment.jersey().register(new Jogger(psaw));
-		
-	}	
+	}
 }

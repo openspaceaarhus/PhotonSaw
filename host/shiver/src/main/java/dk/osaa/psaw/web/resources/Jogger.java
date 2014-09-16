@@ -24,10 +24,10 @@ import dk.osaa.psaw.web.api.JogStatus;
 public class Jogger {
 	private final PhotonSaw psaw;
 	
-	@ApiOperation(value = "Starts or maintains the specified speed vector, the machine will time out after 500 ms so the jog command must be repeated.")
+	@ApiOperation(value = "Starts or maintains the specified speed vector, the machine will time out after 100 ms so the jog command must be repeated more often than that.")
 	@POST
 	@Timed
-	public JogStatus set(@ApiParam(value = "The speed vector of the machine in mm/s", required = true) @Valid JogSpeed speed) {
+	public JogStatus set(@ApiParam(value = "The speed vector of the machine from -1 to 1 in each axis", required = true) @Valid JogSpeed speed) {
 		JogStatus result = new JogStatus("Test");
 		psaw.setJogSpeed(speed.toMoveVector());
 		return result;

@@ -5,6 +5,8 @@
   <groupId>dk.osaa.psaw</groupId>
   <artifactId>shiver</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <name>PhotonSaw Shiver</name>
+  <url>http://psaw.osaa.dk</url>
   
   <properties>
     <!-- use UTF-8 for everything -->
@@ -49,10 +51,11 @@
     	<artifactId>dropwizard-assets</artifactId>
     	<version>0.7.1</version>
     </dependency>
+
     <dependency>
     	<groupId>io.federecio</groupId>
     	<artifactId>dropwizard-swagger</artifactId>
-    	<version>0.5.1</version>
+    	<version>0.5.2-SNAPSHOT</version>
     </dependency>
   </dependencies>
   
@@ -97,7 +100,7 @@
 	      <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.example.helloworld.HelloWorldApplication</mainClass>
+                  <mainClass>dk.osaa.psaw.web.PhotonSawUI</mainClass>
                 </transformer>
 	      </transformers>
 	    </configuration>

@@ -1,22 +1,27 @@
 package dk.osaa.psaw.web.api;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import dk.osaa.psaw.machine.MoveVector;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class JogSpeed {
-	@JsonProperty
+	@JsonProperty @Max(1) @Min(-1)
 	Double x;
-	@JsonProperty
+
+	@JsonProperty @Max(1) @Min(-1)
 	Double y;
-	@JsonProperty
+
+	@JsonProperty @Max(1) @Min(-1)
 	Double z;
-	@JsonProperty
+
+	@JsonProperty @Max(1) @Min(-1)
 	Double a;
+	
 	public MoveVector toMoveVector() {
 		
 		MoveVector speed = new MoveVector();
