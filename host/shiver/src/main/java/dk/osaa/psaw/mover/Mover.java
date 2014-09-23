@@ -75,6 +75,7 @@ public class Mover {
 			// Wait for the job to finish
 			while (ps.getPlanner().getCurrentJob() != null) {
 				Thread.sleep(1000);
+				ps.run("st");
 			}
 /*
 			// Turn off the motors

@@ -5,6 +5,7 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerDropwizard;
+
 import java.io.File;
 import java.util.logging.Level;
 
@@ -13,12 +14,11 @@ import dk.osaa.psaw.config.LegacyConfiguration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.web.config.PhotonSawConfiguration;
 import dk.osaa.psaw.web.resources.Jogger;
+import dk.osaa.psaw.web.resources.Status;
 
 @Log
-public class PhotonSawUI extends Application<PhotonSawConfiguration> {
-	static final String API_BASE_PATH = "/api";
-	
-	private final SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard("/api");
+public class PhotonSawUI extends Application<PhotonSawConfiguration> {	
+	private final SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard();
 	
 	@Override
 	public String getName() {
@@ -37,7 +37,7 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 
 	@Override
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
-		bootstrap.addBundle(new AssetsBundle("/static/",        "/", "index.html", "static"));
+		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));
 		
 		swaggerDropwizard.onInitialize(bootstrap);
 	}
@@ -51,10 +51,11 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		environment.lifecycle().manage(new ManagedPhotonSaw(psaw));
 
 		// All the live API resources live under /api
-		environment.jersey().setUrlPattern(API_BASE_PATH+"/*");
+		//environment.jersey().setUrlPattern("/api/*");
 		swaggerDropwizard.onRun(configuration, environment);
 
 		// Register the resources:		
 		environment.jersey().register(new Jogger(psaw));
+		environment.jersey().register(new Status(psaw));
 	}
 }

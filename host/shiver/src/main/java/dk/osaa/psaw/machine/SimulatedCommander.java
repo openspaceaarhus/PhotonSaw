@@ -48,10 +48,10 @@ public class SimulatedCommander implements CommanderInterface {
 		log.info("Command: "+cmd);
 			
 		CommandReply r = new CommandReply();
-		r.put("result", new ReplyValue("result ok"));
+		r.setOkResult();
 		
 		if (cmd.equals("st")) {
-			r.put("motion.active", new ReplyValue("motion.active No"));			
+			r.add(new ReplyValue("motion.active No"));			
 		}
 		
 		return r;

@@ -8,14 +8,13 @@ import dk.osaa.psaw.machine.CommandReply;
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
-@SuppressWarnings("rawtypes")
 @Data
-public class PhotonSawStatus implements Comparable {
+public class PhotonSawStatus  {
 	
 	/**
 	 * The time this status was generated, used for timing simulations and to check for freshness in the UI
 	 */
-	Long timestamp;
+	private Long timestamp;
 	
 	/**
 	 * Returns a copy of the last status values returned from the hardware, notice that
@@ -23,63 +22,50 @@ public class PhotonSawStatus implements Comparable {
 	 * 
 	 * The last seen value for each status variable.
 	 */
-	CommandReply hardwareStatus;
+	private CommandReply hardwareStatus;
 	
 	/**
 	 * The maximum number of moves to buffer in the host software
 	 */
-	int moveBufferSize;
+	private int moveBufferSize;
 	
 	/**
 	 * The number of moves buffered in the host software
 	 */
-	int moveBufferInUse;
+	private int moveBufferInUse;
 	
 	/**
 	 * The number of Lines in the LineBuffer
 	 */
-	int lineBufferSize;
+	private int lineBufferSize;
 
 	/**
 	 * The number of lines the system tries to keep in the buffer
 	 */
-	int lineBufferSizeTarget;	
+	private int lineBufferSizeTarget;	
 	
 	/**
 	 * The length in mm of the LineBuffer
 	 */
-	double lineBufferLength;
+	private double lineBufferLength;
 	
 	/**
 	 * The length the system tries to keep in the buffer
 	 */
-	double lineBufferLengthTarget;
+	private double lineBufferLengthTarget;
 
 	/**
 	 * The length of the job in mm 
 	 */
-	double jobLength;
+	private double jobLength;
 	
 	/**
 	 * The number of lines in the current job
 	 */
-	int jobSize;
+	private int jobSize;
 	
 	/**
 	 * The line number last buffered from the job 
 	 */
-	int jobRenderingProgressLineCount;
-
-	@Override
-	public int compareTo(Object arg0) {
-		PhotonSawStatus other = (PhotonSawStatus)arg0;
-
-		if (other.timestamp < timestamp) {
-			return 1;
-		} else if (other.timestamp > timestamp) {
-			return -1;
-		} else {
-			return 0;			
-		}
-	}
+	private int jobRenderingProgressLineCount;
 }

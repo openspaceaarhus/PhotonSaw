@@ -84,8 +84,6 @@ public class PhotonSaw extends Thread {
 
 
 		configureMotors();
-		run("ex on");
-		run("aa on");
 
 		planner.start();
 		this.start();	

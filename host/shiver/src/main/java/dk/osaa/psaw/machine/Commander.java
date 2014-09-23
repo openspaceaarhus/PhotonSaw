@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
 
-
 import lombok.extern.java.Log;
 import lombok.val;
 
 @Log
 public class Commander implements CommanderInterface {
 		
+	private static final String BUFFER_FREE = "buffer.free";
 	Thread reader;
     SerialPort serialPort;
     CommandReply reply = new CommandReply(); // Result of the last command.
@@ -68,9 +68,8 @@ public class Commander implements CommanderInterface {
 	 */
 	private synchronized CommandReply runOnce(String bareCommand) throws IOException, ReplyTimeout {
 		synchronized (reply) {
-			reply.clear();
 			replyReady = false;
-			reply.setSentCommand(bareCommand);
+			reply.startCommand(bareCommand);
 		}
 		
 		long bareLength = bareCommand.length();
@@ -162,9 +161,11 @@ public class Commander implements CommanderInterface {
 		}
 	}
 			
+	private final static String WRAP_ACK = "wrap.ack"; 
+	
 	long lastBufferFree;
 	
-	static final String READY = "\r\nReady\r\n";
+	private static final String READY = "\r\nReady\r\n";
 	void parseReply(StringBuilder replyString) {
 		int readyIndex = replyString.indexOf(READY);
 		if (readyIndex < 0) {
@@ -172,7 +173,7 @@ public class Commander implements CommanderInterface {
 		}
 				
 		synchronized (reply) {
-			reply.clear();
+			reply.clearReply();
 			String rs = replyString.substring(0, readyIndex+2);
 			replyString.delete(0, readyIndex+READY.length());
 			replyReady = true;
@@ -181,26 +182,29 @@ public class Commander implements CommanderInterface {
 			
 			for (String line : rs.split("[\r\n]+")) {
 				ReplyValue value = new ReplyValue(line);
-				reply.put(value.getName(), value);
+				reply.add(value);
 				synchronized (lastReplyValues) {
-					lastReplyValues.put(value.getName(), value);
+					lastReplyValues.add(value);
 				}
-				if (value.getName().equals("buffer.free")) {
+				if (value.getName().equals(BUFFER_FREE)) {
 					lastBufferFree = value.getInteger();
 				}
 			}
 			
-			if (!reply.containsKey("result")) {
-				reply.put("result", new ReplyValue("result OK"));
-			}
+			reply.setOkResult();
+			
+			
+			ReplyValue ackValue = reply.get(WRAP_ACK);
+			long wrapAck = ackValue != null ? ackValue.getHex() : 0;
 
+			/*
 			long wrapAck = reply.containsKey("wrap.ack") 
 					? Long.parseLong(reply.get("wrap.ack").toString().substring("wrap.ack ".length()), 16)
 					: 0;
-						
+				*/		
 			if (wrapAck != commandId) {
 				log.warning("Ignoring reply because of id mismatch: "+wrapAck+" != "+commandId+"\nreply: "+reply.toString());
-				reply.clear();
+				reply.clearReply();
 				replyReady = false;
 			}
 		}		
