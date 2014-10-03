@@ -51,7 +51,7 @@ public class Commander implements CommanderInterface {
         
         commandId = 0;
         
-        setLog(new File("/tmp/serial.log"));
+        //setLog(new File("/tmp/serial.log"));
         reader = new Thread(new SerialReader());
         reader.start();
                 

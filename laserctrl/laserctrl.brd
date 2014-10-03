@@ -1,4 +1,4 @@
-PCBNEW-BOARD Version 1 date Sat 16 Feb 2013 05:09:40 PM CET
+PCBNEW-BOARD Version 1 date Sat 16 Feb 2013 05:20:27 PM CET
 
 # Created by Pcbnew(2012-apr-16-27)-stable
 
@@ -10,7 +10,7 @@ EnabledLayers 10FF8001
 Links 711
 NoConn 4
 Di 4254 12637 57690 63878
-Ndraw 85
+Ndraw 86
 Ntrack 3701
 Nzone 0
 BoardThickness 630
@@ -1438,7 +1438,7 @@ Ro 0.000000 0.000000 0.000000
 $EndSHAPE3D
 $EndMODULE  SOT23GDS
 $MODULE pin_array_8x2
-Po 31346 55813 0 15 511FA2E4 511FA4AF ~~
+Po 31346 55813 0 15 511FB185 511FA4AF ~~
 Li pin_array_8x2
 Cd Double rangee de contacts 2 x 8 pins
 Kw CONN
@@ -1446,7 +1446,7 @@ Sc 511FA4AF
 AR /507B0AFA/507B0B80
 Op 0 0 0
 T0 -7 -26 197 197 0 45 N V 21 N "P2"
-T1 2001 -26 197 197 0 45 N V 21 N "auxio"
+T1 977 -1798 394 394 0 45 N V 21 N "auxio"
 DS -3900 900 -3900 -900 120 21
 DS -3900 -900 3900 -900 120 21
 DS 3900 -900 3900 900 120 21
@@ -13420,6 +13420,13 @@ Ne 31 "N-000098"
 Po -500 0
 $EndPAD
 $EndMODULE  con-molex-6410-02
+$TEXTPCB
+Te "Note: The auxio signals"
+nl "are unprotected and"
+nl "need external protection"
+Po 30040 52795 197 197 49 0
+De 21 1 0 Normal C
+$EndTEXTPCB
 $DRAWSEGMENT
 Po 0 46378 30157 46418 30157 49
 De 23 0 900 0 0

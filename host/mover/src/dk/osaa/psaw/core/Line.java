@@ -818,7 +818,9 @@ public class Line {
 			}
 		}
 				
-		logLine(lineNumber+": "+stepCount+" "+maxSpeed+" "+maxEntrySpeed+" "+maxExitSpeed+" "+entrySpeed+" "+exitSpeed+" "+ accelerateDistance +" "+ plateauDistance +" "+ decelerateDistance);
+		logLine(lineNumber+": sc="+stepCount+" ms="+maxSpeed+" mes="+maxEntrySpeed+
+					" mxs="+maxExitSpeed+" es="+entrySpeed+" xs="+exitSpeed+
+					" ad="+ accelerateDistance +" pd="+ plateauDistance +" dd="+ decelerateDistance);
 		for (Move m : output) {
 			stepCount += m.getDuration();
 			logLine(lineNumber+": Adding move: "+m.getId());

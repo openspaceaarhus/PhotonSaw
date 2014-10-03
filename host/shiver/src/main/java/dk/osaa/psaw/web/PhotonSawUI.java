@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 import io.federecio.dropwizard.swagger.SwaggerDropwizard;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.web.config.PhotonSawConfiguration;
 import dk.osaa.psaw.web.resources.ImmediateJob;
 import dk.osaa.psaw.web.resources.Jogger;
+import dk.osaa.psaw.web.resources.StartPage;
 import dk.osaa.psaw.web.resources.Status;
 
 @Log
@@ -41,6 +43,7 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
 		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));		
 		swaggerDropwizard.onInitialize(bootstrap);
+		bootstrap.addBundle(new ViewBundle());
 	}
 
 	@Override
@@ -59,5 +62,6 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		environment.jersey().register(new Jogger(psaw));
 		environment.jersey().register(new Status(psaw));
 		environment.jersey().register(new ImmediateJob(psaw));
+		environment.jersey().register(new StartPage(psaw));		
 	}
 }
