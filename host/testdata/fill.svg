@@ -104,7 +104,7 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     style="display:inline;photonsaw-speed:15;photonsaw-raster-speed:500;photonsaw-raster-pitch:0.1"
+     style="display:inline;photonsaw-speed:15;photonsaw-raster-speed:200;photonsaw-raster-pitch:0.1"
      id="layer1">
     <path
        sodipodi:type="arc"
@@ -159,7 +159,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     style="photonsaw-speed:15;photonsaw-raster-speed:500;photonsaw-raster-pitch:0.1"
+     style="photonsaw-speed:15;photonsaw-raster-speed:200;photonsaw-raster-pitch:0.1"
      inkscape:label="cut">
     <rect
        style="fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -271,7 +271,7 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="holes"
-     style="display:inline;photonsaw-speed:15;photonsaw-raster-speed:500;photonsaw-raster-pitch:0.1">
+     style="display:inline;photonsaw-speed:15;photonsaw-raster-speed:200;photonsaw-raster-pitch:0.1">
     <path
        sodipodi:type="arc"
        style="fill:none;stroke:#000000;stroke-width:0.10000000000000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"

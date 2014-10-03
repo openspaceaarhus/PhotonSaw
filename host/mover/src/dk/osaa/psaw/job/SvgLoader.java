@@ -3,6 +3,7 @@ package dk.osaa.psaw.job;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URI;
 
 import lombok.val;
@@ -10,6 +11,7 @@ import lombok.extern.java.Log;
 
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGException;
+import com.kitfox.svg.SVGRoot;
 import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.xml.StyleAttribute;
@@ -85,8 +87,8 @@ public class SvgLoader {
 		 *  photonsaw-speed : Speed in mm/s of the laser when cutting this shape, lower speed is possible
 		 *  photonsaw-power : Power output at full speed 0-80W  
 		 */
-		diagram.render(g2d);
-				
+		diagram.render(g2d);		
+		
 		return res;
-	}
+	}	
 }

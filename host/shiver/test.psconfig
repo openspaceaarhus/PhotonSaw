@@ -46,7 +46,8 @@
   <hostConfig>
     <serialPort>/dev/ttyACM0</serialPort>
     <simulating>true</simulating>
-    <recording>false</recording>
+    <recording>true</recording>
+    <jobsDir>/home/ff/projects/osaa/PhotonSaw/host/testdata/recorded</jobsDir>
     <jobsInMemory>0</jobsInMemory>
   </hostConfig>
   <machineConfig>

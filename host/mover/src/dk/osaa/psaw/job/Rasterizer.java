@@ -112,7 +112,12 @@ public class Rasterizer {
 		// Sort by height, so the tallest rasters get to form groups.
 		Collections.sort(rasters, new Comparator<RasterNode>() {
 		    public int compare(RasterNode c1, RasterNode c2) {
-		        return (int)Math.round(c2.getBoundingBox().getHeight() - c1.getBoundingBox().getHeight());
+		    	int r1 = (int)Math.round(c2.getBoundingBox().getHeight() - c1.getBoundingBox().getHeight());
+		    	if (r1 != 0) {
+		    		return r1;
+		    	}
+		    	
+		    	return c1.id.compareTo(c2.id);
 		    }
 		});
 		

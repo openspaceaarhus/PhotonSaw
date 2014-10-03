@@ -19,7 +19,7 @@ import dk.osaa.psaw.web.api.MachineStatus;
 
 @Log
 @Path("/status")
-@Api(value = "/api/status", description = "Getting machine status")
+@Api(value = "/status", description = "Getting machine status")
 @Produces(MediaType.APPLICATION_JSON)
 @AllArgsConstructor
 public class Status {

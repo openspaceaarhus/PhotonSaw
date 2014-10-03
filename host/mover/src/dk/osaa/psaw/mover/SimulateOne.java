@@ -38,7 +38,8 @@ public class SimulateOne {
 
 			ps = new PhotonSaw(cfg);
 
-			File svgFile = new File(System.getProperty("user.dir"), "../testdata/fill.svg");
+			//File svgFile = new File(System.getProperty("user.dir"), "../testdata/fill.svg");
+			File svgFile = new File("/home/ff/projects/PlotClock/plotclock-osaa-tweaks1.svg");
 			
 			File savepath = new File(svgFile.getParent() + "/out");
 			if(!savepath.exists()) {

@@ -13,6 +13,7 @@ import lombok.extern.java.Log;
 import dk.osaa.psaw.config.LegacyConfiguration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.web.config.PhotonSawConfiguration;
+import dk.osaa.psaw.web.resources.ImmediateJob;
 import dk.osaa.psaw.web.resources.Jogger;
 import dk.osaa.psaw.web.resources.Status;
 
@@ -30,15 +31,15 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 			new PhotonSawUI().run(args);
 
 		} catch (Exception e) {
-			log.log(Level.SEVERE, "Failed", e);
+			System.err.println("Failed while bootstrapping"+ e);
+			e.printStackTrace(System.err);
 			System.exit(1);	
 		}
 	}
 
 	@Override
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
-		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));
-		
+		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));		
 		swaggerDropwizard.onInitialize(bootstrap);
 	}
 
@@ -57,5 +58,6 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		// Register the resources:		
 		environment.jersey().register(new Jogger(psaw));
 		environment.jersey().register(new Status(psaw));
+		environment.jersey().register(new ImmediateJob(psaw));
 	}
 }

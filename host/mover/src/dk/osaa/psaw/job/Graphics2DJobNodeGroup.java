@@ -259,6 +259,12 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		double pixelSize = getRasterLinePitch();
 		int wImage = (int) Math.ceil(shapeBounds.getWidth()/pixelSize);
 		int hImage = (int) Math.ceil(shapeBounds.getHeight()/pixelSize);
+		
+		if (wImage == 0 || hImage == 0) {
+			log.warning("Bailing out of zero sized fill");
+			return;
+		}
+		
 		// Limit the size of images
 		wImage = Math.min(wImage, RASTERED_IMAGE_SIZE);
 		hImage = Math.min(hImage, RASTERED_IMAGE_SIZE);

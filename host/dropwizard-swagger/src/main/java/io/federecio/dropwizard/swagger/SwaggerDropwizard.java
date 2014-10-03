@@ -22,7 +22,6 @@ import com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON;
 import com.wordnik.swagger.jaxrs.listing.ResourceListingProvider;
 import com.wordnik.swagger.jaxrs.reader.DefaultJaxrsApiReader;
 import com.wordnik.swagger.reader.ClassReaders;
-
 import io.dropwizard.Configuration;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -35,16 +34,8 @@ import java.io.IOException;
  * @author Federico Recio
  */
 public class SwaggerDropwizard {
-	private final String apiRoot;
-    public SwaggerDropwizard(String apiRoot) {
-		this.apiRoot = apiRoot;
-	}
-    
-    public SwaggerDropwizard() {
-    	this.apiRoot = null;
-    }
 
-	public void onInitialize(Bootstrap<?> bootstrap) {
+    public void onInitialize(Bootstrap<?> bootstrap) {
         bootstrap.addBundle(new ViewBundle());
     }
 
@@ -67,9 +58,6 @@ public class SwaggerDropwizard {
             new AssetsBundle("/swagger-static", contextPath + "/swagger-static").run(environment);
         }
 
-        if (apiRoot != null) {
-        	contextPath = apiRoot;
-        }
         environment.jersey().register(new SwaggerResource(contextPath));
 
         swaggerConfiguration.setUpSwaggerFor(host);

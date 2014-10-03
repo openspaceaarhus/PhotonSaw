@@ -55,10 +55,15 @@
     <dependency>
     	<groupId>io.federecio</groupId>
     	<artifactId>dropwizard-swagger</artifactId>
-    	<version>0.5.2-SNAPSHOT</version>
+    	<version>0.5.1</version>
     </dependency>
-  </dependencies>
-  
+    
+    <dependency>
+		<groupId>com.sun.jersey.contribs</groupId>
+		<artifactId>jersey-multipart</artifactId>
+		<version>1.18.1</version>
+	</dependency>
+	
   <build>
     <plugins>
       <plugin>

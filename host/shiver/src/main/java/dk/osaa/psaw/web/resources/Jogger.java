@@ -18,7 +18,7 @@ import dk.osaa.psaw.web.api.JogSpeed;
 import dk.osaa.psaw.web.api.JogStatus;
 
 @Path("/jogger")
-@Api(value = "/api/jogger", description = "Jogging the 4 axis machine")
+@Api(value = "/jogger", description = "Jogging the 4 axis machine")
 @Produces(MediaType.APPLICATION_JSON)
 @AllArgsConstructor
 public class Jogger {

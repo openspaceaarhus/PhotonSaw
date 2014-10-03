@@ -5,14 +5,13 @@ logging:
   level: INFO
   appenders:
     - type: console
-      threshold: DEBUG
+      threshold: ALL
       target: stderr
 
-server: 
-  applicationConnectors:
-  - type: http 
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
     port: 9000
-  adminConnectors:
-  - type: http
-    port: 9001
-    
