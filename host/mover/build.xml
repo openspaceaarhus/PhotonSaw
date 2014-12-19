@@ -34,7 +34,12 @@
     <mkdir dir="build/jar"/>
     <jar destfile="build/jar/photonsaw-host.jar">
       <fileset dir="build/classes"/> 
-      <zipgroupfileset dir="lib" includes="*.jar"/>
+      <zipgroupfileset dir="lib" includes="*.jar" excludes="svg-salamander.jar"/>
+      <zipfileset src="lib/svg-salamander.jar">
+          <exclude name="com/kitfox/svg/Group.class"/>
+          <exclude name="com/kitfox/svg/ShapeElement.class"/>
+          <exclude name="com/kitfox/svg/SVGGraphics2D.class"/>
+      </zipfileset>
 
       <manifest>
 	<attribute name="Main-Class" value="dk.osaa.psaw.mover.Mover"/>
