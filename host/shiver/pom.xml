@@ -12,7 +12,7 @@
     <!-- use UTF-8 for everything -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <dropwizard.version>0.7.0</dropwizard.version>
+    <dropwizard.version>0.7.1</dropwizard.version>
   </properties>
   
   <dependencies>
@@ -21,6 +21,12 @@
       <artifactId>dropwizard-core</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>io.dropwizard</groupId>
+    	<artifactId>dropwizard-assets</artifactId>
+    	<version>${dropwizard.version}</version>
+    </dependency>
+    
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -47,12 +53,6 @@
     </dependency>
 
     <dependency>
-    	<groupId>io.dropwizard</groupId>
-    	<artifactId>dropwizard-assets</artifactId>
-    	<version>0.7.1</version>
-    </dependency>
-
-    <dependency>
     	<groupId>io.federecio</groupId>
     	<artifactId>dropwizard-swagger</artifactId>
     	<version>0.5.1</version>
@@ -63,6 +63,7 @@
       <artifactId>jersey-multipart</artifactId>
       <version>1.18.1</version>
     </dependency>
+    
   </dependencies>
 	
   <build>

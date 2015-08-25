@@ -2,7 +2,6 @@ package dk.osaa.psaw.job;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.List;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;

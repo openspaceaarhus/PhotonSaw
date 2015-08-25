@@ -68,7 +68,8 @@ public class Mover {
 			testJob.render(rt);
 			rt.done();
 		
-			
+			ps.run("aa on");
+			ps.run("ex on");
 			//ps.startJob(id);
 			ps.getPlanner().startJob(testJob);			
 

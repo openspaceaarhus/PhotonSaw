@@ -1,0 +1,88 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin qw($Bin $Script);
+
+sub slurp($) {
+    my $fn = shift;
+
+    local $/ = undef;
+
+    open F,"<$fn" or return undef;
+    my $res = <F>;
+    close F;
+
+    return $res;
+}
+
+my $TEMPLATE_FN = "$Bin/speedy-template.svg";
+my $template = slurp($TEMPLATE_FN) or die "Failed to read template from $TEMPLATE_FN: $!";
+
+
+sub fixStyle {
+    my ($xml, $style) = @_;
+
+    $xml =~ s!style="([^"]+)"!style="$1;$style"!;
+    return $xml;    
+}
+
+sub writeXml {
+    my ($name, @styles) = @_;
+
+    my $xml = $template;
+    my $i = 1;
+    for my $st (@styles) {
+	$xml =~ s!(<path[^>]+?id="w$i"[^>]+/>)!fixStyle($1, $st->{style})!ge or die "Failed to find the path with id w$i";
+	$xml =~ s!(<text[^>]+?id="t$i"[^>]*>).+?</text>!$1$st->{label}</text>!gs or die "Failed to find the text with id t$i";
+	$i++;
+    }
+
+    $xml =~ s!(<text[^>]+?id="name"[^>]*>).+?</text>!$1$name</text>!gs or die "Failed to find the text with id t$i";
+    open O, ">$name.svg" or die "Failed to write $name: $!";
+    print O $xml;
+    close O;
+}
+
+
+
+writeXml("speed-6-25", map {
+    my $speed = 6+$_;
+
+    {
+	label=>$speed,
+	style=>"photonsaw-speed:$speed",
+    }    
+} (0..19));
+
+writeXml("speed-6-25-2pass", map {
+    my $speed = 6+$_;
+
+    {
+	label=>"2x$speed",
+	style=>"photonsaw-speed:$speed;photonsaw-passes:2",
+    }    
+} (0..19));
+
+writeXml("focus-20-2", map {
+    my $height = -2+$_*0.2;
+
+    {
+	label=>$height,
+	style=>"photonsaw-speed:20;photonsaw-z:$height",
+    }    
+} (0..19));
+
+writeXml("focus-20-1", map {
+    my $height = -1+$_*0.1;
+
+    {
+	label=>$height,
+	style=>"photonsaw-speed:20;photonsaw-z:$height",
+    }    
+} (0..19));
+
+
+
+
+exit 0;
+

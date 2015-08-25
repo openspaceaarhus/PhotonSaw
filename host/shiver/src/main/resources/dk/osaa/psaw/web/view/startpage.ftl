@@ -3,14 +3,16 @@
 
 Hello ${startPageData.hello?html}
 
-<table>
-<#list startPageData.rows as row>
-<tr>
-  <#list row as col>
-   <td>${col?html}</td>
-  </#list>
-</tr>  
-</#list>
-</table>
+<form action="/pt/withfile" method="POST" enctype="multipart/form-data">
+	 <input type="file" id="fileUpload" name="file"/>
+	 <input type="hidden" name="test" value="fest"/>
+     <input type="submit" value="Upload"/>
+</form>
+
+<form action="/pt/postage" method="POST" enctype="multipart/form-data">
+	 <input type="hidden" name="test1" value="fest1"/>
+	 <input type="hidden" name="test2" value="fest2"/>
+     <input type="submit" value="No Upload"/>
+</form>
 
 </body></html>

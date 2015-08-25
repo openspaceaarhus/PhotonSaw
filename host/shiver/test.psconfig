@@ -2,9 +2,9 @@
   <movementConstraints>
     <axes>
       <movementconstraint axis="X">
-        <acceleration>2500.0</acceleration>
-        <maxSpeed>400.0</maxSpeed>
-        <minSpeed>2.0</minSpeed>
+        <acceleration>10000.0</acceleration>
+        <maxSpeed>1500.0</maxSpeed>
+        <minSpeed>10.0</minSpeed>
         <maxJerk>5.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
         <coilCurrent>1800</coilCurrent>
@@ -12,7 +12,7 @@
       </movementconstraint>
       <movementconstraint axis="Y">
         <acceleration>500.0</acceleration>
-        <maxSpeed>1175.0</maxSpeed>
+        <maxSpeed>500.0</maxSpeed>
         <minSpeed>10.0</minSpeed>
         <maxJerk>10.0</maxJerk>
         <mmPerStep>0.0375</mmPerStep>
@@ -45,7 +45,7 @@
   </movementConstraints>
   <hostConfig>
     <serialPort>/dev/ttyACM0</serialPort>
-    <simulating>true</simulating>
+    <simulating>false</simulating>
     <recording>true</recording>
     <jobsDir>/home/ff/projects/osaa/PhotonSaw/host/testdata/recorded</jobsDir>
     <jobsInMemory>0</jobsInMemory>
