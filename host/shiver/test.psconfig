@@ -2,7 +2,7 @@
   <movementConstraints>
     <axes>
       <movementconstraint axis="X">
-        <acceleration>10000.0</acceleration>
+        <acceleration>5000.0</acceleration>
         <maxSpeed>1500.0</maxSpeed>
         <minSpeed>10.0</minSpeed>
         <maxJerk>5.0</maxJerk>
