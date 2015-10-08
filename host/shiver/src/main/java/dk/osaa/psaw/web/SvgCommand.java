@@ -1,4 +1,4 @@
-package dk.osaa.psaw.mover;
+package dk.osaa.psaw.web;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -9,38 +9,47 @@ import java.util.logging.Level;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import lombok.extern.java.Log;
+import net.sourceforge.argparse4j.impl.Arguments;
+import net.sourceforge.argparse4j.inf.Namespace;
+import net.sourceforge.argparse4j.inf.Subparser;
+import io.dropwizard.cli.ConfiguredCommand;
+import io.dropwizard.setup.Bootstrap;
 import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.SVGRenderTarget;
 import dk.osaa.psaw.machine.Move;
-import lombok.extern.java.Log;
+import dk.osaa.psaw.web.config.PhotonSawConfiguration;
 
-/**
- * Test class to get the API to do something.
- * @author ff
- */
 @Log
-public class Mover {
-	public static void main(String[] args) {
-		/*
-		PhotonSaw ps = null;
-		try {
-			File svgFile = args.length==1 ? new File(args[0]) : null;
-			
-	    	File cfgFile = new File("test.psconfig");
-//	    	File cfgFile = new File("simulate.psconfig");
-	    	LegacyConfiguration cfg;
-	    	if (cfgFile.exists()) {
-	    		cfg = LegacyConfiguration.load(cfgFile);
-	    	} else {
-	    		cfg = new LegacyConfiguration();	
-	    		cfg.store(cfgFile);
-	    	}
-	    	cfg.store();
+public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 
-			ps = new PhotonSaw(cfg);
-	    	
+	public SvgCommand(String name, String desc) {
+		super(name, desc);
+	}
+	
+	@Override
+	public void configure(net.sourceforge.argparse4j.inf.Subparser subparser) {
+		super.configure(subparser);
+		
+		subparser.addArgument("--svg")
+				 .help("The SVG file to execute, if omitted, you will be prompted for the svg file")
+				 .type(Arguments.fileType().verifyCanRead())
+				 .nargs("?");		
+	}
+	
+	@Override
+	protected void run(Bootstrap<PhotonSawConfiguration> bootstrap,
+			Namespace namespace, PhotonSawConfiguration configuration)
+			throws Exception {
+
+    	PhotonSaw ps = new PhotonSaw(configuration.getMachine());
+		
+		try {
+			String svg = namespace.getString("--svg");
+			File svgFile = svg != null ? new File(svg) : null;
+				    	
 			//testJob.loadTest();
 			
 			if (svgFile == null) {
@@ -58,7 +67,7 @@ public class Mover {
 			
 			
 			Job testJob = new Job();
-			testJob.loadSVG(cfg, svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
+			testJob.loadSVG(configuration.getMachine(), svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
 			testJob.optimizeCuts();
 			testJob.logStructure();
 		
@@ -78,24 +87,30 @@ public class Mover {
 				Thread.sleep(1000);
 				ps.run("st");
 			}
+/*
+			// Turn off the motors
+			for (int i=0;i<Move.AXES;i++) {
+				ps.run("me "+i+" 0 0");
+			}
+			Move.dumpProfile();
+*/
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Failed while running command", e);
 			System.exit(2);
 
 		} finally {
-			if (ps != null) {
-				// Turn off the motors
-				for (int i=0;i<Move.AXES;i++) {					
-					try {
-						ps.run("me "+i+" 0 0");
-					} catch (Exception e) {
-					}
+			// Turn off the motors
+			for (int i=0;i<Move.AXES;i++) {					
+				try {
+					ps.run("me "+i+" 0 0");
+				} catch (Exception e) {
 				}
-				Move.dumpProfile();
 			}
+			Move.dumpProfile();
 		}
-	*/
+	
 		System.exit(0);
+    	
 	}
 
 }

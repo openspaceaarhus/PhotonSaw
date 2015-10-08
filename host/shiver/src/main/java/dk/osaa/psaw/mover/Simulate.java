@@ -10,7 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import lombok.extern.java.Log;
-import dk.osaa.psaw.config.LegacyConfiguration;
+import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.SVGRenderTarget;
@@ -21,6 +21,7 @@ import dk.osaa.psaw.machine.SimulatedCommander;
 public class Simulate {
 	
 	public static void main(String[] args) {
+/*
 		PhotonSaw ps = null;
 		try {
 	    	File cfgFile = new File("simulate.psconfig");
@@ -86,7 +87,7 @@ public class Simulate {
 				Move.dumpProfile();
 			}
 		}
-	
+	*/
 		System.exit(0);
 	}
 }

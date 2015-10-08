@@ -2,14 +2,15 @@ package dk.osaa.psaw.core;
 
 import java.util.logging.Level;
 
-import dk.osaa.psaw.config.MovementConstraints;
+import dk.osaa.psaw.config.AxisConstraints;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
+import dk.osaa.psaw.config.obsolete.MovementConstraints;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.PointTransformation;
 import dk.osaa.psaw.job.JobRenderTarget;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
-
 import lombok.Getter;
 import lombok.val;
 import lombok.extern.java.Log;
@@ -45,8 +46,13 @@ public class Planner extends Thread implements JobRenderTarget {
 	@Getter
 	int renderedLines;
 
+	private final PhotonSawMachineConfig cfg;
+	private final AxisConstraints[] constraints;
+
 	public Planner(PhotonSaw photonSaw) {
 		this.photonSaw = photonSaw;
+		this.cfg = photonSaw.cfg;
+		this.constraints = cfg.getAxes().getArray();
 		
 		setDaemon(true);
 		setName("Planner thread");
@@ -96,13 +102,13 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 	}
 	
+	
+	
 	Move endcodeJogMove(MoveVector mmMoveVector, double speedMMS) {		
 		
-		MovementConstraints mc = photonSaw.cfg.movementConstraints;
-		
-		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
+		val stepVector = mmMoveVector.div(cfg.getMmPerStep()).round(); // move vector in whole steps
 		val unitVector = mmMoveVector.unit();
-		MoveVector startSpeedVector = unitVector.mul(speedMMS/mc.getTickHZ()).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
+		MoveVector startSpeedVector = unitVector.mul(speedMMS/cfg.getTickHZ()).div(cfg.getMmPerStep()); // convert from scalar mm/s to vector step/tick
 
 		// Find the longest axis, so we can use it for calculating the duration of the move, this way we get better accuracy.
 		int longAxis = 0;
@@ -129,7 +135,7 @@ public class Planner extends Thread implements JobRenderTarget {
 			// Check that we got exactly the movement in steps that we wanted,
 			// if not adjust the speed until the error is gone.
 			long steps = move.getAxisLength(a);
-			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/mc.getAxes()[a].mmPerStep);
+			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/cfg.getMmPerStep().getAxis(a));
 			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
@@ -211,7 +217,7 @@ public class Planner extends Thread implements JobRenderTarget {
 						for (int i=0;i<Move.AXES;i++) {
 							nextLoc.axes[i] = lastBufferedLocation.axes[i] + jogDirection.getAxis(i) * speed * duration; 
 						}
-						nextLoc.roundToWholeSteps(photonSaw.cfg.movementConstraints);
+						nextLoc.roundToWholeSteps(cfg);
 						
 						MoveVector step = new MoveVector();
 						for (int i=0;i<Move.AXES;i++) {
@@ -282,10 +288,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.cfg.movementConstraints, 
+		Line line = new Line(photonSaw.cfg, 
 							lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-							lastBufferedLocation, p, photonSaw.cfg.movementConstraints.getRapidMoveSpeed());
-		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
+							lastBufferedLocation, p, cfg.getRapidMoveSpeed());
+		if (line.getLength() > cfg.getShortestMove()) {
 			addLine(line);
 		}
 		renderedLines++;
@@ -299,10 +305,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.cfg.movementConstraints, 
+		Line line = new Line(photonSaw.cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 				lastBufferedLocation, p, maxSpeed);
-		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
+		if (line.getLength() > photonSaw.cfg.getShortestMove()) {
 			line.setLaserIntensity(intensity);
 			addLine(line);
 		}
@@ -317,11 +323,11 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.cfg.movementConstraints, 
+		Line line = new Line(cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 				lastBufferedLocation, p, maxSpeed);
 		line.setMandatoryExitSpeed(maxSpeed);
-		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
+		if (line.getLength() > cfg.getShortestMove()) {
 			addLine(line);
 		}
 		renderedLines++;
@@ -338,10 +344,10 @@ public class Planner extends Thread implements JobRenderTarget {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
 			}
 		}
-		Line line = new Line(photonSaw.cfg.movementConstraints, 
+		Line line = new Line(cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 				lastBufferedLocation, p, maxSpeed);
-		if (line.getLength() > photonSaw.cfg.movementConstraints.getShortestMove()) {
+		if (line.getLength() > cfg.getShortestMove()) {
 			line.setLaserIntensity(intensity);
 			line.setPixels(pixels);
 			line.setMandatoryExitSpeed(maxSpeed);
@@ -353,17 +359,17 @@ public class Planner extends Thread implements JobRenderTarget {
 	@Override
 	public double getEngravingXAccelerationDistance(double speed) {
 		return 1.2*Line.estimateAccelerationDistance(0,
-					Math.min(photonSaw.cfg.movementConstraints.getAxes()[0].maxSpeed, speed),
-					photonSaw.cfg.movementConstraints.getAxes()[0].acceleration);
+					Math.min(cfg.getAxes().getArray()[0].getMaxSpeed(), speed),
+					cfg.getAxes().getArray()[0].getAcceleration());
 	}
 
 	@Override
 	public double getEngravingYStepSize() {
 		if (getCurrentJob().getRootTransformation().getAxisMapping() == PointTransformation.AxisMapping.XY) {
-			return photonSaw.cfg.movementConstraints.getAxes()[1].mmPerStep;
+			return cfg.getAxes().getArray()[1].getMmPerStep();
 
 		} else if (getCurrentJob().getRootTransformation().getAxisMapping() == PointTransformation.AxisMapping.XA) {
-			return photonSaw.cfg.movementConstraints.getAxes()[3].mmPerStep;
+			return cfg.getAxes().getArray()[3].getMmPerStep();
 			
 		} else {
 			throw new RuntimeException("New AxisMapping not implemented");			

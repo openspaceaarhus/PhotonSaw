@@ -14,7 +14,8 @@ import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.xml.StyleAttribute;
 
-import dk.osaa.psaw.config.LegacyConfiguration;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
+import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
 
 /**
  * Loads an SVG into a job as a JobNodeGroup, each group in the svg becomes another JobNodeGroup  
@@ -24,7 +25,7 @@ import dk.osaa.psaw.config.LegacyConfiguration;
 @Log
 public class SvgLoader {
 	
-	public static JobNodeGroup load(LegacyConfiguration cfg, Job job, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
+	public static JobNodeGroup load(PhotonSawMachineConfig cfg, Job job, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
 
 		SVGUniverse su = new SVGUniverse();
 		URI svgURI = su.loadSVG(svgStream, name);
@@ -70,11 +71,11 @@ public class SvgLoader {
 				
 		JobNodeGroup res = new JobNodeGroup(job.getNodeId(name), pixel2mm);
 		Graphics2DJobNodeGroup g2d = new Graphics2DJobNodeGroup(job, res);
-		g2d.setResolution(25.4/cfg.movementConstraints.getAxes()[0].mmPerStep);
+		g2d.setResolution(25.4/cfg.getMmPerStep().getAxis(0));
 		diagram.setIgnoringClipHeuristic(true);
 		
-		g2d.setMaximumPower(cfg.machineConfig.getMaximumLaserPower());
-		g2d.setDefaultPower(cfg.machineConfig.getMaximumLaserPower());
+		g2d.setMaximumPower(cfg.getMaximumLaserPower());
+		g2d.setDefaultPower(cfg.getMaximumLaserPower());
 		
 		/* 
 		 * Notice: I've replaced com.kitfox.svg.Group with a version that makes the svg element being rendered available

@@ -7,12 +7,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import dk.osaa.psaw.config.MovementConstraints;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
 import dk.osaa.psaw.machine.Q16;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -39,7 +38,6 @@ public class Line {
 		int direction; // The direction this axis moves in, basically the sign for the speed.
 	};
 	LineAxis axes[] = new LineAxis[Move.AXES];
-	MovementConstraints mc;
 	double maxSpeed;     	// The speed limit
 	double minSpeed;     	// The speed we can jump to
 	double acceleration; 	// The acceleration possible in this direction  
@@ -80,13 +78,14 @@ public class Line {
 	
 	static long lineSerialCounter=0;
 	long lineNumber = lineSerialCounter++;
+	private final PhotonSawMachineConfig cfg;
 	
-	public Line(MovementConstraints mc, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
+	public Line(PhotonSawMachineConfig cfg, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
 		this.pixels = null;
-		this.mc = mc;
+		this.cfg = cfg;
 		this.maxSpeed=targetMaxSpeed;
 		
-		endPoint.roundToWholeSteps(mc);
+		endPoint.roundToWholeSteps(cfg);
 		endPosDirty = false;
 		mandatoryExitSpeed = -1;
 
@@ -133,20 +132,20 @@ public class Line {
 			if (unitVector.getAxis(a) == 0) {
 				continue;
 			}
-			if (mc.getAxes()[a].maxSpeed < Math.abs(maxSpeed * unitVector.getAxis(a))) {
-				maxSpeed = Math.abs(mc.getAxes()[a].maxSpeed / unitVector.getAxis(a));	
+			if (cfg.getAxes().getArray()[a].getMaxSpeed() < Math.abs(maxSpeed * unitVector.getAxis(a))) {
+				maxSpeed = Math.abs(cfg.getAxes().getArray()[a].getMaxSpeed() / unitVector.getAxis(a));	
 			}
-			if (Double.isNaN(minSpeed) || mc.getAxes()[a].minSpeed < Math.abs(minSpeed * unitVector.getAxis(a))) {
-				minSpeed = Math.abs(mc.getAxes()[a].minSpeed / unitVector.getAxis(a));	
+			if (Double.isNaN(minSpeed) || cfg.getAxes().getArray()[a].getMinSpeed() < Math.abs(minSpeed * unitVector.getAxis(a))) {
+				minSpeed = Math.abs(cfg.getAxes().getArray()[a].getMinSpeed() / unitVector.getAxis(a));	
 			}
-			if (Double.isNaN(acceleration) || mc.getAxes()[a].acceleration < Math.abs(acceleration * unitVector.getAxis(a))) {
-				acceleration = Math.abs(mc.getAxes()[a].acceleration / unitVector.getAxis(a));	
+			if (Double.isNaN(acceleration) || cfg.getAxes().getArray()[a].getAcceleration() < Math.abs(acceleration * unitVector.getAxis(a))) {
+				acceleration = Math.abs(cfg.getAxes().getArray()[a].getAcceleration() / unitVector.getAxis(a));	
 			}
 		}
 		log.fine("Calculated maxSpeed for line to: "+maxSpeed);
 
 		if (Double.isNaN(minSpeed)){
-			throw new RuntimeException("Failed to calculate minimum speed for: mc:"+mc+" unit vector: "+unitVector);
+			throw new RuntimeException("Failed to calculate minimum speed for: mc:"+cfg.getAxes()+" unit vector: "+unitVector);
 		} 
 		
 		if (Double.isNaN(acceleration) || acceleration == 0) {
@@ -174,10 +173,10 @@ public class Line {
 	    MoveVector accelerationVector = unitVector.mul(acceleration);
 	    MoveVector speedVector = unitVector.mul(maxSpeed);
 	    for (int i=0;i<Move.AXES;i++) {
-	    	if (Math.abs(accelerationVector.getAxis(i)) > mc.getAxes()[i].acceleration+10) {
+	    	if (Math.abs(accelerationVector.getAxis(i)) > cfg.getAxes().getArray()[i].acceleration+10) {
 	    	    log.severe("Too high acceleration:"+acceleration + " is too great for axis:"+ i + " aa: "+ Math.abs(accelerationVector.getAxis(i))+ " for line from " + startPoint+" to "+endPoint);
 	    	} 	    	
-	    	if (Math.abs(speedVector.getAxis(i)) > mc.getAxes()[i].maxSpeed+10) {
+	    	if (Math.abs(speedVector.getAxis(i)) > cfg.getAxes().getArray()[i].maxSpeed+10) {
 	    	    log.severe("Too high speed:"+ maxSpeed + " is too great for axis:"+ i + " as: "+ Math.abs(speedVector.getAxis(i)) + " for line from " + startPoint+" to "+endPoint);
 	    	} 	    	
 	    }	
@@ -228,7 +227,7 @@ public class Line {
 		 */
 				
 		//Cornering fc = new Cornering(mc, unitVector, maxSpeed, next.unitVector, next.maxSpeed);
-		Cornering c = new Cornering(mc, next.unitVector, next.maxEntrySpeed, unitVector, maxSpeed);
+		Cornering c = new Cornering(cfg, next.unitVector, next.maxEntrySpeed, unitVector, maxSpeed);
 		maxExitSpeed = c.getExitSpeed();
 	}
 	
@@ -245,7 +244,7 @@ public class Line {
 			return;			
 		}
 
-		Cornering c = new Cornering(mc, prev.unitVector, prev.exitSpeed, unitVector, maxSpeed).checkJerks();
+		Cornering c = new Cornering(cfg, prev.unitVector, prev.exitSpeed, unitVector, maxSpeed).checkJerks();
 		entrySpeed = c.getExitSpeed();
 	}
 	
@@ -268,11 +267,11 @@ public class Line {
 	        	
 	        	if (unitVector.getAxis(i) != 0) {
 	            	double nextStartSpeedAxis  = maxEndSpeeds.getAxis(i);
-	            	double axisMaxSpeed = nextStartSpeedAxis + mc.getAxes()[i].maxJerk*Math.signum(unitVector.getAxis(i));
+	            	double axisMaxSpeed = nextStartSpeedAxis + cfg.getAxes().getArray()[i].getMaxJerk()*Math.signum(unitVector.getAxis(i));
 	            	double axisSpeed = unitVector.getAxis(i) * maxExitSpeed;
 	            	
 	            	if (Math.signum(axisMaxSpeed) != Math.signum(axisSpeed)) {
-	            		axisMaxSpeed = (mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i);
+	            		axisMaxSpeed = (cfg.getAxes().getArray()[i].getMaxJerk()/2) / unitVector.getAxis(i);
 	            	}
 
 	            	if (Math.abs(axisMaxSpeed) < Math.abs(axisSpeed)) {
@@ -291,14 +290,14 @@ public class Line {
 	        		// We're going in the same direction as the next line, so just make sure we aren't going too fast.
 	    			double jerk = Math.abs(maxEndSpeedAxis - nextStartSpeedAxis);
 
-	    			if (jerk > mc.getAxes()[i].maxJerk) {
-	    				double jerkFactor = jerk/mc.getAxes()[i].maxJerk;
+	    			if (jerk > cfg.getAxes().getArray()[i].maxJerk) {
+	    				double jerkFactor = jerk/cfg.getAxes().getArray()[i].maxJerk;
 	        			maxExitSpeed /= jerkFactor;
 	        		}
 		        		
 	        	} else { // Direction change, so limit the end speed to a half jerk, thus leaving the other half of the jerk for the acceleration
 	        		if (unitVector.getAxis(i) != 0) {       			
-	        			double jerkLimit = Math.abs((mc.getAxes()[i].maxJerk/5) / unitVector.getAxis(i));
+	        			double jerkLimit = Math.abs((cfg.getAxes().getArray()[i].maxJerk/5) / unitVector.getAxis(i));
 	        			if (maxExitSpeed > jerkLimit) {
 	        				maxExitSpeed = jerkLimit;
 	        			}
@@ -325,11 +324,11 @@ public class Line {
         	
         	if (unitVector.getAxis(i) != 0) {
             	double prevSpeed = prevSpeeds.getAxis(i);
-            	double axisMaxSpeed = prevSpeed + mc.getAxes()[i].maxJerk*Math.signum(unitVector.getAxis(i));
+            	double axisMaxSpeed = prevSpeed + cfg.getAxes().getArray()[i].getMaxJerk()*Math.signum(unitVector.getAxis(i));
             	double axisSpeed = unitVector.getAxis(i) * entrySpeed;
             	
             	if (Math.signum(axisMaxSpeed) != Math.signum(axisSpeed)) {
-            		axisMaxSpeed = (mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i);
+            		axisMaxSpeed = (cfg.getAxes().getArray()[i].getMaxJerk()/2) / unitVector.getAxis(i);
             	}
 
             	if (Math.abs(axisMaxSpeed) < Math.abs(axisSpeed)) {
@@ -342,14 +341,14 @@ public class Line {
         	
         	if (Math.signum(axisSpeed) == Math.signum(prevSpeed) || prevSpeed == 0) {
     			double jerk = Math.abs(axisSpeed - prevSpeed);
-    			if (jerk > mc.getAxes()[i].maxJerk) {
-        			double jerkFactor = jerk / mc.getAxes()[i].maxJerk;
+    			if (jerk > cfg.getAxes().getArray()[i].maxJerk) {
+        			double jerkFactor = jerk / cfg.getAxes().getArray()[i].maxJerk;
         			entrySpeed /= jerkFactor;
     			}
 
         	} else {
         		if (unitVector.getAxis(i) != 0) {
-        			double halfJerk = Math.abs((mc.getAxes()[i].maxJerk/2) / unitVector.getAxis(i));
+        			double halfJerk = Math.abs((cfg.getAxes().getArray()[i].maxJerk/2) / unitVector.getAxis(i));
         			if (entrySpeed > halfJerk) {
         				entrySpeed = halfJerk;        			
         			}
@@ -362,7 +361,7 @@ public class Line {
             double prevSpeed = prevSpeeds.getAxis(i);
         	double axisSpeed1 = unitVector.getAxis(i) * entrySpeed;
 			double jerk1 = axisSpeed1 - prevSpeed;
-			if (Math.abs(jerk1) > mc.getAxes()[i].maxJerk*1.1) {
+			if (Math.abs(jerk1) > cfg.getAxes().getArray()[i].getMaxJerk()*1.1) {
 				throw new RuntimeException("Jerk too large for axis:"+i+": jerk:"+jerk1+" exit:"+prevSpeed+" entry:"+axisSpeed1+" line:"+lineNumber);				
 			}        	
 		}
@@ -594,10 +593,10 @@ public class Line {
 		
 		//logLine(mmMoveVector+"\t"+startSpeedMMS+"\t"+endSpeedMMS);
 		
-		val stepVector = mmMoveVector.div(mc.mmPerStep()).round(); // move vector in whole steps
+		val stepVector = mmMoveVector.div(cfg.getMmPerStep()).round(); // move vector in whole steps
 		
 		val unitVector = mmMoveVector.unit();
-		MoveVector startSpeedVector = unitVector.mul(startSpeedMMS/mc.getTickHZ()).div(mc.mmPerStep()); // convert from scalar mm/s to vector step/tick
+		MoveVector startSpeedVector = unitVector.mul(startSpeedMMS/cfg.getTickHZ()).div(cfg.getMmPerStep()); // convert from scalar mm/s to vector step/tick
 
 		// Find the longest axis, so we can use it for calculating the duration of the move, this way we get better accuracy.
 		int longAxis = 0;
@@ -623,7 +622,7 @@ public class Line {
 			ticks = (long)Math.ceil(stepVector.getAxis(longAxis) / startSpeedVector.getAxis(longAxis));
 			
 		} else {
-			MoveVector endSpeedVector   = unitVector.mul(endSpeedMMS/mc.getTickHZ()).div(mc.mmPerStep());
+			MoveVector endSpeedVector   = unitVector.mul(endSpeedMMS/cfg.getTickHZ()).div(cfg.getMmPerStep());
 			
 			// distance = (1/2)*acceleration*time^2
 			// d = s0*t+0.5*a*t^2 and a = (s1-s0)/t =>
@@ -656,11 +655,11 @@ public class Line {
 		move.setLaserAcceleration(new Q16(((double)(endIntensity-startIntensity))/ticks));
 		
 		for (int a=0; a < Move.AXES; a++) {
-			move.setAxisStartPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);
+			move.setAxisStartPos(a, Math.round(axes[a].startPos / cfg.getAxes().getArray()[a].getMmPerStep()) + stepsMoved[a]);
 			
 			move.setAxisSpeed(a, startSpeedVector.getAxis(a));
 			if (accel != null) {
-				if (Math.abs(axes[a].endPos-axes[a].startPos) > mc.getAxes()[a].mmPerStep*2) { // Don't add acceleration to moves that are too short for it to make any sense
+				if (Math.abs(axes[a].endPos-axes[a].startPos) > cfg.getAxes().getArray()[a].getMmPerStep()*2) { // Don't add acceleration to moves that are too short for it to make any sense
 					move.setAxisAccel(a, accel.getAxis(a));
 				} else {
 					move.setAxisSpeed(a, startSpeedVector.getAxis(a) + accel.getAxis(a)*ticks/2);						
@@ -670,7 +669,7 @@ public class Line {
 			// Check that we got exactly the movement in steps that we wanted,
 			// if not adjust the speed until the error is gone.
 			long steps = move.getAxisLength(a);
-			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/mc.getAxes()[a].mmPerStep);
+			long stepsWanted = (long)Math.round(mmMoveVector.getAxis(a)/cfg.getAxes().getArray()[a].getMmPerStep());
 			
 			long diffSteps = steps - stepsWanted;
 			if (diffSteps != 0) {
@@ -704,7 +703,7 @@ public class Line {
 			}
 
 			stepsMoved[a] += steps;
-			move.setAxisEndPos(a, Math.round(axes[a].startPos / mc.getAxes()[a].mmPerStep) + stepsMoved[a]);
+			move.setAxisEndPos(a, Math.round(axes[a].startPos / cfg.getAxes().getArray()[a].getMmPerStep()) + stepsMoved[a]);
 		}		
 
 		if (pixels != null) {			
@@ -800,7 +799,7 @@ public class Line {
 		}
 
 		for (int i=0;i<Move.AXES;i++) {
-			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/mc.getAxes()[i].mmPerStep); 
+			long stepsWanted = (long)Math.round((axes[i].endPos-axes[i].startPos)/cfg.getAxes().getArray()[i].getMmPerStep()); 
 			long diffSteps = stepsMoved[i] - stepsWanted;
 			
 			if (diffSteps != 0) {
@@ -813,7 +812,7 @@ public class Line {
 				 *  This signals the planner that this move didn't actually land where we wanted to, so the planner has to update the start point of
 				 *  the next line to compensate and recalculate all the lines in the buffer.
 				 */				
-				axes[i].endPos += diffSteps*mc.getAxes()[i].mmPerStep;
+				axes[i].endPos += diffSteps*cfg.getAxes().getArray()[i].getMmPerStep();
 				endPosDirty = true;
 			}
 		}

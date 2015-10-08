@@ -1,6 +1,7 @@
 package dk.osaa.psaw.machine;
 
-import dk.osaa.psaw.config.MovementConstraints;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
+import dk.osaa.psaw.config.obsolete.MovementConstraints;
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,10 +15,11 @@ import lombok.ToString;
 public class Point {
 	public double axes[] = new double[Move.AXES];
 	
-	public void roundToWholeSteps(MovementConstraints mc) {
+	public void roundToWholeSteps(PhotonSawMachineConfig cfg) {
 		for (int i=0;i<Move.AXES;i++) {
-			long stepPos = (long)Math.round(getAxes()[i]/mc.getAxes()[i].mmPerStep);
- 			axes[i] = stepPos*mc.getAxes()[i].mmPerStep;
+			double mmPerStep = cfg.getMmPerStep().getAxis(i);
+			long stepPos = (long)Math.round(getAxes()[i]/mmPerStep);
+ 			axes[i] = stepPos*mmPerStep;
 		}
 	}
  }

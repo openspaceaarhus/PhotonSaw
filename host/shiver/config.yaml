@@ -1,5 +1,3 @@
-test: Hest
-legacyConfig: test.psconfig
 
 logging:
   level: INFO

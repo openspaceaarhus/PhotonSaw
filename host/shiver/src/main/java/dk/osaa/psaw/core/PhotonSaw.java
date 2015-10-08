@@ -24,10 +24,10 @@ import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Q30;
 import dk.osaa.psaw.machine.SimulatedCommander;
-import dk.osaa.psaw.config.LegacyConfiguration;
+import dk.osaa.psaw.config.AxisConstraints;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
 import dk.osaa.psaw.machine.PhotonSawCommandFailed;
 import dk.osaa.psaw.machine.ReplyTimeout;
-
 import lombok.Getter;
 import lombok.val;
 import lombok.extern.java.Log;
@@ -39,7 +39,7 @@ import lombok.extern.java.Log;
  */
 @Log
 public class PhotonSaw extends Thread {
-	LegacyConfiguration cfg;
+	PhotonSawMachineConfig cfg;
 	CommanderInterface commander;
 	JobManager jobManager;
 	@Getter
@@ -53,16 +53,19 @@ public class PhotonSaw extends Thread {
 	@Getter
 	ArrayBlockingQueue<Move> moveQueue = new ArrayBlockingQueue<Move>(MOVE_QUEUE_SIZE);
 	
-	public PhotonSaw(LegacyConfiguration cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
+	AxisConstraints[] axisConstraints;
+	
+	public PhotonSaw(PhotonSawMachineConfig cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
 		this.cfg = cfg;
+		axisConstraints = cfg.getAxes().getArray();
 		planner = new Planner(this);
 		
-		if (cfg.hostConfig.isSimulating()) {
+		if (cfg.isSimulating()) {
 			commander = new SimulatedCommander();			
 		} else {
 			commander = new Commander();
 		}		
-		commander.connect(cfg.hostConfig.getSerialPort());
+		commander.connect(cfg.getSerialPort());
 		
 		jobManager = new JobManager(cfg);
 		
@@ -97,7 +100,7 @@ public class PhotonSaw extends Thread {
 		MoveVector startSpeed = new MoveVector();
 		MoveVector endSpeed = new MoveVector();
 		for (int i=0;i<Move.AXES;i++) {
-			double qf = cfg.movementConstraints.getTickHZ()*cfg.movementConstraints.getAxes()[i].mmPerStep/(1<<30);
+			double qf = cfg.getTickHZ()*axisConstraints[i].getMmPerStep()/(1<<30);
 			startSpeed.setAxis(i,  move.getAxisSpeed(i)                                          * qf);
 			endSpeed  .setAxis(i, (move.getAxisSpeed(i)+move.getAxisAccel(i)*move.getDuration()) * qf);
 		}
@@ -105,7 +108,7 @@ public class PhotonSaw extends Thread {
 		if (lastSpeed != null) {
 			for (int i=0;i<Move.AXES;i++) {
 				double jerk = lastSpeed.getAxis(i)-startSpeed.getAxis(i);
-				if (Math.abs(jerk) > cfg.movementConstraints.getAxes()[i].maxJerk*1.25) {
+				if (Math.abs(jerk) > axisConstraints[i].getMaxJerk()*1.25) {
 					log.info("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId()+" axis: "+i+" "+lastSpeed+" "+startSpeed);
 				// 	throw new RuntimeException("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId()+" axis: "+i+" "+lastSpeed+" "+startSpeed);
 				}
@@ -134,7 +137,7 @@ public class PhotonSaw extends Thread {
 		}
 		currentAssistAir = assistAir;
 		
-		Move m = new Move(Line.getMoveId(), cfg.machineConfig.getAssistAirDelay());
+		Move m = new Move(Line.getMoveId(), cfg.getAssistAirDelay());
 		m.setAssistSwitch(assistAir);
 	}
 	
@@ -190,8 +193,8 @@ public class PhotonSaw extends Thread {
 	private void configureMotors() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
 		for (int i=0;i<Move.AXES;i++) {
 			run("me "+i+" "+
-					cfg.movementConstraints.getAxes()[i].coilCurrent+" "+
-					cfg.movementConstraints.getAxes()[i].microSteppingMode);
+					axisConstraints[i].getCoilCurrent()+" "+
+					axisConstraints[i].getMicroSteppingMode());
 		}
 	}
 
@@ -230,8 +233,11 @@ public class PhotonSaw extends Thread {
 		r.setJobSize(planner.getCurrentJobSize());
 		r.setJobRenderingProgressLineCount(planner.getRenderedLines());
 		
-		File rd = cfg.hostConfig.getRecordDir();
-		if (cfg.hostConfig.isRecording() && rd != null) {
+		if (cfg.isRecording()) {
+			File rd = cfg.getRecordDir();
+			if (rd == null || !rd.isDirectory()) {
+				throw new RuntimeException("recordDir is not an existing directory, so unalbe to record");
+			}
 			File f = new File(rd, r.getTimestamp()+".psawstate");
 
 			try {
@@ -256,12 +262,12 @@ public class PhotonSaw extends Thread {
 		log.info("jog: "+direction);
 		
 		for (int ax=0;ax<Move.AXES;ax++) {
-			double speed = cfg.movementConstraints.getAxes()[ax].maxSpeed;
+			double speed = axisConstraints[ax].getMaxSpeed();
 			if (speed > 100) {
 				speed = 100;
 			}
 			
-			double stepsPerTick = speed * direction.getAxis(ax) / cfg.movementConstraints.getAxes()[ax].mmPerStep / cfg.movementConstraints.getTickHZ();
+			double stepsPerTick = speed * direction.getAxis(ax) / axisConstraints[ax].getMmPerStep() / cfg.getTickHZ();
 				
 			// We run for 5000 ticks per interval, so don't allow any partial steps to be taken or the motor will not run smoothly.
 			stepsPerTick = Math.round(stepsPerTick*5000)/5000.0;

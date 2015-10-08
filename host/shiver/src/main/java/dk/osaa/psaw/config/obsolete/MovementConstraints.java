@@ -1,4 +1,4 @@
-package dk.osaa.psaw.config;
+package dk.osaa.psaw.config.obsolete;
 
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;

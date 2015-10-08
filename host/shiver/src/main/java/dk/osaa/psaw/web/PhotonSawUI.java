@@ -11,7 +11,6 @@ import java.io.File;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
-import dk.osaa.psaw.config.LegacyConfiguration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.web.config.PhotonSawConfiguration;
 import dk.osaa.psaw.web.resources.ImmediateJob;
@@ -44,14 +43,13 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));		
 		swaggerDropwizard.onInitialize(bootstrap);
 		bootstrap.addBundle(new ViewBundle());
+		bootstrap.addCommand(new SvgCommand("svg", "Executes an svg"));
 	}
 
 	@Override
 	public void run(PhotonSawConfiguration configuration, Environment environment) throws Exception {
 		
-		File legacyConfigFile = configuration.getLegacyConfigFile();
-    	LegacyConfiguration cfg = LegacyConfiguration.load(legacyConfigFile);
-    	PhotonSaw psaw = new PhotonSaw(cfg);
+    	PhotonSaw psaw = new PhotonSaw(configuration.getMachine());
 		environment.lifecycle().manage(new ManagedPhotonSaw(psaw));
 
 		// All the live API resources live under /api

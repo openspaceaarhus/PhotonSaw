@@ -1,11 +1,8 @@
 package dk.osaa.psaw.core;
 
-import javax.management.RuntimeErrorException;
-
-import org.eclipse.jetty.util.log.Log;
-
 import lombok.Getter;
-import dk.osaa.psaw.config.MovementConstraints;
+import lombok.extern.java.Log;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 
@@ -14,7 +11,7 @@ import dk.osaa.psaw.machine.MoveVector;
  * 
  * @author Flemming Frandsen <dren.dk@gmail.com> <http://dren.dk>
  */
-@lombok.extern.java.Log
+@Log
 public class Cornering {
 
 	/**
@@ -31,19 +28,20 @@ public class Cornering {
 	
 	static int id = 0;
 	
-	MovementConstraints mc;
+	private final PhotonSawMachineConfig cfg;
+	
 	
 	/**
 	 * Calculates the cornering parameters
 	 * 
-	 * @param mc The movement constraints that govern the mechanical system that this drives
+	 * @param cfg The movement constraints that govern the mechanical system that this drives
 	 * @param entryVector The direction of the system before the corner
 	 * @param entrySpeed The speed of the system before the corner
 	 * @param exitVector The direction of the system after the corner
 	 * @param maxExitSpeed The absolute maximum exit speed to target
 	 */
-	public Cornering(MovementConstraints mc, MoveVector entryVector, double entrySpeed, MoveVector exitVector, double maxExitSpeed) {
-		this.mc = mc;
+	public Cornering(PhotonSawMachineConfig cfg, MoveVector entryVector, double entrySpeed, MoveVector exitVector, double maxExitSpeed) {
+		this.cfg = cfg;
 			
 		id++;
 		if (id == 43) {
@@ -66,10 +64,10 @@ public class Cornering {
 				
 				double max;
 				if (Math.signum(exitVector.getAxis(ax)) == Math.signum(entryVector.getAxis(ax))) { // Continuing along in the same direction.
-					max = mc.getAxes()[ax].maxJerk + Math.abs(entrySpeeds.getAxis(ax));							
+					max = cfg.getAxes().getArray()[ax].getMaxJerk() + Math.abs(entrySpeeds.getAxis(ax));							
 	
 				} else { // Direction change or starting from a standstill				
-					max = mc.getAxes()[ax].maxJerk/2;				
+					max = cfg.getAxes().getArray()[ax].getMaxJerk()/2;				
 				}
 				
 				// This limits the exit speed under the assumption that entry speed is low enough to be able to corner within the mc.
@@ -90,18 +88,18 @@ public class Cornering {
 			for (int ax=0;ax<Move.AXES;ax++) {
 				double jerk = exitSpeeds.getAxis(ax)-entrySpeeds.getAxis(ax);
 				jerks.setAxis(ax, jerk);
-				if (Math.abs(jerk) > mc.getAxes()[ax].maxJerk*1.01) {
+				if (Math.abs(jerk) > cfg.getAxes().getArray()[ax].getMaxJerk()*1.01) {
 					done = false;
 					
 					if (Math.signum(exitVector.getAxis(ax)) == Math.signum(entryVector.getAxis(ax))) {
-						if (Math.abs(entrySpeeds.getAxis(ax)) > Math.abs(exitSpeeds.getAxis(ax))+mc.getAxes()[ax].maxJerk) {
-							entrySpeed /= Math.abs(entrySpeeds.getAxis(ax)) / (Math.abs(exitSpeeds.getAxis(ax))+mc.getAxes()[ax].maxJerk);
+						if (Math.abs(entrySpeeds.getAxis(ax)) > Math.abs(exitSpeeds.getAxis(ax))+cfg.getAxes().getArray()[ax].getMaxJerk()) {
+							entrySpeed /= Math.abs(entrySpeeds.getAxis(ax)) / (Math.abs(exitSpeeds.getAxis(ax))+cfg.getAxes().getArray()[ax].getMaxJerk());
 						} else {
 							log.info("Fail!"+id);
 						}
 					} else {
-						if (Math.abs(entrySpeeds.getAxis(ax)) > mc.getAxes()[ax].maxJerk/2) {
-							entrySpeed /= Math.abs(entrySpeeds.getAxis(ax))/(mc.getAxes()[ax].maxJerk/2);
+						if (Math.abs(entrySpeeds.getAxis(ax)) > cfg.getAxes().getArray()[ax].getMaxJerk()/2) {
+							entrySpeed /= Math.abs(entrySpeeds.getAxis(ax))/(cfg.getAxes().getArray()[ax].getMaxJerk()/2);
 						} else {
 							log.info("Fail!"+id);							
 						}
@@ -116,8 +114,8 @@ public class Cornering {
 		for (int ax=0;ax<Move.AXES;ax++) {
 			double jerk = jerks.getAxis(ax);
 
-			if (Math.abs(jerk) > mc.getAxes()[ax].maxJerk*1.25) {
-				throw new RuntimeException("Jerk was too large in axis: "+ax+" jerk was "+jerk+" max:"+mc.getAxes()[ax].maxJerk+" for corner id:"+id);
+			if (Math.abs(jerk) > cfg.getAxes().getArray()[ax].getMaxJerk()*1.25) {
+				throw new RuntimeException("Jerk was too large in axis: "+ax+" jerk was "+jerk+" max:"+cfg.getAxes().getArray()[ax].getMaxJerk()+" for corner id:"+id);
 			}
 		}
 		return this;

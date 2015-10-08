@@ -10,8 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.TreeMap;
 
 import lombok.val;
-
-import dk.osaa.psaw.config.LegacyConfiguration;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
 
 /**
  * Manages a the jobs the system knows about and keeps a cache of jobs in memory.
@@ -24,8 +23,8 @@ public class JobManager {
 	 * Job cache, which contains the jobs that have been loaded from disk or 
 	 */
 	TreeMap<String, ManagedJob> jobs;	
-	LegacyConfiguration cfg;
-	public JobManager(LegacyConfiguration cfg) {
+	PhotonSawMachineConfig cfg;
+	public JobManager(PhotonSawMachineConfig cfg) {
 		this.cfg = cfg;
 		jobs = new TreeMap<String, ManagedJob>();
 		
@@ -36,13 +35,11 @@ public class JobManager {
 	 * Scans the disk for jobs so we don't need to do that every time someone wants a list of jobs.
 	 */
 	protected void discoverJobs() {
-		File jobStore = cfg.hostConfig.getJobsDir();
+		File jobStore = cfg.getJobsDir();
 		if (jobStore == null) {
-			cfg.hostConfig.setJobsDir(new File(cfg.getConfigFile().getParentFile(), "jobs"));
-			jobStore = cfg.hostConfig.getJobsDir();
-			if (!jobStore.isDirectory()) {
-				jobStore.mkdir();
-			}
+			throw new RuntimeException("Missing jobStore option");
+		} else if (!jobStore.isDirectory()) {
+			throw new RuntimeException("The directory for storing jobs doesn't exist: "+jobStore);
 		}
 		
 		for (String fn : jobStore.list()) {
@@ -95,7 +92,7 @@ public class JobManager {
 	public String createJob(String name) {
 		String id = makeJobId(name);
 				
-		File jf = new File(cfg.hostConfig.getJobsDir(), id+".psjob");		
+		File jf = new File(cfg.getJobsDir(), id+".psjob");		
 		val mj = new ManagedJob();
 		mj.setFile(jf);
 		mj.setId(id);
@@ -121,7 +118,7 @@ public class JobManager {
 		}
 		String id = makeJobId(name);
 				
-		File jf = new File(cfg.hostConfig.getJobsDir(), id+".psjob");		
+		File jf = new File(cfg.getJobsDir(), id+".psjob");		
 		val mj = new ManagedJob();
 		mj.setFile(jf);
 		mj.setId(id);
@@ -167,7 +164,7 @@ public class JobManager {
 		}
 		
 		// Make room for the job by getting rid of the oldest one we have loaded, if we'd get over the limit
-		while (jobs.size() >= cfg.hostConfig.getJobsInMemory()) {
+		while (jobs.size() >= cfg.getJobsInMemory()) {
 			ManagedJob oldest = null;
 			for (ManagedJob j : jobs.values()) {
 				// Never nuke jobs that are explicitly marked as in use or jobs that have been used recently

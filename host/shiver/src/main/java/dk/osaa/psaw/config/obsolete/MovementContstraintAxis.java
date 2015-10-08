@@ -1,4 +1,4 @@
-package dk.osaa.psaw.config;
+package dk.osaa.psaw.config.obsolete;
 
 import lombok.Getter;
 
