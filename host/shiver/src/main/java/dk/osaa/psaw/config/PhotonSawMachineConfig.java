@@ -2,11 +2,7 @@ package dk.osaa.psaw.config;
 
 import java.io.File;
 
-import javax.validation.Valid;
-
 import lombok.Data;
-import lombok.val;
-
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -54,9 +50,7 @@ public class PhotonSawMachineConfig {
 	private double shortestMove=0.1;
 
 	@JsonProperty
-	@Valid
-	@NotEmpty
-	AxesConstraints axes;	
+	AxesConstraints axes = new AxesConstraints();	
 	
 	
 	private MoveVector mmPerStep;

@@ -7,9 +7,6 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import io.federecio.dropwizard.swagger.SwaggerDropwizard;
 
-import java.io.File;
-import java.util.logging.Level;
-
 import lombok.extern.java.Log;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.web.config.PhotonSawConfiguration;

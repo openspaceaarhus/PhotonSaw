@@ -1,41 +1,28 @@
 package dk.osaa.psaw.config;
 
-import javax.validation.Valid;
+import lombok.Data;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import dk.osaa.psaw.machine.Move;
-
+@Data
 public class AxesConstraints {
 	@JsonProperty
-	@Valid
 	@NotEmpty
-	AxisConstraints x;
+	private AxisConstraints x = new AxisConstraints();
 	
 	@JsonProperty
-	@Valid
 	@NotEmpty
-	AxisConstraints y;
+	private AxisConstraints y = new AxisConstraints();
 	
 	@JsonProperty
-	@Valid
 	@NotEmpty
-	AxisConstraints z;
+	private AxisConstraints z = new AxisConstraints();
 	
 	@JsonProperty
-	@Valid
 	@NotEmpty
-	AxisConstraints a;
-	
-	
-	private AxisConstraints[] asArray;
-	public AxisConstraints[] getArray() {
-		if (asArray == null) {
-			asArray = new AxisConstraints[] {x,y,z,a};
-			assert(asArray.length == Move.AXES);
-		}
-		return asArray;
-	}
+	private AxisConstraints a = new AxisConstraints();
+		
+	private final AxisConstraints[] array=new AxisConstraints[] {x,y,z,a};
 }
