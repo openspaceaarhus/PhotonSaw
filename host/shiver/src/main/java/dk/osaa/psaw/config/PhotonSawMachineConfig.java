@@ -2,7 +2,12 @@ package dk.osaa.psaw.config;
 
 import java.io.File;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +16,7 @@ import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 
 @Data
+@NoArgsConstructor
 public class PhotonSawMachineConfig {
 	@JsonProperty
 	private	String serialPort = "/dev/ttyACM0";
@@ -50,7 +56,8 @@ public class PhotonSawMachineConfig {
 	private double shortestMove=0.1;
 
 	@JsonProperty
-	AxesConstraints axes = new AxesConstraints();	
+	@NotNull
+	AxesConstraints axes;	
 	
 	
 	private MoveVector mmPerStep;

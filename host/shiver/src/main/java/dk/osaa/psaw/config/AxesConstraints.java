@@ -1,5 +1,7 @@
 package dk.osaa.psaw.config;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -9,20 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Data
 public class AxesConstraints {
 	@JsonProperty
-	@NotEmpty
-	private AxisConstraints x = new AxisConstraints();
+	@NotNull
+	private AxisConstraints x;
 	
 	@JsonProperty
-	@NotEmpty
-	private AxisConstraints y = new AxisConstraints();
+	@NotNull
+	private AxisConstraints y;
 	
 	@JsonProperty
-	@NotEmpty
-	private AxisConstraints z = new AxisConstraints();
+	@NotNull
+	private AxisConstraints z;
 	
 	@JsonProperty
-	@NotEmpty
-	private AxisConstraints a = new AxisConstraints();
+	@NotNull
+	private AxisConstraints a;
 		
-	private final AxisConstraints[] array=new AxisConstraints[] {x,y,z,a};
+	private AxisConstraints[] asArray = null;
+	public AxisConstraints[] getArray() {
+		if (asArray == null) {
+			asArray = new AxisConstraints[] {x,y,z,a};
+		}
+		return asArray;
+	}
 }
