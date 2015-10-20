@@ -1,5 +1,6 @@
 package dk.osaa.psaw.web.config;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,5 +17,6 @@ public class PhotonSawConfiguration extends Configuration {
 	@Getter
 	@Setter
 	@NotNull
+	@Valid
 	private PhotonSawMachineConfig machine;
 }

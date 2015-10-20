@@ -2,11 +2,14 @@ package dk.osaa.psaw.config;
 
 import java.io.File;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Setter;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -15,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class PhotonSawMachineConfig {
 	@JsonProperty
@@ -28,11 +32,11 @@ public class PhotonSawMachineConfig {
 	private boolean recording = false;
 
 	@JsonProperty
-	private File recordDir;
+	private String recordDir;
 
 	@JsonProperty
 	@NotEmpty
-	private File jobsDir;
+	private String jobsDir;
 
 	@JsonProperty	
 	private int jobsInMemory = 10;
@@ -57,6 +61,7 @@ public class PhotonSawMachineConfig {
 
 	@JsonProperty
 	@NotNull
+	@Valid
 	AxesConstraints axes;	
 	
 	

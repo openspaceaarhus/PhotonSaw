@@ -1,16 +1,20 @@
 package dk.osaa.psaw.core;
 
+import lombok.Getter;
 import dk.osaa.psaw.job.JobRenderTarget;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.Point;
 
 public class JobSize implements JobRenderTarget {
 
-	int lineCount = 0;
-	double lineLength = 0;
-	Point pos;
+	@Getter
+	private int lineCount = 0;
 
-	Planner p;
+	@Getter
+	private double lineLength = 0;
+	private Point pos;
+
+	private Planner p;
 	public JobSize(Planner p) {
 		this.p = p;
 		pos = p.lastBufferedLocation;

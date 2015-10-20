@@ -43,29 +43,27 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 	protected void run(Bootstrap<PhotonSawConfiguration> bootstrap,
 			Namespace namespace, PhotonSawConfiguration configuration)
 			throws Exception {
+	
+		File svgFile = namespace.get("svg");
+			    	
+		//testJob.loadTest();
+		
+		if (svgFile == null) {
+			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+			FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
+			fc.setFileFilter(fcf);
+			fc.setMultiSelectionEnabled(false);
+			int rv = fc.showOpenDialog(null);
+			if(rv != JFileChooser.APPROVE_OPTION) {
+				System.exit(0);
+			}
 
+			svgFile = fc.getSelectedFile();
+		}
+		
     	PhotonSaw ps = new PhotonSaw(configuration.getMachine());
 		
-		try {
-			String svg = namespace.getString("--svg");
-			File svgFile = svg != null ? new File(svg) : null;
-				    	
-			//testJob.loadTest();
-			
-			if (svgFile == null) {
-				JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
-				FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
-				fc.setFileFilter(fcf);
-				fc.setMultiSelectionEnabled(false);
-				int rv = fc.showOpenDialog(null);
-				if(rv != JFileChooser.APPROVE_OPTION) {
-					System.exit(0);
-				}
-	
-				svgFile = fc.getSelectedFile();
-			}
-			
-			
+		try {			
 			Job testJob = new Job();
 			testJob.loadSVG(configuration.getMachine(), svgFile.getName(), new BufferedInputStream(new FileInputStream(svgFile)));
 			testJob.optimizeCuts();

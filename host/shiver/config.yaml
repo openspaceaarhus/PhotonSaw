@@ -13,3 +13,51 @@ server:
   connector:
     type: http
     port: 9000
+    
+machine:
+   serialPort: /dev/ttyACM0
+   simulating: false
+   recording: false
+   #recordDir:
+   jobsDir: /tmp/jobs
+   jobsInMemory: 10
+   assistAirDelay: 500
+   maximumLaserPower: 80
+   junctionDeviation: 0.1
+   rapidMoveSpeed: 5000
+   tickHZ: 50000
+   shortestMove: 0.2
+   axes:
+      x:
+         acceleration: 8000
+         maxSpeed: 1500
+         minSpeed: 20
+         maxJerk: 5
+         mmPerStep: 0.0375
+         coilCurrent: 1800
+         microSteppingMode: 3
+      y:
+         acceleration: 500
+         maxSpeed: 1500
+         minSpeed: 20
+         maxJerk: 5
+         mmPerStep: 0.0375
+         coilCurrent: 1800
+         microSteppingMode: 3
+      z:
+         acceleration: 0.1
+         maxSpeed: 10
+         minSpeed: 0.2
+         maxJerk: 0.2
+         mmPerStep: 0.003125
+         coilCurrent: 1500
+         microSteppingMode: 3 
+      a:
+         acceleration: 5000
+         maxSpeed: 10
+         minSpeed: 1
+         maxJerk: 1
+         mmPerStep: 0.02
+         coilCurrent: 350
+         microSteppingMode: 3
+   

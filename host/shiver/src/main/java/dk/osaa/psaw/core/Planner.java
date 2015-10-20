@@ -171,8 +171,8 @@ public class Planner extends Thread implements JobRenderTarget {
 					
 					JobSize js = new JobSize(this);
 					getCurrentJob().render(js);	
-					currentJobLength = js.lineLength;
-					currentJobSize = js.lineCount;
+					currentJobLength = js.getLineLength();
+					currentJobSize = js.getLineCount();
 										
 					getCurrentJob().render(this);
 					moveTo(startPoint); // Go back to where we were before the job.

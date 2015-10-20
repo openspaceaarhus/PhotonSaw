@@ -234,7 +234,7 @@ public class PhotonSaw extends Thread {
 		r.setJobRenderingProgressLineCount(planner.getRenderedLines());
 		
 		if (cfg.isRecording()) {
-			File rd = cfg.getRecordDir();
+			File rd = cfg.getRecordDir() != null ? new File(cfg.getRecordDir()) : null;
 			if (rd == null || !rd.isDirectory()) {
 				throw new RuntimeException("recordDir is not an existing directory, so unalbe to record");
 			}
