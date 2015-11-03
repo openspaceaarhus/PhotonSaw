@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
+  	<repositories>
+	  <repository>
+	    <id>repo</id>
+	    <url>file://${basedir}/repo</url>
+	  </repository>
+	</repositories>
+
   <groupId>dk.osaa.psaw</groupId>
   <artifactId>shiver</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -38,13 +45,21 @@
       <artifactId>rxtx</artifactId>
       <version>2.1.7</version>
     </dependency>
+<!--
     <dependency>
       <groupId>com.kitfox.svg</groupId>
       <artifactId>svg-salamander</artifactId>
-      <version>1.0.psaw20140913-SNAPSHOT</version>
-      <scope>system</scope>
+
+      <version>1.0.psaw20140913-SNAPSHOT</version> 
       <systemPath>${basedir}/lib/svg-salamander.jar</systemPath>
+      <scope>system</scope>
     </dependency>
+-->    
+    <dependency>
+		<groupId>kitfox</groupId>
+	    <artifactId>svgsalamander</artifactId>
+	    <version>0.0.1</version>
+	</dependency>
     
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>
@@ -86,6 +101,7 @@
 	<version>1.6</version>
 	<configuration>
 	  <createDependencyReducedPom>true</createDependencyReducedPom>
+	  
 	  <filters>
 	    <filter>
 	      <artifact>*:*</artifact>

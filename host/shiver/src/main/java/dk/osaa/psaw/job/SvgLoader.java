@@ -32,8 +32,8 @@ public class SvgLoader {
 		SVGDiagram diagram = su.getDiagram(svgURI);
 		val e = diagram.getRoot();
 		
-		/* Try to guess the user units to real world conversion factor, because the
-		 * fucking assholes at w3c didn't bother to specify a default pixel size or an easy way to specify it.
+		/* Try to guess the user units to real world conversion factor, because the nitwits
+		 * at w3c didn't bother to specify a default pixel size or an easy way to specify it.
 		 * 
 		 * inkscape seems to just work in 90 DPI implicitly, without stating that anywhere, let alone in an
 		 * attribute in the xml, so let's hope they never change their minds.
