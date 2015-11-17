@@ -1,6 +1,0 @@
-set   autoscale 
-unset log
-set xtic auto 
-set ytic auto 
-plot "../testdata/out/zoid-color.svg.moves.graph" using 1:2 title 'X' with linespoints
-#, "../testdata/out/zoid-color.svg.moves.graph" u 1:3 t 'Y' with lines
