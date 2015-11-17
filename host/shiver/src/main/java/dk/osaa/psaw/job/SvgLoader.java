@@ -4,6 +4,8 @@ import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.val;
 import lombok.extern.java.Log;
@@ -15,7 +17,8 @@ import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.xml.StyleAttribute;
 
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
-import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
+
+
 
 /**
  * Loads an SVG into a job as a JobNodeGroup, each group in the svg becomes another JobNodeGroup  
@@ -24,6 +27,8 @@ import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
  */
 @Log
 public class SvgLoader {
+
+	private static final Pattern MAJOR_MINOR_VERSION = Pattern.compile("^(\\d+)\\.(\\d+)");
 	
 	public static JobNodeGroup load(PhotonSawMachineConfig cfg, Job job, String name, InputStream svgStream, double forcedDPI) throws IOException, SVGException {
 
@@ -59,8 +64,24 @@ public class SvgLoader {
 			log.info("Explicit DPI set by photonsaw-dpi attribute: "+dpiAttr.getDoubleValue());
 			
 		} else if (e.hasAttribute("inkscape:version", AnimationElement.AT_XML)) {
-			pixelsSizeX = pixelsSizeY = 25.4/90;
-			log.info("Inkscape svg detected: "+name+" assuming 90 DPI for conversion to mm");
+			StyleAttribute versionAttr = new StyleAttribute("inkscape:version");
+			e.getPres(versionAttr);
+			String inkscapeVersion = versionAttr.getStringValue();
+
+			int dpi = 96;
+			
+			Matcher majorMinor = MAJOR_MINOR_VERSION.matcher(inkscapeVersion);
+			if (majorMinor.find()) {
+				long major = Long.parseLong(majorMinor.group(1));
+				long minor = Long.parseLong(majorMinor.group(2));
+				log.fine("Parsed inkscape version: "+major+"."+minor);
+				if (major == 0 && minor < 91) {
+					dpi = 90;
+				}
+			}
+			
+			pixelsSizeX = pixelsSizeY = 25.4/dpi;
+			log.info("Inkscape version "+inkscapeVersion+" svg detected: "+name+" assuming "+dpi+" DPI for conversion to mm");
 
 		} else {
 			log.warning("Unable to guess the pixel size used in the svg file "+name+" guessing 96 DPI");
