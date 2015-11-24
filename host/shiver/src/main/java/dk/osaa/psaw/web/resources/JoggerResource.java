@@ -21,7 +21,7 @@ import dk.osaa.psaw.web.api.JogStatus;
 @Api(value = "/jogger", description = "Jogging the 4 axis machine")
 @Produces(MediaType.APPLICATION_JSON)
 @AllArgsConstructor
-public class Jogger {
+public class JoggerResource {
 	private final PhotonSaw psaw;
 	
 	@ApiOperation(value = "Starts or maintains the specified speed vector, the machine will time out after 100 ms so the jog command must be repeated more often than that.")

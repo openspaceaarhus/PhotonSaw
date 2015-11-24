@@ -34,27 +34,33 @@
     	<version>${dropwizard.version}</version>
     </dependency>
     
+	<dependency>
+		<groupId>io.dropwizard-bundles</groupId>
+		<artifactId>dropwizard-webjars-bundle</artifactId>
+		<version>0.8.1</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.webjars.bower</groupId>
+		<artifactId>angular</artifactId>
+		<version>1.4.7</version>
+	</dependency>
+	
+	    
+    
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.16.6</version>
       <scope>provided</scope> 
     </dependency>
+    
     <dependency>
       <groupId>org.rxtx</groupId>
       <artifactId>rxtx</artifactId>
       <version>2.1.7</version>
     </dependency>
-<!--
-    <dependency>
-      <groupId>com.kitfox.svg</groupId>
-      <artifactId>svg-salamander</artifactId>
 
-      <version>1.0.psaw20140913-SNAPSHOT</version> 
-      <systemPath>${basedir}/lib/svg-salamander.jar</systemPath>
-      <scope>system</scope>
-    </dependency>
--->    
     <dependency>
 		<groupId>kitfox</groupId>
 	    <artifactId>svgsalamander</artifactId>

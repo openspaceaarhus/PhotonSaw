@@ -34,9 +34,9 @@
       <attribute value="jar:file:/home/ff/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.3.0/jackson-annotations-2.3.0-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/17.0/guava-17.0.jar" sourcepath="M2_REPO/com/google/guava/guava/17.0/guava-17.0-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/com/google/guava/guava/18.0/guava-18.0.jar" sourcepath="M2_REPO/com/google/guava/guava/18.0/guava-18.0-sources.jar">
     <attributes>
-      <attribute value="jar:file:/home/ff/.m2/repository/com/google/guava/guava/17.0/guava-17.0-javadoc.jar!/" name="javadoc_location"/>
+      <attribute value="jar:file:/home/ff/.m2/repository/com/google/guava/guava/18.0/guava-18.0-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/com/google/code/findbugs/jsr305/2.0.3/jsr305-2.0.3.jar" sourcepath="M2_REPO/com/google/code/findbugs/jsr305/2.0.3/jsr305-2.0.3-sources.jar">
@@ -312,6 +312,16 @@
   <classpathentry kind="var" path="M2_REPO/io/dropwizard/dropwizard-assets/0.7.1/dropwizard-assets-0.7.1.jar" sourcepath="M2_REPO/io/dropwizard/dropwizard-assets/0.7.1/dropwizard-assets-0.7.1-sources.jar">
     <attributes>
       <attribute value="jar:file:/home/ff/.m2/repository/io/dropwizard/dropwizard-assets/0.7.1/dropwizard-assets-0.7.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/io/dropwizard-bundles/dropwizard-webjars-bundle/0.8.1/dropwizard-webjars-bundle-0.8.1.jar" sourcepath="M2_REPO/io/dropwizard-bundles/dropwizard-webjars-bundle/0.8.1/dropwizard-webjars-bundle-0.8.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/ff/.m2/repository/io/dropwizard-bundles/dropwizard-webjars-bundle/0.8.1/dropwizard-webjars-bundle-0.8.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/webjars/bower/angular/1.4.7/angular-1.4.7.jar" sourcepath="M2_REPO/org/webjars/bower/angular/1.4.7/angular-1.4.7-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/ff/.m2/repository/org/webjars/bower/angular/1.4.7/angular-1.4.7-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/projectlombok/lombok/1.16.6/lombok-1.16.6.jar" sourcepath="M2_REPO/org/projectlombok/lombok/1.16.6/lombok-1.16.6-sources.jar">

@@ -2,18 +2,20 @@ package dk.osaa.psaw.web;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.bundles.webjars.WebJarBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import io.federecio.dropwizard.swagger.SwaggerDropwizard;
 
 import lombok.extern.java.Log;
+
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.web.config.PhotonSawConfiguration;
-import dk.osaa.psaw.web.resources.ImmediateJob;
-import dk.osaa.psaw.web.resources.Jogger;
-import dk.osaa.psaw.web.resources.StartPage;
-import dk.osaa.psaw.web.resources.Status;
+import dk.osaa.psaw.web.resources.ImmediateJobResource;
+import dk.osaa.psaw.web.resources.JoggerResource;
+import dk.osaa.psaw.web.resources.StartPageResource;
+import dk.osaa.psaw.web.resources.StatusResource;
 
 @Log
 public class PhotonSawUI extends Application<PhotonSawConfiguration> {	
@@ -38,6 +40,7 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	@Override
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
 		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));		
+		bootstrap.addBundle(new WebJarBundle());
 		swaggerDropwizard.onInitialize(bootstrap);
 		bootstrap.addBundle(new ViewBundle());
 		bootstrap.addCommand(new SvgCommand("svg", "Executes an svg"));
@@ -54,9 +57,11 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		swaggerDropwizard.onRun(configuration, environment);
 
 		// Register the resources:		
-		environment.jersey().register(new Jogger(psaw));
-		environment.jersey().register(new Status(psaw));
-		environment.jersey().register(new ImmediateJob(psaw));
-		environment.jersey().register(new StartPage(psaw));		
+		environment.jersey().register(new JoggerResource(psaw));
+		environment.jersey().register(new StatusResource(psaw));
+		environment.jersey().register(new ImmediateJobResource(psaw));
+		environment.jersey().register(new StartPageResource(psaw));
+		
+       // environment.servlets().addServlet("front-page", new AssetServlet("/static/", "/", "index.html", Charsets.UTF_8)).addMapping("/");
 	}
 }

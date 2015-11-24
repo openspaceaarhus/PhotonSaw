@@ -30,7 +30,7 @@ import dk.osaa.psaw.web.api.JobStartStatus;
 @Api(value = "/job", description = "Builds a job from an SVG and starts the job immediatly")
 @Produces(MediaType.APPLICATION_JSON)
 @AllArgsConstructor
-public class ImmediateJob {
+public class ImmediateJobResource {
 	private final PhotonSaw psaw;
 		
 	@Timed

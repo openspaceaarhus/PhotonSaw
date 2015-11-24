@@ -22,7 +22,7 @@ import dk.osaa.psaw.web.api.MachineStatus;
 @Api(value = "/status", description = "Getting machine status")
 @Produces(MediaType.APPLICATION_JSON)
 @AllArgsConstructor
-public class Status {
+public class StatusResource {
 	private final PhotonSaw psaw;
 	
 	@ApiOperation(value = "Returns the status of the machine.")
