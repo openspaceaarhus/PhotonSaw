@@ -60,8 +60,6 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		environment.jersey().register(new JoggerResource(psaw));
 		environment.jersey().register(new StatusResource(psaw));
 		environment.jersey().register(new ImmediateJobResource(psaw));
-		environment.jersey().register(new StartPageResource(psaw));
-		
-       // environment.servlets().addServlet("front-page", new AssetServlet("/static/", "/", "index.html", Charsets.UTF_8)).addMapping("/");
+		environment.jersey().register(new StartPageResource());
 	}
 }
