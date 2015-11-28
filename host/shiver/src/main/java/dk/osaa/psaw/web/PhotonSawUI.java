@@ -40,7 +40,7 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	@Override
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
 		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));		
-		bootstrap.addBundle(new WebJarBundle());
+		bootstrap.addBundle(new WebJarBundle("org.webjars.bower"));
 		swaggerDropwizard.onInitialize(bootstrap);
 		bootstrap.addBundle(new ViewBundle());
 		bootstrap.addCommand(new SvgCommand("svg", "Executes an svg"));

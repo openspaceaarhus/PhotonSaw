@@ -319,11 +319,6 @@
       <attribute value="jar:file:/home/ff/.m2/repository/io/dropwizard-bundles/dropwizard-webjars-bundle/0.8.1/dropwizard-webjars-bundle-0.8.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/webjars/bower/angular/1.4.7/angular-1.4.7.jar" sourcepath="M2_REPO/org/webjars/bower/angular/1.4.7/angular-1.4.7-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/home/ff/.m2/repository/org/webjars/bower/angular/1.4.7/angular-1.4.7-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/projectlombok/lombok/1.16.6/lombok-1.16.6.jar" sourcepath="M2_REPO/org/projectlombok/lombok/1.16.6/lombok-1.16.6-sources.jar">
     <attributes>
       <attribute value="jar:file:/home/ff/.m2/repository/org/projectlombok/lombok/1.16.6/lombok-1.16.6-javadoc.jar!/" name="javadoc_location"/>
@@ -457,6 +452,22 @@
   <classpathentry kind="var" path="M2_REPO/org/jvnet/mimepull/mimepull/1.9.3/mimepull-1.9.3.jar" sourcepath="M2_REPO/org/jvnet/mimepull/mimepull/1.9.3/mimepull-1.9.3-sources.jar">
     <attributes>
       <attribute value="jar:file:/home/ff/.m2/repository/org/jvnet/mimepull/mimepull/1.9.3/mimepull-1.9.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/webjars/bower/angular/1.4.7/angular-1.4.7.jar" sourcepath="M2_REPO/org/webjars/bower/angular/1.4.7/angular-1.4.7-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/ff/.m2/repository/org/webjars/bower/angular/1.4.7/angular-1.4.7-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/webjars/bower/angular-bootstrap/0.14.3/angular-bootstrap-0.14.3.jar" sourcepath="M2_REPO/org/webjars/bower/angular-bootstrap/0.14.3/angular-bootstrap-0.14.3-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/ff/.m2/repository/org/webjars/bower/angular-bootstrap/0.14.3/angular-bootstrap-0.14.3-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/webjars/bower/jquery/1.11.3/jquery-1.11.3.jar" sourcepath="M2_REPO/org/webjars/bower/jquery/1.11.3/jquery-1.11.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/webjars/bower/bootstrap/3.3.6/bootstrap-3.3.6.jar" sourcepath="M2_REPO/org/webjars/bower/bootstrap/3.3.6/bootstrap-3.3.6-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/ff/.m2/repository/org/webjars/bower/bootstrap/3.3.6/bootstrap-3.3.6-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
 </classpath>

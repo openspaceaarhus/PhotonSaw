@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.TreeMap;
 import java.util.logging.Level;
 
@@ -31,10 +32,6 @@ public class StaticFileServer {
 
     private CachedAsset loadAsset(String key) throws URISyntaxException, IOException {
     	synchronized (assetCache) {
-	    	CachedAsset result = assetCache.get(key); 
-	    	if (result != null) {
-	    		return result;
-	    	}
 	        URL requestedResourceURL = Resources.getResource(key);
 	
 	        long lastModified = ResourceURL.getLastModified(requestedResourceURL);
@@ -42,6 +39,11 @@ public class StaticFileServer {
 	            // Something went wrong trying to get the last modified time: just use the current time
 	            lastModified = System.currentTimeMillis();
 	        }
+
+	        CachedAsset result = assetCache.get(key); 
+	    	if (result != null && result.getLastModifiedTime() == lastModified) {
+	    		return result;
+	    	}
 	
 	        // zero out the millis since the date we get back from If-Modified-Since will not have them
 	        lastModified = (lastModified / 1000) * 1000;
@@ -75,7 +77,7 @@ public class StaticFileServer {
 			};
 
 			ResponseBuilder resp = Response.ok(stream); 
-            resp.header(HttpHeaders.LAST_MODIFIED, cachedAsset.getLastModifiedTime());
+            resp.lastModified(new Date(cachedAsset.getLastModifiedTime()));
             resp.header(HttpHeaders.ETAG, cachedAsset.getETag());
 
             if (mediaType == null) {
