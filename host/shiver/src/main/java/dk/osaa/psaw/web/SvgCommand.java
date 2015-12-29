@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -24,6 +25,7 @@ import dk.osaa.psaw.web.config.PhotonSawConfiguration;
 
 @Log
 public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
+	private static final String LAST_USED_FOLDER = "lastusedfolder";
 
 	public SvgCommand(String name, String desc) {
 		super(name, desc);
@@ -43,13 +45,15 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 	protected void run(Bootstrap<PhotonSawConfiguration> bootstrap,
 			Namespace namespace, PhotonSawConfiguration configuration)
 			throws Exception {
+
 	
 		File svgFile = namespace.get("svg");
 			    	
 		//testJob.loadTest();
 		
 		if (svgFile == null) {
-			JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+			Preferences prefs = Preferences.userRoot();
+			JFileChooser fc = new JFileChooser(prefs.get(LAST_USED_FOLDER, new File(".").getAbsolutePath()));
 			FileNameExtensionFilter fcf = new FileNameExtensionFilter("SVG Files", "svg");
 			fc.setFileFilter(fcf);
 			fc.setMultiSelectionEnabled(false);
@@ -59,6 +63,12 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 			}
 
 			svgFile = fc.getSelectedFile();
+			prefs.put(LAST_USED_FOLDER, svgFile.getParent());
+		}
+
+		File savepath = new File(svgFile.getParent() + "/out");
+		if(!savepath.exists()) {
+				savepath.mkdir();
 		}
 		
     	PhotonSaw ps = new PhotonSaw(configuration.getMachine());
@@ -69,9 +79,9 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 			testJob.optimizeCuts();
 			testJob.logStructure();
 		
-			testJob.storeJob(new FileOutputStream("/tmp/"+svgFile.getName()+".psjob"));
+			testJob.storeJob(new FileOutputStream(savepath + "/" + svgFile.getName() + ".psjob"));
 			
-			SVGRenderTarget rt = new SVGRenderTarget(new File("/tmp/"+svgFile.getName()+".svg"));
+			SVGRenderTarget rt = new SVGRenderTarget(new File(savepath + "/" + svgFile.getName() + ".svg"));
 			testJob.render(rt);
 			rt.done();
 		
