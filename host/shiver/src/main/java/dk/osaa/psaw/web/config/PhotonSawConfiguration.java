@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import io.dropwizard.Configuration;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 public class PhotonSawConfiguration extends Configuration {
 	
@@ -19,4 +20,8 @@ public class PhotonSawConfiguration extends Configuration {
 	@NotNull
 	@Valid
 	private PhotonSawMachineConfig machine;
+	
+	
+	@JsonProperty("swagger")
+    public SwaggerBundleConfiguration swaggerBundleConfiguration;
 }

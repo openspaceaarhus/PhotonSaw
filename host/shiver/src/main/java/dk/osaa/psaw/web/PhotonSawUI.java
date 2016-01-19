@@ -3,11 +3,13 @@ package dk.osaa.psaw.web;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.bundles.webjars.WebJarBundle;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
-import io.federecio.dropwizard.swagger.SwaggerDropwizard;
-
+import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import lombok.extern.java.Log;
 
 import dk.osaa.psaw.core.PhotonSaw;
@@ -19,7 +21,6 @@ import dk.osaa.psaw.web.resources.StatusResource;
 
 @Log
 public class PhotonSawUI extends Application<PhotonSawConfiguration> {	
-	private final SwaggerDropwizard swaggerDropwizard = new SwaggerDropwizard();
 	
 	@Override
 	public String getName() {
@@ -41,9 +42,14 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	public void initialize(Bootstrap<PhotonSawConfiguration> bootstrap) {
 		bootstrap.addBundle(new AssetsBundle("/static/", "/static/", "index.html", "static"));		
 		bootstrap.addBundle(new WebJarBundle("org.webjars.bower"));
-		swaggerDropwizard.onInitialize(bootstrap);
-		bootstrap.addBundle(new ViewBundle());
 		bootstrap.addCommand(new SvgCommand("svg", "Executes an svg"));
+		bootstrap.addBundle(new SwaggerBundle<PhotonSawConfiguration>() {
+	        @Override
+	        protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(PhotonSawConfiguration configuration) {
+	            return configuration.swaggerBundleConfiguration;
+	        }
+	    });
+		bootstrap.addBundle(new MultiPartBundle());
 	}
 
 	@Override
@@ -53,8 +59,6 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 		environment.lifecycle().manage(new ManagedPhotonSaw(psaw));
 
 		// All the live API resources live under /api
-		//environment.jersey().setUrlPattern("/api/*");
-		swaggerDropwizard.onRun(configuration, environment);
 
 		// Register the resources:		
 		environment.jersey().register(new JoggerResource(psaw));

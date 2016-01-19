@@ -13,7 +13,11 @@ server:
   connector:
     type: http
     port: 9000
-    
+
+swagger:
+  resourcePackage: dk.osaa.psaw.web.resources 
+
+
 machine:
    serialPort: /dev/ttyACM0
    simulating: false
