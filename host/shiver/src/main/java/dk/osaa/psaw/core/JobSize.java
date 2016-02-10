@@ -2,6 +2,7 @@ package dk.osaa.psaw.core;
 
 import lombok.Getter;
 import dk.osaa.psaw.job.JobRenderTarget;
+import dk.osaa.psaw.job.LaserNodeSettings;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.Point;
 
@@ -31,7 +32,7 @@ public class JobSize implements JobRenderTarget {
 	}
 
 	@Override
-	public void cutTo(Point p, double intensity, double maxSpeed) {
+	public void cutTo(Point p, LaserNodeSettings settings) {
 		moveTo(p);
 	}
 
@@ -65,5 +66,10 @@ public class JobSize implements JobRenderTarget {
 	public void startShape(String id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void moveTo(Point p, double maxSpeed) {
+		moveTo(p);		
 	}
 }

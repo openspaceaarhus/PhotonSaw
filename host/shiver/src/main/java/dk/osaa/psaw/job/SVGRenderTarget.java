@@ -100,10 +100,10 @@ public class SVGRenderTarget implements JobRenderTarget {
 	}
 
 	@Override
-	public void cutTo(Point p, double intensity, double maxSpeed) {
-		if(intensity == 0.0)
+	public void cutTo(Point p, LaserNodeSettings settings) {
+		if (settings.getIntensity() == 0.0) {
 			moveTo(p);
-		else {
+		} else {
 			if(linewidth != LWCUT) {
 				Point pp = path.get(path.size()-1);
 				outputPath();
@@ -178,5 +178,10 @@ public class SVGRenderTarget implements JobRenderTarget {
 	@Override
 	public void startShape(String id) {
 		this.id = id;
+	}
+
+	@Override
+	public void moveTo(Point p, double maxSpeed) {
+		moveTo(p);
 	}
 }

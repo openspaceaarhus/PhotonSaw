@@ -23,7 +23,7 @@ machine:
    simulating: false
    recording: false
    #recordDir:
-   jobsDir: /tmp/jobs
+   jobsDir: jobs
    jobsInMemory: 10
    assistAirDelay: 500
    maximumLaserPower: 80

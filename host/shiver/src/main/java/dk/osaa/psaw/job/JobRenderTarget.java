@@ -24,6 +24,13 @@ public interface JobRenderTarget {
 	void moveTo(Point p);
 
 	/**
+	 * Moves to a point at the specified max speed
+	 * @param p The point to move to
+	 * @param maxSpeed The maximum speed to move at
+	 */
+	void moveTo(Point p, double maxSpeed);
+
+	/**
 	 * Like moveTo, but asserts that the speed maxSpeed must be the exact speed at the end of the line
 	 *  
 	 * @param p the point to move to
@@ -37,7 +44,7 @@ public interface JobRenderTarget {
 	 * @param intensity The intensity (0..1) of the LASER during the move
 	 * @param maxSpeed The desired speed
 	 */
-	void cutTo(Point p, double intensity, double maxSpeed); //TODO: Take LaserNodeSettings in stead
+	void cutTo(Point p, LaserNodeSettings settings);
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed while engraving a scanline of pixels.
@@ -68,6 +75,4 @@ public interface JobRenderTarget {
 	 * @param assistAirOn status of assist air
 	 */
 	void setAssistAir(boolean assistAirOn);
-
-	
 }

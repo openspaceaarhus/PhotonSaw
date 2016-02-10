@@ -75,15 +75,19 @@ public class Line {
 	@Getter
 	boolean poked;
 	
+	@Getter
+	boolean scalePowerBySpeed;
+	
 	
 	static long lineSerialCounter=0;
 	long lineNumber = lineSerialCounter++;
 	private final PhotonSawMachineConfig cfg;
 	
-	public Line(PhotonSawMachineConfig cfg, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed) {
+	public Line(PhotonSawMachineConfig cfg, Line prev, Point startPoint, Point endPoint, double targetMaxSpeed, boolean scalePowerBySpeed) {
 		this.pixels = null;
 		this.cfg = cfg;
 		this.maxSpeed=targetMaxSpeed;
+		this.scalePowerBySpeed = scalePowerBySpeed;
 		
 		endPoint.roundToWholeSteps(cfg);
 		endPosDirty = false;
@@ -649,10 +653,14 @@ public class Line {
 	
 		Move move = new Move(moveId++, ticks);
 		
-		int startIntensity = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*startSpeedMMS/maxSpeed)));
-		int endIntensity   = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*endSpeedMMS  /maxSpeed)));
-		move.setLaserIntensity(startIntensity);
-		move.setLaserAcceleration(new Q16(((double)(endIntensity-startIntensity))/ticks));
+		if (scalePowerBySpeed) {
+			int startIntensity = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*startSpeedMMS/maxSpeed)));
+			int endIntensity = (int)Math.round(Math.max(0, Math.min(255,laserIntensity*255*endSpeedMMS  /maxSpeed)));
+			move.setLaserIntensity(startIntensity);
+			move.setLaserAcceleration(new Q16(((double)(endIntensity-startIntensity))/ticks));
+		} else {
+			move.setLaserIntensity((int)Math.round(laserIntensity*255));
+		}
 		
 		for (int a=0; a < Move.AXES; a++) {
 			move.setAxisStartPos(a, Math.round(axes[a].startPos / cfg.getAxes().getArray()[a].getMmPerStep()) + stepsMoved[a]);

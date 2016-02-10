@@ -123,7 +123,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 				getPulsesPermm(),
 				getPulseDuration(),
 				getRasterLinePitch(),
-				getRasterSpeed());
+				getRasterSpeed(),
+				getScalePowerBySpeed());
 	}
 
 	void addChild(JobNode newChild) {
@@ -344,6 +345,15 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 			return Math.min(10000, Math.max(1, Double.parseDouble(value)));
 		} else {
 			return defaultRasterSpeed;
+		}
+	}
+	
+	private boolean getScalePowerBySpeed() {
+		String value = getStyleAttr("photonsaw-scale-power");
+		if (value != null) {
+			return value.equalsIgnoreCase("true");
+		} else {
+			return false;
 		}
 	}
 	

@@ -6,8 +6,6 @@ import io.dropwizard.bundles.webjars.WebJarBundle;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
-import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import lombok.extern.java.Log;
@@ -28,7 +26,7 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	}
 	
 	public static void main(String[] args) {
-		try {
+		try {			
 			new PhotonSawUI().run(args);
 
 		} catch (Exception e) {
@@ -49,12 +47,11 @@ public class PhotonSawUI extends Application<PhotonSawConfiguration> {
 	            return configuration.swaggerBundleConfiguration;
 	        }
 	    });
-		bootstrap.addBundle(new MultiPartBundle());
+		bootstrap.addBundle(new MultiPartBundle());		
 	}
 
 	@Override
 	public void run(PhotonSawConfiguration configuration, Environment environment) throws Exception {
-		
     	PhotonSaw psaw = new PhotonSaw(configuration.getMachine());
 		environment.lifecycle().manage(new ManagedPhotonSaw(psaw));
 

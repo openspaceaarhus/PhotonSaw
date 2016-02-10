@@ -101,7 +101,7 @@ public class Rasterizer {
 		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings.getIntensity(), settings.getRasterSpeed(), pixels);
 
 		//target.moveTo(transformation.transform(new Point2D(x1+leadin, y+yStep))); // stopping move, so we don't care about what speed it's at.
-		target.cutTo(        transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), 0, settings.getRasterSpeed());
+		target.moveTo(        transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), settings.getRasterSpeed());
 	}
 	
 	static void rasterize(JobNodeGroup root, PointTransformation pointTransformation, JobRenderTarget target) {
@@ -183,7 +183,7 @@ public class Rasterizer {
 	         */
 			try {
 			    File outputfile = new File("/tmp/saved.png");
-				log.info("Writing image that tis "+ri.getWidth()+" x "+ri.getHeight()+" pixels");
+				log.info("Writing image that is "+ri.getWidth()+" x "+ri.getHeight()+" pixels");
 			    ImageIO.write(ri, "png", outputfile);
 			} catch (IOException e) {
 			    log.log(Level.SEVERE, "Fail!", e);

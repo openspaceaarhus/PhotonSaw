@@ -35,7 +35,7 @@ public class JobManager {
 	 * Scans the disk for jobs so we don't need to do that every time someone wants a list of jobs.
 	 */
 	protected void discoverJobs() {
-		File jobStore = new File(cfg.getJobsDir());
+		File jobStore = cfg.getJobsDir();
 		if (jobStore == null) {
 			throw new RuntimeException("Missing jobStore option");
 		} else if (!jobStore.isDirectory()) {

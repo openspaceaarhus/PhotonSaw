@@ -8,6 +8,7 @@ import dk.osaa.psaw.config.obsolete.MovementConstraints;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.PointTransformation;
 import dk.osaa.psaw.job.JobRenderTarget;
+import dk.osaa.psaw.job.LaserNodeSettings;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
@@ -281,7 +282,7 @@ public class Planner extends Thread implements JobRenderTarget {
 	}
 
 	@Override
-	public void moveTo(Point p) {
+	public void moveTo(Point p, double maxSpeed) {
 		log.info("moveTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
@@ -290,7 +291,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 		Line line = new Line(photonSaw.cfg, 
 							lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-							lastBufferedLocation, p, cfg.getRapidMoveSpeed());
+							lastBufferedLocation, p, maxSpeed, false);
 		if (line.getLength() > cfg.getShortestMove()) {
 			addLine(line);
 		}
@@ -298,7 +299,12 @@ public class Planner extends Thread implements JobRenderTarget {
 	}
 
 	@Override
-	public void cutTo(Point p, double intensity, double maxSpeed) {
+	public void moveTo(Point p) {
+		moveTo(p, cfg.getRapidMoveSpeed());
+	}
+
+	@Override
+	public void cutTo(Point p, LaserNodeSettings settings) {
 		//log.info("cutTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
@@ -307,13 +313,14 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 		Line line = new Line(photonSaw.cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-				lastBufferedLocation, p, maxSpeed);
+				lastBufferedLocation, p, settings.getMaxSpeed(), settings.isScalePowerWithSpeed());
 		if (line.getLength() > photonSaw.cfg.getShortestMove()) {
-			line.setLaserIntensity(intensity);
+			line.setLaserIntensity(settings.getIntensity());
 			addLine(line);
 		}
 		renderedLines++;
 	}
+
 
 	@Override
 	public void moveToAtSpeed(Point p, double maxSpeed) {
@@ -325,7 +332,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 		Line line = new Line(cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-				lastBufferedLocation, p, maxSpeed);
+				lastBufferedLocation, p, maxSpeed, false);
 		line.setMandatoryExitSpeed(maxSpeed);
 		if (line.getLength() > cfg.getShortestMove()) {
 			addLine(line);
@@ -346,7 +353,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 		Line line = new Line(cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-				lastBufferedLocation, p, maxSpeed);
+				lastBufferedLocation, p, maxSpeed, false);
 		if (line.getLength() > cfg.getShortestMove()) {
 			line.setLaserIntensity(intensity);
 			line.setPixels(pixels);

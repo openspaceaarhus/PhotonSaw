@@ -44,7 +44,7 @@ public class CutPath extends LaserNode {
 					target.moveTo(transformation.transform(getTransformation().transform(p2d,null)));
 					first = false;			
 				} else {
-					target.cutTo(transformation.transform(getTransformation().transform(p2d,null)), settings.getIntensity(), settings.getMaxSpeed());
+					target.cutTo(transformation.transform(getTransformation().transform(p2d,null)), settings);
 				}
 			}
 		}
