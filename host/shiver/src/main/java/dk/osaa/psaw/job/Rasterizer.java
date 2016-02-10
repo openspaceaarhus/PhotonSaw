@@ -94,14 +94,10 @@ public class Rasterizer {
 		 * not the maximum speed of the machine as moveTo would do. 
 		 */
 		
-		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y))); // Will be optimized out for every line except the first.
+		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y)),-1); // Will be optimized out for every line except the first.
 		target.moveToAtSpeed(transformation.transform(new Point2D.Double(x0,        y)), settings.getRasterSpeed());
-//		target.cutTo(        transformation.transform(new Point2D(x0,        y)), 0, settings.getRasterSpeed());
-
-		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings.getIntensity(), settings.getRasterSpeed(), pixels);
-
-		//target.moveTo(transformation.transform(new Point2D(x1+leadin, y+yStep))); // stopping move, so we don't care about what speed it's at.
-		target.moveTo(        transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), settings.getRasterSpeed());
+		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings, pixels);
+		target.moveTo(       transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), settings.getRasterSpeed());
 	}
 	
 	static void rasterize(JobNodeGroup root, PointTransformation pointTransformation, JobRenderTarget target) {

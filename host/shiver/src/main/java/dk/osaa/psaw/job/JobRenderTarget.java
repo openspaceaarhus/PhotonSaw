@@ -18,15 +18,9 @@ public interface JobRenderTarget {
 	void startShape(String id);
 	
 	/**
-	 * Move as quickly as possible to this point
-	 * @param p The point to move to
-	 */
-	void moveTo(Point p);
-
-	/**
 	 * Moves to a point at the specified max speed
 	 * @param p The point to move to
-	 * @param maxSpeed The maximum speed to move at
+	 * @param maxSpeed The maximum speed to move at, <= 0 means max speed
 	 */
 	void moveTo(Point p, double maxSpeed);
 
@@ -53,7 +47,7 @@ public interface JobRenderTarget {
 	 * @param maxSpeed The desired speed
 	 * @param pixels The pixels to engrave over this line.
 	 */
-	void engraveTo(Point p, double intensity, double maxSpeed, boolean[] pixels);//TODO: Take LaserNodeSettings in stead
+	void engraveTo(Point p, LaserNodeSettings settings, boolean[] pixels);//TODO: Take LaserNodeSettings in stead
 	
 	/**
 	 * Calculates the distance in mm needed to accelerate the X axis from 0 to the desired speed.

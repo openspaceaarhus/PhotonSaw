@@ -77,7 +77,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 		Point pp = new Point();
 		pp.axes[0] = 0.0;
 		pp.axes[1] = 0.0;
-		moveTo(pp);
+		moveTo(pp, -1);
 		outputPath();
 		try {
 			out.write("</svg>\n");
@@ -89,20 +89,9 @@ public class SVGRenderTarget implements JobRenderTarget {
 	}
 	
 	@Override
-	public void moveTo(Point p) {
-		if(linewidth != LWMOVE) {
-			Point pp = path.get(path.size()-1);
-			outputPath();
-			path.add(pp);		
-		}
-		linewidth = LWMOVE;
-		path.add(p);		
-	}
-
-	@Override
 	public void cutTo(Point p, LaserNodeSettings settings) {
 		if (settings.getIntensity() == 0.0) {
-			moveTo(p);
+			moveTo(p, -1);
 		} else {
 			if(linewidth != LWCUT) {
 				Point pp = path.get(path.size()-1);
@@ -116,7 +105,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 
 	@Override
 	public void moveToAtSpeed(Point p, double maxSpeed) {
-		moveTo(p);
+		moveTo(p, maxSpeed);
 	}
 
 	private void doEngraveTo(Point p) {
@@ -130,7 +119,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 	}
 	
 	@Override
-	public void engraveTo(Point p, double intensity, double maxSpeed, boolean[] pixels) {
+	public void engraveTo(Point p,  LaserNodeSettings settings, boolean[] pixels) {
 		// TODO Auto-generated method stub
 		Point lastpoint = path.get(path.size()-1);
 		double dx = p.axes[0] - lastpoint.axes[0];
@@ -147,7 +136,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 			if(lastpix) {
 				doEngraveTo(pp);
 			} else {
-				moveTo(pp);
+				moveTo(pp, -1);
 			}
 			lastpix = pixels[i];
 			lastpixidx = i;
@@ -156,7 +145,7 @@ public class SVGRenderTarget implements JobRenderTarget {
 			if(lastpix)
 				doEngraveTo(p);
 			else
-				moveTo(p);
+				moveTo(p, -1);
 		}
 	}
 
@@ -182,6 +171,12 @@ public class SVGRenderTarget implements JobRenderTarget {
 
 	@Override
 	public void moveTo(Point p, double maxSpeed) {
-		moveTo(p);
+		if(linewidth != LWMOVE) {
+			Point pp = path.get(path.size()-1);
+			outputPath();
+			path.add(pp);		
+		}
+		linewidth = LWMOVE;
+		path.add(p);		
 	}
 }

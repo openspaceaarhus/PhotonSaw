@@ -22,24 +22,13 @@ public class JobSize implements JobRenderTarget {
 	}
 	
 	@Override
-	public void moveTo(Point p) {
-		double s = 0;
-		for (int i=0;i<Move.AXES;i++) {
-			s += Math.pow(p.axes[i]-pos.axes[i], 2);
-		}
-		lineLength += Math.sqrt(s);
-		lineCount++;
-	}
-
-	@Override
 	public void cutTo(Point p, LaserNodeSettings settings) {
-		moveTo(p);
+		moveTo(p, -1);
 	}
 
 	@Override
-	public void engraveTo(Point p, double intensity, double maxSpeed,
-			boolean[] pixels) {
-		moveTo(p);
+	public void engraveTo(Point p, LaserNodeSettings settings, boolean[] pixels) {
+		moveTo(p, -1);
 	}
 
 	@Override
@@ -59,7 +48,7 @@ public class JobSize implements JobRenderTarget {
 
 	@Override
 	public void moveToAtSpeed(Point p, double maxSpeed) {
-		moveTo(p);		
+		moveTo(p, maxSpeed);		
 	}
 
 	@Override
@@ -70,6 +59,11 @@ public class JobSize implements JobRenderTarget {
 
 	@Override
 	public void moveTo(Point p, double maxSpeed) {
-		moveTo(p);		
+		double s = 0;
+		for (int i=0;i<Move.AXES;i++) {
+			s += Math.pow(p.axes[i]-pos.axes[i], 2);
+		}
+		lineLength += Math.sqrt(s);
+		lineCount++;
 	}
 }

@@ -176,7 +176,7 @@ public class Planner extends Thread implements JobRenderTarget {
 					currentJobSize = js.getLineCount();
 										
 					getCurrentJob().render(this);
-					moveTo(startPoint); // Go back to where we were before the job.
+					moveTo(startPoint, -1); // Go back to where we were before the job.
 					
 					log.info("Job has finished rendering, waiting for buffer to empty");
 					// Let the line buffer empty out before we continue
@@ -283,6 +283,10 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void moveTo(Point p, double maxSpeed) {
+		if (maxSpeed <= 0) {
+			maxSpeed = cfg.getRapidMoveSpeed();
+		}
+		
 		log.info("moveTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
@@ -296,11 +300,6 @@ public class Planner extends Thread implements JobRenderTarget {
 			addLine(line);
 		}
 		renderedLines++;
-	}
-
-	@Override
-	public void moveTo(Point p) {
-		moveTo(p, cfg.getRapidMoveSpeed());
 	}
 
 	@Override
@@ -341,7 +340,7 @@ public class Planner extends Thread implements JobRenderTarget {
 	}
 	
 	@Override
-	public void engraveTo(Point p, double intensity, double maxSpeed,
+	public void engraveTo(Point p,  LaserNodeSettings settings,
 			boolean[] pixels) {
 
 		//log.info("engraveTo:"+p);
@@ -353,11 +352,11 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 		Line line = new Line(cfg, 
 				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-				lastBufferedLocation, p, maxSpeed, false);
+				lastBufferedLocation, p, settings.getRasterSpeed(), false);
 		if (line.getLength() > cfg.getShortestMove()) {
-			line.setLaserIntensity(intensity);
+			line.setLaserIntensity(settings.getIntensity());
 			line.setPixels(pixels);
-			line.setMandatoryExitSpeed(maxSpeed);
+			line.setMandatoryExitSpeed(settings.getRasterSpeed());
 			addLine(line);
 		}
 		renderedLines++;
