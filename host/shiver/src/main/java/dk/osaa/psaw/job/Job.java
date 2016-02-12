@@ -14,7 +14,6 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
-import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
 import dk.osaa.psaw.machine.Move;
 import lombok.Getter;
 import lombok.Setter;

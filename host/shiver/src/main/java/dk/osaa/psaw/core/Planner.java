@@ -4,7 +4,6 @@ import java.util.logging.Level;
 
 import dk.osaa.psaw.config.AxisConstraints;
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
-import dk.osaa.psaw.config.obsolete.MovementConstraints;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.PointTransformation;
 import dk.osaa.psaw.job.JobRenderTarget;

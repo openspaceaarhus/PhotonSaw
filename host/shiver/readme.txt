@@ -5,7 +5,7 @@ The code is written in java and it's built using maven.
 To build eclipse project, run: 
   mvn eclipse:eclipse
 
-To build excutable, run:
+To build executable, run:
   mvn package
 
 After mvn package there will be a large (41 MB) jar with all dependencies at:

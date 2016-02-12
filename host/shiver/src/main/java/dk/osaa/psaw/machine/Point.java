@@ -1,7 +1,6 @@
 package dk.osaa.psaw.machine;
 
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
-import dk.osaa.psaw.config.obsolete.MovementConstraints;
 import lombok.Data;
 import lombok.ToString;
 

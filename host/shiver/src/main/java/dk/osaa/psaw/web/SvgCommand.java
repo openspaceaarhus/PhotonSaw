@@ -16,7 +16,6 @@ import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
 import io.dropwizard.cli.ConfiguredCommand;
 import io.dropwizard.setup.Bootstrap;
-import dk.osaa.psaw.config.obsolete.LegacyConfiguration;
 import dk.osaa.psaw.core.PhotonSaw;
 import dk.osaa.psaw.job.Job;
 import dk.osaa.psaw.job.SVGRenderTarget;
