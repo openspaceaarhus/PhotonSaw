@@ -223,7 +223,7 @@ public class Line {
 			maxExitSpeed = 0;
 			return;
 		}
-		
+
 		/*
 		 * Max entry speed is the maximum speed at the beginning of this line in the direction of this line,
 		 * it is dictated the maxExitSpeed and the acceleration that can happen for this line, so to calculate it we first need to
@@ -231,7 +231,7 @@ public class Line {
 		 */
 				
 		//Cornering fc = new Cornering(mc, unitVector, maxSpeed, next.unitVector, next.maxSpeed);
-		Cornering c = new Cornering(cfg, next.unitVector, next.maxEntrySpeed, unitVector, maxSpeed);
+		Cornering c = Cornering.corner(cfg, next.unitVector, next.maxEntrySpeed, unitVector, maxSpeed, lineNumber);
 		maxExitSpeed = c.getExitSpeed();
 	}
 	
@@ -248,7 +248,7 @@ public class Line {
 			return;			
 		}
 
-		Cornering c = new Cornering(cfg, prev.unitVector, prev.exitSpeed, unitVector, maxSpeed).checkJerks();
+		Cornering c = Cornering.corner(cfg, prev.unitVector, prev.exitSpeed, unitVector, maxSpeed, lineNumber).checkJerks();
 		entrySpeed = c.getExitSpeed();
 	}
 	
@@ -259,10 +259,10 @@ public class Line {
 			maxExitSpeed = 0;
 		} else {
 			MoveVector maxEndSpeeds = next.unitVector.mul(next.maxEntrySpeed); // The speed limits as imposed by the max entry speed of the next line
-						
-			if (lineNumber == 160) {
-				log.fine("");
-			}
+
+			//if (lineNumber == 160) {
+			//	log.fine("");
+			//}
 			
 			// Find the maximum speed along this normal vector which doesn't exceed the maxEndSpeed limit.
 			maxExitSpeed = maxSpeed;
@@ -418,7 +418,7 @@ public class Line {
 			double diffExit = mandatoryExitSpeed-exitSpeed;
 			
 			if (Math.abs(diffExit) > 0.1) {
-				//log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);				
+//				log.info("The exit speed of this line was off by "+diffExit+" mm/s, it was planned to be "+exitSpeed+" but should have been "+mandatoryExitSpeed);
 			}			
 		}
 
@@ -447,10 +447,9 @@ public class Line {
 	// Calculates the distance (not time) it takes to accelerate from initial_rate to target_rate using the
 	// given acceleration:
 	static public double estimateAccelerationDistance(double initialrate, double targetrate, double acceleration) {
-	      return (Math.pow(targetrate, 2) - Math.pow(initialrate, 2))/(2*acceleration);
-	      
-	      //double time = (targetrate-initialrate)/acceleration;
-	      //return initialrate*time + acceleration*Math.pow(time,2)/2; 
+	    // return (Math.pow(targetrate, 2) - Math.pow(initialrate, 2))/(2*acceleration);
+		double time = (targetrate-initialrate)/acceleration;
+		return initialrate*time + acceleration*Math.pow(time, 2)/2;
 	}
 
 	// This function gives you the point at which you must start braking (at the rate of -acceleration) if

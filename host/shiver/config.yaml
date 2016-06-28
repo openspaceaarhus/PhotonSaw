@@ -36,7 +36,7 @@ machine:
          acceleration: 5000
          maxSpeed: 1500
          minSpeed: 20
-         maxJerk: 2
+         maxJerk: 10
          mmPerStep: 0.0375
          coilCurrent: 1800
          microSteppingMode: 3
@@ -44,7 +44,7 @@ machine:
          acceleration: 500
          maxSpeed: 1500
          minSpeed: 20
-         maxJerk: 2
+         maxJerk: 10
          mmPerStep: 0.0375
          coilCurrent: 1800
          microSteppingMode: 3
@@ -52,7 +52,7 @@ machine:
          acceleration: 0.1
          maxSpeed: 10
          minSpeed: 0.2
-         maxJerk: 0.2
+         maxJerk: 100
          mmPerStep: 0.003125
          coilCurrent: 1500
          microSteppingMode: 3 

@@ -35,19 +35,15 @@ public interface JobRenderTarget {
 	/**
 	 * Turn on the laser and move to this point at the desired speed
 	 * @param p the point to move to
-	 * @param intensity The intensity (0..1) of the LASER during the move
-	 * @param maxSpeed The desired speed
 	 */
 	void cutTo(Point p, LaserNodeSettings settings);
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed while engraving a scanline of pixels.
 	 * @param p the point to move to
-	 * @param intensity The intensity (0..1) of the LASER during the move
-	 * @param maxSpeed The desired speed
 	 * @param pixels The pixels to engrave over this line.
 	 */
-	void engraveTo(Point p, LaserNodeSettings settings, boolean[] pixels);//TODO: Take LaserNodeSettings in stead
+	void engraveTo(Point p, LaserNodeSettings settings, boolean[] pixels);
 	
 	/**
 	 * Calculates the distance in mm needed to accelerate the X axis from 0 to the desired speed.

@@ -252,7 +252,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		try {
 			ready.toMoves(photonSaw); // This will block if the move buffer is full.
 		} catch (InterruptedException e) {
-			log.log(Level.SEVERE, "Ignoring exeception from buffering moves", e);
+			log.log(Level.SEVERE, "Ignoring exception from buffering moves", e);
 		}
 		
 		if (ready.isEndPosDirty()) {
