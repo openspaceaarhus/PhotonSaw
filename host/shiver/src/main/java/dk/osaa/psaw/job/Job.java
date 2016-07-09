@@ -14,6 +14,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
+import dk.osaa.psaw.job.rasterizer.Rasterizer;
 import dk.osaa.psaw.machine.Move;
 import lombok.Getter;
 import lombok.Setter;
@@ -209,7 +210,7 @@ public class Job {
 	 */
 	public void render(JobRenderTarget target) {
 		// This collects all the rasters and renders them:
-		Rasterizer.rasterize(getRootNode(), rootTransformation, target);	
+		Rasterizer.rasterize(getRootNode(), rootTransformation, target);
 		
 		// This renders the vector parts of the job:
 		getRootNode().render(target, rootTransformation);

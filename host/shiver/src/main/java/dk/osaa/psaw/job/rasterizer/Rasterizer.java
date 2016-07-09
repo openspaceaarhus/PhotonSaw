@@ -1,4 +1,4 @@
-package dk.osaa.psaw.job;
+package dk.osaa.psaw.job.rasterizer;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -6,10 +6,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
+import dk.osaa.psaw.job.*;
 import lombok.val;
 import lombok.extern.java.Log;
 
@@ -32,7 +30,7 @@ public class Rasterizer {
 	 * @param pixels The pixels to smear across the x0 to x1 stretch, in the order they are needed
 	 */
 	static void renderScanline(double x0, double x1, LaserNodeSettings settings, JobRenderTarget target, PointTransformation transformation,
-			boolean reverse, double y, double leadin, double yStep, boolean[] pixels) {
+                               boolean reverse, double y, double leadin, double yStep, boolean[] pixels) {
 				
 		if (reverse) {
 			double x = x1; x1 = x0; x0 = x;

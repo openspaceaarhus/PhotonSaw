@@ -1,5 +1,9 @@
-package dk.osaa.psaw.job;
+package dk.osaa.psaw.job.rasterizer;
 
+import dk.osaa.psaw.job.JobNodeGroup;
+import dk.osaa.psaw.job.JobRenderTarget;
+import dk.osaa.psaw.job.LaserNodeSettings;
+import dk.osaa.psaw.job.RasterNode;
 import lombok.extern.java.Log;
 import lombok.val;
 
@@ -63,13 +67,13 @@ class RasterGroup {
                     return r1;
                 }
 
-                return c1.id.compareTo(c2.id);
+                return c1.getId().compareTo(c2.getId());
             }
         });
 
         val merged = new ArrayList<RasterGroup>();
         for (val rn : rasters) {
-            log.info("Adding raster: "+rn.id+" with height: "+rn.getBoundingBox().getHeight());
+            log.info("Adding raster: "+rn.getId()+" with height: "+rn.getBoundingBox().getHeight());
 
             boolean added = false;
             for (val eg : merged) {
