@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public class DitherFloydSteinberg {
+	private static final C3[] palette = new C3[] {
+			new C3(  0,   0,   0),
+			new C3(255, 255, 255)
+	};
+
 	public static BufferedImage dither(BufferedImage img) {
 
-	    C3[] palette = new C3[] {
-	        new C3(  0,   0,   0),
-	        new C3(255, 255, 255)
-	    };
-	
 	    int w = img.getWidth();
 	    int h = img.getHeight();
 	
