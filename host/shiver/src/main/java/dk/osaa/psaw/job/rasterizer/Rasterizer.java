@@ -6,14 +6,23 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
+import com.twelvemonkeys.image.DiffusionDither;
 import dk.osaa.psaw.config.AxisConstraints;
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
 import dk.osaa.psaw.core.Line;
 import dk.osaa.psaw.job.*;
 import lombok.val;
 import lombok.extern.java.Log;
+
+import javax.imageio.ImageIO;
 
 /**
  * This is the great big lump of code that takes care of collecting all the RasterNodes in the job and merging the transformed rasters
@@ -23,6 +32,10 @@ import lombok.extern.java.Log;
  */
 @Log
 public class Rasterizer {
+	private static final byte[] BLACK_AND_WHITE = new byte[]{(byte)Color.BLACK.getRed(), (byte)Color.WHITE.getRed()};
+	private static final IndexColorModel ONE_BIT = new IndexColorModel(1, 2, BLACK_AND_WHITE,BLACK_AND_WHITE,BLACK_AND_WHITE);
+
+	private static DiffusionDither ditherer = new DiffusionDither();
 
 	/**
 	 * 
@@ -141,17 +154,19 @@ public class Rasterizer {
 			*/
 
         log.info("Starting dither of image "+ri.getWidth()+" x "+ri.getHeight()+" pixels at "+eg.bb.getMinX()+","+eg.bb.getMinY()+" w/h: "+eg.bb.getWidth()+"/"+eg.bb.getHeight());
-        BufferedImage onebit = DitherFloydSteinberg.dither(ri);
-        log.info("Done with dither");
+		BufferedImage onebit = ditherer.filter(ri, ditherer.createCompatibleDestImage(ri, ONE_BIT));
+		log.info("Done with dither");
 
-			/*
-			try {
-			    File outputfile = new File("/tmp/onebit.png");
-			    ImageIO.write(onebit, "png", outputfile);
-			} catch (IOException e) {
-			    log.log(Level.SEVERE, "Fail!", e);
-			}
-			*/
+/*
+		try {
+			File outputfile = new File("/tmp/onebit.png");
+			ImageIO.write(onebit, "png", outputfile);
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "Fail!", e);
+		}
+*/
         return onebit;
     }
+
+
 }

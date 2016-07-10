@@ -20,10 +20,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <dropwizard.version>0.9.2</dropwizard.version>
+      <twelve.version>3.2.1</twelve.version>
   </properties>
   
   <dependencies>
-    <dependency>
+      <!-- https://mvnrepository.com/artifact/com.twelvemonkeys.common/common-image -->
+      <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
       <version>${dropwizard.version}</version>
@@ -107,7 +109,12 @@
 		<artifactId>bootstrap</artifactId>
 		<version>3.3.6</version>
 	</dependency>
-	
+
+      <dependency>
+          <groupId>com.twelvemonkeys.common</groupId>
+          <artifactId>common-image</artifactId>
+          <version>${twelve.version}</version>
+      </dependency>
   </dependencies>
 	
   <build>
