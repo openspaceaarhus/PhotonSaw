@@ -6,7 +6,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
+import dk.osaa.psaw.config.AxisConstraints;
+import dk.osaa.psaw.config.PhotonSawMachineConfig;
+import dk.osaa.psaw.core.Line;
 import dk.osaa.psaw.job.*;
 import lombok.val;
 import lombok.extern.java.Log;
@@ -26,11 +30,10 @@ public class Rasterizer {
 	 * @param x1 The end of the engraving line
 	 * @param y The line to engrave on
 	 * @param leadin The length to leave on either side of the engraving line for acceleration
-	 * @param yStep The height of the line, the deceleration line will move down this amount  
 	 * @param pixels The pixels to smear across the x0 to x1 stretch, in the order they are needed
 	 */
 	static void renderScanline(double x0, double x1, LaserNodeSettings settings, JobRenderTarget target, PointTransformation transformation,
-                               boolean reverse, double y, double leadin, double yStep, boolean[] pixels) {
+							   boolean reverse, double y, double leadin, boolean[] pixels) {
 				
 		if (reverse) {
 			double x = x1; x1 = x0; x0 = x;
@@ -50,13 +53,12 @@ public class Rasterizer {
 		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y)),-1); // Will be optimized out for every line except the first.
 		target.moveToAtSpeed(transformation.transform(new Point2D.Double(x0,        y)), settings.getRasterSpeed());
 		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings, pixels);
-		target.moveTo(       transformation.transform(new Point2D.Double(x1+leadin, y+yStep)), settings.getRasterSpeed());
+		target.moveTo(       transformation.transform(new Point2D.Double(x1+leadin, y)), settings.getRasterSpeed());
 	}
 	
-	static void rasterize(JobNodeGroup root, PointTransformation pointTransformation, JobRenderTarget target) {
+	public static void rasterize(PhotonSawMachineConfig cfg, JobNodeGroup root, PointTransformation pointTransformation, JobRenderTarget target) {
 
 		for (val eg : RasterGroup.getRasterGroups(root, target)) {
-			
 
             // Make sure the line pitch is a whole number of y-steps or we'll end up with a shitty looking raster
             double linePitch = Math.max(target.getEngravingYStepSize(),
@@ -66,6 +68,16 @@ public class Rasterizer {
 
             BufferedImage onebit = combinedOneBitRaster(eg, linePitch, pixelPitch);
 
+			double leadin = calculateRasterLeadin(cfg.getAxes().getX(), eg.settings.getRasterSpeed());
+
+			final int maxDeadSpace = eg.settings.getRasterOptimization().equals(RasterOptimization.NONE)
+					? Integer.MAX_VALUE
+					: (int)Math.round(6*leadin/pixelPitch);
+            RasterLines lines = new RasterLines(onebit, maxDeadSpace);
+			List<RasterLine> renderingOrder = eg.settings.getRasterOptimization().equals(RasterOptimization.FASTEST)
+					? lines.getOptimizedLines()
+					: lines.getLines();
+
 
             /**
 		     * For each line of the raster we need to figure out the first and last black pixel, as those positions are needed to calculate 
@@ -73,61 +85,26 @@ public class Rasterizer {
 		     */
 			target.setAssistAir(eg.settings.isAssistAir());
 			
-			double leadin = target.getEngravingXAccelerationDistance(eg.settings.getRasterSpeed());
 
             target.startShape("rastergroup-"+eg.bb.toString());
 
-			double y = eg.bb.getY();
-			int scanNumber = 0;
-			for (int yc=0;yc<onebit.getHeight();yc++) {
-				
-				
-				int firstSet = onebit.getWidth();
-				int lastSet = -1;
-				for (int xc=0; xc<onebit.getWidth(); xc++) {
-					int pixel = onebit.getRGB(xc, yc) & 0xffffff;
-					
-					
-					if (pixel == 0) {
-						lastSet = xc;
-						if (firstSet > lastSet) {
-							firstSet = lastSet;
-						}
-					}
-				}
-				
-				if (lastSet < 0) {
-					y += linePitch;
-					continue; // Skip empty lines entirely
-				}
-				
-				double x0 = firstSet*pixelPitch + eg.bb.getX();
-				double x1 = lastSet *pixelPitch + eg.bb.getX();
+			for (RasterLine rasterLine : renderingOrder) {
+                double x = eg.bb.getX()+rasterLine.getX0()*pixelPitch;
+                double y = eg.bb.getY()+rasterLine.getY()*linePitch;
 
-				lastSet++; 
-
-				val pixels = new boolean[lastSet-firstSet];
-				for (int xc=firstSet; xc<lastSet; xc++) {
-					if ((onebit.getRGB(xc, yc) & 0xffffff) == 0) {
-						pixels[xc-firstSet] = true;					
-					}
-				}
-				
-				if (eg.settings.getPasses() > 1) {
-					for (int pass=1;pass<eg.settings.getPasses();pass++) {
-						renderScanline(x0, x1, eg.settings, target, pointTransformation, (scanNumber++ & 1) == 1, y, leadin, 0, pixels);
-					}					
-				}
-				
-				renderScanline(x0, x1, eg.settings,target, pointTransformation, (scanNumber++ & 1) == 1, y, leadin, linePitch, pixels);
-				
-				y += linePitch;
-			}    
+                renderScanline(x, x+rasterLine.getPixels().size()*pixelPitch, eg.settings,target, pointTransformation, rasterLine.isReverse(), y, leadin, rasterLine.getPixelsAsArray());
+            }
 			target.startShape("end-rastergroup-"+eg.bb.toString());
 		}	
 	}
 
-    private static BufferedImage combinedOneBitRaster(RasterGroup eg, double linePitch, double pixelPitch) {
+	private static double calculateRasterLeadin(AxisConstraints x, double rasterSpeed) {
+		return 1.2* Line.estimateAccelerationDistance(0,
+				Math.min(x.getMaxSpeed(), rasterSpeed),
+				x.getAcceleration());
+	}
+
+	private static BufferedImage combinedOneBitRaster(RasterGroup eg, double linePitch, double pixelPitch) {
         // The bb is now in mm, so we need to figure out what resolution we want the raster to be in.
         int pixelWidth  = (int)Math.round(eg.bb.getWidth()/pixelPitch);
         int pixelHeight = (int)Math.round(eg.bb.getHeight()/linePitch);

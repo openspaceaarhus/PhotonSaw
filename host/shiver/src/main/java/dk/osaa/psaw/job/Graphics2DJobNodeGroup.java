@@ -94,6 +94,9 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	@Setter
 	private double defaultRasterSpeed;
 
+	@Getter @Setter
+	RasterOptimization defaultRasterOptimization;
+
 	public Graphics2DJobNodeGroup(Job job, JobNodeGroup jobNodeGroup) {
 		super(0, 0, 2000, 1000);
 		this.job = job;
@@ -105,6 +108,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		defaultPulseDuration = 3; // 3 ms
 		defaultPpmm = 100;
 		defaultRasterSpeed = 500;
+		defaultRasterOptimization = RasterOptimization.FASTEST;
+
 		setRasteredImageSizeMaximum(256);
 	}
 
@@ -124,7 +129,8 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 				getPulseDuration(),
 				getRasterLinePitch(),
 				getRasterSpeed(),
-				getScalePowerBySpeed());
+				getScalePowerBySpeed(),
+				getRasterOptimization());
 	}
 
 	void addChild(JobNode newChild) {
@@ -321,12 +327,21 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 	double getPower() {
 		String value = getStyleAttr("photonsaw-power");
 		if (value != null) {
-			return Math.min(maximumPower, Math.max(0, Double.parseDouble(value)));			
+			return Math.min(maximumPower, Math.max(0, Double.parseDouble(value)));
 		} else {
 			return defaultPower;
 		}
 	}
-	
+
+	RasterOptimization getRasterOptimization() {
+		String value = getStyleAttr("photonsaw-raster-optimization");
+		if (value != null) {
+			return RasterOptimization.valueOf(value.toUpperCase());
+		} else {
+			return defaultRasterOptimization;
+		}
+	}
+
 	private double getRasterLinePitch() {
 		String value = getStyleAttr("photonsaw-raster-pitch");
 		if (value == null) {

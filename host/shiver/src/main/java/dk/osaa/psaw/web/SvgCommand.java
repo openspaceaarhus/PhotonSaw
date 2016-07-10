@@ -81,7 +81,7 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 			testJob.storeJob(new FileOutputStream(savepath + "/" + svgFile.getName() + ".psjob"));
 			
 			SVGRenderTarget rt = new SVGRenderTarget(new File(savepath + "/" + svgFile.getName() + ".svg"));
-			testJob.render(rt);
+			testJob.render(configuration.getMachine(), rt);
 			rt.done();
 		
 			ps.run("aa on");

@@ -14,24 +14,31 @@ import dk.osaa.psaw.machine.Point;
 @Log
 public class SVGRenderTarget implements JobRenderTarget {
 
-	private static final double LWMOVE = 0.1;
-	private static final double LWCUT = 1.0;
-	private static final double LWENG = 0.2;
+
 	private static final double MMTOPX = 90.0/25.4;
 	private int idcnt = 0;
 	
 	ArrayList<Point> path;
-	double linewidth;
-	boolean firstmove;
-	
 	Writer out;
+	String pathClass = "first";
 
 	private String id;
 	
 	public SVGRenderTarget(File outFile) {
 		try {
 			out = new FileWriter(outFile);
-			out.write("<svg>\n");
+			out.write("<svg>\n" +
+					"<defs>\n" +
+					"<style type=\"text/css\"><![CDATA[\n" +
+					"  .first  { fill:none; stroke:#f00; stroke-width: 0.1; }\n" +
+					"  .move   { fill:none; stroke:#0f0; stroke-width: 0.1; }\n" +
+					"  .cut    { fill:none; stroke:#000; stroke-width: 1; }\n" +
+					"  .eng    { fill:none; stroke:#008; stroke-width: 1; }\n" +
+					"  .dead   { fill:none; stroke:#f00; stroke-width: 0.5; }\n" +
+					"  .leadin { fill:none; stroke:#aa0; stroke-width: 0.5; }\n" +
+					"]]></style>\n" +
+					"\t</defs>" +
+					"");
 		} catch (IOException e) {
 			log.log(Level.SEVERE, "Fail", e);
 			throw new RuntimeException(e);
@@ -42,85 +49,39 @@ public class SVGRenderTarget implements JobRenderTarget {
 		pp.axes[0] = 0.0;
 		pp.axes[1] = 0.0;
 		path.add(pp);
-		linewidth = LWMOVE;
-		firstmove = true;
 	}
 	
 	void outputPath() {
 		if (path.size() == 0) {
 			return;
 		}
-		
+
 		try {
-			if(firstmove) {
-				out.write("  <path style=\"stroke:#ff0000;stroke-width:"+linewidth+";fill:none\" id=\"path"+idcnt++ +"\" d=\"");
-				firstmove = false;
-			} else
-				out.write("  <path style=\"stroke:#000000;stroke-width:"+linewidth+";fill:none\" id=\"path"+idcnt++ +"\" d=\"");
+			out.write("  <path class=\""+pathClass+"\" id=\"path"+idcnt++ +"\" d=\"");
 			String l = "M";
 			for (Point p : path) {
-//				out.write(l+p.axes[0]+","+p.axes[1]);
 				out.write(l+p.axes[0]*MMTOPX+","+p.axes[1]*MMTOPX);
 				l = " L";
 			}
 			out.write("\"/>\n");
-			
 		} catch (IOException e) {
-			log.log(Level.SEVERE, "Fail", e);
 			throw new RuntimeException(e);
 		}
-		
 		path.clear();
 	}
 	
-	public void done() {
+	public void done() throws IOException {
 		Point pp = new Point();
 		pp.axes[0] = 0.0;
 		pp.axes[1] = 0.0;
 		moveTo(pp, -1);
 		outputPath();
-		try {
-			out.write("</svg>\n");
-			out.close();
-		} catch (IOException e) {
-			log.log(Level.SEVERE, "Fail", e);
-			throw new RuntimeException(e);
-		}
-	}
-	
-	@Override
-	public void cutTo(Point p, LaserNodeSettings settings) {
-		if (settings.getIntensity() == 0.0) {
-			moveTo(p, -1);
-		} else {
-			if(linewidth != LWCUT) {
-				Point pp = path.get(path.size()-1);
-				outputPath();
-				path.add(pp);		
-			}
-			linewidth = LWCUT;
-			path.add(p);
-		}
-	}
-
-	@Override
-	public void moveToAtSpeed(Point p, double maxSpeed) {
-		moveTo(p, maxSpeed);
-	}
-
-	private void doEngraveTo(Point p) {
-		if(linewidth != LWENG) {
-			Point pp = path.get(path.size()-1);
-			outputPath();
-			path.add(pp);		
-		}
-		linewidth = LWENG;
-		path.add(p);				
+		out.write("</svg>\n");
+		out.close();
 	}
 	
 	@Override
 	public void engraveTo(Point p,  LaserNodeSettings settings, boolean[] pixels) {
-		// TODO Auto-generated method stub
 		Point lastpoint = path.get(path.size()-1);
 		double dx = p.axes[0] - lastpoint.axes[0];
 		double dy = p.axes[1] - lastpoint.axes[1];
@@ -133,25 +94,21 @@ public class SVGRenderTarget implements JobRenderTarget {
 			Point pp = new Point();
 			pp.axes[0] = lastpoint.axes[0] + (double)i*dx/(double)pixels.length;
 			pp.axes[1] = lastpoint.axes[1] + (double)i*dy/(double)pixels.length;
-			if(lastpix) {
-				doEngraveTo(pp);
+			if (lastpix) {
+				encodePathTo(pp, "eng");
 			} else {
-				moveTo(pp, -1);
+				encodePathTo(pp, "dead");
 			}
 			lastpix = pixels[i];
 			lastpixidx = i;
 		}
 		if(lastpixidx != pixels.length) {
-			if(lastpix)
-				doEngraveTo(p);
-			else
-				moveTo(p, -1);
+			if(lastpix) {
+				encodePathTo(p, "eng");
+			} else {
+				encodePathTo(p, "dead");
+			}
 		}
-	}
-
-	@Override
-	public double getEngravingXAccelerationDistance(double speed) {
-		return 10;
 	}
 
 	@Override
@@ -163,20 +120,41 @@ public class SVGRenderTarget implements JobRenderTarget {
 	public void setAssistAir(boolean assistAirOn) {
 		// Meh.
 	}
-
 	@Override
 	public void startShape(String id) {
 		this.id = id;
 	}
 
 	@Override
+	public void moveToAtSpeed(Point p, double maxSpeed) {
+		encodePathTo(p, "leadin");
+	}
+
+	@Override
+	public void cutTo(Point p, LaserNodeSettings settings) {
+		if (settings.getIntensity() == 0.0) {
+			encodePathTo(p, "dead");
+		} else {
+			encodePathTo(p, "cut");
+		}
+	}
+
+	@Override
 	public void moveTo(Point p, double maxSpeed) {
-		if(linewidth != LWMOVE) {
+		encodePathTo(p, "move");
+	}
+
+	public void moveTo(Point p) {
+		encodePathTo(p, "dead");
+	}
+
+	void encodePathTo(Point p, String style) {
+		if (!pathClass.equals(style)) {
 			Point pp = path.get(path.size()-1);
 			outputPath();
-			path.add(pp);		
+			path.add(pp);
 		}
-		linewidth = LWMOVE;
-		path.add(p);		
+		pathClass = style;
+		path.add(p);
 	}
 }

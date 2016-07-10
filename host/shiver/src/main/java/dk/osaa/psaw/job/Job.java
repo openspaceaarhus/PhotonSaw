@@ -59,8 +59,7 @@ public class Job {
 	
 	/**
 	 * Loads a job which was previously stored using storeJob 
-	 * @param reader
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 * @throws IOException 
 	 */
 	static public Job loadJob(InputStream inputStream) throws IOException, ClassNotFoundException {
@@ -73,7 +72,6 @@ public class Job {
 
 	/**
 	 * Stores the job as xml, so it can be loaded using loadJob.
-	 * @param writer
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
@@ -208,9 +206,9 @@ public class Job {
 	 * Renders the root node onto the target  
 	 * @param target Where the job output must go.
 	 */
-	public void render(JobRenderTarget target) {
+	public void render(PhotonSawMachineConfig cfg, JobRenderTarget target) {
 		// This collects all the rasters and renders them:
-		Rasterizer.rasterize(getRootNode(), rootTransformation, target);
+		Rasterizer.rasterize(cfg, getRootNode(), rootTransformation, target);
 		
 		// This renders the vector parts of the job:
 		getRootNode().render(target, rootTransformation);

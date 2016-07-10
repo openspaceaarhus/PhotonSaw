@@ -46,16 +46,6 @@ public interface JobRenderTarget {
 	void engraveTo(Point p, LaserNodeSettings settings, boolean[] pixels);
 	
 	/**
-	 * Calculates the distance in mm needed to accelerate the X axis from 0 to the desired speed.
-	 * 
-	 * This determines the lead-in and lead-out of the engraving moves.
-	 * 
-	 * @param speed in mm/s
-	 * @return distance in mm
-	 */
-	double getEngravingXAccelerationDistance(double speed);
-	
-	/**
 	 * @return The size, in mm of one step in the Y axis as used when engraving;
 	 */
 	double getEngravingYStepSize(); // TODO: line height should come from the user in stead of the machine limit!

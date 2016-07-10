@@ -170,11 +170,11 @@ public class Planner extends Thread implements JobRenderTarget {
 					renderedLines = 0;
 					
 					JobSize js = new JobSize(this);
-					getCurrentJob().render(js);	
+					getCurrentJob().render(cfg, js);
 					currentJobLength = js.getLineLength();
 					currentJobSize = js.getLineCount();
 										
-					getCurrentJob().render(this);
+					getCurrentJob().render(cfg, this);
 					moveTo(startPoint, -1); // Go back to where we were before the job.
 					
 					log.info("Job has finished rendering, waiting for buffer to empty");
@@ -359,13 +359,6 @@ public class Planner extends Thread implements JobRenderTarget {
 			addLine(line);
 		}
 		renderedLines++;
-	}
-
-	@Override
-	public double getEngravingXAccelerationDistance(double speed) {
-		return 1.2*Line.estimateAccelerationDistance(0,
-					Math.min(cfg.getAxes().getArray()[0].getMaxSpeed(), speed),
-					cfg.getAxes().getArray()[0].getAcceleration());
 	}
 
 	@Override

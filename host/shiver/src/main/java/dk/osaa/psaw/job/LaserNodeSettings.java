@@ -35,6 +35,9 @@ public class LaserNodeSettings {
 	
 	@Getter
 	private boolean scalePowerWithSpeed;
+
+	@Getter
+	private RasterOptimization rasterOptimization;
 		
 	public boolean equalsRaster(LaserNodeSettings other) {
 		return other.assistAir == assistAir 
@@ -44,6 +47,8 @@ public class LaserNodeSettings {
 				&& other.passes == passes 
 				&& other.rasterSpeed==rasterSpeed
 				&& other.pulseDuration == pulseDuration
+				&& other.scalePowerWithSpeed == scalePowerWithSpeed
+				&& other.rasterOptimization == rasterOptimization
 				&& other.pulsesPermm == pulsesPermm;
 	}
 }

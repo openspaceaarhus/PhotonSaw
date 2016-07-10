@@ -20,6 +20,8 @@ public class SimulatedCommander implements CommanderInterface {
 
 	static FileWriter writer;
 
+	long totalDuration = 0;
+
 	public static void setLog(File lf) {
 		try {
 			if (writer != null) {
@@ -70,7 +72,8 @@ public class SimulatedCommander implements CommanderInterface {
 		
     	while (!moveQueue.isEmpty()) {
     		Move m = moveQueue.take();
-    		
+    		totalDuration += m.getDuration();
+
     		val words = m.encode();
     		
     		if (writer == null) {
@@ -97,11 +100,14 @@ public class SimulatedCommander implements CommanderInterface {
 	    		writer.append(Long.toString(ma.startPos)); writer.append("\t");    				    				
 	    		writer.append(Long.toString(ma.endPos)); writer.append("\t");    				    				
     		}
-    		
-    		writer.append("\n");
+
+			writer.append(String.valueOf(totalDuration)).append(" ms");
+			writer.append("\n");
     	}
 		if (writer != null) {
 	    	writer.flush();
 		}
+
+		log.info("total elapsed time: "+totalDuration/50+" ms");
 	}
 }

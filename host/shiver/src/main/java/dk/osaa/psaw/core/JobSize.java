@@ -32,11 +32,6 @@ public class JobSize implements JobRenderTarget {
 	}
 
 	@Override
-	public double getEngravingXAccelerationDistance(double speed) {
-		return p.getEngravingXAccelerationDistance(speed);
-	}
-
-	@Override
 	public double getEngravingYStepSize() {
 		return p.getEngravingYStepSize();
 	}
