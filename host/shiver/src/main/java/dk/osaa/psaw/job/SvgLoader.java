@@ -98,10 +98,7 @@ public class SvgLoader {
 		g2d.setMaximumPower(cfg.getMaximumLaserPower());
 		g2d.setDefaultPower(cfg.getMaximumLaserPower());
 		
-		/* 
-		 * Notice: I've replaced com.kitfox.svg.Group with a version that makes the svg element being rendered available
-		 * to the Graphics2DJobNodeGroup which the svg is being rendered to, so it's able to pick out the style information
-		 * it wants.
+		/*
 		 * 
 		 * Special style:
 		 *  photonsaw-speed : Speed in mm/s of the laser when cutting this shape, lower speed is possible

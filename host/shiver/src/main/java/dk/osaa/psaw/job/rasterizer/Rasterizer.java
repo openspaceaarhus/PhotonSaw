@@ -34,6 +34,7 @@ import javax.imageio.ImageIO;
 public class Rasterizer {
 	private static final byte[] BLACK_AND_WHITE = new byte[]{(byte)Color.BLACK.getRed(), (byte)Color.WHITE.getRed()};
 	private static final IndexColorModel ONE_BIT = new IndexColorModel(1, 2, BLACK_AND_WHITE,BLACK_AND_WHITE,BLACK_AND_WHITE);
+	public static final int LEADIN_FACTOR = 6;
 
 	private static DiffusionDither ditherer = new DiffusionDither();
 
@@ -59,11 +60,12 @@ public class Rasterizer {
 			}
 		}
 		
-		/* Note: We use cutTo for the lead-in/out lines, this is because we need to hit the desired getRasterSpeed(),
-		 * not the maximum speed of the machine as moveTo would do. 
+		/* Note: We use moveToAtSpeed for the lead-in lines, this is because we need to hit the desired getRasterSpeed(),
+		 * not the maximum speed of the machine as moveTo would do.
+		 * The lead-out
 		 */
 		
-		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y)),-1); // Will be optimized out for every line except the first.
+		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y)),-2); // Will be optimized out for every line except the first.
 		target.moveToAtSpeed(transformation.transform(new Point2D.Double(x0,        y)), settings.getRasterSpeed());
 		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings, pixels);
 		target.moveTo(       transformation.transform(new Point2D.Double(x1+leadin, y)), settings.getRasterSpeed());
@@ -81,29 +83,29 @@ public class Rasterizer {
 
             BufferedImage onebit = combinedOneBitRaster(eg, linePitch, pixelPitch);
 
+			// The length of X movement to use for raster line accelereation, to ensure that the correct speed is hit before the raster is hit.
 			double leadin = calculateRasterLeadin(cfg.getAxes().getX(), eg.settings.getRasterSpeed());
 
+			// The number of non-fired pixels to have before biting off a rasterline
 			final int maxDeadSpace = eg.settings.getRasterOptimization().equals(RasterOptimization.NONE)
 					? Integer.MAX_VALUE
-					: (int)Math.round(6*leadin/pixelPitch);
+					: (int)Math.round(LEADIN_FACTOR *leadin/pixelPitch);
+
+			// Turns the one bit raster image into a number of raster lines.
             RasterLines lines = new RasterLines(onebit, maxDeadSpace);
+
+			// Optionally re-orders raster lines so dead space between far-apart raster lines can be scanned individually
 			List<RasterLine> renderingOrder = eg.settings.getRasterOptimization().equals(RasterOptimization.FASTEST)
 					? lines.getOptimizedLines()
 					: lines.getLines();
 
-
-            /**
-		     * For each line of the raster we need to figure out the first and last black pixel, as those positions are needed to calculate 
-		     * how wide this particular scanline is, if it doesn't have any black pixels at all, then we need to skip the line entirely.
-		     */
 			target.setAssistAir(eg.settings.isAssistAir());
 			
-
             target.startShape("rastergroup-"+eg.bb.toString());
 
 			for (RasterLine rasterLine : renderingOrder) {
                 double x = eg.bb.getX()+rasterLine.getX0()*pixelPitch;
-                double y = eg.bb.getY()+rasterLine.getY()*linePitch;
+                double y = eg.bb.getY()+rasterLine.getY() *linePitch;
 
                 renderScanline(x, x+rasterLine.getPixels().size()*pixelPitch, eg.settings,target, pointTransformation, rasterLine.isReverse(), y, leadin, rasterLine.getPixelsAsArray());
             }

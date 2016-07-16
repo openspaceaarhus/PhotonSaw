@@ -282,11 +282,12 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void moveTo(Point p, double maxSpeed) {
+		final boolean accurateMove = maxSpeed == -2;
 		if (maxSpeed <= 0) {
 			maxSpeed = cfg.getRapidMoveSpeed();
 		}
 		
-		log.info("moveTo:"+p);
+		log.finest("moveTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -295,7 +296,7 @@ public class Planner extends Thread implements JobRenderTarget {
 		Line line = new Line(photonSaw.cfg, 
 							lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 							lastBufferedLocation, p, maxSpeed, false);
-		if (line.getLength() > cfg.getShortestMove()) {
+		if (accurateMove || line.getLength() > cfg.getShortestMove()) {
 			addLine(line);
 		}
 		renderedLines++;

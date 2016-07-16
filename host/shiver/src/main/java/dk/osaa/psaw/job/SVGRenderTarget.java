@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.Level;
 
 import lombok.extern.java.Log;
@@ -60,7 +61,10 @@ public class SVGRenderTarget implements JobRenderTarget {
 			out.write("  <path class=\""+pathClass+"\" id=\"path"+idcnt++ +"\" d=\"");
 			String l = "M";
 			for (Point p : path) {
-				out.write(l+p.axes[0]*MMTOPX+","+p.axes[1]*MMTOPX);
+				out.write(l);
+				out.write(String.format(Locale.ENGLISH, "%.2f", p.axes[0]*MMTOPX));
+				out.write(",");
+				out.write(String.format(Locale.ENGLISH, "%.2f", p.axes[1]*MMTOPX));
 				l = " L";
 			}
 			out.write("\"/>\n");

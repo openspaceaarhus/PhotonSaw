@@ -33,7 +33,7 @@ machine:
    shortestMove: 0.2
    axes:
       x:
-         acceleration: 5000
+         acceleration: 10000
          maxSpeed: 1500
          minSpeed: 20
          maxJerk: 10

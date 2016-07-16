@@ -108,9 +108,14 @@ public class PhotonSaw extends Thread {
 		if (lastSpeed != null) {
 			for (int i=0;i<Move.AXES;i++) {
 				double jerk = lastSpeed.getAxis(i)-startSpeed.getAxis(i);
-				if (Math.abs(jerk) > axisConstraints[i].getMaxJerk()*1.25) {
+
+				double overJerk = Math.abs(jerk) / axisConstraints[i].getMaxJerk();
+				if (overJerk > 1.25) {
 					log.info("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId()+" axis: "+i+" "+lastSpeed+" "+startSpeed);
-				// 	throw new RuntimeException("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId()+" axis: "+i+" "+lastSpeed+" "+startSpeed);
+					if (overJerk > 5) {
+						throw new RuntimeException("Jerk too large: jerk:"+jerk+" from:"+lastSpeed.getAxis(i)+" to:"+startSpeed.getAxis(i)+" id:"+move.getId()+" axis: "+i+" "+lastSpeed+" "+startSpeed);
+					}
+
 				}
 			}
 		}

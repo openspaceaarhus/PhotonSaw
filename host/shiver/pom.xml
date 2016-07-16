@@ -11,7 +11,7 @@
 
   <groupId>dk.osaa.psaw</groupId>
   <artifactId>shiver</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.0.4</version>
   <name>PhotonSaw Shiver</name>
   <url>http://psaw.osaa.dk</url>
   
