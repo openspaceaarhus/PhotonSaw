@@ -13,7 +13,7 @@ import lombok.extern.java.Log;
 import dk.osaa.psaw.machine.Point;
 
 @Log
-public class SVGRenderTarget implements JobRenderTarget {
+public class SVGRenderTarget implements JobRenderTarget, AutoCloseable {
 
 
 	private static final double MMTOPX = 90.0/25.4;
@@ -73,12 +73,13 @@ public class SVGRenderTarget implements JobRenderTarget {
 		}
 		path.clear();
 	}
-	
-	public void done() throws IOException {
+
+	@Override
+	public void close() throws Exception {
 		Point pp = new Point();
 		pp.axes[0] = 0.0;
 		pp.axes[1] = 0.0;
-		moveTo(pp, -1);
+		traverseTo(pp, TraverseSettings.FAST);
 		outputPath();
 		out.write("</svg>\n");
 		out.close();
@@ -129,10 +130,6 @@ public class SVGRenderTarget implements JobRenderTarget {
 		this.id = id;
 	}
 
-	@Override
-	public void moveToAtSpeed(Point p, double maxSpeed) {
-		encodePathTo(p, "leadin");
-	}
 
 	@Override
 	public void cutTo(Point p, LaserNodeSettings settings) {
@@ -143,13 +140,18 @@ public class SVGRenderTarget implements JobRenderTarget {
 		}
 	}
 
-	@Override
-	public void moveTo(Point p, double maxSpeed) {
-		encodePathTo(p, "move");
-	}
 
-	public void moveTo(Point p) {
-		encodePathTo(p, "dead");
+	@Override
+	public void traverseTo(Point p, TraverseSettings settings) {
+		if (settings.isExitSpeedMandatory()) {
+			encodePathTo(p, "leadin");
+
+		} else if (settings.isSpeedUnlimited()) {
+			encodePathTo(p, "move");
+
+		} else {
+			encodePathTo(p, "dead");
+		}
 	}
 
 	void encodePathTo(Point p, String style) {
@@ -161,4 +163,5 @@ public class SVGRenderTarget implements JobRenderTarget {
 		pathClass = style;
 		path.add(p);
 	}
+
 }

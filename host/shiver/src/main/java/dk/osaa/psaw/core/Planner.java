@@ -4,10 +4,7 @@ import java.util.logging.Level;
 
 import dk.osaa.psaw.config.AxisConstraints;
 import dk.osaa.psaw.config.PhotonSawMachineConfig;
-import dk.osaa.psaw.job.Job;
-import dk.osaa.psaw.job.PointTransformation;
-import dk.osaa.psaw.job.JobRenderTarget;
-import dk.osaa.psaw.job.LaserNodeSettings;
+import dk.osaa.psaw.job.*;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import dk.osaa.psaw.machine.Point;
@@ -101,9 +98,7 @@ public class Planner extends Thread implements JobRenderTarget {
 			prev = line;
 		}
 	}
-	
-	
-	
+
 	Move endcodeJogMove(MoveVector mmMoveVector, double speedMMS) {		
 		
 		val stepVector = mmMoveVector.div(cfg.getMmPerStep()).round(); // move vector in whole steps
@@ -175,8 +170,8 @@ public class Planner extends Thread implements JobRenderTarget {
 					currentJobSize = js.getLineCount();
 										
 					getCurrentJob().render(cfg, this);
-					moveTo(startPoint, -1); // Go back to where we were before the job.
-					
+					traverseTo(startPoint, TraverseSettings.FAST); // Go back to where we were before the job.
+
 					log.info("Job has finished rendering, waiting for buffer to empty");
 					// Let the line buffer empty out before we continue
 					while (!lineBuffer.isEmpty()) {
@@ -280,14 +275,11 @@ public class Planner extends Thread implements JobRenderTarget {
 		}
 	}
 
+
 	@Override
-	public void moveTo(Point p, double maxSpeed) {
-		final boolean accurateMove = maxSpeed == -2;
-		if (maxSpeed <= 0) {
-			maxSpeed = cfg.getRapidMoveSpeed();
-		}
-		
-		log.finest("moveTo:"+p);
+	public void traverseTo(Point p, TraverseSettings settings) {
+		double maxSpeed = settings.isSpeedUnlimited() ? cfg.getRapidMoveSpeed() : settings.getMaxSpeed();
+
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -296,7 +288,11 @@ public class Planner extends Thread implements JobRenderTarget {
 		Line line = new Line(photonSaw.cfg, 
 							lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
 							lastBufferedLocation, p, maxSpeed, false);
-		if (accurateMove || line.getLength() > cfg.getShortestMove()) {
+		if (settings.isExitSpeedMandatory()) {
+			line.setMandatoryExitSpeed(maxSpeed);
+		}
+
+		if (settings.isAccurate() || line.getLength() > cfg.getShortestMove()) {
 			addLine(line);
 		}
 		renderedLines++;
@@ -304,7 +300,6 @@ public class Planner extends Thread implements JobRenderTarget {
 
 	@Override
 	public void cutTo(Point p, LaserNodeSettings settings) {
-		//log.info("cutTo:"+p);
 		for (int i=0;i<Move.AXES;i++) {
 			if (!usedAxes[i]) {
 				p.axes[i] = lastBufferedLocation.axes[i]; 
@@ -321,24 +316,6 @@ public class Planner extends Thread implements JobRenderTarget {
 	}
 
 
-	@Override
-	public void moveToAtSpeed(Point p, double maxSpeed) {
-		//log.info("moveToAtSpeed:"+p);
-		for (int i=0;i<Move.AXES;i++) {
-			if (!usedAxes[i]) {
-				p.axes[i] = lastBufferedLocation.axes[i]; 
-			}
-		}
-		Line line = new Line(cfg, 
-				lineBuffer.getList().size()>0 ? lineBuffer.getList().get(lineBuffer.getList().size()-1) : null,
-				lastBufferedLocation, p, maxSpeed, false);
-		line.setMandatoryExitSpeed(maxSpeed);
-		if (line.getLength() > cfg.getShortestMove()) {
-			addLine(line);
-		}
-		renderedLines++;
-	}
-	
 	@Override
 	public void engraveTo(Point p,  LaserNodeSettings settings,
 			boolean[] pixels) {

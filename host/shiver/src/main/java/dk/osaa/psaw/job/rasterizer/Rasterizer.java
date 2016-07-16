@@ -6,13 +6,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
 
 import com.twelvemonkeys.image.DiffusionDither;
 import dk.osaa.psaw.config.AxisConstraints;
@@ -21,8 +16,6 @@ import dk.osaa.psaw.core.Line;
 import dk.osaa.psaw.job.*;
 import lombok.val;
 import lombok.extern.java.Log;
-
-import javax.imageio.ImageIO;
 
 /**
  * This is the great big lump of code that takes care of collecting all the RasterNodes in the job and merging the transformed rasters
@@ -48,7 +41,10 @@ public class Rasterizer {
 	 */
 	static void renderScanline(double x0, double x1, LaserNodeSettings settings, JobRenderTarget target, PointTransformation transformation,
 							   boolean reverse, double y, double leadin, boolean[] pixels) {
-				
+
+		/*
+			If the direction is reversed, we'll simply swap the x coordinates and the pixel order.
+		 */
 		if (reverse) {
 			double x = x1; x1 = x0; x0 = x;
 			leadin *= -1;
@@ -60,15 +56,17 @@ public class Rasterizer {
 			}
 		}
 		
-		/* Note: We use moveToAtSpeed for the lead-in lines, this is because we need to hit the desired getRasterSpeed(),
-		 * not the maximum speed of the machine as moveTo would do.
-		 * The lead-out
+		/*
+			There are 4 individual parts to each raster line:
+			1: The traverse to exactly the start of the lead-in
+			2: The lead-in where speed is built up to the target engraving speed, in the same line as the engraving pass.
+			3: The engraving pass where pixels are fired at the material at constant speed from start to finish.
+			4: The tailing pass where the speed is bled off without changing y, potentially to zero
 		 */
-		
-		target.moveTo(       transformation.transform(new Point2D.Double(x0-leadin, y)),-2); // Will be optimized out for every line except the first.
-		target.moveToAtSpeed(transformation.transform(new Point2D.Double(x0,        y)), settings.getRasterSpeed());
-		target.engraveTo(    transformation.transform(new Point2D.Double(x1, y)), settings, pixels);
-		target.moveTo(       transformation.transform(new Point2D.Double(x1+leadin, y)), settings.getRasterSpeed());
+		target.traverseTo( transformation.transform(new Point2D.Double(x0-leadin, y)), TraverseSettings.ACCURATE);
+		target.traverseTo( transformation.transform(new Point2D.Double(x0,        y)), TraverseSettings.hitExitSpeed(settings.getRasterSpeed()));
+		target.engraveTo(  transformation.transform(new Point2D.Double(x1, y)), settings, pixels);
+		target.traverseTo( transformation.transform(new Point2D.Double(x1+leadin, y)), TraverseSettings.atMaxSpeed(settings.getRasterSpeed()));
 	}
 	
 	public static void rasterize(PhotonSawMachineConfig cfg, JobNodeGroup root, PointTransformation pointTransformation, JobRenderTarget target) {

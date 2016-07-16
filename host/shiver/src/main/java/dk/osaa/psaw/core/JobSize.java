@@ -1,5 +1,6 @@
 package dk.osaa.psaw.core;
 
+import dk.osaa.psaw.job.TraverseSettings;
 import lombok.Getter;
 import dk.osaa.psaw.job.JobRenderTarget;
 import dk.osaa.psaw.job.LaserNodeSettings;
@@ -23,12 +24,12 @@ public class JobSize implements JobRenderTarget {
 	
 	@Override
 	public void cutTo(Point p, LaserNodeSettings settings) {
-		moveTo(p, -1);
+		traverseTo(p, TraverseSettings.FAST);
 	}
 
 	@Override
 	public void engraveTo(Point p, LaserNodeSettings settings, boolean[] pixels) {
-		moveTo(p, -1);
+		traverseTo(p, TraverseSettings.FAST);
 	}
 
 	@Override
@@ -42,18 +43,12 @@ public class JobSize implements JobRenderTarget {
 	}
 
 	@Override
-	public void moveToAtSpeed(Point p, double maxSpeed) {
-		moveTo(p, maxSpeed);		
-	}
-
-	@Override
 	public void startShape(String id) {
-		// TODO Auto-generated method stub
-		
+		// Ignore
 	}
 
 	@Override
-	public void moveTo(Point p, double maxSpeed) {
+	public void traverseTo(Point p, TraverseSettings settings) {
 		double s = 0;
 		for (int i=0;i<Move.AXES;i++) {
 			s += Math.pow(p.axes[i]-pos.axes[i], 2);

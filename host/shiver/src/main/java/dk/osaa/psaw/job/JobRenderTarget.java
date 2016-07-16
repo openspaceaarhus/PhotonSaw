@@ -16,21 +16,12 @@ public interface JobRenderTarget {
 	 * @param id the id of the shape that's about to start
 	 */
 	void startShape(String id);
-	
-	/**
-	 * Moves to a point at the specified max speed
-	 * @param p The point to move to
-	 * @param maxSpeed The maximum speed to move at, <= 0 means max speed
-	 */
-	void moveTo(Point p, double maxSpeed);
 
 	/**
-	 * Like moveTo, but asserts that the speed maxSpeed must be the exact speed at the end of the line
-	 *  
-	 * @param p the point to move to
-	 * @param maxSpeed the target speed to hit at the end point
+	 * Moves to a point, obeying the constraints passed in the constraints parameter
+	 * @param p The point to move to
 	 */
-	void moveToAtSpeed(Point p, double maxSpeed);
+	void traverseTo(Point p, TraverseSettings settings);
 	
 	/**
 	 * Turn on the laser and move to this point at the desired speed
@@ -48,7 +39,7 @@ public interface JobRenderTarget {
 	/**
 	 * @return The size, in mm of one step in the Y axis as used when engraving;
 	 */
-	double getEngravingYStepSize(); // TODO: line height should come from the user in stead of the machine limit!
+	double getEngravingYStepSize();
 	
 	/**
 	 * Turn assist air on or off

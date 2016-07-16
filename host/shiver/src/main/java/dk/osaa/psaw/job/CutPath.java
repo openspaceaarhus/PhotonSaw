@@ -41,7 +41,7 @@ public class CutPath extends LaserNode {
 			for (Point2D p2d: path) {
 				
 				if (first) {
-					target.moveTo(transformation.transform(getTransformation().transform(p2d,null)), -1);
+					target.traverseTo(transformation.transform(getTransformation().transform(p2d,null)), TraverseSettings.FAST);
 					first = false;			
 				} else {
 					target.cutTo(transformation.transform(getTransformation().transform(p2d,null)), settings);
