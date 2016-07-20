@@ -7,10 +7,10 @@ use File::Path;
 my $GNU_MIRROR = 'ftp://ftp.fu-berlin.de/unix/gnu';
 my $NEWLIB_URL = 'ftp://sources.redhat.com/pub/newlib';
 
-my $GCC_VERSION = '4.7.2';
-my $GDB_VERSION = '7.4';
-my $BINUTILS_VERSION = '2.22';
-my $NEWLIB_VERSION = '1.20.0';
+my $GCC_VERSION = '5.4.0';
+my $GDB_VERSION = '7.11.1';
+my $BINUTILS_VERSION = '2.26';
+my $NEWLIB_VERSION = '2.4.0';
 my $OPENOCD_VERSION = '0.5.0';
 
 my $GCC_URL = "$GNU_MIRROR/gcc/gcc-$GCC_VERSION";
@@ -28,8 +28,8 @@ if (open I, "</etc/issue") {
 
 if ($issue =~ /^Ubuntu/) {
 
-	if ($issue !~ /^Ubuntu 11.10/) {
-		warn "Notice that this script hasn't been tested on $issue, if it fails, try Ubuntu 11.10 in stead\n";
+	if ($issue !~ /^Ubuntu 16.04/) {
+		warn "Notice that this script hasn't been tested on $issue, if it fails, try Ubuntu 16.04 in stead\n";
 	}
 
 	my @missing;
@@ -84,6 +84,7 @@ my @DIRS = (
     {
 	dir => "gdb-$GDB_VERSION",
 	url => $GDB_URL,
+	file=> "gdb-$GDB_VERSION.tar.xz",
 	
 	cfg2=>['--target=arm-none-eabi', '--enable-interwork', '--enable-multilib'],
 	make2=>'make all install',
