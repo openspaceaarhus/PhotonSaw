@@ -5,7 +5,7 @@
   This header specifies the move byte code which the machine can execute,
   a number of 32 bit words are used to make up each move.
 
-  The structure of a move is:
+  The structure of a move is (bit number in the header: the word that is included):
 
 Header: 05AAffff
 Duration: Number of ticks this move lasts
@@ -46,10 +46,15 @@ If a speed is omitted, then it is 0 at the start of the move.
 
 If an acceleration is omitted, then it's 0.
 
+The speed unit is steps per tick, iow steps per 1/50000 seconds.
 
-When bit 12 is set, then an extra word is emitted for each axis with movement (speed or acceleration) and
-the firmware checks that the position after the move matches the supplied position, if the position doesn't match,
-an alarm is triggered, this mechanism is used to validate that the host controllers algorithms match the firmware.
+The acceleraton unit is steps per tick per tick.
+
+
+When bit 12 is set, then an extra word is emitted for each axis with movement
+(speed or acceleration) and the firmware checks that the position after the move matches
+the supplied position, if the position doesn't match, an alarm is triggered, this mechanism
+is used to validate that the host controllers algorithms match the firmware.
 
 
 If LASER intensity is present then the laser will be on and it is a packed word consisting of:

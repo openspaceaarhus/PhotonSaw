@@ -1,37 +1,22 @@
 package dk.osaa.psaw.job;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import com.kitfox.svg.*;
+import com.kitfox.svg.xml.StyleAttribute;
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
+import lombok.val;
+
+import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Arc2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
-
-import javax.imageio.ImageIO;
-
-import com.kitfox.svg.RenderableElement;
-import com.kitfox.svg.SVGElement;
-import com.kitfox.svg.SVGException;
-import com.kitfox.svg.SVGGraphics2D;
-import com.kitfox.svg.SVGRoot;
-import com.kitfox.svg.xml.StyleAttribute;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.val;
-import lombok.extern.java.Log;
-import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 
 /**
  * A graphics context that can be passed to SVGSalamander to have it render the svg primitives into a JobNodeGroup
@@ -118,7 +103,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		this.element = element;
 		log.info("Rendering SVG element: "+element.getId());
 	}
-	
+
 	LaserNodeSettings getLaserNodeSettings() {
 		return new LaserNodeSettings(
 				getPower()/maximumPower,
@@ -368,7 +353,7 @@ public class Graphics2DJobNodeGroup extends VectorGraphics2D implements
 		if (value != null) {
 			return value.equalsIgnoreCase("true");
 		} else {
-			return false;
+			return true;
 		}
 	}
 	

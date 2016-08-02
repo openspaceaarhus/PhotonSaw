@@ -50,6 +50,7 @@ CFLAGS                  += -O2
 CFLAGS                  += -mapcs-frame 
 CFLAGS                  += -D__thumb2__=1 
 CFLAGS                  += -D__RAM_MODE__=0
+CFLAGS	                += -D_DEFAULT_SOURCE
 CFLAGS                  += -msoft-float 
 CFLAGS                  += -gdwarf-2 
 CFLAGS                  += -mno-sched-prolog 
@@ -61,6 +62,7 @@ CFLAGS                  += -ffunction-sections
 CFLAGS                  += -fdata-sections 
 CFLAGS                  += -fno-asynchronous-unwind-tables -fno-unwind-tables
 CFLAGS                  += -I$(FW) -I$(FW)/drivers -I$(FW)/$(BOARD)
+
 
 LDFLAGS = -static -mcpu=cortex-m3 -mthumb -mthumb-interwork -Wl,--start-group 
 #LDFLAGS += -L$(THUMB2GNULIB) -L$(THUMB2GNULIB2)
@@ -96,3 +98,7 @@ gdb:
 .PHONY : clean
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~ $(FW)/$(BOARD)/board-pins.h
+
+blarg:
+	$(CC) -M $(CFLAGS) commander.c
+	$(CC) -M $(CFLAGS) ../lpc1769/newlib/fileio.c

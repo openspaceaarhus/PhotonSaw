@@ -32,7 +32,7 @@ import lombok.extern.java.Log;
 @Log
 public class Line {
 
-	class LineAxis {
+	static private class LineAxis {
 		double startPos;
 		double endPos; // Where this axis must end up when done
 		int direction; // The direction this axis moves in, basically the sign for the speed.

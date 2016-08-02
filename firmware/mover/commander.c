@@ -54,6 +54,7 @@ void cmdHelp(FILE *output) {
     fiprintf(output, "mr: Reset motor drivers and turn them off\r\n");
     fiprintf(output, "aa on|off: Turn assist air on or off\r\n");
     fiprintf(output, "ex on|off: Turn exhaust on or off\r\n");
+    fiprintf(output, "ll <512 hex chars for the PWM LUT>\r\n");
     fiprintf(output, "crc <length> <crc> <id> <command>: Run a command only if the length and checksum matches\r\n");
 }
 
@@ -223,6 +224,7 @@ void cmdJog(char *line, FILE *output) {
 
 void cmdLaserPWM(char *line, FILE *output) {
   unsigned int pwm;
+  
   if (sscanf(line, "%d", &pwm) != 1) {
     fprintf(output, "result  Error: Unable to parse pwm: %s\r\n", line);
     return;
@@ -230,6 +232,23 @@ void cmdLaserPWM(char *line, FILE *output) {
 
   setLaserPWM(pwm);
 
+  fiprintf(output, "result  OK\r\n");
+}
+
+void cmdLaserLUT(char *line, FILE *output) {
+
+  
+  for (int i=0; i<256;i++) {
+    unsigned int pwm;
+    int digits = parseHex(&line, &pwm);
+    if (digits < 1 || digits > 2 || pwm > 255) {
+      fprintf(output, "result  Error: Unable to parse pwm value in LUT\r\n");
+      return;
+    }
+
+    laserPwmLUT[i] = pwm;    
+  }
+  
   fiprintf(output, "result  OK\r\n");
 }
 
@@ -361,6 +380,9 @@ void commandRun(char *line, FILE *output) {
 
   } else if (!strncmp(line, "lp ", 3)) {
     cmdLaserPWM(line+3, output);
+
+  } else if (!strncmp(line, "ll ", 3)) {
+    cmdLaserLUT(line+3, output);
 
   } else {
     respondSyntaxError(line, output);

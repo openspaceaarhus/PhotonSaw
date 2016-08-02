@@ -5,7 +5,7 @@
 #include "shaker.h"
 #include "console.h"
 #include "usbconsole.h"
-
+#include "laser.h"
 
 int main(void) {
   fiprintf(stderr, "\x1b[2JPower Up!\r\n");
@@ -20,7 +20,8 @@ int main(void) {
     usbconsole.c  USB serial port interface
     shaker.c      Realtime control output
   */
-
+  laserInit();
+  
   shakerInit();
 
   fiprintf(stderr, "Non-default IRQ priorities:\r\n");    

@@ -3,13 +3,14 @@
 
 extern unsigned int currentLaserPWM;
 extern unsigned int currentLaserOn;
+extern unsigned char laserPwmLUT[256];
 
 inline void setLaserPWM(unsigned int laserPWM) {
   laserPWM &= 0xff;
   
   if (laserPWM != currentLaserPWM) {
+    setPWM(IO_CHAN(IO_LASER_POWER), 0xff-laserPwmLUT[laserPWM]);
     currentLaserPWM = laserPWM;
-    setPWM(IO_CHAN(IO_LASER_POWER), 0xff-laserPWM);
   }
 }
 
@@ -24,5 +25,7 @@ inline void setLaserFire(unsigned int laserOn) {
     currentLaserOn = 0;
   }
 }
+
+void laserInit();
 
 #endif

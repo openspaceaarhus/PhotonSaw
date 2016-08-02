@@ -57,17 +57,23 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 			fc.setFileFilter(fcf);
 			fc.setMultiSelectionEnabled(false);
 			int rv = fc.showOpenDialog(null);
-			if(rv != JFileChooser.APPROVE_OPTION) {
-				System.exit(0);
+			if (rv != JFileChooser.APPROVE_OPTION) {
+				System.exit(2);
 			}
 
 			svgFile = fc.getSelectedFile();
 			prefs.put(LAST_USED_FOLDER, svgFile.getParent());
 		}
 
+		svgFile = svgFile.getAbsoluteFile();
+		if (!svgFile.exists()) {
+			System.err.println("svg file doesn't exist: "+svgFile);
+			System.exit(1);
+		}
+
 		File savepath = new File(svgFile.getParent() + "/out");
-		if(!savepath.exists()) {
-				savepath.mkdir();
+		if (!savepath.exists()) {
+			savepath.mkdir();
 		}
 		
     	PhotonSaw ps = new PhotonSaw(configuration.getMachine());
@@ -78,14 +84,14 @@ public class SvgCommand extends ConfiguredCommand<PhotonSawConfiguration> {
 			testJob.optimizeCuts();
 			testJob.logStructure();
 		
-			testJob.storeJob(new FileOutputStream(savepath + "/" + svgFile.getName() + ".psjob"));
+			testJob.storeJob(new FileOutputStream(new File(savepath, svgFile.getName() + ".psjob")));
 			
-			try (SVGRenderTarget rt = new SVGRenderTarget(new File(savepath + "/" + svgFile.getName() + ".svg"))) {
+			try (SVGRenderTarget rt = new SVGRenderTarget(new File(savepath, svgFile.getName() + ".svg"))) {
 				testJob.render(configuration.getMachine(), rt);
 			}
 
-			ps.run("aa on");
-			ps.run("ex on");
+			//ps.run("aa on");
+			//ps.run("ex on");
 			//ps.startJob(id);
 			ps.getPlanner().startJob(testJob);			
 
