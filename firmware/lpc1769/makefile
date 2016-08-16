@@ -98,6 +98,3 @@ gdb:
 .PHONY : clean
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~ $(FW)/$(BOARD)/board-pins.h
-
-backup: 	
-	openocd -f $(FW)/openocd.cfg -c 'help flash'

@@ -55,7 +55,7 @@ public class PhotonSaw extends Thread {
 	
 	AxisConstraints[] axisConstraints;
 	
-	public PhotonSaw(PhotonSawMachineConfig cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed  {
+	public PhotonSaw(PhotonSawMachineConfig cfg) throws IOException, ReplyTimeout, NoSuchPortException, PortInUseException, UnsupportedCommOperationException, PhotonSawCommandFailed, InterruptedException {
 		this.cfg = cfg;
 		axisConstraints = cfg.getAxes().getArray();
 		planner = new Planner(this);
@@ -74,9 +74,9 @@ public class PhotonSaw extends Thread {
 		
 		try {
 			run("");
-			run("br");
-			run("mr");
-			run("ac 0");
+			bufferReset();
+			masterReset();
+			alarmClear(0);
 		} catch (Exception e) {			
 		}
 
@@ -87,9 +87,34 @@ public class PhotonSaw extends Thread {
 
 
 		configureMotors();
+		configureLaserLUT();
+
+		controlExhaust(true);
+		controlAssistAir(true);
 
 		planner.start();
 		this.start();	
+	}
+
+	private CommandReply alarmClear(int alarmIndex) throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+		return run("ac "+alarmIndex);
+	}
+
+	private CommandReply masterReset() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+		return run("mr");
+	}
+
+	private CommandReply bufferReset() throws IOException, ReplyTimeout, PhotonSawCommandFailed {
+		return run("br");
+	}
+
+	private void controlAssistAir(boolean assistAirOn) throws ReplyTimeout, PhotonSawCommandFailed, IOException {
+		currentAssistAir = assistAirOn;
+		if (assistAirOn) {
+			run("aa on");
+		} else {
+			run("aa off");
+		}
 	}
 
 	boolean idle;
@@ -144,6 +169,7 @@ public class PhotonSaw extends Thread {
 		
 		Move m = new Move(Line.getMoveId(), cfg.getAssistAirDelay());
 		m.setAssistSwitch(assistAir);
+		putMove(m);
 	}
 	
 	static FileWriter logWriter;
@@ -306,4 +332,19 @@ public class PhotonSaw extends Thread {
 		return null;
 	}
 
+	private void configureLaserLUT() throws ReplyTimeout, PhotonSawCommandFailed, IOException {
+		if (cfg.getLaserCalibration() == null) {
+			return;
+		}
+
+		run("ll "+cfg.getLaserCalibration());
+	}
+
+	private void controlExhaust(boolean fanOn) throws ReplyTimeout, PhotonSawCommandFailed, IOException {
+		if (fanOn) {
+			run("ex on");
+		} else {
+			run("ex off");
+		}
+	}
 }

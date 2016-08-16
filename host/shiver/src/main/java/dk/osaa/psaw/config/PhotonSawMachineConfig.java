@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.jaxrs.json.annotation.JSONP;
 import dk.osaa.psaw.machine.Move;
 import dk.osaa.psaw.machine.MoveVector;
 import lombok.Getter;
@@ -56,9 +57,11 @@ public class PhotonSawMachineConfig {
 	@JsonProperty
 	@NotNull
 	@Valid
-	AxesConstraints axes;	
-	
-	
+	AxesConstraints axes;
+
+	@JsonProperty
+	private String laserCalibration;
+
 	private MoveVector mmPerStep;
 	public MoveVector getMmPerStep() {
 		if (mmPerStep == null) {
