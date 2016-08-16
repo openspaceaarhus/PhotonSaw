@@ -11,7 +11,7 @@ my $GCC_VERSION = '5.4.0';
 my $GDB_VERSION = '7.11.1';
 my $BINUTILS_VERSION = '2.26';
 my $NEWLIB_VERSION = '2.4.0';
-my $OPENOCD_VERSION = '0.5.0';
+my $OPENOCD_VERSION = '0.9.0';
 
 my $GCC_URL = "$GNU_MIRROR/gcc/gcc-$GCC_VERSION";
 my $GDB_URL = "$GNU_MIRROR/gdb";
@@ -33,7 +33,7 @@ if ($issue =~ /^Ubuntu/) {
 	}
 
 	my @missing;
-	for my $p (qw'build-essential zlib1g-dev libgmp-dev libmpfr-dev libmpc-dev texinfo libftdi-dev libncurses5-dev libreadline-dev libexpat1-dev') {
+	for my $p (qw'build-essential zlib1g-dev libgmp-dev libmpfr-dev libmpc-dev texinfo libftdi-dev libncurses5-dev libreadline-dev libexpat1-dev libusb-1.0-0-dev') {
 		print "Checking that you have $p\n";
 		push @missing, $p if system("dpkg -s $p > /dev/null");
 	}
@@ -95,8 +95,8 @@ my @DIRS = (
 	url=>"http://downloads.sourceforge.net/project/openocd/openocd/$OPENOCD_VERSION/openocd-$OPENOCD_VERSION.tar.bz2?use_mirror=autoselect",
 
 	inplace=>1,
-	patch=>'openocd-0.5.0-fix.patch',
-	cfg=>['--enable-ft2232_libftdi', '--enable-jlink', 
+	#patch=>'openocd-0.5.0-fix.patch',
+	cfg=>['--enable-ftdi', '--enable-jlink', 
 	     # '--enable-buspirate'
 	    ],
 	make=>'make all install',

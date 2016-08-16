@@ -99,6 +99,5 @@ gdb:
 clean:
 	rm -r $(OBJS) $(EXECNAME) $(PROJ).hex $(PROJ).bin $(PROJ).map */*~ *~ $(FW)/$(BOARD)/board-pins.h
 
-blarg:
-	$(CC) -M $(CFLAGS) commander.c
-	$(CC) -M $(CFLAGS) ../lpc1769/newlib/fileio.c
+backup: 	
+	openocd -f $(FW)/openocd.cfg -c 'help flash'
