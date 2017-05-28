@@ -75,7 +75,7 @@ public class SvgLoader {
 				long major = Long.parseLong(majorMinor.group(1));
 				long minor = Long.parseLong(majorMinor.group(2));
 				log.fine("Parsed inkscape version: "+major+"."+minor);
-				if (major == 0 && minor < 91) {
+				if (major == 0 && minor <= 91) {
 					dpi = 90;
 				}
 			}
