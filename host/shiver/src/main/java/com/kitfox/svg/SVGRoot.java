@@ -342,6 +342,11 @@ public class SVGRoot extends Group
                 shapeChange = true;
             }
         }
+        else if (x != null)
+        {
+            x = null;
+            shapeChange = true;
+        }
 
         if (getPres(sty.setName("y")))
         {
@@ -351,6 +356,11 @@ public class SVGRoot extends Group
                 y = newVal;
                 shapeChange = true;
             }
+        }
+        else if (y != null)
+        {
+            y = null;
+            shapeChange = true;
         }
 
         if (getPres(sty.setName("width")))
@@ -362,6 +372,11 @@ public class SVGRoot extends Group
                 shapeChange = true;
             }
         }
+        else if (width != null)
+        {
+            width = null;
+            shapeChange = true;
+        }
 
         if (getPres(sty.setName("height")))
         {
@@ -371,6 +386,11 @@ public class SVGRoot extends Group
                 height = newVal;
                 shapeChange = true;
             }
+        }
+        else if (height != null)
+        {
+            height = null;
+            shapeChange = true;
         }
         
         if (getPres(sty.setName("viewBox"))) 
@@ -382,6 +402,11 @@ public class SVGRoot extends Group
                 viewBox = newViewBox;
                 shapeChange = true;
             }
+        }
+        else if (viewBox != null)
+        {
+            viewBox = null;
+            shapeChange = true;
         }
 
         if (shapeChange)
