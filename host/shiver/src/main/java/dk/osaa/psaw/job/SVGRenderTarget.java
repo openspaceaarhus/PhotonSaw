@@ -16,7 +16,7 @@ import dk.osaa.psaw.machine.Point;
 public class SVGRenderTarget implements JobRenderTarget, AutoCloseable {
 
 
-	private static final double MMTOPX = 90.0/25.4;
+	private static final double MMTOPX = 96.0/25.4;
 	private int idcnt = 0;
 	
 	ArrayList<Point> path;
