@@ -60,6 +60,7 @@ public class PhotonSawMachineConfig {
 	AxesConstraints axes;
 
 	@JsonProperty
+//	private List<LaserCalibrationPoint> laserCalibration;
 	private String laserCalibration;
 
 	private MoveVector mmPerStep;

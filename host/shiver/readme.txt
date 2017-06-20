@@ -9,14 +9,14 @@ To build executable, run:
   mvn package
 
 After mvn package there will be a large (41 MB) jar with all dependencies at:
-target/shiver-0.0.3-SNAPSHOT.jar
+target/shiver-0.0.5-SNAPSHOT.jar
 
 To start the server run:
-java -jar target/shiver-0.0.3-SNAPSHOT.jar server config.yaml
+java -jar target/shiver-0.0.5-SNAPSHOT.jar server config.yaml
 
 
 To cut an svg in simulate mode:
-java -Ddw.machine.simulating=true -jar target/shiver-0.0.3-SNAPSHOT.jar svg config.yaml
+java -Ddw.machine.simulating=true -jar target/shiver-0.0.5-SNAPSHOT.jar svg config.yaml
 
 ... or if you know the name of the file to cut:
-java -Ddw.machine.simulating=true -jar target/shiver-0.0.3-SNAPSHOT.jar svg config.yaml --svg=../speedy/speed-6-25.svg
+java -Ddw.machine.simulating=true -jar target/shiver-0.0.5-SNAPSHOT.jar svg config.yaml --svg=../speedy/speed-6-25.svg
