@@ -1,35 +1,42 @@
 /*
- * Stop.java
+ * SVG Salamander
+ * Copyright (c) 2004, Mark McKay
+ * All rights reserved.
  *
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the following
+ * conditions are met:
  *
- *  The Salamander Project - 2D and 3D graphics libraries in Java
- *  Copyright (C) 2004 Mark McKay
+ *   - Redistributions of source code must retain the above 
+ *     copyright notice, this list of conditions and the following
+ *     disclaimer.
+ *   - Redistributions in binary form must reproduce the above
+ *     copyright notice, this list of conditions and the following
+ *     disclaimer in the documentation and/or other materials 
+ *     provided with the distribution.
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
- *  Mark McKay can be contacted at mark@kitfox.com.  Salamander and other
- *  projects can be found at http://www.kitfox.com
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * 
+ * Mark McKay can be contacted at mark@kitfox.com.  Salamander and other
+ * projects can be found at http://www.kitfox.com
  *
  * Created on January 26, 2004, 1:56 AM
  */
-
 package com.kitfox.svg;
 
 import com.kitfox.svg.xml.StyleAttribute;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -39,44 +46,39 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
 
-
 /**
  * @author Mark McKay
  * @author <a href="mailto:mark@kitfox.com">Mark McKay</a>
  */
 public class Group extends ShapeElement
 {
-
+    public static final String TAG_NAME = "group";
+    
     //Cache bounding box for faster clip testing
     Rectangle2D boundingBox;
     Shape cachedShape;
 
-    //Cache clip bounds
-//    final Rectangle clipBounds = new Rectangle();
-
-    /** Creates a new instance of Stop */
-    public Group() {
-    }
-
-    /*
-    public void loaderStartElement(SVGLoaderHelper helper, Attributes attrs, SVGElement parent)
-    {
-        //Load style string
-        super.loaderStartElement(helper, attrs, parent);
-
-        //String transform = attrs.getValue("transform");
-    }
+    /**
+     * Creates a new instance of Stop
      */
+    public Group()
+    {
+    }
+
+    @Override
+    public String getTagName()
+    {
+        return TAG_NAME;
+    }
 
     /**
      * Called after the start element but before the end element to indicate
      * each child tag that has been processed
      */
+    @Override
     public void loaderAddChild(SVGLoaderHelper helper, SVGElement child) throws SVGElementException
     {
         super.loaderAddChild(helper, child);
-
-//        members.add(child);
     }
 
     protected boolean outsideClip(Graphics2D g) throws SVGException
@@ -89,12 +91,6 @@ public class Group extends ShapeElement
         //g.getClipBounds(clipBounds);
         Rectangle2D rect = getBoundingBox();
 
-//if (rect == null)
-//{
-//    rect = getBoundingBox();
-//}
-
-//        if (rect.intersects(clipBounds))
         if (clip.intersects(rect))
         {
             return false;
@@ -103,7 +99,8 @@ public class Group extends ShapeElement
         return true;
     }
 
-    void pick(Point2D point, boolean boundingBox, List retVec) throws SVGException
+    @Override
+    void pick(Point2D point, boolean boundingBox, List<List<SVGElement>> retVec) throws SVGException
     {
         Point2D xPoint = new Point2D.Double(point.getX(), point.getY());
         if (xform != null)
@@ -111,66 +108,68 @@ public class Group extends ShapeElement
             try
             {
                 xform.inverseTransform(point, xPoint);
-            } 
-            catch (NoninvertibleTransformException ex)
+            } catch (NoninvertibleTransformException ex)
             {
                 throw new SVGException(ex);
             }
         }
-        
-        
-        for (Iterator it = children.iterator(); it.hasNext();)
-        {
-            SVGElement ele = (SVGElement)it.next();
+
+
+        for (SVGElement ele : children) {
             if (ele instanceof RenderableElement)
             {
-                RenderableElement rendEle = (RenderableElement)ele;
-                
+                RenderableElement rendEle = (RenderableElement) ele;
+
                 rendEle.pick(xPoint, boundingBox, retVec);
             }
         }
     }
 
-    void pick(Rectangle2D pickArea, AffineTransform ltw, boolean boundingBox, List retVec) throws SVGException
+    @Override
+    void pick(Rectangle2D pickArea, AffineTransform ltw, boolean boundingBox, List<List<SVGElement>> retVec) throws SVGException
     {
         if (xform != null)
         {
             ltw = new AffineTransform(ltw);
             ltw.concatenate(xform);
         }
-        
-        
-        for (Iterator it = children.iterator(); it.hasNext();)
-        {
-            SVGElement ele = (SVGElement)it.next();
+
+
+        for (SVGElement ele : children) {
             if (ele instanceof RenderableElement)
             {
-                RenderableElement rendEle = (RenderableElement)ele;
-                
+                RenderableElement rendEle = (RenderableElement) ele;
+
                 rendEle.pick(pickArea, ltw, boundingBox, retVec);
             }
         }
     }
 
+    @Override
     public void render(Graphics2D g) throws SVGException
     {
         //Don't process if not visible
         StyleAttribute styleAttrib = new StyleAttribute();
-        if (getStyle(styleAttrib.setName("visibility")))
+        //Visibility can be overridden by children
+
+        if (getStyle(styleAttrib.setName("display")))
         {
-            if (!styleAttrib.getStringValue().equals("visible")) return;
+            if (styleAttrib.getStringValue().equals("none"))
+            {
+                return;
+            }
         }
         
         //Do not process offscreen groups
         boolean ignoreClip = diagram.ignoringClipHeuristic();
-        if (!ignoreClip && outsideClip(g)) 
-        {
-            return;
-        }
+//        if (!ignoreClip && outsideClip(g))
+//        {
+//            return;
+//        }
 
         beginLayer(g);
 
-        Iterator it = children.iterator();
+        Iterator<SVGElement> it = children.iterator();
 
 //        try
 //        {
@@ -186,18 +185,18 @@ public class Group extends ShapeElement
         Shape clip = g.getClip();
         while (it.hasNext())
         {
-            SVGElement ele = (SVGElement)it.next();
+            SVGElement ele = it.next();
             if (ele instanceof RenderableElement)
             {
-                RenderableElement rendEle = (RenderableElement)ele;
+                RenderableElement rendEle = (RenderableElement) ele;
 
 //                if (shapeEle == null) continue;
 
                 if (!(ele instanceof Group))
                 {
                     //Skip if clipping area is outside our bounds
-                    if (!ignoreClip && clip != null 
-                            && !clip.intersects(rendEle.getBoundingBox()))
+                    if (!ignoreClip && clip != null
+                        && !clip.intersects(rendEle.getBoundingBox()))
                     {
                         continue;
                     }
@@ -214,13 +213,16 @@ public class Group extends ShapeElement
         finishLayer(g);
     }
 
-
     /**
      * Retrieves the cached bounding box of this group
      */
+    @Override
     public Shape getShape()
     {
-        if (cachedShape == null) calcShape();
+        if (cachedShape == null)
+        {
+            calcShape();
+        }
         return cachedShape;
     }
 
@@ -228,13 +230,10 @@ public class Group extends ShapeElement
     {
         Area retShape = new Area();
 
-        for (Iterator it = children.iterator(); it.hasNext();)
-        {
-            SVGElement ele = (SVGElement)it.next();
-
+        for (SVGElement ele : children) {
             if (ele instanceof ShapeElement)
             {
-                ShapeElement shpEle = (ShapeElement)ele;
+                ShapeElement shpEle = (ShapeElement) ele;
                 Shape shape = shpEle.getShape();
                 if (shape != null)
                 {
@@ -249,34 +248,44 @@ public class Group extends ShapeElement
     /**
      * Retrieves the cached bounding box of this group
      */
+    @Override
     public Rectangle2D getBoundingBox() throws SVGException
     {
-        if (boundingBox == null) calcBoundingBox();
+        if (boundingBox == null)
+        {
+            calcBoundingBox();
+        }
 //        calcBoundingBox();
         return boundingBox;
     }
 
     /**
      * Recalculates the bounding box by taking the union of the bounding boxes
-     * of all children.  Caches the result.
+     * of all children. Caches the result.
+     * @throws com.kitfox.svg.SVGException
      */
     public void calcBoundingBox() throws SVGException
     {
-//        Rectangle2D retRect = new Rectangle2D.Float();
         Rectangle2D retRect = null;
 
-        for (Iterator it = children.iterator(); it.hasNext();)
-        {
-            SVGElement ele = (SVGElement)it.next();
-
+        for (SVGElement ele : children) {
             if (ele instanceof RenderableElement)
             {
-                RenderableElement rendEle = (RenderableElement)ele;
+                RenderableElement rendEle = (RenderableElement) ele;
                 Rectangle2D bounds = rendEle.getBoundingBox();
-                if (bounds != null)
+                if (bounds != null && (bounds.getWidth() != 0 || bounds.getHeight() != 0))
                 {
-                    if (retRect == null) retRect = bounds;
-                    else retRect = retRect.createUnion(bounds);
+                    if (retRect == null)
+                    {
+                        retRect = bounds;
+                    }
+                    else
+                    {
+                        if (retRect.getWidth() != 0 || retRect.getHeight() != 0)
+                        {
+                            retRect = retRect.createUnion(bounds);
+                        }
+                    }
                 }
             }
         }
@@ -287,27 +296,37 @@ public class Group extends ShapeElement
 //        }
 
         //If no contents, use degenerate rectangle
-        if (retRect == null) retRect = new Rectangle2D.Float();
+        if (retRect == null)
+        {
+            retRect = new Rectangle2D.Float();
+        }
 
         boundingBox = boundsToParent(retRect);
     }
 
+    @Override
     public boolean updateTime(double curTime) throws SVGException
     {
         boolean changeState = super.updateTime(curTime);
-        Iterator it = children.iterator();
+        Iterator<SVGElement> it = children.iterator();
 
         //Distribute message to all members of this group
         while (it.hasNext())
         {
-            SVGElement ele = (SVGElement)it.next();
+            SVGElement ele = it.next();
             boolean updateVal = ele.updateTime(curTime);
 
             changeState = changeState || updateVal;
 
             //Update our shape if shape aware children change
-            if (ele instanceof ShapeElement) cachedShape = null;
-            if (ele instanceof RenderableElement) boundingBox = null;
+            if (ele instanceof ShapeElement)
+            {
+                cachedShape = null;
+            }
+            if (ele instanceof RenderableElement)
+            {
+                boundingBox = null;
+            }
         }
 
         return changeState;

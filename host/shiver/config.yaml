@@ -46,7 +46,7 @@ machine:
          maxSpeed: 1500
          minSpeed: 20
          maxJerk: 10
-         mmPerStep: 0.0375
+         mmPerStep: 0.03754
          coilCurrent: 1800
          microSteppingMode: 3
       z:

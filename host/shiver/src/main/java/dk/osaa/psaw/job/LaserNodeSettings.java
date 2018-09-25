@@ -1,7 +1,5 @@
 package dk.osaa.psaw.job;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Value;
 
 /**
