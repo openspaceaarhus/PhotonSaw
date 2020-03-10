@@ -1,55 +1,6 @@
-EESchema Schematic File Version 2
-LIBS:laserctrl-rescue
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:contrib
-LIBS:valves
-LIBS:mounting
-LIBS:23k256
-LIBS:tps78233
-LIBS:drv8811
-LIBS:mcu-nxp
-LIBS:opto-transistor-4p2
-LIBS:atmega328p-a
-LIBS:atmel
-LIBS:microsd
-LIBS:jumper3
-LIBS:diode2
-LIBS:78l00a
-LIBS:conn_11x2
-LIBS:bc807
-LIBS:bc817
-LIBS:vo-2630
-LIBS:little-logic
-LIBS:con-molex
-LIBS:con-molex-2
-LIBS:1g08
+EESchema Schematic File Version 4
 LIBS:laserctrl-cache
-EELAYER 25 0
+EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -76,16 +27,16 @@ Wire Wire Line
 Wire Wire Line
 	8850 1800 9600 1800
 Wire Wire Line
-	9400 1400 9600 1400
+	9400 1400 9500 1400
 Wire Wire Line
-	9400 1700 9600 1700
+	9400 1700 9500 1700
 Wire Wire Line
 	2700 7450 2850 7450
 Wire Wire Line
 	2850 7450 2850 7400
 Connection ~ 2400 4750
 Wire Wire Line
-	2400 4900 2400 4700
+	2400 4900 2400 4750
 Wire Wire Line
 	2400 5300 2400 5400
 Wire Wire Line
@@ -101,7 +52,7 @@ Wire Wire Line
 Wire Wire Line
 	1650 4150 1650 4200
 Wire Wire Line
-	1650 4700 1650 4800
+	1650 4700 1650 4750
 Wire Wire Line
 	1300 3300 1200 3300
 Wire Wire Line
@@ -114,10 +65,10 @@ Connection ~ 1500 1950
 Wire Wire Line
 	1500 2050 1500 1950
 Wire Wire Line
-	1550 1950 1200 1950
+	1550 1950 1500 1950
 Connection ~ 3200 2150
 Wire Wire Line
-	3300 2150 2450 2150
+	3300 2150 3200 2150
 Wire Wire Line
 	3200 1950 3300 1950
 Wire Wire Line
@@ -131,17 +82,17 @@ Wire Wire Line
 Wire Wire Line
 	2200 1200 2200 1250
 Wire Wire Line
-	2050 1800 2450 1800
+	2050 1800 2200 1800
 Connection ~ 2200 1800
 Wire Wire Line
 	2450 2150 2450 2050
 Wire Wire Line
 	3200 2050 3200 2150
 Wire Wire Line
-	3300 1950 3300 2250
+	3300 1950 3300 2150
 Connection ~ 3300 2150
 Wire Wire Line
-	1200 1800 1550 1800
+	1200 1800 1250 1800
 Wire Wire Line
 	1250 2050 1250 1800
 Connection ~ 1250 1800
@@ -169,12 +120,12 @@ Wire Wire Line
 Wire Wire Line
 	6050 1300 6050 1450
 Wire Wire Line
-	2950 4750 2400 4750
+	2950 4750 2800 4750
 Connection ~ 2800 4750
 Wire Wire Line
 	2400 4150 2400 4200
 Wire Wire Line
-	2700 7500 2700 7400
+	2700 7500 2700 7450
 Connection ~ 2700 7450
 Wire Wire Line
 	9600 1600 9500 1600
@@ -205,7 +156,7 @@ Wire Wire Line
 Text HLabel 900  6200 0    50   Input ~ 0
 SDRESET
 $Comp
-L MOSFET_P Q6
+L 1g08:MOSFET_P Q6
 U 1 1 507AC282
 P 1250 6200
 F 0 "Q6" H 1250 6390 60  0000 R CNN
@@ -216,7 +167,7 @@ F 3 "" H 1250 6200 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L MOSFET_P Q1
+L 1g08:MOSFET_P Q1
 U 1 1 507AC25D
 P 2100 1000
 F 0 "Q1" H 2100 1190 60  0000 R CNN
@@ -227,7 +178,7 @@ F 3 "" H 2100 1000 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR023
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR023
 U 1 1 5079779F
 P 9450 3700
 AR Path="/5079779F" Ref="#PWR023"  Part="1" 
@@ -240,7 +191,7 @@ F 3 "" H 9450 3700 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L CONN_3 K1
+L 1g08:CONN_3 K1
 U 1 1 50797786
 P 9950 3800
 F 0 "K1" V 9900 3800 50  0000 C CNN
@@ -251,7 +202,7 @@ F 3 "" H 9950 3800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR024
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR024
 U 1 1 5079770C
 P 8850 2950
 AR Path="/5079770C" Ref="#PWR024"  Part="1" 
@@ -264,7 +215,7 @@ F 3 "" H 8850 2950 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L MOSFET_N Q3
+L 1g08:MOSFET_N Q3
 U 1 1 50797702
 P 8750 2650
 F 0 "Q3" H 8700 2850 60  0000 R CNN
@@ -275,7 +226,7 @@ F 3 "" H 8750 2650 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR025
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR025
 U 1 1 507976FB
 P 8850 2300
 AR Path="/507976FB" Ref="#PWR025"  Part="1" 
@@ -288,7 +239,7 @@ F 3 "" H 8850 2300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L MOSFET_N Q2
+L 1g08:MOSFET_N Q2
 U 1 1 507976EB
 P 8750 2000
 F 0 "Q2" H 8700 2200 60  0000 R CNN
@@ -299,7 +250,7 @@ F 3 "" H 8750 2000 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +24V #PWR026
+L power:+24V #PWR026
 U 1 1 507976CA
 P 9400 1700
 F 0 "#PWR026" H 9400 1650 20  0001 C CNN
@@ -310,7 +261,7 @@ F 3 "" H 9400 1700 60  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR027
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR027
 U 1 1 507976C5
 P 9400 1400
 AR Path="/507976C5" Ref="#PWR027"  Part="1" 
@@ -323,7 +274,7 @@ F 3 "" H 9400 1400 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L CONN_6 P3
+L 1g08:CONN_6 P3
 U 1 1 507976B9
 P 9950 1650
 F 0 "P3" V 9900 1650 60  0000 C CNN
@@ -336,7 +287,7 @@ $EndComp
 NoConn ~ 3150 7400
 NoConn ~ 3000 7400
 $Comp
-L GND-RESCUE-laserctrl #PWR028
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR028
 U 1 1 4ECEBCDA
 P 2700 7500
 AR Path="/4ECEBCDA" Ref="#PWR028"  Part="1" 
@@ -349,7 +300,7 @@ F 3 "" H 2700 7500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR029
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR029
 U 1 1 4EC159D5
 P 2400 4150
 AR Path="/4EC159D5" Ref="#PWR029"  Part="1" 
@@ -362,7 +313,7 @@ F 3 "" H 2400 4150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R1
+L laserctrl-rescue:R-RESCUE-laserctrl R1
 U 1 1 4EC1599F
 P 2400 4450
 AR Path="/4EC1599F" Ref="R1"  Part="1" 
@@ -375,7 +326,7 @@ F 3 "" H 2400 4450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C1
+L laserctrl-rescue:C-RESCUE-laserctrl C1
 U 1 1 4EC1599E
 P 2400 5100
 AR Path="/4EC1599E" Ref="C1"  Part="1" 
@@ -388,7 +339,7 @@ F 3 "" H 2400 5100 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR030
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR030
 U 1 1 4EBEC7BB
 P 6050 1450
 AR Path="/4EBEC7BB" Ref="#PWR030"  Part="1" 
@@ -401,7 +352,7 @@ F 3 "" H 6050 1450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L LED-RESCUE-laserctrl D30
+L laserctrl-rescue:LED-RESCUE-laserctrl D30
 U 1 1 4EBEC7B7
 P 5700 1300
 AR Path="/4EBEC7B7" Ref="D30"  Part="1" 
@@ -414,7 +365,7 @@ F 3 "" H 5700 1300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R87
+L laserctrl-rescue:R-RESCUE-laserctrl R87
 U 1 1 4EBEC7B3
 P 5100 1300
 AR Path="/4EBEC7B3" Ref="R87"  Part="1" 
@@ -439,7 +390,7 @@ Assist Air
 Text HLabel 1850 6850 0    50   Input ~ 0
 MISO
 $Comp
-L MICROSD J2
+L microsd:MICROSD J2
 U 1 1 4EB997F7
 P 2900 6450
 F 0 "J2" H 2900 6950 60  0000 C CNN
@@ -450,7 +401,7 @@ F 3 "" H 2900 6450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR031
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR031
 U 1 1 4EB6DA7E
 P 1850 6700
 AR Path="/4EB6DA7E" Ref="#PWR031"  Part="1" 
@@ -463,7 +414,7 @@ F 3 "" H 1850 6700 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR032
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR032
 U 1 1 4EB6DA5E
 P 1350 5950
 AR Path="/4EB6DA5E" Ref="#PWR032"  Part="1" 
@@ -482,7 +433,7 @@ MOSI
 Text HLabel 1850 6100 0    50   Input ~ 0
 CS
 $Comp
-L GND-RESCUE-laserctrl #PWR033
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR033
 U 1 1 4EB6D76C
 P 2800 5500
 AR Path="/4EB6D76C" Ref="#PWR033"  Part="1" 
@@ -495,7 +446,7 @@ F 3 "" H 2800 5500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SW_PUSH SW2
+L 1g08:SW_PUSH SW2
 U 1 1 4EB6D763
 P 2800 5100
 F 0 "SW2" H 2950 5210 50  0000 C CNN
@@ -506,7 +457,7 @@ F 3 "" H 2800 5100 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR034
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR034
 U 1 1 4EB6D47F
 P 1650 4150
 AR Path="/4EB6D47F" Ref="#PWR034"  Part="1" 
@@ -519,7 +470,7 @@ F 3 "" H 1650 4150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR035
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR035
 U 1 1 4EB6D436
 P 1650 5500
 AR Path="/4EB6D436" Ref="#PWR035"  Part="1" 
@@ -532,7 +483,7 @@ F 3 "" H 1650 5500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L SW_PUSH SW1
+L 1g08:SW_PUSH SW1
 U 1 1 4EB6D42E
 P 1650 5100
 F 0 "SW1" H 1800 5210 50  0000 C CNN
@@ -543,7 +494,7 @@ F 3 "" H 1650 5100 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R15
+L laserctrl-rescue:R-RESCUE-laserctrl R15
 U 1 1 4EB6D417
 P 1650 4450
 AR Path="/4EB6D417" Ref="R15"  Part="1" 
@@ -556,7 +507,7 @@ F 3 "" H 1650 4450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR036
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR036
 U 1 1 4EB6D3CA
 P 1200 3700
 AR Path="/4EB6D3CA" Ref="#PWR036"  Part="1" 
@@ -569,7 +520,7 @@ F 3 "" H 1200 3700 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_6 P5
+L 1g08:CONN_6 P5
 U 1 1 4EB6D3C3
 P 1650 3350
 F 0 "P5" V 1600 3350 60  0000 C CNN
@@ -588,7 +539,7 @@ Text HLabel 1500 4750 0    50   Output ~ 0
 Text HLabel 2950 4750 2    50   Output ~ 0
 ~RESET
 $Comp
-L GND-RESCUE-laserctrl #PWR037
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR037
 U 1 1 4EB6D202
 P 1500 2550
 AR Path="/4EB6D202" Ref="#PWR037"  Part="1" 
@@ -601,7 +552,7 @@ F 3 "" H 1500 2550 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR038
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR038
 U 1 1 4EB6D1FB
 P 1250 2550
 AR Path="/4EB6D1FB" Ref="#PWR038"  Part="1" 
@@ -614,7 +565,7 @@ F 3 "" H 1250 2550 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C6
+L laserctrl-rescue:C-RESCUE-laserctrl C6
 U 1 1 4EB6D1E9
 P 1250 2250
 AR Path="/4EB6D1E9" Ref="C6"  Part="1" 
@@ -627,7 +578,7 @@ F 3 "" H 1250 2250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C7
+L laserctrl-rescue:C-RESCUE-laserctrl C7
 U 1 1 4EB6D1E4
 P 1500 2250
 AR Path="/4EB6D1E4" Ref="C7"  Part="1" 
@@ -640,7 +591,7 @@ F 3 "" H 1500 2250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R14
+L laserctrl-rescue:R-RESCUE-laserctrl R14
 U 1 1 4EB6D1D5
 P 1800 1950
 AR Path="/4EB6D1D5" Ref="R14"  Part="1" 
@@ -653,7 +604,7 @@ F 3 "" H 1800 1950 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R13
+L laserctrl-rescue:R-RESCUE-laserctrl R13
 U 1 1 4EB6D1D2
 P 1800 1800
 AR Path="/4EB6D1D2" Ref="R13"  Part="1" 
@@ -666,7 +617,7 @@ F 3 "" H 1800 1800 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR039
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR039
 U 1 1 4EB6D1B5
 P 3300 2250
 AR Path="/4EB6D1B5" Ref="#PWR039"  Part="1" 
@@ -679,7 +630,7 @@ F 3 "" H 3300 2250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R12
+L laserctrl-rescue:R-RESCUE-laserctrl R12
 U 1 1 4EB6D122
 P 2200 1500
 AR Path="/4EB6D122" Ref="R12"  Part="1" 
@@ -692,7 +643,7 @@ F 3 "" H 2200 1500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR040
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR040
 U 1 1 4EB6D11C
 P 2200 750
 AR Path="/4EB6D11C" Ref="#PWR040"  Part="1" 
@@ -711,7 +662,7 @@ USB-
 Text HLabel 1200 1800 0    50   Input ~ 0
 USB+
 $Comp
-L USB J1
+L 1g08:USB J1
 U 1 1 4EB6D09A
 P 2800 1600
 F 0 "J1" H 2750 2000 60  0000 C CNN
@@ -721,4 +672,26 @@ F 3 "" H 2800 1600 60  0001 C CNN
 	1    2800 1600
 	-1   0    0    -1  
 $EndComp
+Wire Wire Line
+	2400 4750 2400 4700
+Wire Wire Line
+	1500 1950 1200 1950
+Wire Wire Line
+	3200 2150 2450 2150
+Wire Wire Line
+	2200 1800 2450 1800
+Wire Wire Line
+	3300 2150 3300 2250
+Wire Wire Line
+	1250 1800 1550 1800
+Wire Wire Line
+	1650 4750 1650 4800
+Wire Wire Line
+	2800 4750 2400 4750
+Wire Wire Line
+	2700 7450 2700 7400
+Wire Wire Line
+	9500 1700 9600 1700
+Wire Wire Line
+	9500 1400 9600 1400
 $EndSCHEMATC

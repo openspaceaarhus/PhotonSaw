@@ -1,55 +1,6 @@
-EESchema Schematic File Version 2
-LIBS:laserctrl-rescue
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:contrib
-LIBS:valves
-LIBS:mounting
-LIBS:23k256
-LIBS:tps78233
-LIBS:drv8811
-LIBS:mcu-nxp
-LIBS:opto-transistor-4p2
-LIBS:atmega328p-a
-LIBS:atmel
-LIBS:microsd
-LIBS:jumper3
-LIBS:diode2
-LIBS:78l00a
-LIBS:conn_11x2
-LIBS:bc807
-LIBS:bc817
-LIBS:vo-2630
-LIBS:little-logic
-LIBS:con-molex
-LIBS:con-molex-2
-LIBS:1g08
+EESchema Schematic File Version 4
 LIBS:laserctrl-cache
-EELAYER 25 0
+EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -298,7 +249,6 @@ Wire Wire Line
 	5150 1150 5150 1850
 Connection ~ 2250 7550
 Connection ~ 2050 7150
-Connection ~ 4450 1250
 Connection ~ 6850 1150
 Wire Wire Line
 	6500 1700 6500 1750
@@ -346,7 +296,7 @@ USM1
 Text HLabel 3300 3400 0    50   Input ~ 0
 USM0
 $Comp
-L C-RESCUE-laserctrl C28
+L laserctrl-rescue:C-RESCUE-laserctrl C28
 U 1 1 4EBAE0A4
 P 4250 7350
 AR Path="/4EA1D331/4EBAE0A4" Ref="C28"  Part="1" 
@@ -362,7 +312,7 @@ F 3 "" H 4250 7350 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR0116
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR0116
 U 1 1 4EBAE0A3
 P 4700 7650
 AR Path="/4EA1D331/4EBAE0A3" Ref="#PWR0116"  Part="1" 
@@ -378,7 +328,7 @@ F 3 "" H 4700 7650 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R86
+L laserctrl-rescue:R-RESCUE-laserctrl R86
 U 1 1 4EBAE0A2
 P 4250 6800
 AR Path="/4EA1D331/4EBAE0A2" Ref="R86"  Part="1" 
@@ -394,7 +344,7 @@ F 3 "" H 4250 6800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR0117
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR0117
 U 1 1 4EBAE09F
 P 4450 6450
 AR Path="/4EA1D331/4EBAE09F" Ref="#PWR0117"  Part="1" 
@@ -410,7 +360,7 @@ F 3 "" H 4450 6450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L DIODE2 D29
+L diode2:DIODE2 D29
 U 1 1 4EBAE09E
 P 4450 7150
 AR Path="/4EA1D331/4EBAE09E" Ref="D29"  Part="1" 
@@ -425,7 +375,7 @@ F 3 "" H 4450 7150 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L DIODE2 D28
+L diode2:DIODE2 D28
 U 1 1 4EBAE046
 P 2250 7150
 AR Path="/4EA1D331/4EBAE046" Ref="D28"  Part="1" 
@@ -442,7 +392,7 @@ $EndComp
 Text HLabel 3300 2600 0    50   Input ~ 0
 ~RESET
 $Comp
-L GND-RESCUE-laserctrl #PWR073
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR073
 U 1 1 4EB45B46
 P 6850 1800
 AR Path="/4EAD3DC6/4EB45B46" Ref="#PWR073"  Part="1" 
@@ -458,7 +408,7 @@ F 3 "" H 6850 1800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C18
+L laserctrl-rescue:C-RESCUE-laserctrl C18
 U 1 1 4EB45B01
 P 6850 1500
 AR Path="/4EAD3DC6/4EB45B01" Ref="C18"  Part="1" 
@@ -474,7 +424,7 @@ F 3 "" H 6850 1500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C17
+L laserctrl-rescue:C-RESCUE-laserctrl C17
 U 1 1 4EB45AF6
 P 6500 1500
 AR Path="/4EAD3DC6/4EB45AF6" Ref="C17"  Part="1" 
@@ -490,7 +440,7 @@ F 3 "" H 6500 1500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR074
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR074
 U 1 1 4EB45A38
 P 2250 6500
 AR Path="/4EAD3DC6/4EB45A38" Ref="#PWR074"  Part="1" 
@@ -506,7 +456,7 @@ F 3 "" H 2250 6500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R51
+L laserctrl-rescue:R-RESCUE-laserctrl R51
 U 1 1 4EB45A35
 P 2050 6800
 AR Path="/4EAD3DC6/4EB45A35" Ref="R51"  Part="1" 
@@ -522,7 +472,7 @@ F 3 "" H 2050 6800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_2 P13
+L 1g08:CONN_2 P13
 U 1 1 4EB45A34
 P 2850 7250
 AR Path="/4EAD3DC6/4EB45A34" Ref="P13"  Part="1" 
@@ -537,7 +487,7 @@ F 3 "" H 2850 7250 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR075
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR075
 U 1 1 4EB45A33
 P 2500 7650
 AR Path="/4EAD3DC6/4EB45A33" Ref="#PWR075"  Part="1" 
@@ -553,7 +503,7 @@ F 3 "" H 2500 7650 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C25
+L laserctrl-rescue:C-RESCUE-laserctrl C25
 U 1 1 4EB45A32
 P 2050 7350
 AR Path="/4EAD3DC6/4EB45A32" Ref="C25"  Part="1" 
@@ -569,7 +519,7 @@ F 3 "" H 2050 7350 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_2 P14
+L 1g08:CONN_2 P14
 U 1 1 4EB4496F
 P 5050 7250
 AR Path="/4EAD3DC6/4EB4496F" Ref="P14"  Part="1" 
@@ -586,7 +536,7 @@ $EndComp
 Text HLabel 4000 7150 0    50   Output ~ 0
 Max-Limit
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR076
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR076
 U 1 1 4EAD2C72
 P 2000 3800
 AR Path="/4EAD3DC6/4EAD2C72" Ref="#PWR076"  Part="1" 
@@ -602,7 +552,7 @@ F 3 "" H 2000 3800 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR077
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR077
 U 1 1 4EAD2C5D
 P 4250 1050
 AR Path="/4EAD3DC6/4EAD2C5D" Ref="#PWR077"  Part="1" 
@@ -618,7 +568,7 @@ F 3 "" H 4250 1050 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR078
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR078
 U 1 1 4EAD2C05
 P 3350 4600
 AR Path="/4EAD3DC6/4EAD2C05" Ref="#PWR078"  Part="1" 
@@ -634,7 +584,7 @@ F 3 "" H 3350 4600 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C20
+L laserctrl-rescue:C-RESCUE-laserctrl C20
 U 1 1 4EAD2BEA
 P 3350 4300
 AR Path="/4EAD3DC6/4EAD2BEA" Ref="C20"  Part="1" 
@@ -650,7 +600,7 @@ F 3 "" H 3350 4300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R43
+L laserctrl-rescue:R-RESCUE-laserctrl R43
 U 1 1 4EAD2BE0
 P 3000 4000
 AR Path="/4EAD3DC6/4EAD2BE0" Ref="R43"  Part="1" 
@@ -668,7 +618,7 @@ $EndComp
 Text HLabel 2700 4000 0    50   Input ~ 0
 Current
 $Comp
-L R-RESCUE-laserctrl R44
+L laserctrl-rescue:R-RESCUE-laserctrl R44
 U 1 1 4EAD2AB6
 P 2000 4150
 AR Path="/4EAD3DC6/4EAD2AB6" Ref="R44"  Part="1" 
@@ -684,7 +634,7 @@ F 3 "" H 2000 4150 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R45
+L laserctrl-rescue:R-RESCUE-laserctrl R45
 U 1 1 4EAD2AA2
 P 2100 4750
 AR Path="/4EAD3DC6/4EAD2AA2" Ref="R45"  Part="1" 
@@ -702,7 +652,7 @@ $EndComp
 Text HLabel 1850 7150 0    50   Output ~ 0
 Min-Limit
 $Comp
-L DRV8811 IC1
+L drv8811:DRV8811 IC1
 U 1 1 4EA1E74B
 P 5050 3300
 AR Path="/4EAD3DC6/4EA1E74B" Ref="IC1"  Part="1" 
@@ -717,7 +667,7 @@ F 3 "" H 5050 3300 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR079
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR079
 U 1 1 4EA1F353
 P 2100 5100
 AR Path="/4EAD3DC6/4EA1F353" Ref="#PWR079"  Part="1" 
@@ -733,7 +683,7 @@ F 3 "" H 2100 5100 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C21
+L laserctrl-rescue:C-RESCUE-laserctrl C21
 U 1 1 4EA1F336
 P 1850 4750
 AR Path="/4EAD3DC6/4EA1F336" Ref="C21"  Part="1" 
@@ -751,7 +701,7 @@ $EndComp
 Text Notes 6950 3650 0    50   ~ 0
 Stepper motor connector
 $Comp
-L CONN_4 P12
+L 1g08:CONN_4 P12
 U 1 1 4EA1F182
 P 7150 3300
 AR Path="/4EAD3DC6/4EA1F182" Ref="P12"  Part="1" 
@@ -772,7 +722,7 @@ STEP
 Text HLabel 3300 2800 0    50   Input ~ 0
 ~ENABLE
 $Comp
-L GND-RESCUE-laserctrl #PWR080
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR080
 U 1 1 4EA1EDD7
 P 4750 5600
 AR Path="/4EAD3DC6/4EA1EDD7" Ref="#PWR080"  Part="1" 
@@ -788,7 +738,7 @@ F 3 "" H 4750 5600 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R46
+L laserctrl-rescue:R-RESCUE-laserctrl R46
 U 1 1 4EA1EDA2
 P 4650 5150
 AR Path="/4EAD3DC6/4EA1EDA2" Ref="R46"  Part="1" 
@@ -804,7 +754,7 @@ F 3 "" H 4650 5150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C23
+L laserctrl-rescue:C-RESCUE-laserctrl C23
 U 1 1 4EA1ED9B
 P 4850 5150
 AR Path="/4EAD3DC6/4EA1ED9B" Ref="C23"  Part="1" 
@@ -820,7 +770,7 @@ F 3 "" H 4850 5150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C24
+L laserctrl-rescue:C-RESCUE-laserctrl C24
 U 1 1 4EA1E91D
 P 5250 5150
 AR Path="/4EAD3DC6/4EA1E91D" Ref="C24"  Part="1" 
@@ -836,7 +786,7 @@ F 3 "" H 5250 5150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R47
+L laserctrl-rescue:R-RESCUE-laserctrl R47
 U 1 1 4EA1E910
 P 5050 5150
 AR Path="/4EAD3DC6/4EA1E910" Ref="R47"  Part="1" 
@@ -852,7 +802,7 @@ F 3 "" H 5050 5150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R48
+L laserctrl-rescue:R-RESCUE-laserctrl R48
 U 1 1 4EA1E8C1
 P 5550 5150
 AR Path="/4EAD3DC6/4EA1E8C1" Ref="R48"  Part="1" 
@@ -868,7 +818,7 @@ F 3 "" H 5550 5150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R49
+L laserctrl-rescue:R-RESCUE-laserctrl R49
 U 1 1 4EA1E8BB
 P 5800 5150
 AR Path="/4EAD3DC6/4EA1E8BB" Ref="R49"  Part="1" 
@@ -884,7 +834,7 @@ F 3 "" H 5800 5150 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C22
+L laserctrl-rescue:C-RESCUE-laserctrl C22
 U 1 1 4EA1E852
 P 6050 5100
 AR Path="/4EAD3DC6/4EA1E852" Ref="C22"  Part="1" 
@@ -900,7 +850,7 @@ F 3 "" H 6050 5100 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR081
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR081
 U 1 1 4EA1E80A
 P 4450 1850
 AR Path="/4EAD3DC6/4EA1E80A" Ref="#PWR081"  Part="1" 
@@ -916,7 +866,7 @@ F 3 "" H 4450 1850 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C13
+L laserctrl-rescue:C-RESCUE-laserctrl C13
 U 1 1 4EA1E7F2
 P 4450 1450
 AR Path="/4EAD3DC6/4EA1E7F2" Ref="C13"  Part="1" 
@@ -932,7 +882,7 @@ F 3 "" H 4450 1450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C15
+L laserctrl-rescue:C-RESCUE-laserctrl C15
 U 1 1 4EA1E798
 P 5350 1500
 AR Path="/4EAD3DC6/4EA1E798" Ref="C15"  Part="1" 
@@ -948,7 +898,7 @@ F 3 "" H 5350 1500 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C16
+L laserctrl-rescue:C-RESCUE-laserctrl C16
 U 1 1 4EA1E774
 P 6050 1500
 AR Path="/4EAD3DC6/4EA1E774" Ref="C16"  Part="1" 
@@ -964,7 +914,7 @@ F 3 "" H 6050 1500 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +24V #PWR082
+L power:+24V #PWR082
 U 1 1 4EA1E764
 P 6850 1050
 AR Path="/4EAD3DC6/4EA1E764" Ref="#PWR082"  Part="1" 

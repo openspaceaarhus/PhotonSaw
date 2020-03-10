@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1052.3622"
-   height="744.09448"
+   width="1122.5197"
+   height="793.70081"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
-   sodipodi:docname="test.svg">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="beamcombiner.plate.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,15 +24,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="414.64317"
-     inkscape:cy="658.96999"
+     inkscape:zoom="1.4"
+     inkscape:cx="325.31746"
+     inkscape:cy="318.75267"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1230"
-     inkscape:window-height="773"
-     inkscape:window-x="44"
+     inkscape:window-width="1832"
+     inkscape:window-height="1051"
+     inkscape:window-x="2008"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      units="mm" />
@@ -44,77 +44,407 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
-
- <g inkscape:label="Plate" inkscape:groupmode="layer" id="layer1" >
+  <g
+     inkscape:label="Plate"
+     inkscape:groupmode="layer"
+     id="layer1">
     <rect
-       style="fill:#b9b9ff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.35433072;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="platerect" width="407.48031496063" height="460.629921259843" x="311.279527559055" y="141.732283464567" ry="8.85826771653543" rx="8.85826771653543" />
- </g>
- <g inkscape:label="Holes" inkscape:groupmode="layer" id="layer2" >
-   <circle cx="364.429133858268" cy="460.629921259843" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
-   <circle cx="364.429133858268" cy="318.897637795276" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
-   <circle cx="665.610236220473" cy="566.929133858268" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
-   <circle cx="665.610236220473" cy="318.897637795276" r="8.85826771653543" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
-   <circle cx="435.295275590551" cy="513.779527559055" r="7.08661417322835" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
-   <circle cx="404.610236220472" cy="177.165354330709" r="7.08661417322835" style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35433072;"/>
- </g> <g inkscape:label="Centers" inkscape:groupmode="layer" id="layer3" >
-   <line x1="360" y1="460.629921259843" x2="368.858267716535" y2="460.629921259843" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="364.429133858268" y1="456.200787401575" x2="364.429133858268" y2="465.05905511811" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="360" y1="318.897637795276" x2="368.858267716535" y2="318.897637795276" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="364.429133858268" y1="314.468503937008" x2="364.429133858268" y2="323.326771653543" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="661.181102362205" y1="566.929133858268" x2="670.03937007874" y2="566.929133858268" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="665.610236220473" y1="562.5" x2="665.610236220473" y2="571.358267716535" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="661.181102362205" y1="318.897637795276" x2="670.03937007874" y2="318.897637795276" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="665.610236220473" y1="314.468503937008" x2="665.610236220473" y2="323.326771653543" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="431.751968503937" y1="513.779527559055" x2="438.838582677165" y2="513.779527559055" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="435.295275590551" y1="510.236220472441" x2="435.295275590551" y2="517.322834645669" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="401.066929133858" y1="177.165354330709" x2="408.153543307087" y2="177.165354330709" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <line x1="404.610236220472" y1="173.622047244095" x2="404.610236220472" y2="180.708661417323" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
- </g> <g inkscape:label="Measurements" inkscape:groupmode="layer" id="layer4" >
-   <line x1="718.759842519685" y1="620.07874015748" x2="718.759842519685" y2="637.795275590551" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="718.759842519685" y="655.511811023622" font-size="8.85826771653543" text-anchor="middle">115</text>
-   <line x1="665.610236220473" y1="620.07874015748" x2="665.610236220473" y2="637.795275590551" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="665.610236220473" y="655.511811023622" font-size="8.85826771653543" text-anchor="middle">100</text>
-   <text x="665.610236220473" y="673.228346456693" font-size="8.85826771653543" text-anchor="middle">Ø5</text>
-   <line x1="435.295275590551" y1="620.07874015748" x2="435.295275590551" y2="637.795275590551" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="435.295275590551" y="655.511811023622" font-size="8.85826771653543" text-anchor="middle">35</text>
-   <text x="435.295275590551" y="673.228346456693" font-size="8.85826771653543" text-anchor="middle">Ø4</text>
-   <line x1="404.645669291339" y1="124.015748031496" x2="404.645669291339" y2="106.299212598425" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="404.645669291339" y="88.5826771653543" font-size="8.85826771653543" text-anchor="middle">26.35</text>
-   <text x="404.645669291339" y="70.8661417322835" font-size="8.85826771653543" text-anchor="middle">Ø4</text>
-   <line x1="364.429133858268" y1="620.07874015748" x2="364.429133858268" y2="637.795275590551" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="364.429133858268" y="655.511811023622" font-size="8.85826771653543" text-anchor="middle">15</text>
-   <text x="364.429133858268" y="673.228346456693" font-size="8.85826771653543" text-anchor="middle">Ø5</text>
-   <line x1="311.279527559055" y1="620.07874015748" x2="311.279527559055" y2="637.795275590551" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="311.279527559055" y="655.511811023622" font-size="8.85826771653543" text-anchor="middle">0</text>
-   <line x1="293.562992125984" y1="141.732283464567" x2="275.846456692913" y2="141.732283464567" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="258.129921259842" y="141.732283464567" font-size="8.85826771653543" text-anchor="end">130</text>
-   <line x1="293.562992125984" y1="177.165354330709" x2="275.846456692913" y2="177.165354330709" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="258.129921259842" y="177.165354330709" font-size="8.85826771653543" text-anchor="end">120 Ø4</text>
-   <line x1="293.562992125984" y1="318.897637795276" x2="275.846456692913" y2="318.897637795276" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="258.129921259842" y="318.897637795276" font-size="8.85826771653543" text-anchor="end">80 Ø5</text>
-   <line x1="293.562992125984" y1="460.629921259843" x2="275.846456692913" y2="460.629921259843" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="258.129921259842" y="460.629921259843" font-size="8.85826771653543" text-anchor="end">40 Ø5</text>
-   <line x1="293.562992125984" y1="513.779527559055" x2="275.846456692913" y2="513.779527559055" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="258.129921259842" y="513.779527559055" font-size="8.85826771653543" text-anchor="end">25 Ø4</text>
-   <line x1="736.476377952756" y1="566.929133858268" x2="754.192913385827" y2="566.929133858268" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="771.909448818898" y="566.929133858268" font-size="8.85826771653543" text-anchor="start">10 Ø5</text>
-   <line x1="293.562992125984" y1="602.362204724409" x2="275.846456692913" y2="602.362204724409" style="stroke:rgb(0,0,0);stroke-width:0.345"/>
-   <text x="258.129921259842" y="602.362204724409" font-size="8.85826771653543" text-anchor="end">0</text>
- </g> <g inkscape:label="Annotations" inkscape:groupmode="layer" id="layer5" >
-<path d="M 372.783112595364,514.905552976228 L 436.424196994668,451.267416796098 L 442.813064997004,457.656580781067 L 379.1719805977,521.294716961197 Z" stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
-<path d="M 383.9308279023,590.195980101962 L 358.876443579414,565.140435062866 L 486.659723278803,437.363075016149 L 511.714107601688,462.418620055245 Z" stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
-<path d="M 355.118460038413,553.865613902704 L 337.580391012393,536.326732375337 L 457.847007200053,416.065687625486 L 475.385076226073,433.604569152853 Z" stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
-<path d="M 432.954394690867,201.971130231511 L 432.961617293526,124.018374660599 L 376.268704151044,124.013121858666 L 376.261481548386,201.965877429577 " stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
-<path d="M 449.605311525504,230.31912981332 L 449.6036700249,248.035665170345 L 432.950126789296,248.034122159777 L 432.949141888934,258.664043373992 L 376.256228746452,258.658790572059 L 376.257213646815,248.028869357844 L 359.603670411211,248.027326347276 L 359.605311911815,230.31079099025 " stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
-<path d="M 494.966208041906,159.457190626765 L 494.962925040698,194.890261340816 L 314.254264399039,194.873518034653 L 314.257547400247,159.440447320602 Z" stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
-<path d="M 489.646979533228,205.51969010485 L 489.644681432382,230.322839604685 L 319.565942004938,230.307081198885 L 319.568240105784,205.503931699049 Z" stroke-dasharray="2,2" style="stroke:#000000;stroke-width:0.35433072;fill:none"/>
- </g> <g inkscape:label="Texts" inkscape:groupmode="layer" id="layer6" >
-   <text x="70.8661417322835" y="106.299212598425" font-size="17.7165354330709" text-anchor="start">1 pcs, 4 mm Al</text>
-   <text x="70.8661417322835" y="70.8661417322835" font-size="17.7165354330709" text-anchor="start">beamcombiner.plate - Fri Feb 21 19:44:59 2014</text>
- </g>
+       style="fill:#b9b9ff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.37795275;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="platerect"
+       width="434.64566"
+       height="491.33856"
+       x="332.03152"
+       y="151.18111"
+       ry="9.4488192"
+       rx="9.4488192" />
+  </g>
+  <g
+     inkscape:label="Holes"
+     inkscape:groupmode="layer"
+     id="layer2">
+    <circle
+       cx="388.72443"
+       cy="491.33856"
+       r="9.4488192"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.37795275"
+       id="circle7" />
+    <circle
+       cx="388.72443"
+       cy="340.1575"
+       r="9.4488192"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.37795275"
+       id="circle9" />
+    <circle
+       cx="709.98425"
+       cy="604.72443"
+       r="9.4488192"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.37795275"
+       id="circle11" />
+    <circle
+       cx="709.98425"
+       cy="340.1575"
+       r="9.4488192"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.37795275"
+       id="circle13" />
+    <circle
+       cx="464.31497"
+       cy="548.03149"
+       r="7.5590549"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.37795275"
+       id="circle15" />
+    <circle
+       cx="431.58426"
+       cy="188.97638"
+       r="7.5590549"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.37795275"
+       id="circle17" />
+  </g>
+  <g
+     inkscape:label="Centers"
+     inkscape:groupmode="layer"
+     id="layer3">
+    <line
+       x1="384"
+       y1="491.33856"
+       x2="393.44882"
+       y2="491.33856"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line20" />
+    <line
+       x1="388.72443"
+       y1="486.61417"
+       x2="388.72443"
+       y2="496.06299"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line22" />
+    <line
+       x1="384"
+       y1="340.1575"
+       x2="393.44882"
+       y2="340.1575"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line24" />
+    <line
+       x1="388.72443"
+       y1="335.43307"
+       x2="388.72443"
+       y2="344.8819"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line26" />
+    <line
+       x1="705.25983"
+       y1="604.72443"
+       x2="714.70868"
+       y2="604.72443"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line28" />
+    <line
+       x1="709.98425"
+       y1="600"
+       x2="709.98425"
+       y2="609.44885"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line30" />
+    <line
+       x1="705.25983"
+       y1="340.1575"
+       x2="714.70868"
+       y2="340.1575"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line32" />
+    <line
+       x1="709.98425"
+       y1="335.43307"
+       x2="709.98425"
+       y2="344.8819"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line34" />
+    <line
+       x1="460.53546"
+       y1="548.03149"
+       x2="468.09451"
+       y2="548.03149"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line36" />
+    <line
+       x1="464.31497"
+       y1="544.25195"
+       x2="464.31497"
+       y2="551.81097"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line38" />
+    <line
+       x1="427.80472"
+       y1="188.97638"
+       x2="435.36377"
+       y2="188.97638"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line40" />
+    <line
+       x1="431.58426"
+       y1="185.19684"
+       x2="431.58426"
+       y2="192.75591"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line42" />
+  </g>
+  <g
+     inkscape:label="Measurements"
+     inkscape:groupmode="layer"
+     id="layer4">
+    <line
+       x1="766.67712"
+       y1="661.4173"
+       x2="766.67712"
+       y2="680.315"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line45" />
+    <text
+       x="766.67712"
+       y="699.21265"
+       font-size="8.85826771653543"
+       id="text47"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">115</text>
+    <line
+       x1="709.98425"
+       y1="661.4173"
+       x2="709.98425"
+       y2="680.315"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line49" />
+    <text
+       x="709.98425"
+       y="699.21265"
+       font-size="8.85826771653543"
+       id="text51"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">100</text>
+    <text
+       x="709.98425"
+       y="718.11023"
+       font-size="8.85826771653543"
+       id="text53"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">Ø5</text>
+    <line
+       x1="464.31497"
+       y1="661.4173"
+       x2="464.31497"
+       y2="680.315"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line55" />
+    <text
+       x="464.31497"
+       y="699.21265"
+       font-size="8.85826771653543"
+       id="text57"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">35</text>
+    <text
+       x="464.31497"
+       y="718.11023"
+       font-size="8.85826771653543"
+       id="text59"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">Ø4</text>
+    <line
+       x1="431.62204"
+       y1="132.28346"
+       x2="431.62204"
+       y2="113.38583"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line61" />
+    <text
+       x="431.62204"
+       y="94.48819"
+       font-size="8.85826771653543"
+       id="text63"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">26.35</text>
+    <text
+       x="431.62204"
+       y="75.590553"
+       font-size="8.85826771653543"
+       id="text65"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">Ø4</text>
+    <line
+       x1="388.72443"
+       y1="661.4173"
+       x2="388.72443"
+       y2="680.315"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line67" />
+    <text
+       x="388.72443"
+       y="699.21265"
+       font-size="8.85826771653543"
+       id="text69"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">15</text>
+    <text
+       x="388.72443"
+       y="718.11023"
+       font-size="8.85826771653543"
+       id="text71"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">Ø5</text>
+    <line
+       x1="332.03152"
+       y1="661.4173"
+       x2="332.03152"
+       y2="680.315"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line73" />
+    <text
+       x="332.03152"
+       y="699.21265"
+       font-size="8.85826771653543"
+       id="text75"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:middle;stroke-width:1.06666672">0</text>
+    <line
+       x1="313.13385"
+       y1="151.18111"
+       x2="294.23624"
+       y2="151.18111"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line77" />
+    <text
+       x="275.33856"
+       y="151.18111"
+       font-size="8.85826771653543"
+       id="text79"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:end;stroke-width:1.06666672">130</text>
+    <line
+       x1="313.13385"
+       y1="188.97638"
+       x2="294.23624"
+       y2="188.97638"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line81" />
+    <text
+       x="275.33856"
+       y="188.97638"
+       font-size="8.85826771653543"
+       id="text83"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:end;stroke-width:1.06666672">120 Ø4</text>
+    <line
+       x1="313.13385"
+       y1="340.1575"
+       x2="294.23624"
+       y2="340.1575"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line85" />
+    <text
+       x="275.33856"
+       y="340.1575"
+       font-size="8.85826771653543"
+       id="text87"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:end;stroke-width:1.06666672">80 Ø5</text>
+    <line
+       x1="313.13385"
+       y1="491.33856"
+       x2="294.23624"
+       y2="491.33856"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line89" />
+    <text
+       x="275.33856"
+       y="491.33856"
+       font-size="8.85826771653543"
+       id="text91"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:end;stroke-width:1.06666672">40 Ø5</text>
+    <line
+       x1="313.13385"
+       y1="548.03149"
+       x2="294.23624"
+       y2="548.03149"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line93" />
+    <text
+       x="275.33856"
+       y="548.03149"
+       font-size="8.85826771653543"
+       id="text95"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:end;stroke-width:1.06666672">25 Ø4</text>
+    <line
+       x1="785.57483"
+       y1="604.72443"
+       x2="804.47247"
+       y2="604.72443"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line97" />
+    <text
+       x="823.37006"
+       y="604.72443"
+       font-size="8.85826771653543"
+       id="text99"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:start;stroke-width:1.06666672">10 Ø5</text>
+    <line
+       x1="313.13385"
+       y1="642.51965"
+       x2="294.23624"
+       y2="642.51965"
+       style="stroke:#000000;stroke-width:0.368"
+       id="line101" />
+    <text
+       x="275.33856"
+       y="642.51965"
+       font-size="8.85826771653543"
+       id="text103"
+       style="font-size:9.44881916px;line-height:0%;text-anchor:end;stroke-width:1.06666672">0</text>
+  </g>
+  <g
+     inkscape:label="Annotations"
+     inkscape:groupmode="layer"
+     id="layer5">
+    <path
+       d="m 397.63532,549.23259 67.88383,-67.88068 6.81478,6.81511 -67.88382,67.88068 z"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path106"
+       inkscape:connector-curvature="0" />
+    <path
+       d="M 409.52622,629.54238 382.80154,602.81647 519.1037,466.52062 545.82838,493.24653 Z"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path108"
+       inkscape:connector-curvature="0" />
+    <path
+       d="M 378.79302,590.78998 360.08575,572.08185 488.37014,443.8034 507.07742,462.51154 Z"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path110"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 461.81802,215.43587 0.007,-83.14961 -60.47245,-0.005 -0.007,83.14961"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path112"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 479.579,245.67374 -0.002,18.89764 -17.76377,-0.002 -10e-4,11.33858 -60.47244,-0.005 0.001,-11.33859 -17.76378,-0.002 0.002,-18.89764"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path114"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 527.96396,170.08767 -0.003,37.79527 -192.75592,-0.0178 0.003,-37.79527 z"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path116"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 522.29011,219.221 -0.002,26.4567 -181.41732,-0.0169 0.002,-26.45669 z"
+       style="fill:none;stroke:#000000;stroke-width:0.37795275;stroke-dasharray:2.13333333, 2.13333333"
+       id="path118"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:label="Texts"
+     inkscape:groupmode="layer"
+     id="layer6">
+    <text
+       x="75.590553"
+       y="113.38583"
+       font-size="17.7165354330709"
+       id="text121"
+       style="font-size:18.89763832px;line-height:0%;text-anchor:start;stroke-width:1.06666672">1 pcs, 4 mm Al</text>
+    <text
+       x="75.590553"
+       y="75.590553"
+       font-size="17.7165354330709"
+       id="text123"
+       style="font-size:18.89763832px;line-height:0%;text-anchor:start;stroke-width:1.06666672">beamcombiner.plate - Fri Feb 21 19:44:59 2014</text>
+  </g>
 </svg>

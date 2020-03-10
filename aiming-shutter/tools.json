@@ -1,0 +1,16 @@
+{
+  "1": {
+    "units": "MM",
+    "shape": "CYLINDRICAL",
+    "length": 20,
+    "diameter": 3,
+    "description": ""
+  },
+  "2": {
+    "units": "MM",
+    "shape": "CYLINDRICAL",
+    "length": 30,
+    "diameter": 10,
+    "description": ""
+  }
+}

@@ -1,55 +1,6 @@
-EESchema Schematic File Version 2
-LIBS:laserctrl-rescue
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:contrib
-LIBS:valves
-LIBS:mounting
-LIBS:23k256
-LIBS:tps78233
-LIBS:drv8811
-LIBS:mcu-nxp
-LIBS:opto-transistor-4p2
-LIBS:atmega328p-a
-LIBS:atmel
-LIBS:microsd
-LIBS:jumper3
-LIBS:diode2
-LIBS:78l00a
-LIBS:conn_11x2
-LIBS:bc807
-LIBS:bc817
-LIBS:vo-2630
-LIBS:little-logic
-LIBS:con-molex
-LIBS:con-molex-2
-LIBS:1g08
+EESchema Schematic File Version 4
 LIBS:laserctrl-cache
-EELAYER 25 0
+EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -228,8 +179,7 @@ Connection ~ 3400 7350
 Wire Wire Line
 	3400 7450 3400 7350
 Wire Wire Line
-	3650 7350 3150 7350
-Connection ~ 3650 7350
+	3650 7350 3550 7350
 Wire Wire Line
 	3650 7350 3650 7300
 Connection ~ 3450 7350
@@ -249,7 +199,7 @@ Wire Wire Line
 	2500 7300 2500 7350
 Connection ~ 2550 7350
 Wire Wire Line
-	2700 7350 2200 7350
+	2700 7350 2600 7350
 Wire Wire Line
 	2700 7350 2700 7300
 Wire Wire Line
@@ -286,20 +236,20 @@ Wire Wire Line
 	5700 7275 5700 7375
 Connection ~ 6325 6750
 Wire Wire Line
-	6325 6875 6325 6650
+	6325 6875 6325 6750
 Connection ~ 5450 6550
 Wire Wire Line
-	5450 6450 5450 6875
+	5450 6450 5450 6550
 Wire Wire Line
 	4700 6550 5450 6550
 Wire Wire Line
-	4700 6750 5725 6750
+	4700 6750 5700 6750
 Wire Wire Line
 	4700 6650 4850 6650
 Wire Wire Line
 	6325 6650 5350 6650
 Wire Wire Line
-	4850 6450 4700 6450
+	4850 6450 4775 6450
 Wire Wire Line
 	4775 6875 4775 6450
 Connection ~ 4775 6450
@@ -357,7 +307,7 @@ Connection ~ 2400 7350
 Wire Wire Line
 	2800 7300 2800 7350
 Wire Wire Line
-	2800 7350 2900 7350
+	2800 7350 2850 7350
 Wire Wire Line
 	2900 7350 2900 7300
 Wire Wire Line
@@ -373,7 +323,7 @@ Connection ~ 3550 7350
 Wire Wire Line
 	3750 7300 3750 7350
 Wire Wire Line
-	3750 7350 3850 7350
+	3750 7350 3800 7350
 Wire Wire Line
 	3800 7450 3800 7350
 Connection ~ 3800 7350
@@ -508,7 +458,7 @@ Wire Wire Line
 Wire Wire Line
 	6150 5850 6050 5850
 Wire Wire Line
-	6050 5850 6050 6250
+	6050 5850 6050 5950
 Connection ~ 6050 5950
 Wire Wire Line
 	7050 5750 6950 5750
@@ -576,7 +526,7 @@ P1.10
 Text Notes 6300 6450 0    50   ~ 0
 1.27 mm pitch\nARM JTAG/SWD\nconnector
 $Comp
-L CONN_1 GND2
+L 1g08:CONN_1 GND2
 U 1 1 4EC15AAE
 P 8050 6850
 F 0 "GND2" H 8130 6850 40  0000 L CNN
@@ -587,7 +537,7 @@ F 3 "" H 8050 6850 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L CONN_1 24V1
+L 1g08:CONN_1 24V1
 U 1 1 4EC15AAA
 P 8050 6950
 F 0 "24V1" H 8130 6950 40  0000 L CNN
@@ -598,7 +548,7 @@ F 3 "" H 8050 6950 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L CONN_1 3v3
+L 1g08:CONN_1 3v3
 U 1 1 4EC15AA5
 P 7450 6950
 F 0 "3v3" H 7530 6950 40  0000 L CNN
@@ -609,7 +559,7 @@ F 3 "" H 7450 6950 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_1 GND1
+L 1g08:CONN_1 GND1
 U 1 1 4EC15AA3
 P 7450 6850
 F 0 "GND1" H 7530 6850 40  0000 L CNN
@@ -622,7 +572,7 @@ $EndComp
 NoConn ~ 4700 6150
 NoConn ~ 4700 5850
 $Comp
-L CONN_5X2 P25
+L 1g08:CONN_5X2 P25
 U 1 1 4EC15895
 P 6550 5950
 F 0 "P25" H 6550 6250 60  0000 C CNN
@@ -633,7 +583,7 @@ F 3 "" H 6550 5950 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR01
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR01
 U 1 1 4EBEE504
 P 8300 6850
 F 0 "#PWR01" H 8300 6850 30  0001 C CNN
@@ -664,7 +614,7 @@ P1.27
 Text GLabel 6200 1400 0    50   Input ~ 0
 P1.16
 $Comp
-L +24V #PWR02
+L power:+24V #PWR02
 U 1 1 4EBD7C88
 P 8300 6950
 F 0 "#PWR02" H 8300 6900 20  0001 C CNN
@@ -675,7 +625,7 @@ F 3 "" H 8300 6950 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR03
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR03
 U 1 1 4EBD7C80
 P 7200 6950
 F 0 "#PWR03" H 7200 6910 30  0001 C CNN
@@ -686,7 +636,7 @@ F 3 "" H 7200 6950 60  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR04
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR04
 U 1 1 4EBD7C6D
 P 7200 6850
 F 0 "#PWR04" H 7200 6850 30  0001 C CNN
@@ -964,7 +914,7 @@ AD0
 Text GLabel 4800 4950 2    50   Input ~ 0
 AD5
 $Comp
-L AGND #PWR05
+L 1g08:AGND #PWR05
 U 1 1 4EB471B3
 P 2850 7450
 F 0 "#PWR05" H 2850 7450 40  0001 C CNN
@@ -975,7 +925,7 @@ F 3 "" H 2850 7450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR06
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR06
 U 1 1 4EB47172
 P 2550 7450
 F 0 "#PWR06" H 2550 7450 30  0001 C CNN
@@ -1112,7 +1062,7 @@ TMS
 Text GLabel 7050 6050 2    50   Input ~ 0
 TDI
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR07
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR07
 U 1 1 4EA46529
 P 6050 5650
 F 0 "#PWR07" H 6050 5610 30  0001 C CNN
@@ -1123,7 +1073,7 @@ F 3 "" H 6050 5650 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR08
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR08
 U 1 1 4EA464E3
 P 6050 6250
 F 0 "#PWR08" H 6050 6250 30  0001 C CNN
@@ -1146,7 +1096,7 @@ TDI
 Text GLabel 4825 5550 2    50   Input ~ 0
 TDO
 $Comp
-L GND-RESCUE-laserctrl #PWR09
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR09
 U 1 1 4EA3EE94
 P 6325 7375
 F 0 "#PWR09" H 6325 7375 30  0001 C CNN
@@ -1157,7 +1107,7 @@ F 3 "" H 6325 7375 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR010
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR010
 U 1 1 4EA3EE90
 P 5700 7375
 F 0 "#PWR010" H 5700 7375 30  0001 C CNN
@@ -1168,7 +1118,7 @@ F 3 "" H 5700 7375 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR011
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR011
 U 1 1 4EA3EE8C
 P 5450 7375
 F 0 "#PWR011" H 5450 7375 30  0001 C CNN
@@ -1179,7 +1129,7 @@ F 3 "" H 5450 7375 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND-RESCUE-laserctrl #PWR012
+L laserctrl-rescue:GND-RESCUE-laserctrl #PWR012
 U 1 1 4EA3EE86
 P 4775 7375
 F 0 "#PWR012" H 4775 7375 30  0001 C CNN
@@ -1190,7 +1140,7 @@ F 3 "" H 4775 7375 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C5
+L laserctrl-rescue:C-RESCUE-laserctrl C5
 U 1 1 4EA3EE6C
 P 6325 7075
 F 0 "C5" H 6375 7175 50  0000 L CNN
@@ -1201,7 +1151,7 @@ F 3 "" H 6325 7075 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C4
+L laserctrl-rescue:C-RESCUE-laserctrl C4
 U 1 1 4EA3EE66
 P 5700 7075
 F 0 "C4" H 5750 7175 50  0000 L CNN
@@ -1212,7 +1162,7 @@ F 3 "" H 5700 7075 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C3
+L laserctrl-rescue:C-RESCUE-laserctrl C3
 U 1 1 4EA3EE5C
 P 5450 7075
 F 0 "C3" H 5500 7175 50  0000 L CNN
@@ -1223,7 +1173,7 @@ F 3 "" H 5450 7075 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-laserctrl C2
+L laserctrl-rescue:C-RESCUE-laserctrl C2
 U 1 1 4EA3EE55
 P 4775 7075
 F 0 "C2" H 4825 7175 50  0000 L CNN
@@ -1234,7 +1184,7 @@ F 3 "" H 4775 7075 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R-RESCUE-laserctrl R6
+L laserctrl-rescue:R-RESCUE-laserctrl R6
 U 1 1 4EA3EE02
 P 5100 6650
 F 0 "R6" V 5180 6650 50  0000 C CNN
@@ -1245,7 +1195,7 @@ F 3 "" H 5100 6650 60  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L CRYSTAL X1
+L 1g08:CRYSTAL X1
 U 1 1 4EA3EDBB
 P 5150 6450
 F 0 "X1" H 5225 6625 60  0000 C CNN
@@ -1256,7 +1206,7 @@ F 3 "" H 5150 6450 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CRYSTAL X2
+L 1g08:CRYSTAL X2
 U 1 1 4EA3EDAF
 P 6025 6750
 F 0 "X2" H 6025 6900 60  0000 C CNN
@@ -1267,7 +1217,7 @@ F 3 "" H 6025 6750 60  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +BATT #PWR013
+L power:+BATT #PWR013
 U 1 1 4EA3ED82
 P 4100 7450
 F 0 "#PWR013" H 4100 7400 20  0001 C CNN
@@ -1278,7 +1228,7 @@ F 3 "" H 4100 7450 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +3.3VADC #PWR014
+L power:+3.3VADC #PWR014
 U 1 1 4EA3EA65
 P 3800 7450
 F 0 "#PWR014" H 3800 7570 20  0001 C CNN
@@ -1289,7 +1239,7 @@ F 3 "" H 3800 7450 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L +3.3V-RESCUE-laserctrl #PWR015
+L laserctrl-rescue:+3.3V-RESCUE-laserctrl #PWR015
 U 1 1 4EA3EA51
 P 3400 7450
 F 0 "#PWR015" H 3400 7410 30  0001 C CNN
@@ -1300,7 +1250,7 @@ F 3 "" H 3400 7450 60  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L LPC1769FBD100 U1
+L mcu-nxp:LPC1769FBD100 U1
 U 1 1 4EA3E54B
 P 3150 4900
 F 0 "U1" H 1850 7500 60  0000 C CNN
@@ -1370,4 +1320,40 @@ F0 "Power Supply" 60
 F1 "psu.sch" 60
 F2 "Supply-sense" O L 9850 6200 60 
 $EndSheet
+Wire Wire Line
+	6050 6150 6050 6250
+Wire Wire Line
+	3400 7350 3350 7350
+Wire Wire Line
+	3450 7350 3400 7350
+Wire Wire Line
+	3250 7350 3150 7350
+Wire Wire Line
+	2850 7350 2900 7350
+Wire Wire Line
+	2300 7350 2200 7350
+Wire Wire Line
+	2500 7350 2400 7350
+Wire Wire Line
+	2550 7350 2500 7350
+Wire Wire Line
+	6325 6750 6325 6650
+Wire Wire Line
+	5450 6550 5450 6875
+Wire Wire Line
+	4775 6450 4700 6450
+Wire Wire Line
+	5700 6750 5725 6750
+Wire Wire Line
+	2600 7350 2550 7350
+Wire Wire Line
+	2400 7350 2300 7350
+Wire Wire Line
+	3350 7350 3250 7350
+Wire Wire Line
+	3550 7350 3450 7350
+Wire Wire Line
+	3800 7350 3850 7350
+Wire Wire Line
+	6050 5950 6050 6150
 $EndSCHEMATC
