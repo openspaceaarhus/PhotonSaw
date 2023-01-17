@@ -9,7 +9,6 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 
-#include <avr/wdt.h> 
 #include <avr/interrupt.h>
 #include <avr/eeprom.h> 
 
@@ -56,7 +55,7 @@ void resetInputBuffer() {
 #include "parameterlist.h"
 
 PGM_P getParameterNamePGM(int index) {
-  return (PGM_P)pgm_read_word(&(PARAMETER_NAMES[index]));
+  return PARAMETER_NAMES[index];
 }
 
 char *getParameterName(int index) {
@@ -384,8 +383,6 @@ void updateStateMachine() {
 
 
 int main(void) {
-  wdt_enable(WDTO_4S); // We don't want to hang.
-
   // Set up the outputs:
   DDRB  |= _BV(PB5);  // LED output on SCK pin
 
@@ -422,7 +419,6 @@ int main(void) {
     updateStateMachine();
     updatePWM();
     //_delay_ms(10);
-    wdt_reset();
     frame++;
   }	
 }

@@ -81,14 +81,14 @@ int getCurrentCoolingSpeed() {
   return 1023*pidB.current / ADC_MAX;
 }
 
-void updatePWM() {
+void updatePWM(void) {
   updatePID(&pidA, getOsADC(2));
   updatePID(&pidB, getOsADC(3));
   setAPWM(pidA.output >> PID_Q);
   setBPWM(pidB.output >> PID_Q);
 }
 
-void initPWM() {
+void initPWM(void) {
   DDRB  |= _BV(PB1);  // Circulation pump PWM
   DDRB  |= _BV(PB2);  // Cooling pump PWM
 

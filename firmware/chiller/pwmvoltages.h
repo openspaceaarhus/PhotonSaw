@@ -1,10 +1,10 @@
 #pragma once
 
 // Initialize the PWM outputs
-void initPWM();
+void initPWM(void);
 
 // Call once per 10 ms cycle to update the pwm outputs.
-void updatePWM();
+void updatePWM(void);
 
 // Sets the target speed of the circulation pump in percent (0=stopped, 1023=full speed)
 void setCirculationSpeed(int speed);
@@ -13,10 +13,10 @@ void setCirculationSpeed(int speed);
 void setCoolingSpeed(int speed);
 
 // Gets the actual speed of the circulation pump
-int getCurrentCirculationSpeed();
+int getCurrentCirculationSpeed(void);
 
 // Gets the actual speed of the cooling pump 
-int getCurrentCoolingSpeed();
+int getCurrentCoolingSpeed(void);
 
 #define PUMP_SPEED_MAX 1023
 

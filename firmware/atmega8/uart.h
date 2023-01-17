@@ -1,34 +1,18 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revision 42):
- * <joerg@FreeBSD.ORG> wrote this file.  As long as you retain this notice you
- * can do whatever you want with this stuff. If we meet some day, and you think
- * this stuff is worth it, you can buy me a beer in return.        Joerg Wunsch
- * ----------------------------------------------------------------------------
- *
- * Stdio demo, UART declarations
- *
- * $Id: uart.h,v 1.1.2.1 2005/12/28 22:35:08 joerg_wunsch Exp $
- */
+#pragma once
 
-/*
- * Perform UART startup initialization.
- */
-void	uart_init(void);
+#include <stdio.h>
+#include <avr/pgmspace.h>
 
-/*
- * Send one character to the UART.
- */
-int	uart_putchar(char c, FILE *stream);
+typedef void (*UartLineHandler)(void);
+UartLineHandler uartSetLineHandler(UartLineHandler newHandler);
 
-/*
- * Size of internal line buffer used by uart_getchar().
- */
-#define RX_BUFSIZE 80
 
-/*
- * Receive one character from the UART.  The actual reception is
- * line-buffered, and one character is returned from the buffer at
- * each invokation.
- */
-int	uart_getchar(FILE *stream);
+#define P(format, ...) printf_P(PSTR(format), __VA_ARGS__)
+#define L(str) puts_P(PSTR(str))
+
+void	uartInit(void);
+
+void uartPutByte(uint8_t c);
+void uartAwaitTxIdle(void);
+int uart_getchar(FILE *stream);
+

@@ -7,7 +7,7 @@ void initADC() {
 
 unsigned int getADC(unsigned char input) {
     ADMUX = (input & 15) | _BV(REFS0); // AVcc reference + external cap.
-    ADCSRA |= _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0) | _BV(ADIE);
+    ADCSRA |= _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);// | _BV(ADIE);
 
     ADCSRA |= 1<<ADSC;
     while(ADCSRA & 1<<ADSC) {}

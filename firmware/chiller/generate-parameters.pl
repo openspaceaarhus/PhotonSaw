@@ -41,17 +41,17 @@ print O "#define P_COUNT $count\n";
 print O "\n\n";
 
 for my $p (@param) {
-	print O "char PN_$p->{cn}"."[] PROGMEM = \"$p->{hn}\";\n";
+	print O "const char PN_$p->{cn}"."[] PROGMEM = \"$p->{hn}\";\n";
 }
 print O "\n\n";
 
-print O "PGM_P PARAMETER_NAMES[P_COUNT] PROGMEM = {\n";
+print O "const PGM_P PARAMETER_NAMES[P_COUNT] = {\n";
 for my $p (@param) {
 	print O "  [P_$p->{cn}] = PN_$p->{cn},\n";
 }
 print O "};\n\n";
 
-print O "int DEFAULT_PARAMETERS[P_RW_COUNT] PROGMEM = {\n";
+print O "const int DEFAULT_PARAMETERS[P_RW_COUNT] PROGMEM = {\n";
 for my $p (@param) {
 	print O "  [P_$p->{cn}] = $p->{dv},\n" if $p->{rw};
 }

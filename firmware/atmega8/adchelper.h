@@ -3,6 +3,6 @@
 unsigned int getOsADC(unsigned char input);
 unsigned int getADC(unsigned char input);
 
-void initADC();
+void initADC(void);
 
 
